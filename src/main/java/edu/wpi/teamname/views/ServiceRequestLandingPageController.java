@@ -55,4 +55,12 @@ public class ServiceRequestLandingPageController {
     Parent page = FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
     App.changeScene(page);
   }
+
+  @FXML
+  private void internalPatientTransportationButtonClick() throws IOException {
+    Parent page =
+        FXMLLoader.load(
+            App.class.getResource("Views/InternalPatientTransportationServiceRequest.fxml"));
+    App.changeScene(page);
+  }
 }
