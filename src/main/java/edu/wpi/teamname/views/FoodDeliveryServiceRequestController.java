@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 public class FoodDeliveryServiceRequestController {
-  public Button sendButton;
+  @FXML public Button sendButton;
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
   @FXML private TextField floor;
@@ -49,9 +49,6 @@ public class FoodDeliveryServiceRequestController {
 
   @FXML
   private void sendServiceRequest() throws IOException {
-    //    Parent pane =
-    // FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
-    //    App.changeScene(pane);
     App.backToLandingPage();
   }
 

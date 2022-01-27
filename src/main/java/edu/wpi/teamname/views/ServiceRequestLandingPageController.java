@@ -40,6 +40,12 @@ public class ServiceRequestLandingPageController {
   }
 
   @FXML
+  private void laundryServicesButtonClick() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/Laundry Service Request Form.fxml"));
+    App.changeScene(pane);
+  }
+
+  @FXML
   private void languageInterpreter() throws IOException {
     Parent pane =
         FXMLLoader.load(App.class.getResource("Views/LanguageInterpreterServiceRequest.fxml"));
