@@ -38,4 +38,11 @@ public class ServiceRequestLandingPageController {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/PlaceHolder.fxml"));
     App.changeScene(pane);
   }
+
+  @FXML
+  private void languageInterpreter() throws IOException {
+    Parent pane =
+        FXMLLoader.load(App.class.getResource("Views/LanguageInterpreterServiceRequest.fxml"));
+    App.changeScene(pane);
+  }
 }
