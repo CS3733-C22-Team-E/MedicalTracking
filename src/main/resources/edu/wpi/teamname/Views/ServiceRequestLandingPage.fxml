@@ -18,5 +18,6 @@
       <Button layoutX="14.0" layoutY="315.0" mnemonicParsing="false" text="Internal Patient Transportation " />
       <Button layoutX="14.0" layoutY="350.0" mnemonicParsing="false" text="External Patient Transportation " />
       <Button layoutX="207.0" layoutY="350.0" mnemonicParsing="false" text="Security Services" />
+      <Button layoutX="207.0" layoutY="315.0" mnemonicParsing="false" onAction="#audioVideoServiceButtonClick" text="Audio/Visual Services" />
    </children>
 </AnchorPane>

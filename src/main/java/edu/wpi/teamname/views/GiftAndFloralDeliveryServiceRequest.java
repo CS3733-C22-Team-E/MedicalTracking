@@ -3,8 +3,6 @@ package edu.wpi.teamname.views;
 import edu.wpi.teamname.App;
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -26,8 +24,7 @@ public class GiftAndFloralDeliveryServiceRequest {
 
   @FXML
   private void sendServiceRequest() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
-    App.changeScene(pane);
+    App.backToLandingPage();
   }
 
   @FXML

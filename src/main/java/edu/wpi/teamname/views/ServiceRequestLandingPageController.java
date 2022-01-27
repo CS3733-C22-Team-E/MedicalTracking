@@ -45,4 +45,10 @@ public class ServiceRequestLandingPageController {
         FXMLLoader.load(App.class.getResource("Views/LanguageInterpreterServiceRequest.fxml"));
     App.changeScene(pane);
   }
+
+  @FXML
+  private void audioVideoServiceButtonClick() throws IOException {
+    Parent page = FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
+    App.changeScene(page);
+  }
 }
