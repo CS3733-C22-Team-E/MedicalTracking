@@ -11,7 +11,7 @@
       <Button fx:id="foodDelivery" layoutX="14.0" layoutY="67.0" mnemonicParsing="false" onAction="#foodDeliveryButtonClick" text="Food Delivery" />
       <Button fx:id="medicineDelivery" layoutX="14.0" layoutY="102.0" mnemonicParsing="false" text="Medicine Delivery" />
       <Button fx:id="giftFloralDelivery" layoutX="14.0" layoutY="136.0" mnemonicParsing="false" onAction="#giftFloralDeliveryButtonClick" text="Gift and Floral Delivery " />
-      <Button layoutX="14.0" layoutY="171.0" mnemonicParsing="false" text="Langugage Interpreter" />
+      <Button fx:id="languageButton" layoutX="14.0" layoutY="171.0" mnemonicParsing="false" onAction="#languageInterpreter" text="Langugage Interpreter" />
       <Button layoutX="14.0" layoutY="207.0" mnemonicParsing="false" text="Sanitation Services" />
       <Button layoutX="14.0" layoutY="243.0" mnemonicParsing="false" text="Laundry Services" />
       <Button layoutX="14.0" layoutY="280.0" mnemonicParsing="false" text="Religious Request" />

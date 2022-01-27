@@ -5,8 +5,6 @@ import edu.wpi.teamname.App;
 import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
@@ -51,8 +49,10 @@ public class FoodDeliveryServiceRequestController {
 
   @FXML
   private void sendServiceRequest() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
-    App.changeScene(pane);
+    //    Parent pane =
+    // FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
+    //    App.changeScene(pane);
+    App.backToLandingPage();
   }
 
   @FXML

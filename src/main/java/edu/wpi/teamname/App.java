@@ -27,8 +27,12 @@ public class App extends Application {
   }
 
   public static void changeScene(Parent Switchto) throws IOException {
-
     primaryStage.getScene().setRoot(Switchto);
+  }
+
+  public static void backToLandingPage() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
+    changeScene(pane);
   }
 
   @Override
