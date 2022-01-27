@@ -2,8 +2,6 @@
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) ![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Sever-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
-[![GitHub Issues](https://img.shields.io/github/issues-raw/CS3733-C22-Team-E/MedicalTracking)](https://github.com/CS3733-C22-Team-E/MedicalTracking/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/cdnjs/cdnjs.svg?style=flat)]() [![GitHub last commit](https://img.shields.io/github/last-commit/CS3733-C22-Team-E/MedicalTracking)]() [![GitHub commit activity the past week, 4 weeks](https://img.shields.io/github/commit-activity/w/CS3733-C22-Team-E/MedicalTracking)]()  [![GitHub contributors](https://img.shields.io/github/contributors/CS3733-C22-Team-E/MedicalTracking)]()
-
 <br />
 
 ## Meet Development Team
