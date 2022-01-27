@@ -21,15 +21,13 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void foodDeliveryButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(App.class.getResource("Views/FoodDeliveryServiceRequest.FXML"));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/FoodDeliveryServiceRequest.FXML"));
     App.changeScene(pane);
   }
 
   @FXML
   private void giftFloralDeliveryButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(App.class.getResource("Views/GiftFloralServiceRequest.FXML"));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/GiftFloralServiceRequest.FXML"));
     App.changeScene(pane);
   }
 

@@ -6,7 +6,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-public class GiftAndFloralDeliveryServiceRequest extends ServiceRequest {
+public class InternalPatientTransportationServiceRequestController extends ServiceRequest {
   @FXML private TextField patientNameTextBox;
   @FXML private TextField roomTextBox;
   @FXML private TextField floorTextBox;
