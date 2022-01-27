@@ -3,16 +3,15 @@ package edu.wpi.teamname.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teamname.App;
-import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class ReligiousServiceRequest {
+public class ReligiousServiceRequest extends ServiceRequest {
 
+  @FXML public JFXButton sendButton;
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
   @FXML private TextField floorNumber;
@@ -37,8 +36,6 @@ public class ReligiousServiceRequest {
   @FXML private Text otherText;
   @FXML private TextField otherServiceChoices;
 
-  @FXML private JFXButton sendButton;
-
   @FXML
   private void setup() {
     christianityChoices.setItems(
@@ -48,11 +45,6 @@ public class ReligiousServiceRequest {
     islamChoices.setItems(
         FXCollections.observableArrayList("Mosque Trip", "Jumuah", "Prayer Time"));
     hinduismChoices.setItems(FXCollections.observableArrayList("Chaplain", "Prayer Time"));
-  }
-
-  @FXML
-  private void sendServiceRequest() throws IOException {
-    App.backToLandingPage();
   }
 
   @FXML
