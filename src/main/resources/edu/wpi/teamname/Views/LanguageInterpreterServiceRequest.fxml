@@ -26,6 +26,6 @@
       <TextField fx:id="startTime" layoutX="90.0" layoutY="282.0" />
       <Text layoutX="23.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
       <TextField fx:id="endTime" layoutX="89.0" layoutY="318.0" />
-      <Button layoutX="265.0" layoutY="349.0" mnemonicParsing="false" onAction="#send" text="Send" />
+      <Button layoutX="265.0" layoutY="349.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" />
    </children>
 </AnchorPane>

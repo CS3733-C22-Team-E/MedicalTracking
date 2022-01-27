@@ -1,12 +1,10 @@
 package edu.wpi.teamname.views;
 
-import edu.wpi.teamname.App;
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-public class AudioVisualServiceRequestController {
+public class AudioVisualServiceRequestController extends ServiceRequest {
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
   @FXML private TextField floor;
@@ -17,9 +15,4 @@ public class AudioVisualServiceRequestController {
 
   @FXML
   private void setup() {}
-
-  @FXML
-  private void sendServiceRequest() throws IOException {
-    App.backToLandingPage();
-  }
 }
