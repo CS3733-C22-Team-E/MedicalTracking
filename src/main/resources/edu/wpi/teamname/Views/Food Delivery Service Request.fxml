@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="538.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.FoodDeliveryServiceRequestController">
+   <children>
+      <Text layoutX="177.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Food Delivery Request" />
+      <Text layoutX="14.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
+      <Text layoutX="14.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
+      <Text layoutX="14.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" />
+      <Text layoutX="11.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dietary Restrictions(Y/N):" />
+      <TextArea fx:id="dietaryRestrictionsDescribe" layoutX="241.0" layoutY="143.0" prefHeight="56.0" prefWidth="192.0" visible="false" />
+      <Text fx:id="dietaryRestrictionsDescribeText" layoutX="281.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe Restrictions:" visible="false" />
+      <TextField fx:id="patientName" layoutX="92.0" layoutY="43.0" />
+      <TextField fx:id="roomNumber" layoutX="53.0" layoutY="70.0" />
+      <TextField fx:id="floor" layoutX="53.0" layoutY="101.0" />
+      <Text layoutX="15.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Breakfast:" />
+      <CheckBox fx:id="breakfastCheck" layoutX="75.0" layoutY="166.0" mnemonicParsing="false" onAction="#BreakfastOptionsCallBack" selected="true" />
+      <Text layoutX="17.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lunch:" />
+      <CheckBox fx:id="lunchCheck" layoutX="75.0" layoutY="190.0" mnemonicParsing="false" onAction="#LunchOptionsCallBack" selected="true" />
+      <Text layoutX="17.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dinner:" />
+      <CheckBox fx:id="dinnerCheck" layoutX="75.0" layoutY="214.0" mnemonicParsing="false" onAction="#DinnerOptionsCallBack" selected="true" />
+      <GridPane layoutX="30.0" layoutY="238.0" prefHeight="126.0" prefWidth="399.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fx:id="breakfastText" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Breakfast:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM" />
+            <Text fx:id="TimeTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Text fx:id="MealTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text fx:id="lunchText" strokeType="OUTSIDE" strokeWidth="0.0" text="Lunch:" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM" />
+            <Text fx:id="TimeTextL" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Text fx:id="MealTextL" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text fx:id="dinnerText" strokeType="OUTSIDE" strokeWidth="0.0" text="Dinner:" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM" />
+            <Text fx:id="TimeTextD" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Text fx:id="MealTextD" strokeType="OUTSIDE" strokeWidth="0.0" text="Meal:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="breakfastMealDropdown" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="lunchMealDropdown" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="dinnerMealDropdown" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <TextField fx:id="breakfastTimeTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="lunchTimeTextField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <TextField fx:id="dinnerTimeTextField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+      <Button fx:id="sendButton" defaultButton="true" layoutX="396.0" layoutY="499.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+      <CheckBox fx:id="dietaryRestrictions" layoutX="150.0" layoutY="135.0" mnemonicParsing="false" onAction="#DietaryRestrictionsCallBack" />
+      <Text layoutX="102.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
+      <Text layoutX="310.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date: " />
+      <DatePicker layoutX="43.0" layoutY="400.0" />
+      <DatePicker layoutX="250.0" layoutY="400.0" />
+   </children>
+</AnchorPane>
