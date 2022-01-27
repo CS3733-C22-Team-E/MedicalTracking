@@ -1,14 +1,12 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teamname.App;
-import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
-public class LanguageInterpreterServiceRequestController {
+public class LanguageInterpreterServiceRequestController extends ServiceRequest {
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
   @FXML private TextField floor;
@@ -23,10 +21,5 @@ public class LanguageInterpreterServiceRequestController {
     languageDropdown.setItems(
         FXCollections.observableArrayList(
             "English", "Spanish", "Hindi", "Mandarin", "French", "Arabic"));
-  }
-
-  @FXML
-  private void send() throws IOException {
-    App.backToLandingPage();
   }
 }

@@ -1,8 +1,6 @@
 package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teamname.App;
-import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +9,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class FoodDeliveryServiceRequestController {
+public class FoodDeliveryServiceRequestController extends ServiceRequest {
   @FXML public Button sendButton;
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
@@ -45,11 +43,6 @@ public class FoodDeliveryServiceRequestController {
         FXCollections.observableArrayList("Ham Sandwich", "Turkey Sandwich", "Chicken Bake"));
     dinnerMealDropdown.setItems(
         FXCollections.observableArrayList("Steak", "Thanksgiving Dinner", "Chicken Tacos"));
-  }
-
-  @FXML
-  private void sendServiceRequest() throws IOException {
-    App.backToLandingPage();
   }
 
   @FXML
