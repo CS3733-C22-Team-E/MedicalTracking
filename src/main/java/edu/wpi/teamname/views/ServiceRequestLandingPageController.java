@@ -28,7 +28,8 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void giftFloralDeliveryButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/PlaceHolder.fxml"));
+    Parent pane =
+        FXMLLoader.load(App.class.getResource("Views/Gift and Floral Service Request.FXML"));
     App.changeScene(pane);
   }
 
