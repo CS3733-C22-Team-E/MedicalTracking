@@ -1,5 +1,6 @@
 package edu.wpi.teamname;
 
+import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +24,13 @@ public class App extends Application {
     Scene primaryScene =
         new Scene(FXMLLoader.load(getClass().getResource("Views/ServiceRequestLandingPage.fxml")));
     primaryStage.setScene(primaryScene);
+    primaryStage.setResizable(true);
     primaryStage.show();
   }
 
   public static void changeScene(Parent Switchto) throws IOException {
     primaryStage.getScene().setRoot(Switchto);
+    primaryStage.sizeToScene();
   }
 
   public static void backToLandingPage() throws IOException {
