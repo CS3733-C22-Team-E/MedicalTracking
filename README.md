@@ -2,6 +2,10 @@
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) ![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Sever-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
+[![GitHub Issues](https://img.shields.io/github/issues-raw/CS3733-C22-Team-E/MedicalTracking)](https://github.com/CS3733-C22-Team-E/MedicalTracking/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/cdnjs/cdnjs.svg?style=flat)]() [![GitHub last commit](https://img.shields.io/github/last-commit/CS3733-C22-Team-E/MedicalTracking)]() [![GitHub commit activity the past week, 4 weeks](https://img.shields.io/github/commit-activity/w/CS3733-C22-Team-E/MedicalTracking)]()  [![GitHub contributors](https://img.shields.io/github/contributors/CS3733-C22-Team-E/MedicalTracking)]()
+
+<br />
+
 ## Meet Development Team
 
 ### Lead Software Developer ([Amitai Erfanian](https://github.com/Amitai5))
@@ -37,64 +41,35 @@ The professor will work as the Vice President of Software Engineering directing 
 
 Over the course of this term, your team will create a desktop application for employees and administrators at Mass General Brigham Hospital in Boston. The base requirements (not a complete set) for the desktop application are
 
-1.  Medical equipment tracking and workflow service that includes the following, mostly around the 3rd floor inpatient unit:
+1. Medical equipment tracking and workflow service that includes the following, mostly around the 3rd floor inpatient unit:
+	1. Beds are in the patient rooms, parked in the hallways, or stored in the OR Bed Park on Lower Level 1. Beds in the hallways may either be waiting to be put into the patient room, have a patient in it awaiting transportation to another location, or are “dirty” and waiting to be delivered to the OR Bed Park for cleaning and storage.
+	2. There is 1 portable X-Ray that is stored near the unit or in use in one of the patient rooms
+	3. Infusion Pumps are stored clean on the unit, attached to IV poles near the patient in the room, placed in a dirty pick-up area outside the unit, brought to the West Plaza for cleaning, and then returned to the clean storage area on the unit
+	4. There are 6 patient recliners that go into some rooms during the day and the Bed comes out of the room and is parked in the hallway. If there are an excess of patient recliners in the hallway they can go to the West Plaza on the 1st floor.
 
-a.  Beds are in the patient rooms, parked in the hallways, or stored in the OR Bed Park on Lower Level 1. Beds in the hallways may either be waiting to be put into the patient room, have a patient in it awaiting transportation to another location, or are “dirty” and waiting to be delivered to the OR Bed Park for cleaning and storage.
+2. A graphical map editing tool to handle floor maps, paths, locations, and display of medical equipment on the floor map. The addition of a vertical (side-view) hospital map that displays the location and count of medical equipment for all of the floors in the hospital tower at a glance.
 
-b.  There is 1 portable X-Ray that is stored near the unit or in use in one of the patient rooms
+3. A collection of additional service request components that permit service requests to be made for a given location. Each team member, except for those responsible for the medical equipment tracking/workflow service, needs to create their own component and associated controller. For the less experienced programmers concerned about their grades, doing a good job on your service components and controllers goes a long way to ensuring a good grade in the class! Some possibilities are listed:
+	1. Food delivery service
+	2. Language interpreters
+	3. Sanitation services – cleaning up spills, rooms, and public spaces
+	4. Laundry services
+	5. Gift delivery service for presents purchased at the hospital
+	6. Floral delivery service
+	7. Medicine delivery service
+	8. Religious requests such as blessings or last rites. If you implement this component, be aware that multiple religions need to be taken into account.
+	9. Internal patient transportation (transportation for a patient inside the hospital)
+	10. External patient transportation (ambulance, helicopter, etc) for a patient to be transported to a location outside of the hospital
+	11. Security services
+	12. Facilities maintenance requests including elevator and power issues
+	13. Computer service requests
+	14. Audio/visual requests
+	15. Laundry services
 
-c.  Infusion Pumps are stored clean on the unit, attached to IV poles near the patient in the room, placed in a dirty pick-up area outside the unit, brought to the West Plaza for cleaning, and then returned to the clean storage area on the unit
+4. A professional quality, consistent user interface across all application components. Use of Material Design (JFoenix) is one possibility but not required. Alternative approaches are also acceptable.
 
-d.  There are 6 patient recliners that go into some rooms during the day and the Bed comes out of the room and is parked in the hallway. If there are an excess of patient recliners in the hallway they can go to the West Plaza on the 1st floor.
+5. Different methods of data storage –embedded database, client-server, and NoSQL cloud storage with CSV files as backup.
 
-2.  A graphical map editing tool to handle floor maps, paths, locations, and display of medical equipment on the floor map. The addition of a vertical (side-view) hospital map that displays the location and count of medical equipment for all of the floors in the hospital tower at a glance.
+6. A medical equipment movement simulator. Create a simulation where medical equipment is requested by health professionals and the equipment eventually winds up in the “dirty” areas. This generates a medical equipment transportation request to get the equipment back to “clean” storage areas.
 
-3.  A collection of additional service request components that permit service requests to be made for a given location. Each team member, except for those responsible for the medical equipment tracking/workflow service, needs to create their own component and associated controller. For the less experienced programmers concerned about their grades, doing a good job on your service components and controllers goes a long way to ensuring a good grade in the class! Some possibilities are listed:
-
-1.  food delivery service
-
-2.  language interpreters
-
-3.  sanitation services – cleaning up spills, rooms, and public spaces
-
-4.  laundry services
-
-5.  gift delivery service for presents purchased at the hospital
-
-6.  floral delivery service
-
-7.  medicine delivery service
-
-8.  religious requests such as blessings or last rites. If you implement this component, be aware that multiple religions need to be taken into account.
-
-9.  internal patient transportation (transportation for a patient inside the hospital)
-
-10.  external patient transportation (ambulance, helicopter, etc) for a patient to be transported to a location outside of the hospital
-
-11.  security services
-
-12.  facilities maintenance requests including elevator and power issues
-
-13.  computer service requests
-
-14.  audio/visual requests
-
-15.  laundry services
-
-4.  A professional quality, consistent user interface across all application components. Use of Material Design (JFoenix) is one possibility but not required. Alternative approaches are also acceptable.
-
-5.  Different methods of data storage –embedded database, client-server, and NoSQL cloud storage with CSV files as backup.
-
-6.  A medical equipment movement simulator. Create a simulation where medical equipment is requested by health professionals and the equipment eventually winds up in the “dirty” areas. This generates a medical equipment transportation request to get the equipment back to “clean” storage areas.
-
-7.  (Strictly Optional) Graphical pathfinding. This is a major feature to implement and so do not do this unless you are confident you will be successful. Users can select a starting and an ending location and the application application will visually display the path to their destinations along with text directions on how to get there. This is used in conjunction with the service request components for delivery of equipment, patients, food, gifts or other services.
-
-New locations to be added to the map:
-
-1.  OR Bed Park (Lower Level 1). This is open darker brown area located to the left of elevator L, above the middle staff elevator but below the stairs on the right.
-
-2.  West Plaza (Floor 1). This is the area immediately to the left of the staff exit below the Center for International Medicine and above the Cashier.
-
-3.  Inpatient Unit (Floor 3).
-
-4.  Patient rooms (Floor 3). The rooms are located in the outer rings of the Tower.
+7. (Strictly Optional) Graphical pathfinding. This is a major feature to implement and so do not do this unless you are confident you will be successful. Users can select a starting and an ending location and the application application will visually display the path to their destinations along with text directions on how to get there. This is used in conjunction with the service request components for delivery of equipment, patients, food, gifts or other services.
