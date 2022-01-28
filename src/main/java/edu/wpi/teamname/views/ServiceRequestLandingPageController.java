@@ -12,6 +12,7 @@ public class ServiceRequestLandingPageController {
   @FXML private Button foodDelivery;
   @FXML private Button giftFloralDelivery;
   @FXML private Button medicineDelivery;
+  @FXML private Button religiousRequest;
 
   @FXML
   private void medEquipmentButtonClick() throws IOException {
@@ -56,5 +57,11 @@ public class ServiceRequestLandingPageController {
   private void audioVideoServiceButtonClick() throws IOException {
     Parent page = FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
     App.changeScene(page);
+  }
+
+  @FXML
+  private void religiousServicesButtonClick() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/ReligiousServiceRequest.fxml"));
+    App.changeScene(pane);
   }
 }

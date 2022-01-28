@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane accessibleRole="TEXT" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="486.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ReligiousServiceRequest">
+   <children>
+      <Text layoutX="225.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Religious Service Request" />
+      <Text layoutX="16.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name:" wrappingWidth="87.98307228088379" />
+      <Text layoutX="20.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" wrappingWidth="40.626657485961914" />
+      <Text layoutX="22.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" wrappingWidth="35.41212272644043" />
+      <TextField fx:id="patientName" layoutX="109.0" layoutY="55.0" prefHeight="26.0" prefWidth="142.0" />
+      <GridPane layoutX="52.0" layoutY="233.0" prefHeight="192.0" prefWidth="499.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXCheckBox fx:id="christianityBox" onAction="#ChristianityOptionsCallBack" text="Christianity" GridPane.halignment="CENTER" />
+            <JFXCheckBox fx:id="islamBox" onAction="#IslamOptionsCallBack" text="Islam" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <JFXCheckBox fx:id="otherBox" onAction="#OtherOptionsCallBack" prefHeight="18.0" prefWidth="66.0" text="Other" GridPane.columnIndex="4" GridPane.halignment="CENTER" />
+            <JFXCheckBox fx:id="hinduismBox" onAction="#HinduismOptionsCallBack" text="Hinduism" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
+            <JFXCheckBox fx:id="judaismBox" onAction="#JudaismOptionsCallBack" text="Judaism" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <JFXComboBox fx:id="christianityChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="islamChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="judaismChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="hinduismChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXButton fx:id="sendButton" onAction="#sendServiceRequest" style="-fx-background-color: grey;" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <TextField fx:id="otherServiceChoices" prefHeight="94.0" prefWidth="100.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Text fx:id="otherText" strokeType="OUTSIDE" strokeWidth="0.0" text="What religious service are you looking for:" visible="false" wrappingWidth="99.99351501464844" GridPane.columnIndex="4" GridPane.rowIndex="1">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+         </children>
+      </GridPane>
+      <Text layoutX="237.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose your religion:" wrappingWidth="127.49870300292969" />
+      <DatePicker fx:id="datePicker" layoutX="59.0" layoutY="157.0" />
+      <Text layoutX="17.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="87.98307228088379" />
+      <TextField fx:id="finishTime" layoutX="408.0" layoutY="157.0" prefHeight="27.0" prefWidth="99.0" />
+      <Text layoutX="331.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Finish Time:" wrappingWidth="75.0" />
+      <Text layoutX="335.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" wrappingWidth="66.0" />
+      <TextField fx:id="startTime" layoutX="409.0" layoutY="122.0" prefHeight="27.0" prefWidth="98.0" />
+      <TextField fx:id="roomNumber" layoutX="66.0" layoutY="88.0" prefHeight="21.0" prefWidth="83.0" />
+      <TextField fx:id="floorNumber" layoutX="66.0" layoutY="122.0" prefHeight="26.0" prefWidth="81.0" />
+   </children>
+</AnchorPane>
