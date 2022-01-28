@@ -44,7 +44,8 @@ public class InternalPatientTransportationServiceRequestController extends Servi
 
   @FXML
   private void fromPickerCallback() {
-    String fromLocation = transferFromPicker.focusedProperty().toString();
+    // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
+    String  fromLocation = transferFromPicker.getValue().toString();
     switch (fromLocation) {
       case "Their Room":
         fromTheirRoomGridPlane.setVisible(true);
@@ -70,7 +71,8 @@ public class InternalPatientTransportationServiceRequestController extends Servi
 
   @FXML
   private void toPickerCallback() {
-    String toLocation = transferFromPicker.focusedProperty().toString();
+    // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
+    String toLocation = transferFromPicker.getValue().toString();
     switch (toLocation) {
       case "Their Room":
         toOtherRoomGridPlane.setVisible(false);
