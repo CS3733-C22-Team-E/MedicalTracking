@@ -73,6 +73,7 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void mapPageButtonClick() throws IOException {
+<<<<<<< Updated upstream
     Parent pane = FXMLLoader.load(App.class.getResource("Views/MapViewPage.fxml"));
     App.changeScene(pane);
   }
@@ -80,12 +81,9 @@ public class ServiceRequestLandingPageController {
   @FXML
   private void securityServiceRequestButtonClick() throws IOException {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void securityServiceRequestButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
+=======
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/MapView.fxml"));
+>>>>>>> Stashed changes
     App.changeScene(pane);
   }
 

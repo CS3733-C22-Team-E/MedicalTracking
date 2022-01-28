@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ServiceRequestLandingPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.Views.ServiceRequestLandingPageController">
    <children>
       <Text layoutX="254.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests:" />
       <Button fx:id="medEquipment" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" text="Medical Equipment Delivery" />
@@ -14,15 +14,13 @@
       <Button fx:id="languageButton" layoutX="14.0" layoutY="171.0" mnemonicParsing="false" onAction="#languageInterpreter" text="Langugage Interpreter" />
       <Button layoutX="14.0" layoutY="207.0" mnemonicParsing="false" text="Sanitation Services" />
       <Button layoutX="14.0" layoutY="243.0" mnemonicParsing="false" onAction="#laundryServicesButtonClick" text="Laundry Services" />
-      <Button layoutX="14.0" layoutY="280.0" mnemonicParsing="false" text="Religious Request" />
-      <Button layoutX="14.0" layoutY="315.0" mnemonicParsing="false" onAction="#internalPatientTransportationButtonClick" text="Internal Patient Transportation " />
       <Button fx:id="religiousRequest" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" onAction="#religiousServicesButtonClick" text="Religious Request" />
       <Button layoutX="14.0" layoutY="315.0" mnemonicParsing="false" text="Internal Patient Transportation " />
       <Button layoutX="14.0" layoutY="350.0" mnemonicParsing="false" text="External Patient Transportation " />
       <Button layoutX="207.0" layoutY="350.0" mnemonicParsing="false" onAction="#religiousServicesButtonClick" text="Security Services" />
       <Button layoutX="207.0" layoutY="315.0" mnemonicParsing="false" onAction="#audioVideoServiceButtonClick" text="Audio/Visual Services" />
       <Button fx:id="computerServiceRequestButton" layoutX="207.0" layoutY="280.0" mnemonicParsing="false" onAction="#computerServiceRequestButtonClick" text="Computer Service Request" />
-      <Button layoutX="207.0" layoutY="245.0" mnemonicParsing="false" onAction="#mapPageButtonClick" text="Map View" />
-      <Button layoutX="503.0" layoutY="350.0" mnemonicParsing="false" onAction="#goBackCallback" text="Go Back" />
+      <Button layoutX="207.0" layoutY="245.0" mnemonicParsing="false" onAction="#securityServiceRequestButtonClick" text="Security Service Request" />
+      <Button layoutX="207.0" layoutY="210.0" mnemonicParsing="false" onAction="#mapPageButtonClick" text="Map View" />
    </children>
 </AnchorPane>

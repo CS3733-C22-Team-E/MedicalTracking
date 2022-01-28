@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane onDragEntered="#setup" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.Views.MapViewController">
+   <children>
+      <ImageView id="mapImageView" fitHeight="349.0" fitWidth="573.0" layoutX="43.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/00_thegroundfloor.png" />
+         </image>
+      </ImageView>
+      <ComboBox id="mapSelectionComboBox" layoutX="406.0" layoutY="14.0" onAction="#comboBoxChanged" onDragEntered="#setup" onMouseClicked="#setup" onMouseEntered="#setup" prefWidth="150.0" />
+   </children>
+</AnchorPane>
