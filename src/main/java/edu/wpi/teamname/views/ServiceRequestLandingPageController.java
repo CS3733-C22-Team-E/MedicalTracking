@@ -40,7 +40,7 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void laundryServicesButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequestForm.fxml"));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequest.fxml"));
     App.changeScene(pane);
   }
 
@@ -57,6 +57,14 @@ public class ServiceRequestLandingPageController {
     App.changeScene(page);
   }
 
+  @FXML
+  private void internalPatientTransportationButtonClick() throws IOException {
+    Parent page =
+        FXMLLoader.load(
+            App.class.getResource("Views/InternalPatientTransportationServiceRequest.fxml"));
+    App.changeScene(page);
+  }
+  
   @FXML
   private void computerServiceRequestButtonClick() throws IOException {
     Parent page = FXMLLoader.load(App.class.getResource("Views/ComputerServiceRequest.fxml"));
