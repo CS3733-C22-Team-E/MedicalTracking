@@ -57,4 +57,10 @@ public class ServiceRequestLandingPageController {
     Parent page = FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
     App.changeScene(page);
   }
+
+  @FXML
+  private void computerServiceRequestButtonClick() throws IOException {
+    Parent page = FXMLLoader.load(App.class.getResource("Views/ComputerServiceRequest.fxml"));
+    App.changeScene(page);
+  }
 }
