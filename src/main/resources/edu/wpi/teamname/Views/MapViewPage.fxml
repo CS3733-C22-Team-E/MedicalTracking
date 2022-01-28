@@ -12,6 +12,4 @@
             fx:controller="edu.wpi.teamname.views.MainPageViewController"
             prefHeight="400.0" prefWidth="600.0">
 
-    <ImageView image="/images/00_thegroundfloor.png" />
-
 </AnchorPane>
