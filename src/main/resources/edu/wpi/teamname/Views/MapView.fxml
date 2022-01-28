@@ -12,6 +12,6 @@
             <Image url="@../images/00_thelowerlevel1.png" />
          </image>
       </ImageView>
-      <ComboBox fx:id="dropDown" layoutX="422.0" layoutY="14.0" onAction="#comboBoxChanged" prefWidth="150.0" />
+      <ComboBox fx:id="dropDown" layoutX="422.0" layoutY="14.0" onAction="#comboBoxChanged" prefWidth="150.0" promptText="Lower Level 1" />
    </children>
 </AnchorPane>
