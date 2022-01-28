@@ -19,5 +19,6 @@
       <Button layoutX="14.0" layoutY="350.0" mnemonicParsing="false" text="External Patient Transportation " />
       <Button layoutX="207.0" layoutY="350.0" mnemonicParsing="false" onAction="#religiousServicesButtonClick" text="Security Services" />
       <Button layoutX="207.0" layoutY="315.0" mnemonicParsing="false" onAction="#audioVideoServiceButtonClick" text="Audio/Visual Services" />
+      <Button fx:id="computerServiceRequestButton" layoutX="207.0" layoutY="280.0" mnemonicParsing="false" onAction="#computerServiceRequestButtonClick" text="Computer Service Request" />
    </children>
 </AnchorPane>

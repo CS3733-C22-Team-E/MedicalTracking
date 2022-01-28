@@ -60,6 +60,12 @@ public class ServiceRequestLandingPageController {
   }
 
   @FXML
+  private void computerServiceRequestButtonClick() throws IOException {
+    Parent page = FXMLLoader.load(App.class.getResource("Views/ComputerServiceRequest.fxml"));
+    App.changeScene(page);
+  }
+  
+  @FXML
   private void religiousServicesButtonClick() throws IOException {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/ReligiousServiceRequest.fxml"));
     App.changeScene(pane);
