@@ -1,4 +1,4 @@
-package edu.wpi.teamname.Views;
+package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.App;
 import java.io.IOException;
