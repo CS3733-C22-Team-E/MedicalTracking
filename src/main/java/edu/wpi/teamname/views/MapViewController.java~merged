@@ -1,3 +1,21 @@
+<<<<<<< HEAD
+package edu.wpi.teamname.views;
+
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.image.ImageView;
+
+public class MapViewController {
+  // private HashMap<String, Image> mapImages = new HashMap<String, Image>();
+  @FXML private ComboBox dropDown;
+  @FXML private ImageView mapImageView;
+
+  @FXML
+  private void setup() {
+    System.out.println("HI");
+    dropDown.setItems(
+=======
 package edu.wpi.teamname.Views;
 
 import com.jfoenix.controls.JFXComboBox;
@@ -15,6 +33,7 @@ public class MapViewController {
   @FXML
   private void setup() {
     mapSelectionComboBox.setItems(
+>>>>>>> master
         FXCollections.observableArrayList(
             "Ground Floor",
             "Lower Level 1",
@@ -26,6 +45,28 @@ public class MapViewController {
 
   @FXML
   private void comboBoxChanged() {
+<<<<<<< HEAD
+    //    switch (mapSelectionComboBox.getValue().toString()) {
+    //      case "Ground Floor":
+    //        mapImageView.setImage(new Image("@../images/00_thegroundfloor.png"));
+    //        break;
+    //      case "Lower Level 1":
+    //        mapImageView.setImage(new Image("@../images/00_thelowerlevel1.png"));
+    //        break;
+    //      case "Lower Level 2":
+    //        mapImageView.setImage(new Image("@../images/00_thelowerlevel2.png"));
+    //        break;
+    //      case "First Floor":
+    //        mapImageView.setImage(new Image("@../images/01_thefirstfloor.png"));
+    //        break;
+    //      case "Second Floor":
+    //        mapImageView.setImage(new Image("@../images/02_thesecondfloor.png"));
+    //        break;
+    //      case "Third Floor":
+    //        mapImageView.setImage(new Image("@../images/03_thethirdfloor.png"));
+    //        break;
+    //    }
+=======
     switch (mapSelectionComboBox.getValue().toString()) {
       case "Ground Floor":
         mapImageView.setImage(new Image("@../images/00_thegroundfloor.png"));
@@ -46,5 +87,6 @@ public class MapViewController {
         mapImageView.setImage(new Image("@../images/03_thethirdfloor.png"));
         break;
     }
+>>>>>>> master
   }
 }

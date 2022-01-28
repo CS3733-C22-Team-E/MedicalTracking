@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="146.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.Views.GiftAndFloralDeliveryServiceRequest">
+   <children>
+      <Text layoutX="95.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Request" />
+      <Text layoutX="35.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
+      <Text layoutX="35.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" />
+      <TextField fx:id="roomTextBox" layoutX="74.0" layoutY="45.0" />
+      <TextField fx:id="floorTextBox" layoutX="74.0" layoutY="76.0" />
+      <Button fx:id="sendButton" defaultButton="true" layoutX="241.0" layoutY="105.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+      <AnchorPane fx:id="scheduleAnchorPane" layoutX="18.0" layoutY="189.0" prefHeight="75.0" prefWidth="315.0" visible="false">
+         <children>
+            <Text disable="true" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delivery Time:" />
+            <Text layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delivery Date" />
+            <TextField fx:id="deliveryTimeTextbox" layoutX="83.0" layoutY="8.0" />
+            <DatePicker fx:id="deliveryDateDatebox" layoutX="83.0" layoutY="41.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

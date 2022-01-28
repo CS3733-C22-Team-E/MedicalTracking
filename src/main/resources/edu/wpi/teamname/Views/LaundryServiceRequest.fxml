@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.Views.LaundryServiceRequestController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.LaundryServiceRequestController">
    <children>
       <Text layoutX="24.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
       <Text layoutX="24.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
