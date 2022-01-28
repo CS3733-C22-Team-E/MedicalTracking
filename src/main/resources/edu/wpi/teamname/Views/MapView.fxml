@@ -5,15 +5,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane onDragEntered="#setup" onMouseEntered="#setup" prefHeight="400.0" prefWidth="600.0"
-   xmlns="http://javafx.com/javafx/17"
-   xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapViewController">
+<AnchorPane onDragEntered="#setup" onMouseEntered="#setup" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapViewController">
    <children>
       <ImageView id="mapImageView" fx:id="mapImageView" fitHeight="349.0" fitWidth="573.0" layoutX="43.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/00_thegroundfloor.png" />
+            <Image url="@../images/00_thelowerlevel1.png" />
          </image>
       </ImageView>
-      <ComboBox fx:id="dropDown" layoutX="422.0" layoutY="14.0" onAction="#setup" prefWidth="150.0" />
+      <ComboBox fx:id="dropDown" layoutX="422.0" layoutY="14.0" onAction="#comboBoxChanged" prefWidth="150.0" />
    </children>
 </AnchorPane>

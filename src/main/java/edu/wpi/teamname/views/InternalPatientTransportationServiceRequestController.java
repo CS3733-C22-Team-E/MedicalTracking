@@ -45,7 +45,7 @@ public class InternalPatientTransportationServiceRequestController extends Servi
   @FXML
   private void fromPickerCallback() {
     // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
-    String  fromLocation = transferFromPicker.getValue().toString();
+    String fromLocation = transferFromPicker.getValue().toString();
     switch (fromLocation) {
       case "Their Room":
         fromTheirRoomGridPlane.setVisible(true);

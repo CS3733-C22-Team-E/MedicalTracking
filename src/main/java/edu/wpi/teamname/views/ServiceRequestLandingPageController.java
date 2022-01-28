@@ -82,16 +82,4 @@ public class ServiceRequestLandingPageController {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
     App.changeScene(pane);
   }
-
-  @FXML
-  private void securityServiceRequestButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
-    App.changeScene(pane);
-  }
-  
-  @FXML
-  private void securityServiceRequestButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
-    App.changeScene(pane);
-  }
 }

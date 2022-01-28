@@ -1,4 +1,4 @@
-package edu.wpi.teamname.Views;
+package edu.wpi.teamname.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
