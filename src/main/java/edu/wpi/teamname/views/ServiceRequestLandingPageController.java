@@ -70,4 +70,10 @@ public class ServiceRequestLandingPageController {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/ReligiousServiceRequest.fxml"));
     App.changeScene(pane);
   }
+
+  @FXML
+  private void mapPageButtonClick() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/MapViewPage.fxml"));
+    App.changeScene(pane);
+  }
 }
