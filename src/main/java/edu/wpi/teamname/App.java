@@ -21,7 +21,7 @@ public class App extends Application {
   public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
     Scene primaryScene =
-        new Scene(FXMLLoader.load(getClass().getResource("Views/ServiceRequestLandingPage.fxml")));
+        new Scene(FXMLLoader.load(getClass().getResource("views/ServiceRequestLandingPage.fxml")));
     primaryStage.setScene(primaryScene);
     primaryStage.setResizable(true);
     primaryStage.show();
@@ -33,7 +33,7 @@ public class App extends Application {
   }
 
   public static void backToLandingPage() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
+    Parent pane = FXMLLoader.load(App.class.getResource("views/ServiceRequestLandingPage.fxml"));
     changeScene(pane);
   }
 
