@@ -1,4 +1,4 @@
-package edu.wpi.teamname.views;
+package edu.wpi.teamname.Views;
 
 import edu.wpi.teamname.App;
 import java.io.IOException;
@@ -29,7 +29,8 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void giftFloralDeliveryButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/GiftandFloralServiceRequest.FXML"));
+    Parent pane =
+        FXMLLoader.load(App.class.getResource("Views/Gift and Floral Service Request.FXML"));
     App.changeScene(pane);
   }
 
@@ -41,7 +42,7 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void laundryServicesButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequest.fxml"));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequestForm.fxml"));
     App.changeScene(pane);
   }
 
@@ -78,8 +79,19 @@ public class ServiceRequestLandingPageController {
 
   @FXML
   private void securityServiceRequestButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequestController.fxml"));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
+    App.changeScene(pane);
+  }
+
+  @FXML
+  private void securityServiceRequestButtonClick() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
+    App.changeScene(pane);
+  }
+
+  @FXML
+  private void securityServiceRequestButtonClick() throws IOException {
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequest.fxml"));
     App.changeScene(pane);
   }
 }

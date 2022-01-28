@@ -1,4 +1,4 @@
-package edu.wpi.teamname.views;
+package edu.wpi.teamname.Views;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
