@@ -11,7 +11,7 @@ public class GiftFloralDeliveryServiceRequestController extends ServiceRequest {
   @FXML private TextField roomTextBox;
   @FXML private TextField floorTextBox;
   @FXML private CheckBox scheduleCheckbox;
-  // @FXML private Button sendButto n; Looks like you don't actually need this because the button can
+  // @FXML private Button sendButton; Looks like you don't actually need this because the button can
   // call a method by itself (?)
   @FXML private AnchorPane scheduleAnchorPane;
   @FXML private TextField deliveryTimeTextbox;
