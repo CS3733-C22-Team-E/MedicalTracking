@@ -96,6 +96,8 @@ public class MapViewController {
     retval.setFitHeight(FitHeight);
     retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
+    System.out.println(retval.getLayoutX());
+    System.out.println(retval.getLayoutY());
     retval.setOnMouseClicked(event -> showDialogBox(retval));
     retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
     retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
@@ -128,11 +130,11 @@ public class MapViewController {
   }
 
   double ConvertPixelXToLayoutX(double PixelX) {
-    return (PixelX / 5000) * mapImageView.getLayoutBounds().getWidth();
+    return (PixelX / 5000) * mapPane.getLayoutBounds().getWidth();
   }
 
   double ConvertPixelYToLayoutY(double PixelY) {
-    return (PixelY / 3400) * mapImageView.getLayoutBounds().getHeight();
+    return (PixelY / 3400) * mapPane.getLayoutBounds().getHeight();
   }
 
   private void showDialogBox(ImageView node) {
