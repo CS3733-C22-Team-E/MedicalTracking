@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane onMouseEntered="#setup" prefHeight="400.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.LanguageInterpreterServiceRequestController">
    <children>
       <Text layoutX="201.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language Interpreter Service Request" />
@@ -26,6 +27,6 @@
       <TextField fx:id="startTime" layoutX="90.0" layoutY="282.0" />
       <Text layoutX="23.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
       <TextField fx:id="endTime" layoutX="89.0" layoutY="318.0" />
-      <Button layoutX="265.0" layoutY="349.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" />
+      <JFXButton layoutX="265.0" layoutY="349.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" />
    </children>
 </AnchorPane>

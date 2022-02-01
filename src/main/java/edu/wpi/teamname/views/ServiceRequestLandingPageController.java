@@ -1,5 +1,7 @@
 package edu.wpi.teamname.views;
 
+import static edu.wpi.teamname.App.switchFullScreenStatus;
+
 import edu.wpi.teamname.App;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -73,6 +75,7 @@ public class ServiceRequestLandingPageController {
   private void mapPageButtonClick() throws IOException {
     Parent pane = FXMLLoader.load(App.class.getResource("Views/MapView.fxml"));
     App.changeScene(pane);
+    switchFullScreenStatus();
   }
 
   @FXML

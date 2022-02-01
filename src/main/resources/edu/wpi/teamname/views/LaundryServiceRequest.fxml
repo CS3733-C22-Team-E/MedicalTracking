@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.LaundryServiceRequestController">
    <children>
       <Text layoutX="24.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
@@ -21,6 +22,6 @@
       <DatePicker layoutX="27.0" layoutY="217.0" />
       <DatePicker layoutX="240.0" layoutY="216.0" />
       <Text layoutX="236.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Laundry Service Request" />
-      <Button fx:id="sendButton" defaultButton="true" layoutX="202.0" layoutY="267.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+      <JFXButton fx:id="sendButton" defaultButton="true" layoutX="202.0" layoutY="267.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
    </children>
 </AnchorPane>
