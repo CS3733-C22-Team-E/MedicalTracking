@@ -8,6 +8,6 @@ public class ServiceRequest {
 
   @FXML
   public void sendServiceRequest() throws IOException {
-    App.backToLandingPage();
+
   }
 }
