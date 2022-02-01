@@ -5,62 +5,56 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 
 public class ServiceRequestLandingPageController {
-  @FXML private Button medEquipment;
-  @FXML private Button foodDelivery;
-  @FXML private Button giftFloralDelivery;
-  @FXML private Button medicineDelivery;
-  @FXML private Button religiousRequest;
+  @FXML private AnchorPane internalPatientTransportationTab;
+  @FXML private AnchorPane externalPatientTransportationTab;
+  @FXML private AnchorPane computerServiceRequestTab;
+  @FXML private AnchorPane securityServiceRequestTab;
+  @FXML private AnchorPane langugageInterpreterTab;
+  @FXML private AnchorPane audioVisualServicesTab;
+  @FXML private AnchorPane sanitationServicesTab;
+  @FXML private AnchorPane religiousRequestTab;
+  @FXML private AnchorPane medicalEquipmentTab;
+  @FXML private AnchorPane medicineDeliveryTab;
+  @FXML private AnchorPane laundryServicesTab;
+  @FXML private AnchorPane foodDeliveryTab;
+  @FXML private AnchorPane giftDeliveryTab;
 
   @FXML
-  private void medEquipmentButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/PlaceHolder.fxml"));
-    App.changeScene(pane);
-  }
+  private void setup() throws IOException {
+    Parent foodDeliveryPage =
+        FXMLLoader.load(App.class.getResource("Views/FoodDeliveryServiceRequest.fxml"));
+    foodDeliveryTab.getChildren().add(foodDeliveryPage);
 
-  @FXML
-  private void foodDeliveryButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/FoodDeliveryServiceRequest.FXML"));
-    App.changeScene(pane);
-  }
+    Parent giftDeliveryPage =
+        FXMLLoader.load(App.class.getResource("Views/GiftandFloralServiceRequest.fxml"));
+    giftDeliveryTab.getChildren().add(giftDeliveryPage);
 
-  @FXML
-  private void giftFloralDeliveryButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/GiftandFloralServiceRequest.FXML"));
-    App.changeScene(pane);
-  }
+    Parent laundryServicesPage =
+        FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequest.fxml"));
+    laundryServicesTab.getChildren().add(laundryServicesPage);
 
-  @FXML
-  private void medicineDelivery() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/PlaceHolder.fxml"));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void laundryServicesButtonClick() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/LaundryServiceRequest.fxml"));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void languageInterpreter() throws IOException {
-    Parent pane =
+    Parent languageInterpreterDeliveryPage =
         FXMLLoader.load(App.class.getResource("Views/LanguageInterpreterServiceRequest.fxml"));
-    App.changeScene(pane);
-  }
+    langugageInterpreterTab.getChildren().add(languageInterpreterDeliveryPage);
 
-  @FXML
-  private void audioVideoServiceButtonClick() throws IOException {
-    Parent page = FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
-    App.changeScene(page);
-  }
+    Parent audioVideoServiceRequestPage =
+        FXMLLoader.load(App.class.getResource("Views/AudioVisualServiceRequest.fxml"));
+    audioVisualServicesTab.getChildren().add(audioVideoServiceRequestPage);
 
-  @FXML
-  private void computerServiceRequestButtonClick() throws IOException {
-    Parent page = FXMLLoader.load(App.class.getResource("Views/ComputerServiceRequest.fxml"));
-    App.changeScene(page);
+    Parent computerServiceRequestPage =
+        FXMLLoader.load(App.class.getResource("Views/ComputerServiceRequest.fxml"));
+    computerServiceRequestTab.getChildren().add(computerServiceRequestPage);
+
+    Parent religiousServicesPage =
+        FXMLLoader.load(App.class.getResource("Views/ReligiousServiceRequest.fxml"));
+    religiousRequestTab.getChildren().add(religiousServicesPage);
+
+    Parent securityServiceRequestPage =
+        FXMLLoader.load(App.class.getResource("Views/SecurityServiceRequestController.fxml"));
+    securityServiceRequestTab.getChildren().add(securityServiceRequestPage);
   }
 
   @FXML

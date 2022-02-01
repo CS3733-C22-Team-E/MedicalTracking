@@ -1,25 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: -fx-backgroundColor;" stylesheets="@../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ServiceRequestLandingPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: -fx-backgroundColor;" stylesheets="@../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ServiceRequestLandingPageController">
    <children>
-      <Text layoutX="254.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Service Requests:" />
-      <Button fx:id="medEquipment" layoutX="14.0" layoutY="31.0" mnemonicParsing="false" text="Medical Equipment Delivery" />
-      <Button fx:id="foodDelivery" layoutX="14.0" layoutY="67.0" mnemonicParsing="false" onAction="#foodDeliveryButtonClick" text="Food Delivery" />
-      <Button fx:id="medicineDelivery" layoutX="14.0" layoutY="102.0" mnemonicParsing="false" text="Medicine Delivery" />
-      <Button fx:id="giftFloralDelivery" layoutX="14.0" layoutY="136.0" mnemonicParsing="false" onAction="#giftFloralDeliveryButtonClick" text="Gift and Floral Delivery " />
-      <Button fx:id="languageButton" layoutX="14.0" layoutY="171.0" mnemonicParsing="false" onAction="#languageInterpreter" text="Langugage Interpreter" />
-      <Button layoutX="14.0" layoutY="207.0" mnemonicParsing="false" text="Sanitation Services" />
-      <Button layoutX="14.0" layoutY="243.0" mnemonicParsing="false" onAction="#laundryServicesButtonClick" text="Laundry Services" />
-      <Button fx:id="religiousRequest" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" onAction="#religiousServicesButtonClick" text="Religious Request" />
-      <Button layoutX="14.0" layoutY="315.0" mnemonicParsing="false" text="Internal Patient Transportation " />
-      <Button layoutX="14.0" layoutY="350.0" mnemonicParsing="false" text="External Patient Transportation " />
-      <Button layoutX="207.0" layoutY="315.0" mnemonicParsing="false" onAction="#audioVideoServiceButtonClick" text="Audio/Visual Services" />
-      <Button fx:id="computerServiceRequestButton" layoutX="207.0" layoutY="280.0" mnemonicParsing="false" onAction="#computerServiceRequestButtonClick" text="Computer Service Request" />
-      <Button layoutX="207.0" layoutY="245.0" mnemonicParsing="false" onAction="#securityServiceRequestButtonClick" text="Security Service Request" />
-      <Button layoutX="207.0" layoutY="210.0" mnemonicParsing="false" onAction="#mapPageButtonClick" text="Map View" />
+      <TabPane layoutX="554.0" layoutY="145.0" onDragEntered="#setup" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab closable="false" text="Equipment Delivery">
+            <content>
+              <AnchorPane fx:id="medicalEquipmentTab" minHeight="0.0" minWidth="0.0" onDragEntered="#setup" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab closable="false" text="Food Delivery">
+               <content>
+                  <AnchorPane fx:id="foodDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab closable="false" text="Medicine Delivery">
+               <content>
+                  <AnchorPane fx:id="medicineDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab closable="false" text="Gift &amp; Floral Delivery">
+               <content>
+                  <AnchorPane fx:id="giftDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab1" closable="false" text="Langugage Interpreter">
+               <content>
+                  <AnchorPane fx:id="langugageInterpreterTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab2" closable="false" text="Sanitation Services">
+               <content>
+                  <AnchorPane fx:id="sanitationServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab3" closable="false" text="Laundry Services">
+               <content>
+                  <AnchorPane fx:id="laundryServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab4" closable="false" text="Religious Request">
+               <content>
+                  <AnchorPane fx:id="religiousRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab5" closable="false" text="Internal Patient Transportation ">
+               <content>
+                  <AnchorPane fx:id="internalPatientTransportationTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab6" closable="false" text="External Patient Transportation ">
+               <content>
+                  <AnchorPane fx:id="externalPatientTransportationTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab7" closable="false" text="Audio/Visual Services">
+               <content>
+                  <AnchorPane fx:id="audioVisualServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab8" closable="false" text="Computer Service Request">
+               <content>
+                  <AnchorPane fx:id="computerServiceRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="giftDeliveryTab81" closable="false" text="Security Service Request">
+               <content>
+                  <AnchorPane fx:id="securityServiceRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>
