@@ -6,71 +6,76 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: -fx-backgroundColor;" stylesheets="@../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ServiceRequestLandingPageController">
    <children>
-      <TabPane layoutX="554.0" layoutY="145.0" onDragEntered="#setup" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane id="tabContainer" fx:id="tabContainer" layoutX="554.0" layoutY="145.0" onDragEntered="#setup" side="LEFT" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="300.0" tabMaxWidth="50.0" tabMinHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab closable="false" text="Equipment Delivery">
+            <Tab fx:id="homeTab" closable="false" text="Home">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" onDragEntered="#setup" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab fx:id="medicalEquipmentTab" closable="false" text="Equipment Delivery">
             <content>
-              <AnchorPane fx:id="medicalEquipmentTab" minHeight="0.0" minWidth="0.0" onDragEntered="#setup" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" onDragEntered="#setup" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
-            <Tab closable="false" text="Food Delivery">
+            <Tab fx:id="foodDeliveryTab" closable="false" text="Food Delivery">
                <content>
-                  <AnchorPane fx:id="foodDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab closable="false" text="Medicine Delivery">
+            <Tab fx:id="medicineDeliveryTab" closable="false" text="Medicine Delivery">
                <content>
-                  <AnchorPane fx:id="medicineDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab closable="false" text="Gift &amp; Floral Delivery">
+            <Tab fx:id="giftDeliveryTab" closable="false" text="Gift &amp; Floral Delivery">
                <content>
-                  <AnchorPane fx:id="giftDeliveryTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab1" closable="false" text="Langugage Interpreter">
+            <Tab fx:id="langugageInterpreterTab" closable="false" text="Langugage Interpreter">
                <content>
-                  <AnchorPane fx:id="langugageInterpreterTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab2" closable="false" text="Sanitation Services">
+            <Tab fx:id="sanitationServicesTab" closable="false" text="Sanitation Services">
                <content>
-                  <AnchorPane fx:id="sanitationServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab3" closable="false" text="Laundry Services">
+            <Tab fx:id="laundryServicesTab" closable="false" text="Laundry Services">
                <content>
-                  <AnchorPane fx:id="laundryServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab4" closable="false" text="Religious Request">
+            <Tab fx:id="religiousRequestTab" closable="false" text="Religious Request">
                <content>
-                  <AnchorPane fx:id="religiousRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab5" closable="false" text="Internal Patient Transportation ">
+            <Tab fx:id="internalPatientTransportationTab" closable="false" text="Internal Patient Transportation ">
                <content>
-                  <AnchorPane fx:id="internalPatientTransportationTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab6" closable="false" text="External Patient Transportation ">
+            <Tab fx:id="externalPatientTransportationTab" closable="false" text="External Patient Transportation ">
                <content>
-                  <AnchorPane fx:id="externalPatientTransportationTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab7" closable="false" text="Audio/Visual Services">
+            <Tab fx:id="audioVisualServicesTab" closable="false" text="Audio/Visual Services">
                <content>
-                  <AnchorPane fx:id="audioVisualServicesTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab8" closable="false" text="Computer Service Request">
+            <Tab fx:id="computerServiceRequestTab" closable="false" text="Computer Service Request">
                <content>
-                  <AnchorPane fx:id="computerServiceRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
-            <Tab fx:id="giftDeliveryTab81" closable="false" text="Security Service Request">
+            <Tab fx:id="securityServiceRequestTab" closable="false" text="Security Service Request">
                <content>
-                  <AnchorPane fx:id="securityServiceRequestTab" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
         </tabs>

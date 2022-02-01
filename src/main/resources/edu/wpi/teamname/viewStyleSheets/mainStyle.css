@@ -17,3 +17,10 @@
     -fx-background-color: -fx-buttonBackgroundColor;
     -fx-text-fill: -fx-fontColor;
 }
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
