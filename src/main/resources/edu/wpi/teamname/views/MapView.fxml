@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
 <GridPane fx:id="pane" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setup" prefHeight="555.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.MapViewController">
   <columnConstraints>
@@ -29,6 +30,9 @@
       </ImageView>
       <Button fx:id="addLocationButton" mnemonicParsing="false" onAction="#createNewStack" text="Add Location" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
       <Button fx:id="deleteLocationButton" alignment="CENTER" mnemonicParsing="false" text="Delete Location" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-      <AnchorPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setup" prefHeight="496.0" prefWidth="728.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+      <AnchorPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setup" prefHeight="496.0" prefWidth="728.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+         <children>
+            <Text fx:id="coordinateText" layoutX="32.0" layoutY="478.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[Coordinates appear here]" />
+         </children></AnchorPane>
    </children>
 </GridPane>
