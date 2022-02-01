@@ -1,0 +1,19 @@
+  @font-face {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: normal;
+        src: url('../fonts/roboto/Roboto-Regular.ttf') format('truetype');
+    }
+
+.root {
+    -fx-buttonBackgroundColor: #2F2F2F;
+    -fx-backgroundColor: #121212;
+    -fx-secondaryColor: #3700B3;
+    -fx-primaryColor: #BB86FC;
+    -fx-fontColor: #FFFFFF;
+}
+
+.button {
+    -fx-background-color: -fx-buttonBackgroundColor;
+    -fx-text-fill: -fx-fontColor;
+}

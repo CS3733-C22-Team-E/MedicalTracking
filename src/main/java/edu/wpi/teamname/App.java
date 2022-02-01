@@ -20,8 +20,7 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) throws IOException {
     this.primaryStage = primaryStage;
-    Scene primaryScene =
-        new Scene(FXMLLoader.load(getClass().getResource("views/ServiceRequestLandingPage.fxml")));
+    Scene primaryScene = new Scene(FXMLLoader.load(getClass().getResource("views/TitlePage.fxml")));
     primaryStage.setScene(primaryScene);
     primaryStage.setResizable(true);
     primaryStage.show();
