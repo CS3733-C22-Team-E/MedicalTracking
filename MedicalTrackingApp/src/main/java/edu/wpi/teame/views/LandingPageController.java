@@ -27,6 +27,7 @@ public class LandingPageController {
   @FXML private Tab foodDeliveryTab;
   @FXML private Tab giftDeliveryTab;
   @FXML private Tab homeTab;
+  @FXML private Tab mapTab;
 
   @FXML private AnchorPane mainAnchorPane;
   @FXML private TabPane tabContainer;
@@ -44,6 +45,7 @@ public class LandingPageController {
     tabContainer.setMaxWidth(tabWidth);
 
     configureTab(homeTab, "Home", "views/HomePage.fxml");
+    configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
     configureTab(medicalEquipmentTab, "Medical Equipment", null);
     configureTab(medicineDeliveryTab, "Medicine Delivery", null);
     configureTab(sanitationServicesTab, "Sanitation Services", null);

@@ -13,6 +13,11 @@
                   <AnchorPane onDragEntered="#setup" styleClass="content-pane" />
                </content>
             </Tab>
+            <Tab fx:id="mapTab" closable="false" text="Hospital Map">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" onDragEntered="#setup" />
+               </content>
+            </Tab>
             <Tab fx:id="medicalEquipmentTab" closable="false" text="Equipment Delivery">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" onDragEntered="#setup" prefHeight="180.0" prefWidth="200.0" />
