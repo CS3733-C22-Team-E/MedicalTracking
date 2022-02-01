@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,14 +22,17 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ComboBox fx:id="dropDown" onAction="#comboBoxChanged" prefHeight="0.0" prefWidth="140.0" promptText="Lower Level 1" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+      <ComboBox fx:id="dropDown" onAction="#comboBoxChanged" prefHeight="0.0" prefWidth="140.0" promptText="Lower Level 1" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></ComboBox>
       <ImageView id="mapImageView" fx:id="mapImageView" fitHeight="496.0" fitWidth="728.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <image>
             <Image url="@../images/00_thelowerlevel1.png" />
          </image>
       </ImageView>
-      <Button fx:id="addLocationButton" mnemonicParsing="false" onAction="#createNewIconButton" text="Add Location" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-      <Button fx:id="deleteLocationButton" alignment="CENTER" mnemonicParsing="false" onAction="#deletedButtonClick" text="Delete Location" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+      <JFXButton id="addLocationButton" fx:id="addLocationButton" mnemonicParsing="false" onAction="#createNewIconButton" text="Add Location" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <JFXButton fx:id="deleteLocationButton" alignment="CENTER" mnemonicParsing="false" onAction="#deletedButtonClick" text="Delete Location" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
       <AnchorPane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#setup" prefHeight="496.0" prefWidth="728.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
    </children>
 </GridPane>

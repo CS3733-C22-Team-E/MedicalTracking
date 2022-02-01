@@ -68,7 +68,7 @@ public class MapViewController {
   @FXML
   private void createNewIconButton() {
     CreateMapIconDialogBox();
-    // createMapIcon(1300.0, 2225.0, mapPane, "images/504015.png", 20, 20, .7);
+    // createMapIcon(1300.0, 2225.0, mapPane, "images/HospitalBedIcon.png", 20, 20, .7);
   }
 
   /**
@@ -192,7 +192,7 @@ public class MapViewController {
                 Double.parseDouble(XPosition.getText()),
                 Double.parseDouble(YPosition.getText()),
                 mapPane,
-                "images/504015.png",
+                "images/HospitalBedIcon.png",
                 20,
                 20,
                 .7);
