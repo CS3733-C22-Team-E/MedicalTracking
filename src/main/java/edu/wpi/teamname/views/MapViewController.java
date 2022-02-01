@@ -1,6 +1,7 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.App;
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -20,6 +21,7 @@ import javafx.util.Pair;
 
 public class MapViewController {
   // private final HashMap<String, Image> mapImages = new HashMap<String, Image>();
+  private final HashMap<String, String> ResourceNames = new HashMap<String, String>();
   @FXML private ComboBox dropDown;
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
@@ -38,7 +40,10 @@ public class MapViewController {
 
   @FXML
   private void setup() {
+
     if (!set) {
+      ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
+      ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
       System.out.println("Setting Up");
       pane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
       pane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
@@ -57,7 +62,7 @@ public class MapViewController {
     }
 
     mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
-    mapPane.setOnMouseMoved(e -> updateMouseCoordinates(e.getX(), e.getY()));
+    mapPane.setOnMouseMoved(e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
   }
 
   @FXML
@@ -99,6 +104,9 @@ public class MapViewController {
     retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
     retval.setOnMouseClicked(event -> HandleMapIconClick(retval));
+    Tooltip tooltip = new Tooltip();
+    tooltip.setText("Patient:");
+    tooltip.install(retval, tooltip);
     retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
     retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
     return retval;
@@ -192,7 +200,7 @@ public class MapViewController {
                 Double.parseDouble(XPosition.getText()),
                 Double.parseDouble(YPosition.getText()),
                 mapPane,
-                "images/HospitalBedIcon.png",
+                ResourceNames.get(Descriptor.getValue()),
                 20,
                 20,
                 .7);
@@ -264,7 +272,6 @@ public class MapViewController {
   }
 
   public void updateMouseCoordinates(double x, double y) {
-    coordinateText.setText("[ " + String.valueOf(x) + ", " + String.valueOf(y) + " ]");
-    // TODO Does not work correctly when window is resized :(
+    coordinateText.setText("[ " + x + ", " + y + " ]");
   }
 }
