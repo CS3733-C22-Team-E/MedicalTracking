@@ -8,110 +8,97 @@ import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 
 public class ServiceRequestLandingPageController {
-  @FXML private Button medEquipment;
-  @FXML private Button foodDelivery;
-  @FXML private Button giftFloralDelivery;
-  @FXML private Button medicineDelivery;
-  @FXML private Button religiousRequest;
+  @FXML private Tab internalPatientTransportationTab;
+  @FXML private Tab externalPatientTransportationTab;
+  @FXML private Tab computerServiceRequestTab;
+  @FXML private Tab securityServiceRequestTab;
+  @FXML private Tab langugageInterpreterTab;
+  @FXML private Tab audioVisualServicesTab;
+  @FXML private Tab sanitationServicesTab;
+  @FXML private Tab religiousRequestTab;
+  @FXML private Tab medicalEquipmentTab;
+  @FXML private Tab medicineDeliveryTab;
+  @FXML private Tab laundryServicesTab;
+  @FXML private Tab foodDeliveryTab;
+  @FXML private Tab giftDeliveryTab;
+  @FXML private Tab homeTab;
+
+  @FXML private AnchorPane mainAnchorPane;
+  @FXML private TabPane tabContainer;
+  private double tabHeight = 250;
+  private double tabWidth = 35;
 
   @FXML
-  private void medEquipmentButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(Objects.requireNonNull(App.class.getResource("Views/PlaceHolder.fxml")));
-    App.changeScene(pane);
+  private void setup() throws IOException {
+    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
+    mainAnchorPane.autosize();
+
+    tabContainer.setTabMaxHeight(tabHeight);
+    tabContainer.setRotateGraphic(true);
+    tabContainer.setMaxWidth(tabWidth);
+
+    configureTab(homeTab, "Home", "Views/TitlePage.fxml");
+    configureTab(medicalEquipmentTab, "Medical Equipment", null);
+    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
+    configureTab(sanitationServicesTab, "Sanitation Services", null);
+    configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
+    configureTab(internalPatientTransportationTab, "Internal Patient Transportation", null);
+
+    configureTab(foodDeliveryTab, "Food Delivery", "Views/FoodDeliveryServiceRequest.fxml");
+
+    configureTab(giftDeliveryTab, "Gift Delivery", "Views/GiftandFloralServiceRequest.fxml");
+
+    configureTab(laundryServicesTab, "Laundry Services", "Views/LaundryServiceRequest.fxml");
+
+    configureTab(
+        langugageInterpreterTab,
+        "Language Services",
+        "Views/LanguageInterpreterServiceRequest.fxml");
+
+    configureTab(
+        audioVisualServicesTab, "Audio/Video Services", "Views/AudioVisualServiceRequest.fxml");
+
+    configureTab(
+        computerServiceRequestTab, "Computer Services", "Views/ComputerServiceRequest.fxml");
+
+    configureTab(religiousRequestTab, "Religious Services", "Views/ReligiousServiceRequest.fxml");
+
+    configureTab(
+        securityServiceRequestTab,
+        "Security Services",
+        "Views/SecurityServiceRequestController.fxml");
+
+    configureTab(
+        securityServiceRequestTab,
+        "Security Service Request",
+        "Views/SecurityServiceRequestController.fxml");
   }
 
-  @FXML
-  private void foodDeliveryButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/FoodDeliveryServiceRequest.FXML")));
-    App.changeScene(pane);
-  }
+  private void configureTab(Tab tab, String title, String pageUrl) throws IOException {
+    Label label = new Label(title);
+    label.setStyle("-fx-text-fill: -fx-text-color");
+    label.setTextAlignment(TextAlignment.CENTER);
 
-  @FXML
-  private void giftFloralDeliveryButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(
-                App.class.getResource("Views/GiftandFloralServiceRequest.FXML")));
-    App.changeScene(pane);
-  }
+    AnchorPane anchorPane = new AnchorPane();
+    anchorPane.getChildren().add(label);
+    anchorPane.setRotate(90.0);
 
-  @FXML
-  private void medicineDelivery() throws IOException {
-    Parent pane =
-        FXMLLoader.load(Objects.requireNonNull(App.class.getResource("Views/PlaceHolder.fxml")));
-    App.changeScene(pane);
-  }
+    tab.setGraphic(anchorPane);
+    tab.setText("");
 
-  @FXML
-  private void laundryServicesButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/LaundryServiceRequest.fxml")));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void languageInterpreter() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(
-                App.class.getResource("Views/LanguageInterpreterServiceRequest.fxml")));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void audioVideoServiceButtonClick() throws IOException {
-    Parent page =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/AudioVisualServiceRequest.fxml")));
-    App.changeScene(page);
-  }
-
-  @FXML
-  private void computerServiceRequestButtonClick() throws IOException {
-    Parent page =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/ComputerServiceRequest.fxml")));
-    App.changeScene(page);
-  }
-
-  @FXML
-  private void religiousServicesButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/ReligiousServiceRequest.fxml")));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void mapPageButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(Objects.requireNonNull(App.class.getResource("Views/MapView.fxml")));
-    App.changeScene(pane);
-    switchFullScreenStatus();
-  }
-
-  @FXML
-  private void internalPatientTransportationButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(
-                App.class.getResource("Views/InternalPatientTransportationServiceRequest.fxml")));
-    App.changeScene(pane);
-  }
-
-  @FXML
-  private void securityServiceRequestButtonClick() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(
-                App.class.getResource("Views/SecurityServiceRequestController.fxml")));
-    App.changeScene(pane);
+    if (pageUrl != null) {
+      Parent newPage = FXMLLoader.load(App.class.getResource(pageUrl));
+      newPage.setStyle("@../viewStyleSheets/mainStyle.css");
+      tab.setContent(newPage);
+    }
   }
 }

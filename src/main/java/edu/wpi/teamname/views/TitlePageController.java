@@ -22,9 +22,7 @@ public class TitlePageController {
 
   @FXML
   private void mapViewCallback() throws IOException {
-    Parent pane =
-        FXMLLoader.load(
-            Objects.requireNonNull(App.class.getResource("Views/MapViewPage.FXML")));
+    Parent pane = FXMLLoader.load(App.class.getResource("Views/MapView.fxml"));
     App.changeScene(pane);
   }
 
