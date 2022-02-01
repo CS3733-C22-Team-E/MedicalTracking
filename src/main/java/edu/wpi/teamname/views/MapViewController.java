@@ -28,6 +28,7 @@ public class MapViewController {
   private boolean set = false;
   private double conversionFactorX;
   private double conversionFactorY;
+  private boolean deletedButton = false;
 
   // private Collection<ImageView> marks = new ArrayList<ImageView>();
   @FXML
@@ -97,7 +98,7 @@ public class MapViewController {
     retval.setFitHeight(FitHeight);
     retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
-    retval.setOnMouseClicked(event -> ShowRelocateDialogBox(retval));
+    retval.setOnMouseClicked(event -> HandleMapIconClick(retval));
     retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
     retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
     return retval;
@@ -119,6 +120,10 @@ public class MapViewController {
   //    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
   //    return retval;
   //  }
+  @FXML
+  private void deletedButtonClick() {
+    deletedButton = !deletedButton;
+  }
 
   @FXML
   private void comboBoxChanged() {
@@ -182,6 +187,7 @@ public class MapViewController {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Create) {
+            // Hash Map with string names for resources and key is the dialog combo pane response
             createMapIcon(
                 Double.parseDouble(XPosition.getText()),
                 Double.parseDouble(YPosition.getText()),
@@ -197,7 +203,12 @@ public class MapViewController {
     dialog.showAndWait();
   }
 
-  private void ShowRelocateDialogBox(ImageView node) {
+  private void HandleMapIconClick(ImageView node) {
+    if (deletedButton) {
+      mapPane.getChildren().remove(node);
+      deletedButton = false;
+      return;
+    }
     Dialog<Pair<Double, Double>> dialog = new Dialog<>();
     dialog.setTitle("Move Equipment");
     dialog.setHeaderText("Choose the X and Y Position");
@@ -254,6 +265,6 @@ public class MapViewController {
 
   public void updateMouseCoordinates(double x, double y) {
     coordinateText.setText("[ " + String.valueOf(x) + ", " + String.valueOf(y) + " ]");
-    //TODO Does not work correctly when window is resized :(
+    // TODO Does not work correctly when window is resized :(
   }
 }
