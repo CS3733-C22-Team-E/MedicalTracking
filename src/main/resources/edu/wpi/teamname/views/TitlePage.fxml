@@ -53,7 +53,7 @@
       </GridPane>
    </children>
    <stylesheets>
-      <URL value="@../viewStyleSheets/titlePage.css" />
       <URL value="@../viewStyleSheets/mainStyle.css" />
+      <URL value="@../viewStyleSheets/titlePage.css" />
    </stylesheets>
 </AnchorPane>

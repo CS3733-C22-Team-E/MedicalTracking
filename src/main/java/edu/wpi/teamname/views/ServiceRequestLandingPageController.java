@@ -30,8 +30,8 @@ public class ServiceRequestLandingPageController {
 
   @FXML private AnchorPane mainAnchorPane;
   @FXML private TabPane tabContainer;
-  private double tabHeight = 150;
-  private double tabWidth = 40;
+  private double tabHeight = 250;
+  private double tabWidth = 35;
 
   @FXML
   private void setup() throws IOException {
@@ -43,12 +43,12 @@ public class ServiceRequestLandingPageController {
     tabContainer.setRotateGraphic(true);
     tabContainer.setMaxWidth(tabWidth);
 
-    configureTab(homeTab, "Home", null);
-    configureTab(medicalEquipmentTab, "", null);
-    configureTab(medicineDeliveryTab, "", null);
-    configureTab(sanitationServicesTab, "", null);
-    configureTab(externalPatientTransportationTab, "", null);
-    configureTab(internalPatientTransportationTab, "", null);
+    configureTab(homeTab, "Home", "Views/TitlePage.fxml");
+    configureTab(medicalEquipmentTab, "Medical Equipment", null);
+    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
+    configureTab(sanitationServicesTab, "Sanitation Services", null);
+    configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
+    configureTab(internalPatientTransportationTab, "Internal Patient Transportation", null);
 
     configureTab(foodDeliveryTab, "Food Delivery", "Views/FoodDeliveryServiceRequest.fxml");
 
@@ -82,6 +82,7 @@ public class ServiceRequestLandingPageController {
 
   private void configureTab(Tab tab, String title, String pageUrl) throws IOException {
     Label label = new Label(title);
+    label.setStyle("-fx-text-fill: #FFFFFF");
     label.setTextAlignment(TextAlignment.CENTER);
 
     AnchorPane anchorPane = new AnchorPane();
@@ -93,6 +94,7 @@ public class ServiceRequestLandingPageController {
 
     if (pageUrl != null) {
       Parent newPage = FXMLLoader.load(App.class.getResource(pageUrl));
+      newPage.setStyle("@../viewStyleSheets/mainStyle.css");
       tab.setContent(newPage);
     }
   }

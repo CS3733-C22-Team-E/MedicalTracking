@@ -1,30 +1,42 @@
-  @font-face {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: normal;
-        src: url('../fonts/roboto/Roboto-Regular.ttf') format('truetype');
-    }
-
-.root {
-    -fx-buttonBackgroundColor: #2F2F2F;
-    -fx-backgroundColor: #121212;
-    -fx-secondaryColor: #3700B3;
-    -fx-primaryColor: #BB86FC;
-    -fx-fontColor: #FFFFFF;
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: medium;
+  src: url("../fonts/roboto/Roboto-Medium.ttf") format("truetype");
 }
 
+* {
+  -fx-buttonbackgroundcolor: #212121;
+  -fx-backgroundcolor: #121212;
+  -fx-primarycolor: #1d5bb9;
+  -fx-fontcolor: #ffffff;
+
+  -fx-foreground-color: -fx-fontColor;
+  -fx-text-fill: -fx-fontColor;
+  -fx-font-size: 16px;
+}
+
+/*Basic UI Elements*/
 .button {
-    -fx-background-color: -fx-buttonBackgroundColor;
-    -fx-text-fill: -fx-fontColor;
+  -fx-background-color: -fx-buttonBackgroundColor;
 }
 
+.tab-pane,
+.anchor-pane {
+  -fx-background-color: -fx-backgroundcolor;
+}
+
+/*Tab View*/
 .tab {
-    -fx-background-color: -fx-primaryColor;
+  -fx-background-color: -fx-buttonBackgroundColor;
+}
+
+.tab:selected {
+  -fx-background-color: -fx-primaryColor;
 }
 
 .tab .tab-label {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER;
-    -fx-text-fill: -fx-fontColor;
+  -fx-font-size: 16px;
+  -fx-font-weight: bold;
+  -fx-alignment: CENTER;
 }
