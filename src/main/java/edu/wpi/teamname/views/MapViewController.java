@@ -26,6 +26,8 @@ public class MapViewController {
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
   @FXML private AnchorPane mapPane;
+  @FXML private Text Xposition;
+  @FXML private Text Yposition;
   @FXML private Text coordinateText;
   private boolean set = false;
   private double conversionFactorX;
@@ -58,16 +60,17 @@ public class MapViewController {
               "First Floor",
               "Second Floor",
               "Third Floor"));
+      mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
+      mapPane.setOnMouseMoved(
+          e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
       set = true;
     }
-
-    mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
-    mapPane.setOnMouseMoved(e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
   }
 
   @FXML
   private void handleMouseClick(double x, double y) {
-    System.out.println("[" + x + ", " + y + "]");
+    Xposition.setText(String.valueOf((int) x));
+    Yposition.setText(String.valueOf((int) y));
   }
 
   @FXML
