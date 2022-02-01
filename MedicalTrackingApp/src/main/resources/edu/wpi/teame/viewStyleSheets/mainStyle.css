@@ -1,0 +1,66 @@
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: medium;
+  src: url("../fonts/roboto/Roboto-Medium.ttf") format("truetype");
+}
+
+* {
+  -fx-button-background-color: #212121;
+  -fx-pane-background-color: #f1f1f1;
+  -fx-light-text-color: #ffffff;
+  -fx-primary-color: #1d5bb9;
+  -fx-text-color: #000000;
+}
+
+/* UI Specific Elements */
+.title-background {
+  -fx-background-image: url("../images/hospitalBackgroundImage.png");
+  -fx-background-position: top left;
+  -fx-background-repeat: no-repeat;
+  -fx-background-color: #ffffff;
+  -fx-background-size: cover;
+}
+
+/* Basic UI Elements */
+.title {
+  -fx-fill: -fx-text-color;
+  -fx-font-size: 72px;
+}
+
+.subtitle {
+  -fx-fill: -fx-text-color;
+  -fx-font-size: 26px;
+}
+
+.button {
+  -fx-background-color: -fx-button-background-color;
+  -fx-text-fill: -fx-light-text-color;
+}
+
+.label,
+.text {
+  -fx-text-fill: -fx-text-color;
+  -fx-fill: -fx-text-color;
+}
+
+/* Panes and Backgrounds */
+.tab-pane,
+.anchor-pane {
+  -fx-background-color: -fx-pane-background-color;
+}
+
+/* Tab View */
+.tab {
+  -fx-background-color: -fx-pane-background-color;
+}
+
+.tab:selected {
+  -fx-background-color: -fx-primary-color;
+}
+
+.tab .tab-label {
+  -fx-text-fill: -fx-text-color;
+  -fx-alignment: CENTER;
+  -fx-font-size: 16px;
+}
