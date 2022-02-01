@@ -29,9 +29,9 @@ public class FoodDeliveryServiceRequestController extends ServiceRequest {
   @FXML private Text MealTextB;
   @FXML private Text MealTextL;
   @FXML private Text MealTextD;
-  @FXML private JFXComboBox breakfastMealDropdown;
-  @FXML private JFXComboBox lunchMealDropdown;
-  @FXML private JFXComboBox dinnerMealDropdown;
+  @FXML private JFXComboBox<String> breakfastMealDropdown;
+  @FXML private JFXComboBox<String> lunchMealDropdown;
+  @FXML private JFXComboBox<String> dinnerMealDropdown;
   @FXML private TextField breakfastTimeTextField;
   @FXML private TextField lunchTimeTextField;
   @FXML private TextField dinnerTimeTextField;

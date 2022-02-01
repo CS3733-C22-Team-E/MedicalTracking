@@ -4,6 +4,7 @@ import static edu.wpi.teamname.App.switchFullScreenStatus;
 
 import edu.wpi.teamname.App;
 import java.io.IOException;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

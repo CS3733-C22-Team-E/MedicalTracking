@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,7 +14,9 @@ public class TitlePageController {
 
   @FXML
   private void serviceRequestCallback() throws IOException {
-    Parent pane = FXMLLoader.load(App.class.getResource("Views/ServiceRequestLandingPage.fxml"));
+    Parent pane =
+        FXMLLoader.load(
+            Objects.requireNonNull(App.class.getResource("Views/ServiceRequestLandingPage.fxml")));
     App.changeScene(pane);
   }
 

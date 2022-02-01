@@ -21,15 +21,15 @@ public class ReligiousServiceRequest extends ServiceRequest {
   @FXML private TextField finishTime;
 
   @FXML private JFXCheckBox christianityBox;
-  @FXML private JFXComboBox christianityChoices;
+  @FXML private JFXComboBox<String> christianityChoices;
 
   @FXML private JFXCheckBox islamBox;
-  @FXML private JFXComboBox islamChoices;
+  @FXML private JFXComboBox<String> islamChoices;
 
   @FXML private JFXCheckBox judaismBox;
-  @FXML private JFXComboBox judaismChoices;
+  @FXML private JFXComboBox<String> judaismChoices;
 
-  @FXML private JFXComboBox hinduismChoices;
+  @FXML private JFXComboBox<String> hinduismChoices;
   @FXML private JFXCheckBox hinduismBox;
 
   @FXML private JFXCheckBox otherBox;

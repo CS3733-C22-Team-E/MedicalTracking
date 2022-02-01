@@ -65,10 +65,10 @@ public class MapViewController {
           e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
       set = true;
       mapPane.setOnMouseExited(
-              event -> {
-                Xposition.setText("Not on Map");
-                Yposition.setText("Not on Map");
-              });
+          event -> {
+            Xposition.setText("Not on Map");
+            Yposition.setText("Not on Map");
+          });
     }
   }
 
