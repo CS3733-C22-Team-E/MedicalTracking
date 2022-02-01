@@ -30,6 +30,7 @@ public class App extends Application {
     primaryStage
         .getIcons()
         .add(new Image(App.class.getResource("images/hospital-icon.png").toString()));
+    primaryStage.setTitle("Hospital App");
   }
 
   public static void switchFullScreenStatus() {

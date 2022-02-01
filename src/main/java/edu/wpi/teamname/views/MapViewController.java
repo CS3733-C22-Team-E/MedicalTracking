@@ -1,8 +1,6 @@
 package edu.wpi.teamname.views;
 
 import edu.wpi.teamname.App;
-import java.awt.*;
-import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -64,9 +62,9 @@ public class MapViewController {
   }
 
   @FXML
-  private void createNewStack() {
-    // Actually should implement dialog box asking type of location and position
-    createMapIcon(1300.0, 2225.0, mapPane, "images/504015.png", 20, 20, .7);
+  private void createNewIconButton() {
+    CreateMapIconDialogBox();
+    // createMapIcon(1300.0, 2225.0, mapPane, "images/504015.png", 20, 20, .7);
   }
 
   /**
@@ -96,13 +94,28 @@ public class MapViewController {
     retval.setFitHeight(FitHeight);
     retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
-    System.out.println(retval.getLayoutX());
-    System.out.println(retval.getLayoutY());
-    retval.setOnMouseClicked(event -> showDialogBox(retval));
+    retval.setOnMouseClicked(event -> ShowRelocateDialogBox(retval));
     retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
     retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
     return retval;
   }
+
+  //  @FXML
+  //  private ImageView createMapIcon(Optional<MapIcon> icon) {
+  //    ImageView retval = new ImageView();
+  //    retval.setImage(new
+  // Image(App.class.getResource(icon.get().getIconResourcePath()).toString()));
+  //    retval.setOpacity(.7);
+  //    mapPane.getChildren().add(retval);
+  //    retval.setFitWidth(20);
+  //    retval.setFitHeight(20);
+  //    retval.setLayoutX(ConvertPixelXToLayoutX(icon.get().getPixelX()) - 20 / 2);
+  //    retval.setLayoutY(ConvertPixelYToLayoutY(icon.get().getPixelY()) - 20 / 2);
+  //    retval.setOnMouseClicked(event -> ShowRelocateDialogBox(retval));
+  //    retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
+  //    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
+  //    return retval;
+  //  }
 
   @FXML
   private void comboBoxChanged() {
@@ -137,37 +150,54 @@ public class MapViewController {
     return (PixelY / 3400) * mapPane.getLayoutBounds().getHeight();
   }
 
-  private void showDialogBox(ImageView node) {
-    //    TextInputDialog inputdialog = new TextInputDialog("Enter some Text");
-    //    inputdialog.setContentText("Text: ");
-    //    inputdialog.setHeaderText("JavaFX Input Dialog Example");
-    //    Button button = new Button("JavaFX Input Dialog");
-    //    inputdialog.showAndWait();
-    //    // Double InputX = Double.parseDouble()
-    //    node.setLayoutX(ConvertPixelXToLayoutX(1900));
-    //    node.setLayoutY(ConvertPixelYToLayoutY(1900));
+  private void CreateMapIconDialogBox() {
+    Dialog<MapIcon> dialog = new Dialog<>();
+    dialog.setTitle("Add Icon to Map");
+    dialog.getDialogPane().setMinSize(200, 200);
+    dialog.setHeaderText("Choose the details");
+    ButtonType Create = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(Create, ButtonType.CANCEL);
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(20, 150, 10, 10));
+    TextField XPosition = new TextField();
+    XPosition.setPromptText("X Position");
+    TextField YPosition = new TextField();
+    YPosition.setPromptText("Y Position");
+    ComboBox<String> Descriptor = new ComboBox<>();
+    Descriptor.setItems(
+        FXCollections.observableArrayList("Patient Room", "Equipment Storage Room"));
+    grid.add(new Label("X Position:"), 0, 0);
+    grid.add(XPosition, 1, 0);
+    grid.add(new Label("Y Position:"), 0, 1);
+    grid.add(YPosition, 1, 1);
+    grid.add(new Label("Type:"), 0, 2);
+    grid.add(Descriptor, 1, 2);
+    dialog.getDialogPane().setContent(grid);
+    Node CreateButton = dialog.getDialogPane().lookupButton(Create);
+    dialog.setResultConverter(
+        dialogButton -> {
+          if (dialogButton == Create) {
+            createMapIcon(
+                Double.parseDouble(XPosition.getText()),
+                Double.parseDouble(YPosition.getText()),
+                mapPane,
+                "images/504015.png",
+                20,
+                20,
+                .7);
+          }
+          return null;
+        });
 
-    //    Dialog<Pair<String, String>> inputDialog = new Dialog<Pair<String, String>>();
-    //    inputDialog.setTitle("Choose Where to move this");
-    //    ButtonType loginButtonType = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
-    //    inputDialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-    //    GridPane grid = new GridPane();
-    //    grid.setHgap(10);
-    //    grid.setVgap(10);
-    //    grid.setPadding(new Insets(20, 150, 10, 10));
-    //    TextField PositionX = new TextField();
-    //    PositionX.setPromptText("X Position");
-    //    TextField PositionY = new TextField();
-    //    PositionY.setPromptText("Y Position");
-    //    inputDialog.getDialogPane().getChildren().addAll(PositionX, PositionY);
-    //    inputDialog.showAndWait();
+    dialog.showAndWait();
+  }
+
+  private void ShowRelocateDialogBox(ImageView node) {
     Dialog<Pair<Double, Double>> dialog = new Dialog<>();
     dialog.setTitle("Move Equipment");
     dialog.setHeaderText("Choose the X and Y Position");
-
-    // Set the icon (must be included in the project).
-    // dialog.setGraphic();
-
     // Set the button types.
     ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
     dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
@@ -210,13 +240,12 @@ public class MapViewController {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            return new Pair<Double, Double>(
-                Double.parseDouble(XPosition.getText()), Double.parseDouble(YPosition.getText()));
+            node.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
+            node.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
+            node.setVisible(true);
           }
           return null;
         });
-    Optional<Pair<Double, Double>> result = dialog.showAndWait();
-    node.setLayoutX(ConvertPixelXToLayoutX(result.get().getKey()));
-    node.setLayoutY(ConvertPixelYToLayoutY(result.get().getValue()));
+    dialog.showAndWait();
   }
 }
