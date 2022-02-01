@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.util.Pair;
 
@@ -23,6 +24,7 @@ public class MapViewController {
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
   @FXML private AnchorPane mapPane;
+  @FXML private Text coordinateText;
   private boolean set = false;
   private double conversionFactorX;
   private double conversionFactorY;
@@ -54,6 +56,7 @@ public class MapViewController {
     }
 
     mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
+    mapPane.setOnMouseMoved(e -> updateMouseCoordinates(e.getX(), e.getY()));
   }
 
   @FXML
@@ -247,5 +250,10 @@ public class MapViewController {
           return null;
         });
     dialog.showAndWait();
+  }
+
+  public void updateMouseCoordinates(double x, double y) {
+    coordinateText.setText("[ " + String.valueOf(x) + ", " + String.valueOf(y) + " ]");
+    //TODO Does not work correctly when window is resized :(
   }
 }
