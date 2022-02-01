@@ -10,6 +10,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Screen;
 
 public class ServiceRequestLandingPageController {
   @FXML private Tab internalPatientTransportationTab;
@@ -27,12 +28,17 @@ public class ServiceRequestLandingPageController {
   @FXML private Tab giftDeliveryTab;
   @FXML private Tab homeTab;
 
+  @FXML private AnchorPane mainAnchorPane;
   @FXML private TabPane tabContainer;
   private double tabHeight = 150;
   private double tabWidth = 40;
 
   @FXML
   private void setup() throws IOException {
+    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
+    mainAnchorPane.autosize();
+
     tabContainer.setTabMaxHeight(tabHeight);
     tabContainer.setRotateGraphic(true);
     tabContainer.setMaxWidth(tabWidth);
@@ -44,20 +50,11 @@ public class ServiceRequestLandingPageController {
     configureTab(externalPatientTransportationTab, "", null);
     configureTab(internalPatientTransportationTab, "", null);
 
-    configureTab(
-            foodDeliveryTab,
-            "Food Delivery",
-            "Views/FoodDeliveryServiceRequest.fxml");
+    configureTab(foodDeliveryTab, "Food Delivery", "Views/FoodDeliveryServiceRequest.fxml");
 
-    configureTab(
-            giftDeliveryTab,
-            "Gift Delivery",
-            "Views/GiftandFloralServiceRequest.fxml");
+    configureTab(giftDeliveryTab, "Gift Delivery", "Views/GiftandFloralServiceRequest.fxml");
 
-    configureTab(
-            laundryServicesTab,
-            "Laundry Services",
-            "Views/LaundryServiceRequest.fxml");
+    configureTab(laundryServicesTab, "Laundry Services", "Views/LaundryServiceRequest.fxml");
 
     configureTab(
         langugageInterpreterTab,
@@ -65,19 +62,12 @@ public class ServiceRequestLandingPageController {
         "Views/LanguageInterpreterServiceRequest.fxml");
 
     configureTab(
-            audioVisualServicesTab,
-            "Audio/Video Services",
-            "Views/AudioVisualServiceRequest.fxml");
+        audioVisualServicesTab, "Audio/Video Services", "Views/AudioVisualServiceRequest.fxml");
 
     configureTab(
-            computerServiceRequestTab,
-            "Computer Services",
-            "Views/ComputerServiceRequest.fxml");
+        computerServiceRequestTab, "Computer Services", "Views/ComputerServiceRequest.fxml");
 
-    configureTab(
-            religiousRequestTab,
-            "Religious Services",
-            "Views/ReligiousServiceRequest.fxml");
+    configureTab(religiousRequestTab, "Religious Services", "Views/ReligiousServiceRequest.fxml");
 
     configureTab(
         securityServiceRequestTab,

@@ -18,9 +18,13 @@
     -fx-text-fill: -fx-fontColor;
 }
 
+.tab {
+    -fx-background-color: -fx-primaryColor;
+}
+
 .tab .tab-label {
-    -fx-alignment: CENTER;
-    -fx-text-fill: #828282;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-text-fill: -fx-fontColor;
 }
