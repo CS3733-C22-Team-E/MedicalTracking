@@ -1,6 +1,6 @@
-.root {
-    -fx-background-image: url('../images/hospitalBackgroundImage.png');
-    -fx-background-position: top left;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
+.title-background {
+  -fx-background-image: url("../images/hospitalBackgroundImage.png") !important;
+  -fx-background-position: top left;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: cover;
 }

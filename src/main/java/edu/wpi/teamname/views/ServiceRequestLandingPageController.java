@@ -82,7 +82,7 @@ public class ServiceRequestLandingPageController {
 
   private void configureTab(Tab tab, String title, String pageUrl) throws IOException {
     Label label = new Label(title);
-    label.setStyle("-fx-text-fill: #FFFFFF");
+    label.setStyle("-fx-text-fill: -fx-text-color");
     label.setTextAlignment(TextAlignment.CENTER);
 
     AnchorPane anchorPane = new AnchorPane();
