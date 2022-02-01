@@ -13,4 +13,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MedicalTracking.main" options="--add-exports java.base/jdk.internal.logger=ALL-UNNAMED" />
+    </option>
+  </component>
 </project>

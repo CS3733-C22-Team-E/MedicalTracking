@@ -28,7 +28,7 @@ The scrum master will run the daily scrums, sprint planning meetings, sprint rev
 ### Product Owner ([Camilo Cordoba Escobar](https://github.com/ccordoba464))
 This position is responsible for coordinating and tracking the prioritized list of software requirements and user stories. The person in this position will also serve initially as one of the Software Feature Engineers concentrating on user interfaces.
 
-### Documentation Analyst ([Xiao Xiao](https://github.com/xxmiap))
+### Documentation Analyst ([Maanav Iyengar](https://github.com/xxmiap))
 One software engineer will also be responsible for coordinating the artifacts created by the project: project documentation, requirements documentation, models, user documentation and training materials, and software code documentation. This person is responsible for maintaining well organized documents so that the VP or the client can inspect them immediately upon request. A suitable person for this position would be someone who is meticulous and well organized. Normally this position would be filled by a team member who is NOT a computer science major and is interested in contributing significantly through non-programming tasks. An exception would be a computer science major who has a strong interest in becoming a technical writer instead of a software engineer. The document analyst does not, however, have the sole responsibility for creating documentation; this responsibility is shared equally by all team members, particularly in the case of source code documentation. Please note that the documentation analyst still has to contribute to the project by writing Java code.
 
 ## Project Introduction

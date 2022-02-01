@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teamname.views.ComputerServiceRequestController">
    <children>
       <Text layoutX="230.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Computer Service Request" textAlignment="CENTER" />
@@ -23,6 +24,6 @@
       <TextField layoutX="111.0" layoutY="242.0" />
       <TextField layoutX="117.0" layoutY="195.0" prefHeight="26.0" prefWidth="56.0" />
       <TextField layoutX="286.0" layoutY="195.0" prefHeight="26.0" prefWidth="56.0" />
-      <Button fx:id="sendButton" layoutX="279.0" layoutY="306.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Submit" />
+      <JFXButton fx:id="sendButton" layoutX="279.0" layoutY="306.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Submit" />
    </children>
 </AnchorPane>
