@@ -15,7 +15,7 @@ public class InternalPatientTransportationServiceRequestController extends Servi
   @FXML private GridPane transferTimeGridPlane;
   @FXML private TextField deliveryTimeTextbox;
   @FXML private DatePicker deliveryDateDatebox;
-  @FXML private JFXComboBox transferToPicker;
+  @FXML private JFXComboBox<String> transferToPicker;
   @FXML private GridPane toOtherRoomGridPlane;
   @FXML private TextField toOtherFloorTextbox;
   @FXML private TextField toOtherRoomTextbox;
@@ -24,7 +24,7 @@ public class InternalPatientTransportationServiceRequestController extends Servi
   @FXML private TextField toTheirRoomTextbox;
   @FXML private GridPane toOtherLocationGridPlane;
   @FXML private TextField toOtherLocationTextbox;
-  @FXML private JFXComboBox transferFromPicker;
+  @FXML private JFXComboBox<String> transferFromPicker;
   @FXML private GridPane fromOtherRoomGridPlane;
   @FXML private TextField fromOtherFloorTextbox;
   @FXML private TextField fromOtherRoomTextbox;
@@ -45,7 +45,7 @@ public class InternalPatientTransportationServiceRequestController extends Servi
   @FXML
   private void fromPickerCallback() {
     // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
-    String fromLocation = transferFromPicker.getValue().toString();
+    String fromLocation = transferFromPicker.getValue();
     switch (fromLocation) {
       case "Their Room":
         fromTheirRoomGridPlane.setVisible(true);
@@ -72,7 +72,7 @@ public class InternalPatientTransportationServiceRequestController extends Servi
   @FXML
   private void toPickerCallback() {
     // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
-    String toLocation = transferFromPicker.getValue().toString();
+    String toLocation = transferFromPicker.getValue();
     switch (toLocation) {
       case "Their Room":
         toOtherRoomGridPlane.setVisible(false);

@@ -10,7 +10,7 @@ public class LanguageInterpreterServiceRequestController extends ServiceRequest 
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
   @FXML private TextField floor;
-  @FXML JFXComboBox languageDropdown;
+  @FXML JFXComboBox<String> languageDropdown;
   @FXML DatePicker startDate;
   @FXML DatePicker endDate;
   @FXML TextField startTime;
