@@ -17,7 +17,7 @@ public class LandingPageController {
   @FXML private Tab externalPatientTransportationTab;
   @FXML private Tab computerServiceRequestTab;
   @FXML private Tab securityServiceRequestTab;
-  @FXML private Tab langugageInterpreterTab;
+  @FXML private Tab languageInterpreterTab;
   @FXML private Tab audioVisualServicesTab;
   @FXML private Tab sanitationServicesTab;
   @FXML private Tab religiousRequestTab;
@@ -47,9 +47,18 @@ public class LandingPageController {
     configureTab(homeTab, "Home", "views/HomePage.fxml");
     configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
     configureTab(medicalEquipmentTab, "Medical Equipment", null);
-    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
     configureTab(sanitationServicesTab, "Sanitation Services", null);
-    configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
+
+    configureTab(
+        medicineDeliveryTab,
+        "Medicine Delivery",
+        "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml");
+
+    configureTab(
+        externalPatientTransportationTab,
+        "External Patient Transportation",
+        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
+
     configureTab(
         internalPatientTransportationTab,
         "Internal Patient Transportation",
@@ -71,7 +80,7 @@ public class LandingPageController {
         "views/serviceRequests/LaundryServiceRequestPage.fxml");
 
     configureTab(
-        langugageInterpreterTab,
+        languageInterpreterTab,
         "Language Services",
         "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml");
 

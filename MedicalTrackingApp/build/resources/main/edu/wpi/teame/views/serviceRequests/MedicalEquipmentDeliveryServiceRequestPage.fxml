@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="680.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController">
+   <children>
+      <Text layoutX="128.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Medical Equipment Delivery Service Request" wrappingWidth="338.9068298339844">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <JFXTextArea layoutX="111.0" layoutY="86.0" prefHeight="0.0" prefWidth="126.0" />
+      <Text layoutX="13.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name:" wrappingWidth="96.21630859375">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="38.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room: " wrappingWidth="46.602935791015625">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="335.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time: " wrappingWidth="72.21630859375">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="336.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" wrappingWidth="70.35757446289062">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <JFXTextArea layoutX="111.0" layoutY="144.0" prefHeight="0.0" prefWidth="126.0" />
+      <JFXTextArea layoutX="420.0" layoutY="86.0" prefHeight="0.0" prefWidth="126.0" />
+      <JFXTextArea layoutX="422.0" layoutY="144.0" prefHeight="0.0" prefWidth="126.0" />
+      <Text layoutX="161.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="64.32522917005633">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <DatePicker layoutX="233.0" layoutY="251.0" prefHeight="34.0" prefWidth="193.0" />
+      <Text layoutX="39.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Request assigned to:" wrappingWidth="154.82706584667903">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <JFXTextArea layoutX="210.0" layoutY="341.0" prefHeight="0.0" prefWidth="126.0" />
+      <Text layoutX="40.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the medical equipment needed:" wrappingWidth="153.5847257587884">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <JFXComboBox layoutX="220.0" layoutY="420.0" prefHeight="54.0" prefWidth="112.0" />
+      <Text layoutX="41.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status of request:" wrappingWidth="155.13819096062645">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <JFXComboBox layoutX="220.0" layoutY="518.0" prefHeight="54.0" prefWidth="112.0" />
+      <JFXButton layoutX="453.0" layoutY="595.0" prefHeight="38.0" prefWidth="64.0" text="Submit" />
+      <JFXButton layoutX="96.0" layoutY="596.0" prefHeight="38.0" prefWidth="64.0" text="Clear" />
+   </children>
+</AnchorPane>
