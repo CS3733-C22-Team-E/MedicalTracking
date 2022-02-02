@@ -48,9 +48,9 @@ public final class DBManager {
           "CREATE TABLE LOCATION(id VARCHAR(10) Primary Key,"
               + "x int, "
               + "y int, "
-              + "floor VARCHAR(2), "
-              + "building VARCHAR(100), "
-              + "locationType VARCHAR(4),"
+              + "floor int, "
+              + "building int, "
+              + "locationType int,"
               + "name VARCHAR(100))";
 
       stmt.execute(createLocationsTable);
