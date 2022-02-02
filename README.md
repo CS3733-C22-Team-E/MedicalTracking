@@ -1,13 +1,6 @@
 # Hospital Medical Tracking Project
 
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) ![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white) ![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Sever-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white)
-
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
-
-### Introduction
-Throughout the course of this term, our team is creating a desktop application for employees and administrators at Mass Brigham General Hospital in Boston. In addition to the basic requirements of the project, our team has decided to develop the software with a focus on ease of use as most hospital employees will not be working with the software under optimal conditions. The project will comprise a local and remote database, both of which will be using raw SQL, and a desktop application which will be written in Java. The project’s timeline is set to be completed on March 4, 2022.
-
-<br />
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) ![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Sever-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 
 ## Meet Development Team
 
@@ -37,8 +30,6 @@ This position is responsible for coordinating and tracking the prioritized list 
 
 ### Documentation Analyst ([Maanav Iyengar](https://github.com/xxmiap))
 One software engineer will also be responsible for coordinating the artifacts created by the project: project documentation, requirements documentation, models, user documentation and training materials, and software code documentation. This person is responsible for maintaining well organized documents so that the VP or the client can inspect them immediately upon request. A suitable person for this position would be someone who is meticulous and well organized. Normally this position would be filled by a team member who is NOT a computer science major and is interested in contributing significantly through non-programming tasks. An exception would be a computer science major who has a strong interest in becoming a technical writer instead of a software engineer. The document analyst does not, however, have the sole responsibility for creating documentation; this responsibility is shared equally by all team members, particularly in the case of source code documentation. Please note that the documentation analyst still has to contribute to the project by writing Java code.
-
-<br />
 
 ## Project Introduction
 
