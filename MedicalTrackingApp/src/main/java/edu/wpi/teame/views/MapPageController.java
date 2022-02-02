@@ -60,8 +60,8 @@ public class MapPageController implements Initializable {
     mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
     mapPane.setOnMouseMoved(
         event -> {
-          Xposition.setText(String.valueOf((int) conversionFactorX * event.getX()));
-          Yposition.setText(String.valueOf((int) conversionFactorY * event.getY()));
+          Xposition.setText(String.valueOf((int) (conversionFactorX * event.getX())));
+          Yposition.setText(String.valueOf((int) (conversionFactorY * event.getY())));
         });
     mapPane.setOnMouseExited(
         event -> {
