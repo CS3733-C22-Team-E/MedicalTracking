@@ -57,7 +57,7 @@ public final class DBManager {
               + "locationType VARCHAR(4))";
       stmt.execute(createLocationsTable);
 
-      String createEquipmentServiceRequestTable = "CREATE TABLE SERVICEREQUEST(id VARCHAR(10) Primary Key,"
+      String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
               + "x VARCHAR(4), "
               + "y VARCHAR(4), "
               + "floor VARCHAR(2), "

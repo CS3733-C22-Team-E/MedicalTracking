@@ -7,8 +7,14 @@ public class LocationManager implements IManager<Location> {
   private static Connection connection;
   private static Statement stmt;
 
-  public LocationManager(Connection connection) {
-    DBManager.getInstance().getConnection();
+  public LocationManager() {
+    connection = DBManager.getInstance().getConnection();
+
+    try {
+        stmt = connection.createStatement();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
   }
 
   @Override
