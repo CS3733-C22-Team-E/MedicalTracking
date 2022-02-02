@@ -55,12 +55,12 @@ public final class DBManager {
 
       stmt.execute(createLocationsTable);
 
-
-      String createEquipmentTable = "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
+      String createEquipmentTable =
+          "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
               + "locationNodeId VARCHAR(10), "
               + "locationType VARCHAR(4),"
               + "name VARCHAR(100),"
-              +"FOREIGN KEY (locationNodeId) REFERENCES LOCATION(id))";
+              + "FOREIGN KEY (locationNodeId) REFERENCES LOCATION(id))";
       stmt.execute(createEquipmentTable);
       /*
       String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"

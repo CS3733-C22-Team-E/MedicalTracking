@@ -52,8 +52,8 @@ public class LocationManager implements IManager<Location> {
         int y = rset.getInt("y");
         String id = rset.getString("id");
         String name = rset.getString("longName");
-        FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        FloorType floor = FloorType.values()[rset.getInt("floor")];
+        BuildingType building = BuildingType.values()[rset.getInt("building")];
         LocationType locationType = LocationType.valueOf(rset.getString("locationType"));
 
         // convert strings to proper type
@@ -76,11 +76,11 @@ public class LocationManager implements IManager<Location> {
             + "','"
             + newObject.getY()
             + "','"
-            + newObject.getFloor()
+            + newObject.getFloor().ordinal()
             + "','"
-            + newObject.getBuilding()
+            + newObject.getBuilding().ordinal()
             + "','"
-            + newObject.getType()
+            + newObject.getType().ordinal()
             + "','"
             + newObject.getName()
             + "')";

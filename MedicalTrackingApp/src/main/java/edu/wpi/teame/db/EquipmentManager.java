@@ -28,14 +28,14 @@ public class EquipmentManager implements IManager<Equipment> {
       while (rset.next()) {
         String nodeID = rset.getString("ID");
         String locationNodeID = rset.getString("locationNodeID");
-        //FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        //BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        // FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        // BuildingType building = BuildingType.valueOf(rset.getString("building"));
         LocationType type = LocationType.valueOf(rset.getString("type"));
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
-        //save the tuple that resulted from the query
+        // save the tuple that resulted from the query
         result = new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean);
       }
     } catch (SQLException e) {
@@ -54,14 +54,14 @@ public class EquipmentManager implements IManager<Equipment> {
       while (rset.next()) {
         String nodeID = rset.getString("ID");
         String locationNodeID = rset.getString("locationNodeID");
-        //FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        //BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        // FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        // BuildingType building = BuildingType.valueOf(rset.getString("building"));
         LocationType type = LocationType.valueOf(rset.getString("type"));
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
-        //add next tuple to return list
+        // add next tuple to return list
         result.add(new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean));
       }
     } catch (SQLException e) {
@@ -72,17 +72,29 @@ public class EquipmentManager implements IManager<Equipment> {
 
   @Override
   public void insert(Equipment newObject) {
-    String hasPatient = "F"; String isClean = "F";
-    if (newObject.isHasPatient()) {hasPatient = "T";}
-    if(newObject.isClean()){isClean = "T";}
+    String hasPatient = "F";
+    String isClean = "F";
+    if (newObject.isHasPatient()) {
+      hasPatient = "T";
+    }
+    if (newObject.isClean()) {
+      isClean = "T";
+    }
 
-    String insertStmt = "INSERT INTO Equipment VALUES('"
-            + newObject.getLocationNodeID() + "', '"
-            + newObject.getNodeID() + "', '"
-            + newObject.getType() + "', '"
-            + newObject.getName() + "', "
-            + hasPatient + ", "
-            + isClean + ")";
+    String insertStmt =
+        "INSERT INTO Equipment VALUES('"
+            + newObject.getLocationNodeID()
+            + "', '"
+            + newObject.getNodeID()
+            + "', '"
+            + newObject.getType()
+            + "', '"
+            + newObject.getName()
+            + "', "
+            + hasPatient
+            + ", "
+            + isClean
+            + ")";
 
     try {
       stmt.executeUpdate(insertStmt);
@@ -91,7 +103,6 @@ public class EquipmentManager implements IManager<Equipment> {
       System.out.println("Case2: Could not update Locations table");
       e.printStackTrace();
     }
-
   }
 
   @Override
@@ -134,7 +145,8 @@ public class EquipmentManager implements IManager<Equipment> {
 
      */
 
-    String updateQuery = "UPDATE Equipment SET ID = '"
+    String updateQuery =
+        "UPDATE Equipment SET ID = '"
             + updatedObject.getNodeID()
             + "', locationNodeID = '"
             + updatedObject.getLocationNodeID()
@@ -145,7 +157,8 @@ public class EquipmentManager implements IManager<Equipment> {
             + "', isClean = '"
             + updatedObject.isClean()
             + "' WHERE id = '"
-            + updatedObject.getNodeID()+ "'";
+            + updatedObject.getNodeID()
+            + "'";
 
     try {
       stmt.executeUpdate(updateQuery);
