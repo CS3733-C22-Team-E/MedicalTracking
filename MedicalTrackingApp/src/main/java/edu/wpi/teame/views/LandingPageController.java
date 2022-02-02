@@ -55,9 +55,14 @@ public class LandingPageController implements Initializable {
     configureTab(homeTab, "Home", "views/HomePage.fxml");
     configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
     configureTab(medicalEquipmentTab, "Medical Equipment", null);
-    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
     configureTab(sanitationServicesTab, "Sanitation Services", null);
     configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
+
+    configureTab(
+        medicineDeliveryTab,
+        "Medicine Delivery",
+        "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml");
+
     configureTab(
         internalPatientTransportationTab,
         "Internal Patient Transportation",

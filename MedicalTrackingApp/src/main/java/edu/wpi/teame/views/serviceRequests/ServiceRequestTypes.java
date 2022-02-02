@@ -9,5 +9,6 @@ public enum ServiceRequestTypes {
   LanguageInterpreter,
   Laundry,
   Religious,
-  Security
+  Security,
+  MedicineDelivery
 }
