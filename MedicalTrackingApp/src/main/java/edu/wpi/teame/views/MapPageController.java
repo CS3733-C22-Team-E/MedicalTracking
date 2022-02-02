@@ -96,7 +96,8 @@ public class MapPageController implements Initializable {
       String icon,
       int FitWidth,
       int FitHeight,
-      Double Opacity) {
+      Double Opacity,
+      String descriptor) {
     ImageView newIcon = new ImageView();
     newIcon.setImage(new Image(App.class.getResource(icon).toString()));
     newIcon.setOpacity(Opacity);
@@ -105,11 +106,8 @@ public class MapPageController implements Initializable {
     newIcon.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     newIcon.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
     newIcon.setOnMouseClicked(event -> HandleMapIconClick(newIcon));
-    Tooltip tooltip = new Tooltip();
-    tooltip.setText("Patient:");
+    Tooltip tooltip = new Tooltip(descriptor);
     Tooltip.install(newIcon, tooltip);
-    newIcon.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
-    newIcon.setOnMouseExited(event -> System.out.println("Mouse Exited"));
     pane.getChildren().add(newIcon);
     return newIcon;
   }
@@ -189,7 +187,8 @@ public class MapPageController implements Initializable {
                 ResourceNames.get(Descriptor.getValue()),
                 20,
                 20,
-                .7);
+                .7,
+                Descriptor.getValue());
           }
           return null;
         });
@@ -197,9 +196,9 @@ public class MapPageController implements Initializable {
     dialog.showAndWait();
   }
 
-  private void HandleMapIconClick(ImageView node) {
+  private void HandleMapIconClick(ImageView mapIcon) {
     if (deletedButton) {
-      mapPane.getChildren().remove(node);
+      mapPane.getChildren().remove(mapIcon);
       deletedButton = false;
       return;
     }
@@ -248,9 +247,9 @@ public class MapPageController implements Initializable {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            node.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
-            node.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
-            node.setVisible(true);
+            mapIcon.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
+            mapIcon.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
+            mapIcon.setVisible(true);
           }
           return null;
         });

@@ -2,8 +2,11 @@ package edu.wpi.teame.views;
 
 import edu.wpi.teame.App;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -11,8 +14,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
+import lombok.SneakyThrows;
 
-public class LandingPageController {
+public class LandingPageController implements Initializable {
   @FXML private Tab internalPatientTransportationTab;
   @FXML private Tab externalPatientTransportationTab;
   @FXML private Tab computerServiceRequestTab;
@@ -34,8 +38,9 @@ public class LandingPageController {
   private double tabHeight = 250;
   private double tabWidth = 35;
 
-  @FXML
-  private void setup() throws IOException {
+  @Override
+  @SneakyThrows
+  public void initialize(URL location, ResourceBundle resources) {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
