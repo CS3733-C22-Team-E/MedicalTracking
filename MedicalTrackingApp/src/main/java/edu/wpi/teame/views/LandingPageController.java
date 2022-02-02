@@ -7,11 +7,14 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
@@ -118,15 +121,35 @@ public class LandingPageController implements Initializable {
 
     AnchorPane anchorPane = new AnchorPane();
     anchorPane.getChildren().add(label);
-    anchorPane.setRotate(90.0);
+    label.setRotate(90.0);
 
     tab.setGraphic(anchorPane);
     tab.setText("");
 
     if (pageUrl != null) {
-      Parent newPage = FXMLLoader.load(App.class.getResource(pageUrl));
-      newPage.setStyle("@../viewStyleSheets/mainStyle.css");
-      tab.setContent(newPage);
+      Parent pageNode = new FXMLLoader(App.class.getResource(pageUrl)).load();
+      pageNode.setStyle("@../viewStyleSheets/mainStyle.css");
+
+      // Create a gridPane to center the page we load into the tab
+      GridPane gridPane = createGridPane();
+      gridPane.add(pageNode, 0, 0);
+      tab.setContent(gridPane);
     }
+  }
+
+  private GridPane createGridPane() {
+    GridPane gridPane = new GridPane();
+    gridPane.setAlignment(Pos.CENTER);
+
+    ColumnConstraints columnConstraints = new ColumnConstraints();
+    RowConstraints rowConstraints = new RowConstraints();
+    columnConstraints.setHalignment(HPos.CENTER);
+    columnConstraints.setHgrow(Priority.ALWAYS);
+    rowConstraints.setValignment(VPos.CENTER);
+    rowConstraints.setVgrow(Priority.ALWAYS);
+
+    gridPane.getColumnConstraints().add(columnConstraints);
+    gridPane.getRowConstraints().add(rowConstraints);
+    return gridPane;
   }
 }
