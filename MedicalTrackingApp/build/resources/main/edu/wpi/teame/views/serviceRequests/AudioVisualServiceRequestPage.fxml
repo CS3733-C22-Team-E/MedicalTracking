@@ -7,111 +7,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane stylesheets="@../../viewStyleSheets/mainStyle.css"
-   xmlns="http://javafx.com/javafx/17"
-   xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.AudioVisualServiceRequestPageServiceRequestController">
+<AnchorPane prefHeight="522.0" prefWidth="547.0" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.AudioVisualServiceRequestPageServiceRequestController">
    <children>
-      <GridPane alignment="CENTER" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="roomNumber" promptText="Enter patient room number..." GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="floor" promptText="Enter patient floor..." GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <DatePicker fx:id="startDate" promptText="Choose start date..." GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </DatePicker>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <DatePicker fx:id="endDate" promptText="Choose end date..." GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </DatePicker>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="startTime" promptText="Enter start time..." GridPane.columnIndex="1" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets right="20.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="endTime" promptText="Enter end time..." GridPane.columnIndex="1" GridPane.rowIndex="8">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </GridPane>
+      <Text layoutX="119.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
+         <font>
+            <Font size="24.0" />
+         </font></Text>
+      <Text layoutX="30.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
+      <Text layoutX="30.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
+      <Text layoutX="30.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" />
+      <TextField fx:id="patientName" layoutX="146.0" layoutY="69.0" />
+      <TextField fx:id="roomNumber" layoutX="146.0" layoutY="127.0" />
+      <TextField fx:id="floor" layoutX="146.0" layoutY="185.0" />
+      <DatePicker fx:id="startDate" layoutX="146.0" layoutY="246.0" />
+      <Text layoutX="31.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
+      <DatePicker fx:id="endDate" layoutX="146.0" layoutY="301.0" />
+      <Text layoutX="31.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:" />
+      <Text layoutX="31.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
+      <TextField fx:id="startTime" layoutX="146.0" layoutY="359.0" />
+      <Text layoutX="31.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
+      <TextField fx:id="endTime" layoutX="146.0" layoutY="417.0" />
+      <Button layoutX="542.0" layoutY="360.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="67.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" />
    </children>
 </AnchorPane>
