@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane onMouseEntered="#setup" prefHeight="522.0" prefWidth="547.0" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.AudioVisualServiceRequestPageController">
+<AnchorPane prefHeight="522.0" prefWidth="547.0" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.AudioVisualServiceRequestPageController">
    <children>
       <Text layoutX="119.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio/Visual Service Request">
          <font>
@@ -27,6 +27,6 @@
       <TextField fx:id="startTime" layoutX="146.0" layoutY="359.0" />
       <Text layoutX="31.0" layoutY="442.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
       <TextField fx:id="endTime" layoutX="146.0" layoutY="417.0" />
-      <Button layoutX="542.0" layoutY="360.0" mnemonicParsing="false" onAction="#sendServiceRequest" prefHeight="33.0" prefWidth="67.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+      <Button layoutX="542.0" layoutY="360.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="67.0" text="Send" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" />
    </children>
 </AnchorPane>

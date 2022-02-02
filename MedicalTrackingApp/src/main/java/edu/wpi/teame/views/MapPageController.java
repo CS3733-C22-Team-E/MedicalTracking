@@ -1,9 +1,12 @@
 package edu.wpi.teame.views;
 
 import edu.wpi.teame.App;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -19,8 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.util.Pair;
 
-public class MapPageController {
-  // private final HashMap<String, Image> mapImages = new HashMap<String, Image>();
+public class MapPageController implements Initializable {
   private final HashMap<String, String> ResourceNames = new HashMap<String, String>();
   @FXML private ComboBox dropDown;
   @FXML private ImageView mapImageView;
@@ -29,46 +31,41 @@ public class MapPageController {
   @FXML private Text Xposition;
   @FXML private Text Yposition;
   @FXML private Text coordinateText;
-  private boolean set = false;
   private double conversionFactorX;
   private double conversionFactorY;
   private boolean deletedButton = false;
-  
+
   @FXML
   void switchImage(String name) {
     mapImageView.setImage(new Image(App.class.getResource(name).toString()));
   }
 
-  @FXML
-  private void setup() {
-
-    if (!set) {
-      ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
-      ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
-      System.out.println("Setting Up");
-      pane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
-      pane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
-      pane.autosize();
-      conversionFactorX = 1.055 * 5000 / mapImageView.getFitWidth();
-      conversionFactorY = 1.004 * 3400 / mapImageView.getFitHeight();
-      dropDown.setItems(
-          FXCollections.observableArrayList(
-              "Ground Floor",
-              "Lower Level 1",
-              "Lower Level 2",
-              "First Floor",
-              "Second Floor",
-              "Third Floor"));
-      mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
-      mapPane.setOnMouseMoved(
-          e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
-      set = true;
-      mapPane.setOnMouseExited(
-          event -> {
-            Xposition.setText("Not on Map");
-            Yposition.setText("Not on Map");
-          });
-    }
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
+    ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
+    System.out.println("Setting Up");
+    pane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
+    pane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
+    pane.autosize();
+    conversionFactorX = 1.055 * 5000 / mapImageView.getFitWidth();
+    conversionFactorY = 1.004 * 3400 / mapImageView.getFitHeight();
+    dropDown.setItems(
+        FXCollections.observableArrayList(
+            "Ground Floor",
+            "Lower Level 1",
+            "Lower Level 2",
+            "First Floor",
+            "Second Floor",
+            "Third Floor"));
+    mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
+    mapPane.setOnMouseMoved(
+        e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
+    mapPane.setOnMouseExited(
+        event -> {
+          Xposition.setText("Not on Map");
+          Yposition.setText("Not on Map");
+        });
   }
 
   @FXML
@@ -80,7 +77,6 @@ public class MapPageController {
   @FXML
   private void createNewIconButton() {
     CreateMapIconDialogBox();
-    // createMapIcon(1300.0, 2225.0, mapPane, "images/HospitalBedIcon.png", 20, 20, .7);
   }
 
   /**
@@ -276,9 +272,5 @@ public class MapPageController {
           return null;
         });
     dialog.showAndWait();
-  }
-
-  public void updateMouseCoordinates(double x, double y) {
-    coordinateText.setText("[ " + x + ", " + y + " ]");
   }
 }

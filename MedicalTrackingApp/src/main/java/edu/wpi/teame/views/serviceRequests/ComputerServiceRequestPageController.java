@@ -1,11 +1,14 @@
 package edu.wpi.teame.views.serviceRequests;
 
+import edu.wpi.teame.views.Controller;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class ComputerServiceRequestPageController extends ServiceRequest {
+public class ComputerServiceRequestPageController extends Controller {
   @FXML public Button sendButton;
   @FXML private Text nameText;
   @FXML private Text roomText;
@@ -22,6 +25,6 @@ public class ComputerServiceRequestPageController extends ServiceRequest {
   @FXML private TextField endTime;
   @FXML private TextField remarks;
 
-  @FXML
-  private void setup() {}
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {}
 }

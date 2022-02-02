@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="480.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.InternalPatientTransportationServiceRequestPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.InternalPatientTransportationServiceRequestPageController">
     <children>
         <Text layoutX="134.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Internal Patient Transfer Service Request" textAlignment="CENTER" />
       <GridPane layoutX="1.0" prefHeight="480.0" prefWidth="480.0">
@@ -49,7 +49,7 @@
                   <Insets left="20.0" top="50.0" />
                </padding>
             </GridPane>
-              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" defaultButton="true" mnemonicParsing="false" text="Send" textFill="#176aeb" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="20.0" right="20.0" />
                </GridPane.margin>

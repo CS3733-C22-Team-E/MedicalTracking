@@ -23,6 +23,6 @@
             <DatePicker layoutX="27.0" layoutY="217.0" />
             <DatePicker layoutX="240.0" layoutY="216.0" />
             <Text layoutX="160.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtitle" text="Laundry Service Request" />
-            <Button fx:id="sendButton" defaultButton="true" layoutX="202.0" layoutY="267.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+            <Button fx:id="sendButton" defaultButton="true" layoutX="202.0" layoutY="267.0" mnemonicParsing="false" text="Send" textFill="#176aeb" />
       </children>
 </AnchorPane>
