@@ -3,7 +3,6 @@ package edu.wpi.teame.views.serviceRequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
