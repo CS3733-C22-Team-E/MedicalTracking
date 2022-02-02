@@ -46,10 +46,15 @@ public class LandingPageController {
 
     configureTab(homeTab, "Home", "views/HomePage.fxml");
     configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
-    configureTab(medicalEquipmentTab, "Medical Equipment", null);
     configureTab(medicineDeliveryTab, "Medicine Delivery", null);
     configureTab(sanitationServicesTab, "Sanitation Services", null);
     configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
+
+    configureTab(
+        medicalEquipmentTab,
+        "Medical Equipment",
+        "views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml");
+
     configureTab(
         internalPatientTransportationTab,
         "Internal Patient Transportation",

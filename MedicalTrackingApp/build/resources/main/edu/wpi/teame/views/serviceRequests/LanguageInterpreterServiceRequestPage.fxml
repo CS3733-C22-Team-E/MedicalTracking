@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<AnchorPane prefHeight="400.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.LanguageInterpreterServiceRequestPageController">
+<AnchorPane prefHeight="400.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.LanguageInterpreterServiceRequestPageServiceRequestController">
    <children>
       <Text layoutX="201.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language Interpreter Service Request" />
       <JFXComboBox fx:id="languageDropdown" layoutX="92.0" layoutY="149.0" />
