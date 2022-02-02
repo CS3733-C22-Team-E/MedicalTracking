@@ -27,9 +27,9 @@ public class LocationManager implements IManager<Location> {
         int x = rset.getInt("x");
         int y = rset.getInt("y");
         String name = rset.getString("longName");
-        FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        BuildingType building = BuildingType.valueOf(rset.getString("building"));
-        LocationType locationType = LocationType.valueOf(rset.getString("locationType"));
+        FloorType floor = FloorType.values()[rset.getInt("floor")];
+        BuildingType building = BuildingType.values()[rset.getInt("building")];
+        LocationType locationType = LocationType.values()[rset.getInt("locationType")];
 
         // convert strings to proper type
         result = new Location(id, name, x, y, floor, building, locationType);
@@ -54,7 +54,7 @@ public class LocationManager implements IManager<Location> {
         String name = rset.getString("longName");
         FloorType floor = FloorType.values()[rset.getInt("floor")];
         BuildingType building = BuildingType.values()[rset.getInt("building")];
-        LocationType locationType = LocationType.valueOf(rset.getString("locationType"));
+        LocationType locationType = LocationType.values()[rset.getInt("locationType")];
 
         // convert strings to proper type
         result.add(new Location(id, name, x, y, floor, building, locationType));
@@ -112,11 +112,11 @@ public class LocationManager implements IManager<Location> {
             + "', y = '"
             + updatedObject.getX()
             + "', floor = '"
-            + updatedObject.getFloor()
+            + updatedObject.getFloor().ordinal()
             + "', building = '"
-            + updatedObject.getBuilding()
+            + updatedObject.getBuilding().ordinal()
             + "', type = '"
-            + updatedObject.getType()
+            + updatedObject.getType().ordinal()
             + "', longName = '"
             + updatedObject.getName()
             + "' WHERE id = '"

@@ -22,21 +22,22 @@ public class EquipmentManager implements IManager<Equipment> {
   public Equipment get(String id) {
     String getQuery = "SELECT * FROM Equipment WHERE ID = '" + id + "'";
     Equipment result = null;
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
         String nodeID = rset.getString("ID");
-        String locationNodeID = rset.getString("locationNodeID");
+        Location locationNode = locationTable.get(rset.getString("locationNodeID"));
         // FloorType floor = FloorType.valueOf(rset.getString("floor"));
         // BuildingType building = BuildingType.valueOf(rset.getString("building"));
-        LocationType type = LocationType.valueOf(rset.getString("type"));
+        LocationType type = LocationType.values()[rset.getInt("type")];
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
         // save the tuple that resulted from the query
-        result = new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean);
+        result = new Equipment(nodeID, locationNode, type, name, hasPatient, isClean);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -48,21 +49,24 @@ public class EquipmentManager implements IManager<Equipment> {
   public LinkedList<Equipment> getAll() {
     String getQuery = "SELECT * FROM Equipment";
     LinkedList<Equipment> result = null;
+
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
         String nodeID = rset.getString("ID");
-        String locationNodeID = rset.getString("locationNodeID");
+        Location locationNode = locationTable.get(rset.getString("locationNodeID"));
         // FloorType floor = FloorType.valueOf(rset.getString("floor"));
         // BuildingType building = BuildingType.valueOf(rset.getString("building"));
-        LocationType type = LocationType.valueOf(rset.getString("type"));
+        LocationType type = LocationType.values()[rset.getInt("type")];
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
+
         // add next tuple to return list
-        result.add(new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean));
+        result.add(new Equipment(nodeID, locationNode, type, name, hasPatient, isClean));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -72,22 +76,16 @@ public class EquipmentManager implements IManager<Equipment> {
 
   @Override
   public void insert(Equipment newObject) {
-    String hasPatient = "F";
-    String isClean = "F";
-    if (newObject.isHasPatient()) {
-      hasPatient = "T";
-    }
-    if (newObject.isClean()) {
-      isClean = "T";
-    }
+    int hasPatient = newObject.isHasPatient() ? 1 : 0;
+    int isClean = newObject.isClean() ? 1 : 0;
 
     String insertStmt =
         "INSERT INTO Equipment VALUES('"
-            + newObject.getLocationNodeID()
-            + "', '"
             + newObject.getNodeID()
             + "', '"
-            + newObject.getType()
+            + newObject.getLocationNode().getId()
+            + "', '"
+            + newObject.getType().ordinal()
             + "', '"
             + newObject.getName()
             + "', "
@@ -145,17 +143,19 @@ public class EquipmentManager implements IManager<Equipment> {
 
      */
 
+    int hasPatient = updatedObject.isHasPatient() ? 1 : 0;
+    int isClean = updatedObject.isClean() ? 1 : 0;
+
     String updateQuery =
-        "UPDATE Equipment SET ID = '"
-            + updatedObject.getNodeID()
-            + "', locationNodeID = '"
-            + updatedObject.getLocationNodeID()
+        "UPDATE Equipment SET "
+            + "locationNode = '"
+            + updatedObject.getLocationNode().getId()
             + "', type = '"
-            + updatedObject.getType()
+            + updatedObject.getType().ordinal()
             + "', hasPatient = '"
-            + updatedObject.isHasPatient()
+            + hasPatient
             + "', isClean = '"
-            + updatedObject.isClean()
+            + isClean
             + "' WHERE id = '"
             + updatedObject.getNodeID()
             + "'";

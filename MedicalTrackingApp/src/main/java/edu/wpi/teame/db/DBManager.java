@@ -57,21 +57,28 @@ public final class DBManager {
 
       String createEquipmentTable =
           "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
-              + "locationNodeId VARCHAR(10), "
-              + "locationType VARCHAR(4),"
+              + "locationNode VARCHAR(10), "
+              + "type VARCHAR(10) ,"
               + "name VARCHAR(100),"
+              + "hasPatient BIT,"
+              + "isClean BIT,"
               + "FOREIGN KEY (locationNodeId) REFERENCES LOCATION(id))";
       stmt.execute(createEquipmentTable);
-      /*
-      String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
-              + "x VARCHAR(4), "
-              + "y VARCHAR(4), "
-              + "floor VARCHAR(2), "
-              + "building VARCHAR(25), "
-              + "locationType VARCHAR(4))";
-      stmt.execute(createLocationsTable);
 
-      */
+      String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
+              + "patient VARCHAR(100), "
+              + "roomID VARCHAR(10) ,"
+              + "stateTime VARCHAR(50),"
+              + "endTime VARCHAR(50),"
+              + "date VARCHAR(100),"
+              + "assignee VARCHAR(100),"
+              + "equipmentID VARCHAR(10),"
+              + "status int,"
+              + "FOREIGN KEY (roomID) REFERENCES LOCATION(id),"
+              + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
+      stmt.execute(createEquipmentServiceRequestTable);
+
+
     } catch (SQLException e) {
       e.printStackTrace();
     }

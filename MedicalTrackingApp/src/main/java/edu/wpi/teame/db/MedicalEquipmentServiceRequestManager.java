@@ -22,21 +22,27 @@ public class MedicalEquipmentServiceRequestManager
   public MedicalEquipmentServiceRequest get(String id) {
     String getQuery = "SELECT * FROM EQUIPMENTSERVICEREQUEST WHERE id='" + id + "'";
     MedicalEquipmentServiceRequest result = null;
+
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
+    EquipmentManager equipmentTable = DBManager.getInstance().getEquipmentManager();
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
+        Location serReqLocation = locationTable.get(rset.getString("room"));
+        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipment"));
+
         result =
             new MedicalEquipmentServiceRequest(
                 rset.getString("id"),
                 rset.getString("patient"),
-                rset.getString("room"),
+                serReqLocation,
                 rset.getString("startTime"),
                 rset.getString("endTime"),
                 rset.getString("date"),
                 rset.getString("assignee"),
-                rset.getString("equipment"),
-                rset.getString("status"));
+                serReqEquipment,
+                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -48,21 +54,26 @@ public class MedicalEquipmentServiceRequestManager
   public LinkedList<MedicalEquipmentServiceRequest> getAll() {
     String getQuery = "SELECT * FROM EQUIPMENTSERVICEREQUEST";
     LinkedList<MedicalEquipmentServiceRequest> result = new LinkedList<>();
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
+    EquipmentManager equipmentTable = DBManager.getInstance().getEquipmentManager();
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
+        Location serReqLocation = locationTable.get(rset.getString("room"));
+        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipment"));
+
         result.add(
-            new MedicalEquipmentServiceRequest(
-                rset.getString("id"),
-                rset.getString("patient"),
-                rset.getString("room"),
-                rset.getString("startTime"),
-                rset.getString("endTime"),
-                rset.getString("date"),
-                rset.getString("assignee"),
-                rset.getString("equipment"),
-                rset.getString("status")));
+                new MedicalEquipmentServiceRequest(
+                        rset.getString("id"),
+                        rset.getString("patient"),
+                        serReqLocation,
+                        rset.getString("startTime"),
+                        rset.getString("endTime"),
+                        rset.getString("date"),
+                        rset.getString("assignee"),
+                        serReqEquipment,
+                        MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -78,7 +89,7 @@ public class MedicalEquipmentServiceRequestManager
             + "','"
             + newObject.getPatient()
             + "','"
-            + newObject.getRoom()
+            + newObject.getRoom().getId()
             + "','"
             + newObject.getStartTIme()
             + "','"
@@ -88,9 +99,9 @@ public class MedicalEquipmentServiceRequestManager
             + "','"
             + newObject.getAssignee()
             + "','"
-            + newObject.getEquipment()
+            + newObject.getEquipment().getNodeID()
             + "','"
-            + newObject.getStatus()
+            + newObject.getStatus().ordinal()
             + "')";
 
     try {
@@ -130,7 +141,7 @@ public class MedicalEquipmentServiceRequestManager
         "UPDATE LOCATIONS SET patient = '"
             + updatedObject.getPatient()
             + "', room = '"
-            + updatedObject.getRoom()
+            + updatedObject.getRoom().getId()
             + "', startTime = '"
             + updatedObject.getStartTIme()
             + "', endTime = '"
@@ -140,9 +151,9 @@ public class MedicalEquipmentServiceRequestManager
             + "', assignee = '"
             + updatedObject.getAssignee()
             + "', equipment = '"
-            + updatedObject.getEquipment()
+            + updatedObject.getEquipment().getNodeID()
             + "', status = '"
-            + updatedObject.getStatus()
+            + updatedObject.getStatus().ordinal()
             + "' WHERE id = '"
             + updatedObject.getId()
             + "'";

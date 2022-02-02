@@ -3,13 +3,13 @@ package edu.wpi.teame.db;
 public class MedicalEquipmentServiceRequest {
   private String id;
   private String patient;
-  private String room;
+  private Location roomID;
   private String startTIme;
   private String endTime;
   private String date;
   private String assignee;
-  private String equipment;
-  private String status;
+  private Equipment equipmentID;
+  private MedicalEquipmentServiceRequestStatus status;
 
   /*
   private String id;
@@ -26,21 +26,21 @@ public class MedicalEquipmentServiceRequest {
   public MedicalEquipmentServiceRequest(
       String id,
       String patient,
-      String room,
+      Location room,
       String startTIme,
       String endTime,
       String date,
       String assignee,
-      String equipment,
-      String status) {
+      Equipment equipment,
+      MedicalEquipmentServiceRequestStatus status) {
     this.id = id;
     this.patient = patient;
-    this.room = room;
+    this.roomID = room;
     this.startTIme = startTIme;
     this.endTime = endTime;
     this.date = date;
     this.assignee = assignee;
-    this.equipment = equipment;
+    this.equipmentID = equipment;
     this.status = status;
   }
 
@@ -52,8 +52,8 @@ public class MedicalEquipmentServiceRequest {
     return patient;
   }
 
-  public String getRoom() {
-    return room;
+  public Location getRoom() {
+    return roomID;
   }
 
   public String getStartTIme() {
@@ -72,11 +72,11 @@ public class MedicalEquipmentServiceRequest {
     return assignee;
   }
 
-  public String getEquipment() {
-    return equipment;
+  public Equipment getEquipment() {
+    return equipmentID;
   }
 
-  public String getStatus() {
+  public MedicalEquipmentServiceRequestStatus getStatus() {
     return status;
   }
 
@@ -88,8 +88,8 @@ public class MedicalEquipmentServiceRequest {
     this.patient = patient;
   }
 
-  public void setRoom(String room) {
-    this.room = room;
+  public void setRoom(Location room) {
+    this.roomID = room;
   }
 
   public void setStartTIme(String startTIme) {
@@ -108,11 +108,11 @@ public class MedicalEquipmentServiceRequest {
     this.assignee = assignee;
   }
 
-  public void setEquipment(String equipment) {
-    this.equipment = equipment;
+  public void setEquipment(Equipment equipment) {
+    this.equipmentID = equipment;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(MedicalEquipmentServiceRequestStatus status) {
     this.status = status;
   }
 }

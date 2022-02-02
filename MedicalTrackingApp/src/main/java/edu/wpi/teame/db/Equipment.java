@@ -2,7 +2,7 @@ package edu.wpi.teame.db;
 
 public class Equipment {
   private String ID;
-  private String locationNodeID;
+  private Location locationNode;
   // private FloorType floor;
   // private BuildingType building;
   private LocationType type;
@@ -12,13 +12,13 @@ public class Equipment {
 
   public Equipment(
       String ID,
-      String locationNodeID,
+      Location locationNodeID,
       LocationType type,
       String name,
       boolean hasPatient,
       boolean isClean) {
     this.ID = ID;
-    this.locationNodeID = locationNodeID;
+    this.locationNode = locationNodeID;
     // this.floor = floor;
     // this.building = building;
     this.type = type;
@@ -35,12 +35,12 @@ public class Equipment {
     this.ID = nodeID;
   }
 
-  public String getLocationNodeID() {
-    return locationNodeID;
+  public Location getLocationNode() {
+    return locationNode;
   }
 
-  public void setLocationNodeID(String locationNodeID) {
-    this.locationNodeID = locationNodeID;
+  public void setLocationNode(Location locationNodeID) {
+    this.locationNode = locationNodeID;
   }
   /*
      public FloorType getFloor() {
