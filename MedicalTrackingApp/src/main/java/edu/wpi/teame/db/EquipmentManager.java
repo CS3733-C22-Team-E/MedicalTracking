@@ -28,14 +28,15 @@ public class EquipmentManager implements IManager<Equipment> {
       while (rset.next()) {
         String nodeID = rset.getString("ID");
         String locationNodeID = rset.getString("locationNodeID");
-        FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        //FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        //BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        LocationType type = LocationType.valueOf(rset.getString("type"));
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
         //save the tuple that resulted from the query
-        result = new Equipment(nodeID, locationNodeID, floor, building, name, hasPatient, isClean);
+        result = new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -53,14 +54,15 @@ public class EquipmentManager implements IManager<Equipment> {
       while (rset.next()) {
         String nodeID = rset.getString("ID");
         String locationNodeID = rset.getString("locationNodeID");
-        FloorType floor = FloorType.valueOf(rset.getString("floor"));
-        BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        //FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        //BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        LocationType type = LocationType.valueOf(rset.getString("type"));
         String name = rset.getString("name");
         boolean hasPatient = rset.getBoolean("hasPatient");
         boolean isClean = rset.getBoolean("isClean");
 
         //add next tuple to return list
-        result.add(new Equipment(nodeID, locationNodeID, floor, building, name, hasPatient, isClean));
+        result.add(new Equipment(nodeID, locationNodeID, type, name, hasPatient, isClean));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -74,14 +76,13 @@ public class EquipmentManager implements IManager<Equipment> {
     if (newObject.isHasPatient()) {hasPatient = "T";}
     if(newObject.isClean()){isClean = "T";}
 
-    String insertStmt = "INSERT INTO Equipment VALUES("
+    String insertStmt = "INSERT INTO Equipment VALUES('"
             + newObject.getLocationNodeID() + "', '"
             + newObject.getNodeID() + "', '"
-            + newObject.getFloor() + "', '"
-            + newObject.getBuilding() + "', "
-            + newObject.getName() + "', '"
-            + hasPatient + "', '"
-            + isClean + "')";
+            + newObject.getType() + "', '"
+            + newObject.getName() + "', "
+            + hasPatient + ", "
+            + isClean + ")";
 
     try {
       stmt.executeUpdate(insertStmt);
@@ -106,6 +107,7 @@ public class EquipmentManager implements IManager<Equipment> {
 
   @Override
   public void update(Equipment updatedObject) {
+    /*
     String updateQuery =
             "UPDATE Equipment SET ID = '"
                     + updatedObject.getNodeID()
@@ -129,5 +131,7 @@ public class EquipmentManager implements IManager<Equipment> {
       System.out.println("Case2: Could not update Locations table");
       e.printStackTrace();
     }
+
+     */
   }
 }
