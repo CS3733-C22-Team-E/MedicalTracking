@@ -296,7 +296,7 @@ public class MapPageController implements Initializable {
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 
-  private static class Position { // edit so I can commit the branch
+  private static class Position {
     double x;
     double y;
   }
@@ -328,6 +328,10 @@ public class MapPageController implements Initializable {
 
           double x = node.getLayoutX() + distanceX;
           double y = node.getLayoutY() + distanceY;
+
+          // Update mouse location while dragging
+          Xposition.setText(String.valueOf((int) x));
+          Yposition.setText(String.valueOf((int) y));
 
           // After calculating X and y, relocate the node to the specified coordinate point (x, y)
           node.relocate(x, y);
