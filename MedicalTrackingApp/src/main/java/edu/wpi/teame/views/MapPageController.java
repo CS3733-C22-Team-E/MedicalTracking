@@ -33,8 +33,7 @@ public class MapPageController {
   private double conversionFactorX;
   private double conversionFactorY;
   private boolean deletedButton = false;
-
-  // private Collection<ImageView> marks = new ArrayList<ImageView>();
+  
   @FXML
   void switchImage(String name) {
     mapImageView.setImage(new Image(App.class.getResource(name).toString()));
