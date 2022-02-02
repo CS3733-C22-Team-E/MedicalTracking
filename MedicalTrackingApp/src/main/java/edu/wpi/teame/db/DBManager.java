@@ -7,6 +7,10 @@ public final class DBManager {
   private Connection connection;
   private Statement stmt;
 
+  private MedicalEquipmentServiceRequestManager MEServiceRequestManager;
+  private EquipmentManager equipmentManager;
+  private LocationManager locationManager;
+
   public static DBManager getInstance() {
     if (instance != null) {
       instance = new DBManager();
@@ -31,6 +35,7 @@ public final class DBManager {
       e.printStackTrace();
     }
 
+    // create statement object
     try {
       stmt = connection.createStatement();
     } catch (SQLException e) {
@@ -69,9 +74,25 @@ public final class DBManager {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
+    MEServiceRequestManager = new MedicalEquipmentServiceRequestManager();
+    equipmentManager = new EquipmentManager();
+    locationManager = new LocationManager();
   }
 
   public Connection getConnection() {
     return connection;
+  }
+
+  public MedicalEquipmentServiceRequestManager getMEServiceRequestManager() {
+    return MEServiceRequestManager;
+  }
+
+  public EquipmentManager getEquipmentManager() {
+    return equipmentManager;
+  }
+
+  public LocationManager getLocationManager() {
+    return locationManager;
   }
 }
