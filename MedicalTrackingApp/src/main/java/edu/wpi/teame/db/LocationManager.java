@@ -3,12 +3,11 @@ package edu.wpi.teame.db;
 import java.util.LinkedList;
 import java.sql.*;
 
-public class DBLocationTableDAO implements MedDAO<Location> {
-
+public class LocationManager implements IManager<Location> {
     private static Connection connection;
     private static Statement stmt;
 
-    public DBLocationTableDAO(Connection connection) {
+    public LocationManager(Connection connection) {
         //todo figure out whether to connect to the db for each class or pass in the connection object as param
         this.connection = connection;
 
@@ -50,19 +49,19 @@ public class DBLocationTableDAO implements MedDAO<Location> {
     public LinkedList<Location> getAll() {
         String getAllQuery = "SELECT * FROM Locations";
         LinkedList<Location> result = null;
+
         try {
             ResultSet rset = stmt.executeQuery(getAllQuery);
             while (rset.next()) {
                 Location tempLoc =
                         new Location(
                                 rset.getString("nodeID"),
+                                rset.getString("longName"),
                                 rset.getString("xcoord"),
                                 rset.getString("ycoord"),
                                 rset.getString("floor"),
                                 rset.getString("building"),
-                                rset.getString("nodeType"),
-                                rset.getString("longName"),
-                                rset.getString("shortName"));
+                                rset.getString("nodeType"));
                 result.add(tempLoc);
             }
         } catch (SQLException e) {
@@ -107,14 +106,13 @@ public class DBLocationTableDAO implements MedDAO<Location> {
     //floor,building,nodeType,longName,shortName
     @Override
     public void update(Location updatedObject) {
-        String updateQuery = "UPDATE LOCATIONS SET xcoord = '" + updatedObject.getxcoord()
-                + "', ycoord = '" + updatedObject.getycoord()
+        String updateQuery = "UPDATE LOCATIONS SET x = '" + updatedObject.getY()
+                + "', y = '" + updatedObject.getX()
                 + "', floor = '" + updatedObject.getFloor()
                 + "', building = '" + updatedObject.getBuilding()
-                + "', nodeType = '" + updatedObject.getNodeType()
-                + "', longName = '" + updatedObject.getLongName()
-                + "', shortName = '" + updatedObject.getShortName()
-                + "' WHERE nodeID = '" + updatedObject.getNodeID() + "'";
+                + "', type = '" + updatedObject.getType()
+                + "', longName = '" + updatedObject.getName()
+                + "' WHERE id = '" + updatedObject.getId() + "'";
         try {
             stmt.executeUpdate(updateQuery);
             System.out.println("Location updated successfully");
