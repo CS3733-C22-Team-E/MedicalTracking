@@ -53,16 +53,16 @@ public class MedicalEquipmentServiceRequestManager
 
       while (rset.next()) {
         result.add(
-                new MedicalEquipmentServiceRequest(
-                        rset.getString("id"),
-                        rset.getString("patient"),
-                        rset.getString("room"),
-                        rset.getString("startTime"),
-                        rset.getString("endTime"),
-                        rset.getString("date"),
-                        rset.getString("assignee"),
-                        rset.getString("equipment"),
-                        rset.getString("status")));
+            new MedicalEquipmentServiceRequest(
+                rset.getString("id"),
+                rset.getString("patient"),
+                rset.getString("room"),
+                rset.getString("startTime"),
+                rset.getString("endTime"),
+                rset.getString("date"),
+                rset.getString("assignee"),
+                rset.getString("equipment"),
+                rset.getString("status")));
       }
     } catch (SQLException e) {
       e.printStackTrace();
