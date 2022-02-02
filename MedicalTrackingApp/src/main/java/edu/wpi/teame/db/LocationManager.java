@@ -11,9 +11,9 @@ public class LocationManager implements IManager<Location> {
     connection = DBManager.getInstance().getConnection();
 
     try {
-        stmt = connection.createStatement();
+      stmt = connection.createStatement();
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
   }
 
