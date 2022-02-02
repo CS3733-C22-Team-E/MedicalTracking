@@ -3,7 +3,7 @@ package edu.wpi.teame.db;
 import java.util.LinkedList;
 import java.sql.*;
 
-public class DBLocationTableDAO implements test<Location>{
+public class DBLocationTableDAO implements MedDAO<Location> {
 
     private static Connection connection;
     private static Statement stmt;

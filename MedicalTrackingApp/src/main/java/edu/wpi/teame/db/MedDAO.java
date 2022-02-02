@@ -2,7 +2,7 @@ package edu.wpi.teame.db;
 
 import java.util.LinkedList;
 
-public interface test<TableObject> {
+public interface MedDAO<TableObject> {
     public TableObject get(String id);
     public LinkedList<TableObject> getAll();
     public void insert(TableObject newObject);
