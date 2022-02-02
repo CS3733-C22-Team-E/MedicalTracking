@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -33,6 +35,7 @@ public class MapPageController implements Initializable {
   private double conversionFactorX;
   private double conversionFactorY;
   private boolean deletedButton = false;
+  private boolean dragged = false;
 
   @FXML
   void switchImage(String name) {
@@ -105,10 +108,19 @@ public class MapPageController implements Initializable {
     newIcon.setFitHeight(FitHeight);
     newIcon.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
     newIcon.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
-    newIcon.setOnMouseClicked(event -> HandleMapIconClick(newIcon));
+    newIcon.setOnMouseClicked(
+        event -> {
+          if (!dragged) {
+            HandleMapIconClick(newIcon);
+          } else {
+            dragged = false;
+          }
+        });
+
     Tooltip tooltip = new Tooltip(descriptor);
     Tooltip.install(newIcon, tooltip);
     pane.getChildren().add(newIcon);
+    draggable(newIcon);
     return newIcon;
   }
 
@@ -282,5 +294,44 @@ public class MapPageController implements Initializable {
     Double doubleX = Double.parseDouble(X);
     Double doubleY = Double.parseDouble(Y);
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
+  }
+
+  private static class Position {
+    double x;
+    double y;
+  }
+
+  private void draggable(Node node) {
+    final Position pos = new Position();
+
+    // Prompt the user that the node can be clicked
+    node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> node.setCursor(Cursor.HAND));
+    node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> node.setCursor(Cursor.DEFAULT));
+
+    // Prompt the user that the node can be dragged
+    node.addEventHandler(
+        MouseEvent.MOUSE_PRESSED,
+        event -> {
+          node.setCursor(Cursor.MOVE);
+          // When a press event occurs, the location coordinates of the event are cached
+          pos.x = event.getX();
+          pos.y = event.getY();
+        });
+    node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> node.setCursor(Cursor.DEFAULT));
+
+    // Realize drag and drop function
+    node.addEventHandler(
+        MouseEvent.MOUSE_DRAGGED,
+        event -> {
+          double distanceX = event.getX() - pos.x;
+          double distanceY = event.getY() - pos.y;
+
+          double x = node.getLayoutX() + distanceX;
+          double y = node.getLayoutY() + distanceY;
+
+          // After calculating X and y, relocate the node to the specified coordinate point (x, y)
+          node.relocate(x, y);
+          dragged = true;
+        });
   }
 }
