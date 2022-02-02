@@ -17,19 +17,16 @@ public class LocationManager implements IManager<Location> {
         String getQuery = "SELECT * FROM LOCATIONS WHERE nodeID='" + id + "'";
         try{
             ResultSet rset = stmt.executeQuery(getQuery);
-
-
             while(rset.next()) {
-                String nodeID4 = rset.getString("id");
-                String xcoord4 = rset.getString("x");
-                String ycoord4 = rset.getString("y");
-                String floor4 = rset.getString("floor");
-                String building4 = rset.getString("building");
-                String nodeType4 = rset.getString("locationType");
-                String longName4 = rset.getString("longName");
+                int x = rset.getInt("x");
+                int y = rset.getInt("y");
+                String name = rset.getString("longName");
+                FloorType floor = FloorType.valueOf(rset.getString("floor"));
+                BuildingType building = BuildingType.valueOf(rset.getString("building"));
+                LocationType locationType = LocationType.valueOf(rset.getString("locationType"));
 
                 //convert strings to proper type
-                result=  new Location(nodeID4, xcoord4, ycoord4, floor4, building4, nodeType4, longName4);
+                result = new Location(id, name, x, y, floor, building, locationType);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,16 +42,16 @@ public class LocationManager implements IManager<Location> {
         try {
             ResultSet rset = stmt.executeQuery(getAllQuery);
             while (rset.next()) {
-                Location tempLoc =
-                        new Location(
-                                rset.getString("nodeID"),
-                                rset.getString("longName"),
-                                rset.getString("xcoord"),
-                                rset.getString("ycoord"),
-                                rset.getString("floor"),
-                                rset.getString("building"),
-                                rset.getString("nodeType"));
-                result.add(tempLoc);
+                int x = rset.getInt("x");
+                int y = rset.getInt("y");
+                String id = rset.getString("id");
+                String name = rset.getString("longName");
+                FloorType floor = FloorType.valueOf(rset.getString("floor"));
+                BuildingType building = BuildingType.valueOf(rset.getString("building"));
+                LocationType locationType = LocationType.valueOf(rset.getString("locationType"));
+
+                //convert strings to proper type
+                result.add(new Location(id, name, x, y, floor, building, locationType));
             }
         } catch (SQLException e) {
             System.out.println("Could not retrieve all of the locations from the table");
@@ -67,14 +64,13 @@ public class LocationManager implements IManager<Location> {
     public void insert(Location newObject) {
         String insertQuery =
                 "INSERT INTO LOCATIONS VALUES('"
-                        + newObject.getNodeID() + "','"
-                        + newObject.getxcoord() + "','"
-                        + newObject.getycoord() + "','"
+                        + newObject.getId() + "','"
+                        + newObject.getX() + "','"
+                        + newObject.getY() + "','"
                         + newObject.getFloor() + "','"
                         + newObject.getBuilding() + "','"
-                        + newObject.getNodeType() + "','"
-                        + newObject.getLongName() + "','"
-                        + newObject.getShortName() + "')";
+                        + newObject.getType() + "','"
+                        + newObject.getName() + "')";
         try {
             stmt.executeUpdate(insertQuery);
         } catch (SQLException e) {
