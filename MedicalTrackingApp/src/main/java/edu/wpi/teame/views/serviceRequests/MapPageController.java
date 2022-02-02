@@ -1,8 +1,10 @@
 package edu.wpi.teame.views.serviceRequests;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.db.FloorType;
 import edu.wpi.teame.views.MapIcon;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -26,6 +28,7 @@ import javafx.util.Pair;
 
 public class MapPageController implements Initializable {
   private final HashMap<String, String> ResourceNames = new HashMap<String, String>();
+  private final HashMap<FloorType, ArrayList<ImageView>> FloorIconLists = new HashMap<>();
   @FXML private ComboBox<String> dropDown;
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
@@ -37,6 +40,7 @@ public class MapPageController implements Initializable {
   private double conversionFactorY;
   private boolean deletedButton = false;
   private boolean dragged = false;
+  private FloorType floor = FloorType.LowerLevel1;
 
   @FXML
   void switchImage(String name) {
@@ -45,8 +49,14 @@ public class MapPageController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
-    ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
+    FloorIconLists.put(FloorType.GroundFloor, new ArrayList<ImageView>());
+    FloorIconLists.put(FloorType.LowerLevel1, new ArrayList<ImageView>());
+    FloorIconLists.put(FloorType.LowerLevel2, new ArrayList<ImageView>());
+    FloorIconLists.put(FloorType.FirstFloor, new ArrayList<ImageView>());
+    FloorIconLists.put(FloorType.SecondFloor, new ArrayList<ImageView>());
+    FloorIconLists.put(FloorType.ThirdFloor, new ArrayList<ImageView>());
+    ResourceNames.put("Patient Room", "images/Icons/HospitalBedIcon.png");
+    ResourceNames.put("Equipment Storage Room", "images/Icons/EquipmentStorageIcon.png");
     System.out.println("Setting Up");
     conversionFactorX = 1.055 * 5000 / mapImageView.getFitWidth();
     conversionFactorY = 1.004 * 3400 / mapImageView.getFitHeight();
@@ -58,7 +68,6 @@ public class MapPageController implements Initializable {
             "First Floor",
             "Second Floor",
             "Third Floor"));
-    mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
     mapPane.setOnMouseMoved(
         event -> {
           Xposition.setText(String.valueOf((int) (conversionFactorX * event.getX())));
@@ -69,12 +78,6 @@ public class MapPageController implements Initializable {
           Xposition.setText("Not on Map");
           Yposition.setText("Not on Map");
         });
-  }
-
-  @FXML
-  private void handleMouseClick(double x, double y) {
-    Xposition.setText(String.valueOf((int) x));
-    Yposition.setText(String.valueOf((int) y));
   }
 
   @FXML
@@ -122,6 +125,7 @@ public class MapPageController implements Initializable {
     Tooltip.install(newIcon, tooltip);
     pane.getChildren().add(newIcon);
     draggable(newIcon);
+    FloorIconLists.get(floor).add(newIcon);
     return newIcon;
   }
 
@@ -132,25 +136,38 @@ public class MapPageController implements Initializable {
 
   @FXML
   private void comboBoxChanged() {
+    mapPane.getChildren().clear();
     System.out.println(dropDown.getValue());
     switch (dropDown.getValue()) {
       case "Ground Floor":
         switchImage("images/00_thegroundfloor.png");
+        floor = FloorType.GroundFloor;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
       case "Lower Level 1":
         switchImage("images/00_thelowerlevel1.png");
+        floor = FloorType.LowerLevel1;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
       case "Lower Level 2":
         switchImage("images/00_thelowerlevel2.png");
+        floor = FloorType.LowerLevel2;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
       case "First Floor":
         switchImage("images/01_thefirstfloor.png");
+        floor = FloorType.FirstFloor;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
       case "Second Floor":
         switchImage("images/02_thesecondfloor.png");
+        floor = FloorType.SecondFloor;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
       case "Third Floor":
         switchImage("images/03_thethirdfloor.png");
+        floor = FloorType.ThirdFloor;
+        mapPane.getChildren().addAll(FloorIconLists.get(floor));
         break;
     }
   }
@@ -161,6 +178,14 @@ public class MapPageController implements Initializable {
 
   double ConvertPixelYToLayoutY(double PixelY) {
     return (PixelY / 3400) * mapPane.getLayoutBounds().getHeight();
+  }
+
+  double ConvertLayoutXToPixelX(double LayoutX) {
+    return (LayoutX * 5000) / mapPane.getLayoutBounds().getWidth();
+  }
+
+  double ConvertLayoutYToPixelY(double LayoutY) {
+    return (LayoutY * 3400) / mapPane.getLayoutBounds().getHeight();
   }
 
   private void CreateMapIconDialogBox() {
@@ -228,6 +253,8 @@ public class MapPageController implements Initializable {
   private void HandleMapIconClick(ImageView mapIcon) {
     if (deletedButton) {
       mapPane.getChildren().remove(mapIcon);
+      System.out.println(mapIcon.getLayoutX());
+      System.out.println(mapIcon.getLayoutY());
       deletedButton = false;
       return;
     }
@@ -306,8 +333,16 @@ public class MapPageController implements Initializable {
     final Position pos = new Position();
 
     // Prompt the user that the node can be clicked
-    node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> node.setCursor(Cursor.HAND));
-    node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> node.setCursor(Cursor.DEFAULT));
+    node.addEventHandler(
+        MouseEvent.MOUSE_ENTERED,
+        event -> {
+          node.setCursor(Cursor.HAND);
+        });
+    node.addEventHandler(
+        MouseEvent.MOUSE_EXITED,
+        event -> {
+          node.setCursor(Cursor.DEFAULT);
+        });
 
     // Prompt the user that the node can be dragged
     node.addEventHandler(
@@ -318,7 +353,11 @@ public class MapPageController implements Initializable {
           pos.x = event.getX();
           pos.y = event.getY();
         });
-    node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> node.setCursor(Cursor.DEFAULT));
+    node.addEventHandler(
+        MouseEvent.MOUSE_RELEASED,
+        event -> {
+          node.setCursor(Cursor.DEFAULT);
+        });
 
     // Realize drag and drop function
     node.addEventHandler(
@@ -329,6 +368,10 @@ public class MapPageController implements Initializable {
 
           double x = node.getLayoutX() + distanceX;
           double y = node.getLayoutY() + distanceY;
+
+          // Update mouse location while dragging
+          Xposition.setText(String.valueOf((int) ConvertLayoutXToPixelX(x)));
+          Yposition.setText(String.valueOf((int) ConvertLayoutYToPixelY(y)));
 
           // After calculating X and y, relocate the node to the specified coordinate point (x, y)
           node.relocate(x, y);

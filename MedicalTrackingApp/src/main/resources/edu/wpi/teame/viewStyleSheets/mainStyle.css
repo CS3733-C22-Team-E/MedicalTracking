@@ -6,11 +6,18 @@
 }
 
 * {
-  -fx-button-background-color: #212121;
-  -fx-pane-background-color: #f1f1f1;
-  -fx-light-text-color: #ffffff;
-  -fx-primary-color: #1d5bb9;
-  -fx-text-color: #000000;
+  -fx-text-box-background-color: #2c2c2c;
+  -fx-button-background-color: #4c4c4c;
+  -fx-pane-background-color: #000000;
+
+  -fx-text-box-text-color: #ffffff;
+  -fx-button-text-color: #ffffff;
+  -fx-header-color: #094067;
+  -fx-text-color: #ffffff;
+
+  -fx-highlight-color: #3da9fc;
+  -fx-secondary-color: #90b4ce;
+  -fx-tertiary-color: #ef4565;
 }
 
 /* UI Specific Elements */
@@ -24,21 +31,33 @@
 
 /* Basic UI Elements */
 .title {
-  -fx-fill: -fx-text-color;
+  -fx-fill: -fx-header-color;
+  -fx-font-weight: bold;
   -fx-font-size: 72px;
 }
 
-.subtitle {
-  -fx-fill: -fx-text-color;
+.header {
+  -fx-fill: -fx-header-color;
+  -fx-font-weight: bold;
   -fx-font-size: 26px;
 }
 
 .button {
   -fx-background-color: -fx-button-background-color;
-  -fx-text-fill: -fx-light-text-color;
+  -fx-text-fill: -fx-button-text-color;
+  -fx-background-radius: 5;
 }
 
-.label,
+.text-box {
+  -fx-background-color: -fx-text-box-background-color;
+  -fx-text-fill: -fx-text-color;
+}
+
+.calendar-picker {
+  -fx-background-color: -fx-text-box-background-color;
+  -fx-text-fill: -fx-text-color;
+}
+
 .text {
   -fx-text-fill: -fx-text-color;
   -fx-fill: -fx-text-color;
@@ -52,11 +71,11 @@
 
 /* Tab View */
 .tab {
-  -fx-background-color: -fx-pane-background-color;
+  -fx-background-color: -fx-secondary-color;
 }
 
 .tab:selected {
-  -fx-background-color: -fx-primary-color;
+  -fx-background-color: -fx-highlight-color;
 }
 
 .tab .tab-label {
