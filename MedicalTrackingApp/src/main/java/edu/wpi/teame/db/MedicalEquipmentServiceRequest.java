@@ -8,11 +8,11 @@ public class MedicalEquipmentServiceRequest {
     private String endTime;
     private String date;
     private String assignee;
-    private Equipment equipment;
+    private String equipment;
     private String status;
 
 
-    public MedicalEquipmentServiceRequest(String id, String patient, String room, String startTIme, String endTime, String date, String assignee, Equipment equipment, String status) {
+    public MedicalEquipmentServiceRequest(String id, String patient, String room, String startTIme, String endTime, String date, String assignee, String equipment, String status) {
         this.id = id;
         this.patient = patient;
         this.room = room;
@@ -22,6 +22,10 @@ public class MedicalEquipmentServiceRequest {
         this.assignee = assignee;
         this.equipment = equipment;
         this.status = status;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getPatient() {
@@ -48,12 +52,16 @@ public class MedicalEquipmentServiceRequest {
         return assignee;
     }
 
-    public Equipment getEquipment() {
+    public String getEquipment() {
         return equipment;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setPatient(String patient) {
@@ -80,7 +88,7 @@ public class MedicalEquipmentServiceRequest {
         this.assignee = assignee;
     }
 
-    public void setEquipment(Equipment equipment) {
+    public void setEquipment(String equipment) {
         this.equipment = equipment;
     }
 
