@@ -14,7 +14,7 @@ public final class DBManager {
 
   private DBManager() {}
 
-  public ResultSet SQLSelect(String tableName) {
+  public ResultSet SQLSelect(String tableName, ) {
     return null;
   }
 }
