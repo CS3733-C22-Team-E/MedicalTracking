@@ -176,6 +176,22 @@ public class MapPageController implements Initializable {
     grid.add(Descriptor, 1, 2);
     dialog.getDialogPane().setContent(grid);
     Node CreateButton = dialog.getDialogPane().lookupButton(Create);
+    XPosition.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              CreateButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || YPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+            });
+    YPosition.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              CreateButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || XPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+            });
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Create) {
@@ -233,12 +249,18 @@ public class MapPageController implements Initializable {
     XPosition.textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(newValue.trim().isEmpty() || YPosition.getText().isBlank());
+              MoveButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || YPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
             });
     YPosition.textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(newValue.trim().isEmpty() || XPosition.getText().isBlank());
+              MoveButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || XPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
             });
 
     dialog.getDialogPane().setContent(grid);
@@ -254,5 +276,11 @@ public class MapPageController implements Initializable {
           return null;
         });
     dialog.showAndWait();
+  }
+
+  private boolean CoordinateChecker(String X, String Y) {
+    Double doubleX = Double.parseDouble(X);
+    Double doubleY = Double.parseDouble(Y);
+    return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 }
