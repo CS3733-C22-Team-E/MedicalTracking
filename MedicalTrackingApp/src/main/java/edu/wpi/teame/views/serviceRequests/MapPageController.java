@@ -58,7 +58,6 @@ public class MapPageController implements Initializable {
             "First Floor",
             "Second Floor",
             "Third Floor"));
-    mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
     mapPane.setOnMouseMoved(
         event -> {
           Xposition.setText(String.valueOf((int) (conversionFactorX * event.getX())));
@@ -69,12 +68,6 @@ public class MapPageController implements Initializable {
           Xposition.setText("Not on Map");
           Yposition.setText("Not on Map");
         });
-  }
-
-  @FXML
-  private void handleMouseClick(double x, double y) {
-    Xposition.setText(String.valueOf((int) x));
-    Yposition.setText(String.valueOf((int) y));
   }
 
   @FXML
@@ -161,6 +154,14 @@ public class MapPageController implements Initializable {
 
   double ConvertPixelYToLayoutY(double PixelY) {
     return (PixelY / 3400) * mapPane.getLayoutBounds().getHeight();
+  }
+
+  double ConvertLayoutXToPixelX(double LayoutX) {
+    return (LayoutX * 5000) / mapPane.getLayoutBounds().getWidth();
+  }
+
+  double ConvertLayoutYToPixelY(double LayoutY) {
+    return (LayoutY * 3400) / mapPane.getLayoutBounds().getHeight();
   }
 
   private void CreateMapIconDialogBox() {
@@ -306,8 +307,16 @@ public class MapPageController implements Initializable {
     final Position pos = new Position();
 
     // Prompt the user that the node can be clicked
-    node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> node.setCursor(Cursor.HAND));
-    node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> node.setCursor(Cursor.DEFAULT));
+    node.addEventHandler(
+        MouseEvent.MOUSE_ENTERED,
+        event -> {
+          node.setCursor(Cursor.HAND);
+        });
+    node.addEventHandler(
+        MouseEvent.MOUSE_EXITED,
+        event -> {
+          node.setCursor(Cursor.DEFAULT);
+        });
 
     // Prompt the user that the node can be dragged
     node.addEventHandler(
@@ -318,7 +327,11 @@ public class MapPageController implements Initializable {
           pos.x = event.getX();
           pos.y = event.getY();
         });
-    node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> node.setCursor(Cursor.DEFAULT));
+    node.addEventHandler(
+        MouseEvent.MOUSE_RELEASED,
+        event -> {
+          node.setCursor(Cursor.DEFAULT);
+        });
 
     // Realize drag and drop function
     node.addEventHandler(
@@ -329,6 +342,10 @@ public class MapPageController implements Initializable {
 
           double x = node.getLayoutX() + distanceX;
           double y = node.getLayoutY() + distanceY;
+
+          // Update mouse location while dragging
+          Xposition.setText(String.valueOf((int) ConvertLayoutXToPixelX(x)));
+          Yposition.setText(String.valueOf((int) ConvertLayoutYToPixelY(y)));
 
           // After calculating X and y, relocate the node to the specified coordinate point (x, y)
           node.relocate(x, y);
