@@ -1,7 +1,6 @@
 package edu.wpi.teame.views.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -12,7 +11,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class FoodDeliveryServiceRequestPageServiceRequestController extends ServiceRequestController {
+public class FoodDeliveryServiceRequestPageServiceRequestController
+    extends ServiceRequestController {
   @FXML public Button sendButton;
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
