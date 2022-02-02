@@ -296,7 +296,7 @@ public class MapPageController implements Initializable {
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 
-  private static class Position {
+  private static class Position { // edit so I can commit the branch
     double x;
     double y;
   }
