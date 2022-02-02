@@ -3,8 +3,8 @@ package edu.wpi.teame.db;
 public class Equipment {
     private String ID;
     private String locationNodeID;
-    private FloorType floor;
-    private BuildingType building;
+    //private FloorType floor;
+    //private BuildingType building;
     private LocationType type;
     private String name;
     private boolean hasPatient;
@@ -12,15 +12,15 @@ public class Equipment {
 
     public Equipment (String ID,
                      String locationNodeID,
-                     FloorType floor,
-                     BuildingType building,
+                     LocationType type,
                      String name,
                      boolean hasPatient,
                      boolean isClean)   {
         this.ID = ID;
         this.locationNodeID = locationNodeID;
-        this.floor = floor;
-        this.building = building;
+        //this.floor = floor;
+        //this.building = building;
+        this.type = type;
         this.name = name;
         this.hasPatient = hasPatient;
         this.isClean = isClean;
@@ -41,7 +41,7 @@ public class Equipment {
     public void setLocationNodeID(String locationNodeID) {
         this.locationNodeID = locationNodeID;
     }
-
+/*
     public FloorType getFloor() {
         return floor;
     }
@@ -58,6 +58,7 @@ public class Equipment {
         this.building = building;
     }
 
+ */
     public String getName() {
         return name;
     }
