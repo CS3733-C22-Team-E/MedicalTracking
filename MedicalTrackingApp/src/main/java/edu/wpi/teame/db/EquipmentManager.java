@@ -133,5 +133,26 @@ public class EquipmentManager implements IManager<Equipment> {
     }
 
      */
+
+    String updateQuery = "UPDATE Equipment SET ID = '"
+            + updatedObject.getNodeID()
+            + "', locationNodeID = '"
+            + updatedObject.getLocationNodeID()
+            + "', type = '"
+            + updatedObject.getType()
+            + "', hasPatient = '"
+            + updatedObject.isHasPatient()
+            + "', isClean = '"
+            + updatedObject.isClean()
+            + "' WHERE id = '"
+            + updatedObject.getNodeID()+ "'";
+
+    try {
+      stmt.executeUpdate(updateQuery);
+      System.out.println("Location updated successfully");
+    } catch (SQLException e) {
+      System.out.println("Case2: Could not update Locations table");
+      e.printStackTrace();
+    }
   }
 }
