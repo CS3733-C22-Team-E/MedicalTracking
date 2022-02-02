@@ -11,6 +11,18 @@ public class MedicalEquipmentServiceRequest {
   private String equipment;
   private String status;
 
+  /*
+  private String id;
+  private String patient;
+  private Location room;
+  private String startTIme;
+  private String endTime;
+  private String date;
+  private String assignee;
+  private Equipment equipment;
+  private MedicalEquipmentServiceRequestStatus status;
+   */
+
   public MedicalEquipmentServiceRequest(
       String id,
       String patient,

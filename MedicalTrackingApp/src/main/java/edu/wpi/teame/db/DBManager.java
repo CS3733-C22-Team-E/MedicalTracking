@@ -45,23 +45,24 @@ public final class DBManager {
     // creating the table for the locations
     try {
       String createLocationsTable =
-          "CREATE TABLE LOCATIONS(id VARCHAR(10) Primary Key,"
-              + "x VARCHAR(4), "
-              + "y VARCHAR(4), "
+          "CREATE TABLE LOCATION(id VARCHAR(10) Primary Key,"
+              + "x int, "
+              + "y int, "
               + "floor VARCHAR(2), "
-              + "building VARCHAR(25), "
-              + "locationType VARCHAR(4))";
+              + "building VARCHAR(100), "
+              + "locationType VARCHAR(4),"
+              + "name VARCHAR(100))";
+
       stmt.execute(createLocationsTable);
 
-      /*
+
       String createEquipmentTable = "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
-              + "x VARCHAR(4), "
-              + "y VARCHAR(4), "
-              + "floor VARCHAR(2), "
-              + "building VARCHAR(25), "
-              + "locationType VARCHAR(4))";
-      stmt.execute(createLocationsTable);
-
+              + "locationNodeId VARCHAR(10), "
+              + "locationType VARCHAR(4),"
+              + "name VARCHAR(100),"
+              +"FOREIGN KEY (locationNodeId) REFERENCES LOCATION(id))";
+      stmt.execute(createEquipmentTable);
+      /*
       String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
               + "x VARCHAR(4), "
               + "y VARCHAR(4), "

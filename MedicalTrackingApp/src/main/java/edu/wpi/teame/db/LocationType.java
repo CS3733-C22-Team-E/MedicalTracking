@@ -12,5 +12,9 @@ public enum LocationType {
     STAI,
     ELEV,
     STOR,
-    BATH
+    BATH,
+    PBED,
+    PUMP,
+    XRAY,
+    RECL
 }
