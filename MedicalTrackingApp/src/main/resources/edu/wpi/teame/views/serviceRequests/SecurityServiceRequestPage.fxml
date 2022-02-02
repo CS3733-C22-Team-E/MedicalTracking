@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="146.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.SecurityServiceRequestPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.SecurityServiceRequestPageController">
    <children>
       <Text layoutX="95.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Service Request" />
       <Text layoutX="35.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
       <Text layoutX="35.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" />
       <TextField fx:id="roomTextBox" layoutX="74.0" layoutY="45.0" />
       <TextField fx:id="floorTextBox" layoutX="74.0" layoutY="76.0" />
-      <Button fx:id="sendButton" defaultButton="true" layoutX="241.0" layoutY="105.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+      <Button fx:id="sendButton" defaultButton="true" layoutX="241.0" layoutY="105.0" mnemonicParsing="false" text="Send" textFill="#176aeb" />
       <AnchorPane fx:id="scheduleAnchorPane" layoutX="18.0" layoutY="189.0" prefHeight="75.0" prefWidth="315.0" visible="false">
          <children>
             <Text disable="true" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delivery Time:" />

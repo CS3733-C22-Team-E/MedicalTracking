@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="538.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.FoodDeliveryServiceRequestPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="538.0" prefWidth="462.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.FoodDeliveryServiceRequestPageController">
    <children>
       <Text layoutX="177.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Food Delivery Request" />
       <Text layoutX="14.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
@@ -63,7 +63,7 @@
             <TextField fx:id="dinnerTimeTextField" GridPane.columnIndex="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <JFXButton fx:id="sendButton" defaultButton="true" layoutX="396.0" layoutY="499.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" textFill="#176aeb" />
+      <JFXButton fx:id="sendButton" defaultButton="true" layoutX="396.0" layoutY="499.0" mnemonicParsing="false" text="Send" textFill="#176aeb" />
       <CheckBox fx:id="dietaryRestrictions" layoutX="150.0" layoutY="135.0" mnemonicParsing="false" onAction="#DietaryRestrictionsCallBack" />
       <Text layoutX="102.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
       <Text layoutX="310.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date: " />

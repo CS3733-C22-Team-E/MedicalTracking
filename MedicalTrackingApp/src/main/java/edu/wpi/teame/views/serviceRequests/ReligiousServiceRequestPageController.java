@@ -3,13 +3,16 @@ package edu.wpi.teame.views.serviceRequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.views.Controller;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class ReligiousServiceRequestPageController extends ServiceRequest {
+public class ReligiousServiceRequestPageController extends Controller {
 
   @FXML public JFXButton sendButton;
   @FXML private TextField patientName;
@@ -37,7 +40,7 @@ public class ReligiousServiceRequestPageController extends ServiceRequest {
   @FXML private TextField otherServiceChoices;
 
   @FXML
-  private void setup() {
+  public void initialize(URL location, ResourceBundle resources) {
     christianityChoices.setItems(
         FXCollections.observableArrayList("Blessing", "Last Rites", "Communion"));
     judaismChoices.setItems(

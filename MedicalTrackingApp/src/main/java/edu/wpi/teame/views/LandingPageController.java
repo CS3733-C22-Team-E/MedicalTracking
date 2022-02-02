@@ -103,8 +103,8 @@ public class LandingPageController {
 
   private void configureTab(Tab tab, String title, String pageUrl) throws IOException {
     Label label = new Label(title);
-    label.setStyle("-fx-text-fill: -fx-text-color");
     label.setTextAlignment(TextAlignment.CENTER);
+    label.setStyle("-fx-text-fill: -fx-text-color");
 
     AnchorPane anchorPane = new AnchorPane();
     anchorPane.getChildren().add(label);

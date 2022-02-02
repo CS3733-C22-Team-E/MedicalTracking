@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane accessibleRole="TEXT" onDragEntered="#setup" onMouseEntered="#setup" prefHeight="486.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ReligiousServiceRequestPageController">
+<AnchorPane accessibleRole="TEXT" prefHeight="486.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ReligiousServiceRequestPageController">
    <children>
       <Text layoutX="225.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Religious Service Request" />
       <Text layoutX="16.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name:" wrappingWidth="87.98307228088379" />
@@ -43,7 +43,7 @@
             <JFXComboBox fx:id="islamChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <JFXComboBox fx:id="judaismChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <JFXComboBox fx:id="hinduismChoices" prefHeight="27.0" prefWidth="75.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <JFXButton fx:id="sendButton" onAction="#sendServiceRequest" style="-fx-background-color: grey;" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <JFXButton fx:id="sendButton" style="-fx-background-color: grey;" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
             <TextField fx:id="otherServiceChoices" prefHeight="94.0" prefWidth="100.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2" />
             <Text fx:id="otherText" strokeType="OUTSIDE" strokeWidth="0.0" text="What religious service are you looking for:" visible="false" wrappingWidth="99.99351501464844" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <font>

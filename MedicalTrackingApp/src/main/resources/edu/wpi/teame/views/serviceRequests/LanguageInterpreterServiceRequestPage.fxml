@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<AnchorPane onMouseEntered="#setup" prefHeight="400.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.LanguageInterpreterServiceRequestPageController">
+<AnchorPane prefHeight="400.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.LanguageInterpreterServiceRequestPageController">
    <children>
       <Text layoutX="201.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language Interpreter Service Request" />
       <JFXComboBox fx:id="languageDropdown" layoutX="92.0" layoutY="149.0" />
@@ -27,6 +27,6 @@
       <TextField fx:id="startTime" layoutX="90.0" layoutY="282.0" />
       <Text layoutX="23.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
       <TextField fx:id="endTime" layoutX="89.0" layoutY="318.0" />
-      <JFXButton layoutX="265.0" layoutY="349.0" mnemonicParsing="false" onAction="#sendServiceRequest" text="Send" />
+      <JFXButton layoutX="265.0" layoutY="349.0" mnemonicParsing="false" text="Send" />
    </children>
 </AnchorPane>
