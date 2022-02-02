@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -15,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.GiftAndFloralDeliveryServiceRequestPageServiceRequestController">
     <children>
-      <GridPane layoutY="2.0" prefHeight="580.0" prefWidth="800.0">
+      <GridPane alignment="CENTER" layoutY="2.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -137,7 +136,5 @@
             </GridPane>
          </children>
       </GridPane>
-        <TextArea fx:id="dietaryRestrictionsDescribe" layoutX="241.0" layoutY="143.0" prefHeight="56.0" prefWidth="192.0" visible="false" />
-        <Text fx:id="dietaryRestrictionsDescribeText" layoutX="281.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Describe Restrictions:" visible="false" />
     </children>
 </AnchorPane>

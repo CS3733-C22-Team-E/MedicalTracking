@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 public class InternalPatientTransportationServiceRequestPageServiceRequestController
     extends ServiceRequestController {
@@ -20,24 +19,23 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML private TextField deliveryTimeTextbox;
   @FXML private DatePicker deliveryDateDatebox;
   @FXML private JFXComboBox<String> transferToPicker;
+  @FXML private GridPane toOtherRoomGridPlane;
   @FXML private TextField toOtherFloorTextbox;
   @FXML private TextField toOtherRoomTextbox;
+  @FXML private GridPane toTheirRoomGridPlane;
   @FXML private TextField toTheirFloorTextbox;
   @FXML private TextField toTheirRoomTextbox;
+  @FXML private GridPane toOtherLocationGridPlane;
   @FXML private TextField toOtherLocationTextbox;
   @FXML private JFXComboBox<String> transferFromPicker;
+  @FXML private GridPane fromOtherRoomGridPlane;
   @FXML private TextField fromOtherFloorTextbox;
   @FXML private TextField fromOtherRoomTextbox;
+  @FXML private GridPane fromTheirRoomGridPlane;
   @FXML private TextField fromTheirFloorTextbox;
   @FXML private TextField fromTheirRoomTextbox;
+  @FXML private GridPane fromOtherLocationGridPlane;
   @FXML private TextField fromOtherLocationTextbox;
-
-  @FXML private Text fromRoomText;
-  @FXML private Text fromFloorText;
-  @FXML private Text fromOtherLocationText;
-  @FXML private Text toRoomText;
-  @FXML private Text toFloorText;
-  @FXML private Text toOtherLocationText;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -53,36 +51,19 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     String fromLocation = transferFromPicker.getValue();
     switch (fromLocation) {
       case "Their Room":
-        fromRoomText.setVisible(true);
-        fromFloorText.setVisible(true);
-        fromTheirRoomTextbox.setVisible(true);
-        fromTheirRoomTextbox.setText(roomTextBox.getText());
-        fromTheirFloorTextbox.setVisible(true);
-        fromTheirFloorTextbox.setText(floorTextBox.getText());
-        fromOtherRoomTextbox.setVisible(false);
-        fromOtherFloorTextbox.setVisible(false);
-        fromOtherLocationText.setVisible(false);
-        fromOtherLocationTextbox.setVisible(false);
+        fromTheirRoomGridPlane.setVisible(true);
+        fromOtherRoomGridPlane.setVisible(false);
+        fromOtherLocationGridPlane.setVisible(false);
         break;
       case "Other Room":
-        fromRoomText.setVisible(true);
-        fromFloorText.setVisible(true);
-        fromOtherRoomTextbox.setVisible(true);
-        fromOtherFloorTextbox.setVisible(true);
-        fromTheirRoomTextbox.setVisible(false);
-        fromTheirFloorTextbox.setVisible(false);
-        fromOtherLocationText.setVisible(false);
-        fromOtherLocationTextbox.setVisible(false);
+        fromTheirRoomGridPlane.setVisible(false);
+        fromOtherRoomGridPlane.setVisible(true);
+        fromOtherLocationGridPlane.setVisible(false);
         break;
       case "Other Location":
-        fromOtherLocationText.setVisible(true);
-        fromOtherLocationTextbox.setVisible(true);
-        fromRoomText.setVisible(false);
-        fromFloorText.setVisible(false);
-        fromOtherRoomTextbox.setVisible(false);
-        fromOtherFloorTextbox.setVisible(false);
-        fromTheirRoomTextbox.setVisible(false);
-        fromTheirFloorTextbox.setVisible(false);
+        fromTheirRoomGridPlane.setVisible(false);
+        fromOtherRoomGridPlane.setVisible(false);
+        fromOtherLocationGridPlane.setVisible(true);
         break;
       case "":
         break;
@@ -94,39 +75,22 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML
   private void toPickerCallback() {
     // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
-    String toLocation = transferToPicker.getValue();
+    String toLocation = transferFromPicker.getValue();
     switch (toLocation) {
       case "Their Room":
-        toRoomText.setVisible(true);
-        toFloorText.setVisible(true);
-        toTheirRoomTextbox.setVisible(true);
-        toTheirRoomTextbox.setText(roomTextBox.getText());
-        toTheirFloorTextbox.setVisible(true);
-        toTheirFloorTextbox.setText(floorTextBox.getText());
-        toOtherRoomTextbox.setVisible(false);
-        toOtherFloorTextbox.setVisible(false);
-        toOtherLocationText.setVisible(false);
-        toOtherLocationTextbox.setVisible(false);
+        toOtherRoomGridPlane.setVisible(false);
+        toOtherLocationGridPlane.setVisible(false);
+        toTheirRoomGridPlane.setVisible(true);
         break;
       case "Other Room":
-        toRoomText.setVisible(true);
-        toFloorText.setVisible(true);
-        toOtherRoomTextbox.setVisible(true);
-        toOtherFloorTextbox.setVisible(true);
-        toTheirRoomTextbox.setVisible(false);
-        toTheirFloorTextbox.setVisible(false);
-        toOtherLocationText.setVisible(false);
-        toOtherLocationTextbox.setVisible(false);
+        toTheirRoomGridPlane.setVisible(false);
+        toOtherRoomGridPlane.setVisible(true);
+        toOtherLocationGridPlane.setVisible(false);
         break;
       case "Other Location":
-        toOtherLocationText.setVisible(true);
-        toOtherLocationTextbox.setVisible(true);
-        toRoomText.setVisible(false);
-        toFloorText.setVisible(false);
-        toOtherRoomTextbox.setVisible(false);
-        toOtherFloorTextbox.setVisible(false);
-        toTheirRoomTextbox.setVisible(false);
-        toTheirFloorTextbox.setVisible(false);
+        toTheirRoomGridPlane.setVisible(false);
+        toOtherRoomGridPlane.setVisible(false);
+        toOtherLocationGridPlane.setVisible(true);
         break;
       case "":
         break;
