@@ -1,6 +1,7 @@
-package edu.wpi.teame.views;
+package edu.wpi.teame.views.serviceRequests;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.views.MapIcon;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
