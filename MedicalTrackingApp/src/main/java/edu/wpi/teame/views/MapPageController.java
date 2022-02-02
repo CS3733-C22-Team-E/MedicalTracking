@@ -19,12 +19,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.util.Pair;
 
 public class MapPageController implements Initializable {
   private final HashMap<String, String> ResourceNames = new HashMap<String, String>();
-  @FXML private ComboBox dropDown;
+  @FXML private ComboBox<String> dropDown;
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
   @FXML private AnchorPane mapPane;
@@ -45,9 +44,6 @@ public class MapPageController implements Initializable {
     ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
     ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
     System.out.println("Setting Up");
-    pane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
-    pane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
-    pane.autosize();
     conversionFactorX = 1.055 * 5000 / mapImageView.getFitWidth();
     conversionFactorY = 1.004 * 3400 / mapImageView.getFitHeight();
     dropDown.setItems(
@@ -60,7 +56,10 @@ public class MapPageController implements Initializable {
             "Third Floor"));
     mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
     mapPane.setOnMouseMoved(
-        e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
+        event -> {
+          Xposition.setText(String.valueOf((int) conversionFactorX * event.getX()));
+          Yposition.setText(String.valueOf((int) conversionFactorY * event.getY()));
+        });
     mapPane.setOnMouseExited(
         event -> {
           Xposition.setText("Not on Map");
@@ -97,40 +96,22 @@ public class MapPageController implements Initializable {
       String icon,
       int FitWidth,
       int FitHeight,
-      Double Opacity) {
-    ImageView retval = new ImageView();
-    retval.setImage(new Image(App.class.getResource(icon).toString()));
-    retval.setOpacity(Opacity);
-    pane.getChildren().add(retval);
-    retval.setFitWidth(FitWidth);
-    retval.setFitHeight(FitHeight);
-    retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
-    retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
-    retval.setOnMouseClicked(event -> HandleMapIconClick(retval));
-    Tooltip tooltip = new Tooltip();
-    tooltip.setText("Patient:");
-    tooltip.install(retval, tooltip);
-    retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
-    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
-    return retval;
+      Double Opacity,
+      String descriptor) {
+    ImageView newIcon = new ImageView();
+    newIcon.setImage(new Image(App.class.getResource(icon).toString()));
+    newIcon.setOpacity(Opacity);
+    newIcon.setFitWidth(FitWidth);
+    newIcon.setFitHeight(FitHeight);
+    newIcon.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
+    newIcon.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
+    newIcon.setOnMouseClicked(event -> HandleMapIconClick(newIcon));
+    Tooltip tooltip = new Tooltip(descriptor);
+    Tooltip.install(newIcon, tooltip);
+    pane.getChildren().add(newIcon);
+    return newIcon;
   }
 
-  //  @FXML
-  //  private ImageView createMapIcon(Optional<MapIcon> icon) {
-  //    ImageView retval = new ImageView();
-  //    retval.setImage(new
-  // Image(App.class.getResource(icon.get().getIconResourcePath()).toString()));
-  //    retval.setOpacity(.7);
-  //    mapPane.getChildren().add(retval);
-  //    retval.setFitWidth(20);
-  //    retval.setFitHeight(20);
-  //    retval.setLayoutX(ConvertPixelXToLayoutX(icon.get().getPixelX()) - 20 / 2);
-  //    retval.setLayoutY(ConvertPixelYToLayoutY(icon.get().getPixelY()) - 20 / 2);
-  //    retval.setOnMouseClicked(event -> ShowRelocateDialogBox(retval));
-  //    retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
-  //    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
-  //    return retval;
-  //  }
   @FXML
   private void deletedButtonClick() {
     deletedButton = !deletedButton;
@@ -138,8 +119,8 @@ public class MapPageController implements Initializable {
 
   @FXML
   private void comboBoxChanged() {
-    System.out.println(dropDown.getValue().toString());
-    switch (dropDown.getValue().toString()) {
+    System.out.println(dropDown.getValue());
+    switch (dropDown.getValue()) {
       case "Ground Floor":
         switchImage("images/00_thegroundfloor.png");
         break;
@@ -206,7 +187,8 @@ public class MapPageController implements Initializable {
                 ResourceNames.get(Descriptor.getValue()),
                 20,
                 20,
-                .7);
+                .7,
+                Descriptor.getValue());
           }
           return null;
         });
@@ -214,9 +196,9 @@ public class MapPageController implements Initializable {
     dialog.showAndWait();
   }
 
-  private void HandleMapIconClick(ImageView node) {
+  private void HandleMapIconClick(ImageView mapIcon) {
     if (deletedButton) {
-      mapPane.getChildren().remove(node);
+      mapPane.getChildren().remove(mapIcon);
       deletedButton = false;
       return;
     }
@@ -265,9 +247,9 @@ public class MapPageController implements Initializable {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            node.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
-            node.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
-            node.setVisible(true);
+            mapIcon.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
+            mapIcon.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
+            mapIcon.setVisible(true);
           }
           return null;
         });
