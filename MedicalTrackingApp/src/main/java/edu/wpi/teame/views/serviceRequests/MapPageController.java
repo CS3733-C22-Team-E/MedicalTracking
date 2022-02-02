@@ -1,6 +1,7 @@
-package edu.wpi.teame.views;
+package edu.wpi.teame.views.serviceRequests;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.views.MapIcon;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -8,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
@@ -15,16 +17,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.util.Pair;
 
 public class MapPageController implements Initializable {
   private final HashMap<String, String> ResourceNames = new HashMap<String, String>();
-  @FXML private ComboBox dropDown;
+  @FXML private ComboBox<String> dropDown;
   @FXML private ImageView mapImageView;
   @FXML private GridPane pane;
   @FXML private AnchorPane mapPane;
@@ -34,6 +36,7 @@ public class MapPageController implements Initializable {
   private double conversionFactorX;
   private double conversionFactorY;
   private boolean deletedButton = false;
+  private boolean dragged = false;
 
   @FXML
   void switchImage(String name) {
@@ -45,9 +48,6 @@ public class MapPageController implements Initializable {
     ResourceNames.put("Patient Room", "images/HospitalBedIcon.png");
     ResourceNames.put("Equipment Storage Room", "images/noun-suitcase-325866.png");
     System.out.println("Setting Up");
-    pane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
-    pane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
-    pane.autosize();
     conversionFactorX = 1.055 * 5000 / mapImageView.getFitWidth();
     conversionFactorY = 1.004 * 3400 / mapImageView.getFitHeight();
     dropDown.setItems(
@@ -60,7 +60,10 @@ public class MapPageController implements Initializable {
             "Third Floor"));
     mapPane.setOnMouseClicked(e -> handleMouseClick(e.getX(), e.getY()));
     mapPane.setOnMouseMoved(
-        e -> handleMouseClick(conversionFactorX * e.getX(), conversionFactorY * e.getY()));
+        event -> {
+          Xposition.setText(String.valueOf((int) (conversionFactorX * event.getX())));
+          Yposition.setText(String.valueOf((int) (conversionFactorY * event.getY())));
+        });
     mapPane.setOnMouseExited(
         event -> {
           Xposition.setText("Not on Map");
@@ -97,40 +100,31 @@ public class MapPageController implements Initializable {
       String icon,
       int FitWidth,
       int FitHeight,
-      Double Opacity) {
-    ImageView retval = new ImageView();
-    retval.setImage(new Image(App.class.getResource(icon).toString()));
-    retval.setOpacity(Opacity);
-    pane.getChildren().add(retval);
-    retval.setFitWidth(FitWidth);
-    retval.setFitHeight(FitHeight);
-    retval.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
-    retval.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
-    retval.setOnMouseClicked(event -> HandleMapIconClick(retval));
-    Tooltip tooltip = new Tooltip();
-    tooltip.setText("Patient:");
-    tooltip.install(retval, tooltip);
-    retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
-    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
-    return retval;
+      Double Opacity,
+      String descriptor) {
+    ImageView newIcon = new ImageView();
+    newIcon.setImage(new Image(App.class.getResource(icon).toString()));
+    newIcon.setOpacity(Opacity);
+    newIcon.setFitWidth(FitWidth);
+    newIcon.setFitHeight(FitHeight);
+    newIcon.setLayoutX(ConvertPixelXToLayoutX(PixelX) - FitWidth / 2);
+    newIcon.setLayoutY(ConvertPixelYToLayoutY(PixelY) - FitHeight / 2);
+    newIcon.setOnMouseClicked(
+        event -> {
+          if (!dragged) {
+            HandleMapIconClick(newIcon);
+          } else {
+            dragged = false;
+          }
+        });
+
+    Tooltip tooltip = new Tooltip(descriptor);
+    Tooltip.install(newIcon, tooltip);
+    pane.getChildren().add(newIcon);
+    draggable(newIcon);
+    return newIcon;
   }
 
-  //  @FXML
-  //  private ImageView createMapIcon(Optional<MapIcon> icon) {
-  //    ImageView retval = new ImageView();
-  //    retval.setImage(new
-  // Image(App.class.getResource(icon.get().getIconResourcePath()).toString()));
-  //    retval.setOpacity(.7);
-  //    mapPane.getChildren().add(retval);
-  //    retval.setFitWidth(20);
-  //    retval.setFitHeight(20);
-  //    retval.setLayoutX(ConvertPixelXToLayoutX(icon.get().getPixelX()) - 20 / 2);
-  //    retval.setLayoutY(ConvertPixelYToLayoutY(icon.get().getPixelY()) - 20 / 2);
-  //    retval.setOnMouseClicked(event -> ShowRelocateDialogBox(retval));
-  //    retval.setOnMouseEntered(event -> System.out.println("Mouse Entered"));
-  //    retval.setOnMouseExited(event -> System.out.println("Mouse Exited"));
-  //    return retval;
-  //  }
   @FXML
   private void deletedButtonClick() {
     deletedButton = !deletedButton;
@@ -138,8 +132,8 @@ public class MapPageController implements Initializable {
 
   @FXML
   private void comboBoxChanged() {
-    System.out.println(dropDown.getValue().toString());
-    switch (dropDown.getValue().toString()) {
+    System.out.println(dropDown.getValue());
+    switch (dropDown.getValue()) {
       case "Ground Floor":
         switchImage("images/00_thegroundfloor.png");
         break;
@@ -195,6 +189,22 @@ public class MapPageController implements Initializable {
     grid.add(Descriptor, 1, 2);
     dialog.getDialogPane().setContent(grid);
     Node CreateButton = dialog.getDialogPane().lookupButton(Create);
+    XPosition.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              CreateButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || YPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+            });
+    YPosition.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              CreateButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || XPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+            });
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Create) {
@@ -206,7 +216,8 @@ public class MapPageController implements Initializable {
                 ResourceNames.get(Descriptor.getValue()),
                 20,
                 20,
-                .7);
+                .7,
+                Descriptor.getValue());
           }
           return null;
         });
@@ -214,9 +225,9 @@ public class MapPageController implements Initializable {
     dialog.showAndWait();
   }
 
-  private void HandleMapIconClick(ImageView node) {
+  private void HandleMapIconClick(ImageView mapIcon) {
     if (deletedButton) {
-      mapPane.getChildren().remove(node);
+      mapPane.getChildren().remove(mapIcon);
       deletedButton = false;
       return;
     }
@@ -251,12 +262,18 @@ public class MapPageController implements Initializable {
     XPosition.textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(newValue.trim().isEmpty() || YPosition.getText().isBlank());
+              MoveButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || YPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
             });
     YPosition.textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(newValue.trim().isEmpty() || XPosition.getText().isBlank());
+              MoveButton.setDisable(
+                  newValue.trim().isEmpty()
+                      || XPosition.getText().isBlank()
+                      || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
             });
 
     dialog.getDialogPane().setContent(grid);
@@ -265,12 +282,57 @@ public class MapPageController implements Initializable {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            node.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
-            node.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
-            node.setVisible(true);
+            mapIcon.setLayoutX(ConvertPixelXToLayoutX(Double.parseDouble(XPosition.getText())));
+            mapIcon.setLayoutY(ConvertPixelYToLayoutY(Double.parseDouble(YPosition.getText())));
+            mapIcon.setVisible(true);
           }
           return null;
         });
     dialog.showAndWait();
+  }
+
+  private boolean CoordinateChecker(String X, String Y) {
+    Double doubleX = Double.parseDouble(X);
+    Double doubleY = Double.parseDouble(Y);
+    return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
+  }
+
+  private static class Position {
+    double x;
+    double y;
+  }
+
+  private void draggable(Node node) {
+    final Position pos = new Position();
+
+    // Prompt the user that the node can be clicked
+    node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> node.setCursor(Cursor.HAND));
+    node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> node.setCursor(Cursor.DEFAULT));
+
+    // Prompt the user that the node can be dragged
+    node.addEventHandler(
+        MouseEvent.MOUSE_PRESSED,
+        event -> {
+          node.setCursor(Cursor.MOVE);
+          // When a press event occurs, the location coordinates of the event are cached
+          pos.x = event.getX();
+          pos.y = event.getY();
+        });
+    node.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> node.setCursor(Cursor.DEFAULT));
+
+    // Realize drag and drop function
+    node.addEventHandler(
+        MouseEvent.MOUSE_DRAGGED,
+        event -> {
+          double distanceX = event.getX() - pos.x;
+          double distanceY = event.getY() - pos.y;
+
+          double x = node.getLayoutX() + distanceX;
+          double y = node.getLayoutY() + distanceY;
+
+          // After calculating X and y, relocate the node to the specified coordinate point (x, y)
+          node.relocate(x, y);
+          dragged = true;
+        });
   }
 }
