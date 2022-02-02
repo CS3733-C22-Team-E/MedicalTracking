@@ -10,5 +10,6 @@ public enum ServiceRequestTypes {
   Laundry,
   Religious,
   Security,
-  MedicineDelivery
+  MedicineDelivery,
+  Sanitation
 }
