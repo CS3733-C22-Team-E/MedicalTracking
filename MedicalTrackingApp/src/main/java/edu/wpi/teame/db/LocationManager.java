@@ -8,15 +8,7 @@ public class LocationManager implements IManager<Location> {
     private static Statement stmt;
 
     public LocationManager(Connection connection) {
-        //todo figure out whether to connect to the db for each class or pass in the connection object as param
-        this.connection = connection;
-
-        try {
-            stmt = connection.createStatement();
-        } catch (SQLException e) {
-            System.out.println("Could not create db statement");
-            e.printStackTrace();
-        }
+        DBManager.getInstance().getConnection();
     }
 
     @Override
@@ -28,16 +20,16 @@ public class LocationManager implements IManager<Location> {
 
 
             while(rset.next()) {
-                String nodeID4 = rset.getString("nodeID");
-                String xcoord4 = rset.getString("xcoord");
-                String ycoord4 = rset.getString("ycoord");
+                String nodeID4 = rset.getString("id");
+                String xcoord4 = rset.getString("x");
+                String ycoord4 = rset.getString("y");
                 String floor4 = rset.getString("floor");
                 String building4 = rset.getString("building");
-                String nodeType4 = rset.getString("nodeType");
+                String nodeType4 = rset.getString("locationType");
                 String longName4 = rset.getString("longName");
-                String shortName4 = rset.getString("shortName");
 
-                result=  new Location(nodeID4, xcoord4, ycoord4, floor4, building4, nodeType4, longName4, shortName4);
+                //convert strings to proper type
+                result=  new Location(nodeID4, xcoord4, ycoord4, floor4, building4, nodeType4, longName4);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -68,7 +68,7 @@ public final class DBManager {
     }
   }
 
-  public ResultSet SQLSelect(String tableName) {
-    return null;
+  public Connection getConnection() {
+    return connection;
   }
 }
