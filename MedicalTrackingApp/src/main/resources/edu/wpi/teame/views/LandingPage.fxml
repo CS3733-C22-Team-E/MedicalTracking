@@ -83,6 +83,11 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                </content>
             </Tab>
+            <Tab fx:id="facilitiesMaintenanceTab" text="Facilities Maintenance Service Request">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
          </tabs>
       </TabPane>
    </children>
