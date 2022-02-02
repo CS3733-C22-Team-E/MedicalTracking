@@ -53,21 +53,23 @@
   -fx-text-fill: -fx-text-color;
 }
 
+.calendar-picker {
+  -fx-background-color: -fx-text-box-background-color;
+  -fx-text-fill: -fx-text-color;
+}
+
 .text {
   -fx-text-fill: -fx-text-color;
   -fx-fill: -fx-text-color;
 }
 
 /* Panes and Backgrounds */
+.tab-pane,
 .anchor-pane {
   -fx-background-color: -fx-pane-background-color;
 }
 
 /* Tab View */
-.tab-pane {
-  -fx-background-color: -fx-pane-background-color;
-}
-
 .tab {
   -fx-background-color: -fx-secondary-color;
 }
