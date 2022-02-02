@@ -15,16 +15,18 @@ public final class DBManager {
   }
 
   private DBManager() {
-    //add jdbc driver
+    // add jdbc driver
     try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
       return;
     }
-    //connect to the database
+    // connect to the database
     try {
-      connection = DriverManager.getConnection("jdbc:derby:memory:ESpikeB;create=true;username=admin;password=admin;");
+      connection =
+          DriverManager.getConnection(
+              "jdbc:derby:memory:ESpikeB;create=true;username=admin;password=admin;");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -35,9 +37,10 @@ public final class DBManager {
       e.printStackTrace();
     }
 
-    //creating the table for the locations
+    // creating the table for the locations
     try {
-      String createLocationsTable = "CREATE TABLE LOCATIONS(id VARCHAR(10) Primary Key,"
+      String createLocationsTable =
+          "CREATE TABLE LOCATIONS(id VARCHAR(10) Primary Key,"
               + "x VARCHAR(4), "
               + "y VARCHAR(4), "
               + "floor VARCHAR(2), "
@@ -63,7 +66,7 @@ public final class DBManager {
       stmt.execute(createLocationsTable);
 
       */
-    }catch (SQLException e) {
+    } catch (SQLException e) {
       e.printStackTrace();
     }
   }
