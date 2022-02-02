@@ -1,6 +1,5 @@
 package edu.wpi.teame.views.serviceRequests;
 
-import edu.wpi.teame.views.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -8,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class ComputerServiceRequestPageController extends Controller {
+public class ComputerServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML public Button sendButton;
   @FXML private Text nameText;
   @FXML private Text roomText;

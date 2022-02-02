@@ -1,12 +1,11 @@
 package edu.wpi.teame.views.serviceRequests;
 
-import edu.wpi.teame.views.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class SecurityServiceRequestPageController extends Controller {
+public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private TextField floorTextBox;
   @FXML private TextField roomTextBox;
 

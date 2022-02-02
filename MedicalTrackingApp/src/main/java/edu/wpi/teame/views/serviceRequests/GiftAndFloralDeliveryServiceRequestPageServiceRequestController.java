@@ -1,6 +1,5 @@
 package edu.wpi.teame.views.serviceRequests;
 
-import edu.wpi.teame.views.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -9,7 +8,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-public class GiftAndFloralDeliveryServiceRequestPageController extends Controller {
+public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private TextField patientNameTextBox;
   @FXML private TextField roomTextBox;
   @FXML private TextField floorTextBox;

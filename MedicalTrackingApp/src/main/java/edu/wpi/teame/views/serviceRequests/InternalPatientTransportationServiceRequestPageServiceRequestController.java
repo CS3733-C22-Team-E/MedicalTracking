@@ -1,7 +1,7 @@
 package edu.wpi.teame.views.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teame.views.Controller;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -10,7 +10,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-public class InternalPatientTransportationServiceRequestPageController extends Controller {
+public class InternalPatientTransportationServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private GridPane patientInfoGridPlane;
   @FXML private TextField roomTextBox;
   @FXML private TextField floorTextBox;
