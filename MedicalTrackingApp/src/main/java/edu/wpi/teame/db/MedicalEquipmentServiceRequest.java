@@ -115,4 +115,25 @@ public class MedicalEquipmentServiceRequest {
   public void setStatus(MedicalEquipmentServiceRequestStatus status) {
     this.status = status;
   }
+
+  public String toString() {
+    return "ID: "
+        + id
+        + ", Patient: "
+        + patient
+        + ", roomID: "
+        + roomID.getId()
+        + ", startTime: "
+        + startTIme
+        + ", endTime: "
+        + endTime
+        + ", date: "
+        + date
+        + ", assignee: "
+        + assignee
+        + ", equipmentID: "
+        + equipmentID.getNodeID()
+        + ", status: "
+        + status;
+  }
 }

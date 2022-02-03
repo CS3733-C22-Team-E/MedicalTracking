@@ -91,4 +91,19 @@ public class Equipment {
   public void setClean(boolean clean) {
     isClean = clean;
   }
+
+  public String toString() {
+    return "ID: "
+        + ID
+        + ", locationNode: "
+        + locationNode.getId()
+        + ", type: "
+        + type
+        + ", name: "
+        + name
+        + ", hasPatient: "
+        + hasPatient
+        + ", isClean: "
+        + isClean;
+  }
 }

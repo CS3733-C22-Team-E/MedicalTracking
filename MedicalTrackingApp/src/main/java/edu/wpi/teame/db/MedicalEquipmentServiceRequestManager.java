@@ -29,8 +29,8 @@ public class MedicalEquipmentServiceRequestManager
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
-        Location serReqLocation = locationTable.get(rset.getString("room"));
-        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipment"));
+        Location serReqLocation = locationTable.get(rset.getString("roomID"));
+        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipmentID"));
 
         result =
             new MedicalEquipmentServiceRequest(
@@ -60,20 +60,20 @@ public class MedicalEquipmentServiceRequestManager
       ResultSet rset = stmt.executeQuery(getQuery);
 
       while (rset.next()) {
-        Location serReqLocation = locationTable.get(rset.getString("room"));
-        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipment"));
+        Location serReqLocation = locationTable.get(rset.getString("roomID"));
+        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipmentID"));
 
         result.add(
-                new MedicalEquipmentServiceRequest(
-                        rset.getString("id"),
-                        rset.getString("patient"),
-                        serReqLocation,
-                        rset.getString("startTime"),
-                        rset.getString("endTime"),
-                        rset.getString("date"),
-                        rset.getString("assignee"),
-                        serReqEquipment,
-                        MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]));
+            new MedicalEquipmentServiceRequest(
+                rset.getString("id"),
+                rset.getString("patient"),
+                serReqLocation,
+                rset.getString("startTime"),
+                rset.getString("endTime"),
+                rset.getString("date"),
+                rset.getString("assignee"),
+                serReqEquipment,
+                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -100,9 +100,9 @@ public class MedicalEquipmentServiceRequestManager
             + newObject.getAssignee()
             + "','"
             + newObject.getEquipment().getNodeID()
-            + "','"
+            + "',"
             + newObject.getStatus().ordinal()
-            + "')";
+            + ")";
 
     try {
       stmt.executeUpdate(insertQuery);
@@ -113,7 +113,7 @@ public class MedicalEquipmentServiceRequestManager
 
   @Override
   public void remove(String id) {
-    String removeQuery = "DELETE FROM EQUIPMENTSERVICEREQUEST WHERE nodeID='" + id + "'";
+    String removeQuery = "DELETE FROM EQUIPMENTSERVICEREQUEST WHERE id='" + id + "'";
 
     try {
       stmt.executeUpdate(removeQuery);
@@ -138,9 +138,9 @@ public class MedicalEquipmentServiceRequestManager
   @Override
   public void update(MedicalEquipmentServiceRequest updatedObject) {
     String updateQuery =
-        "UPDATE LOCATIONS SET patient = '"
+        "UPDATE EQUIPMENTSERVICEREQUEST SET patient = '"
             + updatedObject.getPatient()
-            + "', room = '"
+            + "', roomID = '"
             + updatedObject.getRoom().getId()
             + "', startTime = '"
             + updatedObject.getStartTIme()
@@ -150,11 +150,11 @@ public class MedicalEquipmentServiceRequestManager
             + updatedObject.getDate()
             + "', assignee = '"
             + updatedObject.getAssignee()
-            + "', equipment = '"
+            + "', equipmentID = '"
             + updatedObject.getEquipment().getNodeID()
-            + "', status = '"
+            + "', status = "
             + updatedObject.getStatus().ordinal()
-            + "' WHERE id = '"
+            + " WHERE id = '"
             + updatedObject.getId()
             + "'";
 

@@ -20,13 +20,13 @@ public class LocationManager implements IManager<Location> {
   @Override
   public Location get(String id) {
     Location result = null;
-    String getQuery = "SELECT * FROM LOCATIONS WHERE nodeID='" + id + "'";
+    String getQuery = "SELECT * FROM LOCATIONS WHERE id='" + id + "'";
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
       while (rset.next()) {
         int x = rset.getInt("x");
         int y = rset.getInt("y");
-        String name = rset.getString("longName");
+        String name = rset.getString("name");
         FloorType floor = FloorType.values()[rset.getInt("floor")];
         BuildingType building = BuildingType.values()[rset.getInt("building")];
         LocationType locationType = LocationType.values()[rset.getInt("locationType")];
@@ -42,8 +42,8 @@ public class LocationManager implements IManager<Location> {
 
   @Override
   public LinkedList<Location> getAll() {
-    String getAllQuery = "SELECT * FROM Locations";
-    LinkedList<Location> result = null;
+    String getAllQuery = "SELECT * FROM LOCATIONS";
+    LinkedList<Location> result = new LinkedList<>();
 
     try {
       ResultSet rset = stmt.executeQuery(getAllQuery);
@@ -51,7 +51,7 @@ public class LocationManager implements IManager<Location> {
         int x = rset.getInt("x");
         int y = rset.getInt("y");
         String id = rset.getString("id");
-        String name = rset.getString("longName");
+        String name = rset.getString("name");
         FloorType floor = FloorType.values()[rset.getInt("floor")];
         BuildingType building = BuildingType.values()[rset.getInt("building")];
         LocationType locationType = LocationType.values()[rset.getInt("locationType")];
@@ -71,17 +71,17 @@ public class LocationManager implements IManager<Location> {
     String insertQuery =
         "INSERT INTO LOCATIONS VALUES('"
             + newObject.getId()
-            + "','"
+            + "',"
             + newObject.getX()
-            + "','"
+            + ","
             + newObject.getY()
-            + "','"
+            + ","
             + newObject.getFloor().ordinal()
-            + "','"
+            + ","
             + newObject.getBuilding().ordinal()
-            + "','"
+            + ","
             + newObject.getType().ordinal()
-            + "','"
+            + ",'"
             + newObject.getName()
             + "')";
     try {
@@ -94,7 +94,7 @@ public class LocationManager implements IManager<Location> {
 
   @Override
   public void remove(String id) {
-    String removeQuery = "DELETE FROM LOCATIONS WHERE nodeID='" + id + "'";
+    String removeQuery = "DELETE FROM LOCATIONS WHERE id='" + id + "'";
     try {
       stmt.executeUpdate(removeQuery);
     } catch (SQLException e) {
@@ -107,17 +107,17 @@ public class LocationManager implements IManager<Location> {
   @Override
   public void update(Location updatedObject) {
     String updateQuery =
-        "UPDATE LOCATIONS SET x = '"
+        "UPDATE LOCATIONS SET x = "
             + updatedObject.getY()
-            + "', y = '"
+            + ", y = "
             + updatedObject.getX()
-            + "', floor = '"
+            + ", floor = "
             + updatedObject.getFloor().ordinal()
-            + "', building = '"
+            + ", building = "
             + updatedObject.getBuilding().ordinal()
-            + "', type = '"
+            + ", locationType = "
             + updatedObject.getType().ordinal()
-            + "', longName = '"
+            + ", name = '"
             + updatedObject.getName()
             + "' WHERE id = '"
             + updatedObject.getId()

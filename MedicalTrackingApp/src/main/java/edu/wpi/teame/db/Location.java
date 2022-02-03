@@ -82,4 +82,21 @@ public class Location {
   public void setY(int y) {
     this.y = y;
   }
+
+  public String toString() {
+    return "nodeID: "
+        + id
+        + ", xcoord: "
+        + x
+        + ", ycoord: "
+        + y
+        + ", floor: "
+        + floor
+        + ", building: "
+        + building
+        + ", nodeType: "
+        + type
+        + ", longName: "
+        + name;
+  }
 }

@@ -12,13 +12,19 @@ public final class DBManager {
   private LocationManager locationManager;
 
   public static DBManager getInstance() {
-    if (instance != null) {
+    if (instance == null) {
       instance = new DBManager();
     }
     return instance;
   }
 
-  private DBManager() {
+  private DBManager() {}
+
+  public Connection getConnection() {
+    return connection;
+  }
+
+  public void setupDB() {
     // add jdbc driver
     try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -45,7 +51,7 @@ public final class DBManager {
     // creating the table for the locations
     try {
       String createLocationsTable =
-          "CREATE TABLE LOCATION(id VARCHAR(10) Primary Key,"
+          "CREATE TABLE LOCATIONS(id VARCHAR(10) Primary Key,"
               + "x int, "
               + "y int, "
               + "floor int, "
@@ -54,42 +60,43 @@ public final class DBManager {
               + "name VARCHAR(100))";
 
       stmt.execute(createLocationsTable);
+      System.out.println("Locations created");
 
       String createEquipmentTable =
           "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
               + "locationNode VARCHAR(10), "
-              + "type VARCHAR(10) ,"
+              + "type int,"
               + "name VARCHAR(100),"
-              + "hasPatient BIT,"
-              + "isClean BIT,"
-              + "FOREIGN KEY (locationNodeId) REFERENCES LOCATION(id))";
+              + "hasPatient BOOLEAN,"
+              + "isClean BOOLEAN,"
+              + "FOREIGN KEY (locationNode) REFERENCES LOCATIONS(id))";
       stmt.execute(createEquipmentTable);
+      System.out.println("EQUIPMENT created");
 
-      String createEquipmentServiceRequestTable = "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
+      String createEquipmentServiceRequestTable =
+          "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
               + "patient VARCHAR(100), "
               + "roomID VARCHAR(10) ,"
-              + "stateTime VARCHAR(50),"
+              + "startTime VARCHAR(50),"
               + "endTime VARCHAR(50),"
               + "date VARCHAR(100),"
               + "assignee VARCHAR(100),"
               + "equipmentID VARCHAR(10),"
               + "status int,"
-              + "FOREIGN KEY (roomID) REFERENCES LOCATION(id),"
+              + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id),"
               + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
       stmt.execute(createEquipmentServiceRequestTable);
+      System.out.println("EQUIPMENTSERVICEREQUEST created");
 
+      MEServiceRequestManager = new MedicalEquipmentServiceRequestManager();
+      equipmentManager = new EquipmentManager();
+      locationManager = new LocationManager();
 
     } catch (SQLException e) {
+
       e.printStackTrace();
+      return;
     }
-
-    MEServiceRequestManager = new MedicalEquipmentServiceRequestManager();
-    equipmentManager = new EquipmentManager();
-    locationManager = new LocationManager();
-  }
-
-  public Connection getConnection() {
-    return connection;
   }
 
   public MedicalEquipmentServiceRequestManager getMEServiceRequestManager() {
