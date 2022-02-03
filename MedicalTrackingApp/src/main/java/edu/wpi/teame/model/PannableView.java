@@ -17,6 +17,8 @@ public class PannableView {
   private final int WIDTH = 1280;
   private final int HEIGHT = 720;
 
+  private boolean hamburgerOpen = false;
+
   public PannableView(String imageURL) {
     backgroundImage =
         new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
@@ -32,7 +34,7 @@ public class PannableView {
     ScrollPane scroll = createScrollPane(layout);
 
     StackPane staticWrapper = new StackPane();
-    staticWrapper.getChildren().setAll(scroll, createAddButton());
+    staticWrapper.getChildren().setAll(scroll, createHamburgerButton());
 
     // show the scene.
     Scene scene = new Scene(staticWrapper);
@@ -48,7 +50,6 @@ public class PannableView {
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
   }
 
-  /** @return a control to place on the scene. */
   private Button createKillButton() {
     final Button killButton = new Button("Kill the evil witch");
     killButton.setStyle("-fx-base: firebrick;");
@@ -65,24 +66,18 @@ public class PannableView {
     return killButton;
   }
 
-  private JFXButton createAddButton() {
-    Image hamburgerIcon =
-        new Image(Pannable.class.getResource("images/Icons/HamburgerMenu.png").toString());
+  private JFXButton createHamburgerButton() {
+    Image hamburgerIcon = new Image(Pannable.class.getResource("images/Icons/HamburgerMenu.png").toString());
     ImageView icon = new ImageView(hamburgerIcon);
     icon.setFitHeight(30);
     icon.setFitWidth(30);
-    final JFXButton addButton = new JFXButton("", icon);
-    addButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
-    addButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));
-    addButton.setOnAction(
-        (event) -> {
-          addButton.setStyle("-fx-base: forestgreen;");
-          addButton.setText("Add mode on!");
-        });
-    return addButton;
+    final JFXButton hamburgerButton = new JFXButton("", icon);
+    hamburgerButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
+    hamburgerButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));
+    hamburgerButton.setOnAction((event) -> { hamburgerOpen ^= hamburgerOpen; });
+    return hamburgerButton;
   }
 
-  /** @return a ScrollPane which scrolls the layout. */
   private ScrollPane createScrollPane(Pane layout) {
     ScrollPane scroll = new ScrollPane();
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
