@@ -24,6 +24,7 @@ public class LandingPageController implements Initializable {
   @FXML private Tab externalPatientTransportationTab;
   @FXML private Tab computerServiceRequestTab;
   @FXML private Tab securityServiceRequestTab;
+  @FXML private Tab facilitiesMaintenanceTab;
   @FXML private Tab languageInterpreterTab;
   @FXML private Tab audioVisualServicesTab;
   @FXML private Tab sanitationServicesTab;
@@ -33,7 +34,6 @@ public class LandingPageController implements Initializable {
   @FXML private Tab laundryServicesTab;
   @FXML private Tab foodDeliveryTab;
   @FXML private Tab giftDeliveryTab;
-  @FXML private Tab facilitiesMaintenanceTab;
   @FXML private Tab homeTab;
   @FXML private Tab mapTab;
 
@@ -55,6 +55,16 @@ public class LandingPageController implements Initializable {
 
     configureTab(homeTab, "Home", "views/HomePage.fxml");
     configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
+
+    configureTab(
+        medicalEquipmentTab,
+        "Medical Equipment",
+        "views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml");
+
+    configureTab(
+        externalPatientTransportationTab,
+        "External Patient Transportation",
+        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
     configureTab(medicalEquipmentTab, "Medical Equipment", null);
 
     configureTab(
@@ -71,6 +81,7 @@ public class LandingPageController implements Initializable {
         facilitiesMaintenanceTab,
         "Facilities Maintenance",
         "views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml");
+
     configureTab(
         internalPatientTransportationTab,
         "Internal Patient Transportation",

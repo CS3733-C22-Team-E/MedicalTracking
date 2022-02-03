@@ -10,6 +10,7 @@ public enum ServiceRequestTypes {
   Laundry,
   Religious,
   Security,
+  MedicalEquipment
   MedicineDelivery,
   Sanitation
   FacilitiesMaintenance
