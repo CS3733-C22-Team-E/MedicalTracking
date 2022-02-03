@@ -14,10 +14,12 @@ import javafx.stage.Stage;
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
   private final Image backgroundImage;
+  private final int WIDTH = 1280;
+  private final int HEIGHT = 720;
 
   public PannableView(String imageURL) {
     backgroundImage =
-        new Image("https://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+        new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
   }
 
   public void start(Stage stage) {
@@ -70,8 +72,8 @@ public class PannableView {
     icon.setFitHeight(30);
     icon.setFitWidth(30);
     final JFXButton addButton = new JFXButton("", icon);
-    addButton.setTranslateX(610);
-    addButton.setTranslateY(-320);
+    addButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
+    addButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));
     addButton.setOnAction(
         (event) -> {
           addButton.setStyle("-fx-base: forestgreen;");
@@ -86,7 +88,7 @@ public class PannableView {
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setPannable(true);
-    scroll.setPrefSize(1280, 720);
+    scroll.setPrefSize(WIDTH, HEIGHT);
     scroll.setContent(layout);
     return scroll;
   }
