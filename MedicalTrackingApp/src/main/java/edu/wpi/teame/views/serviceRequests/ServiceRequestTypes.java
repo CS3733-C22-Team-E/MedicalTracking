@@ -12,4 +12,5 @@ public enum ServiceRequestTypes {
   Security,
   MedicineDelivery,
   Sanitation
+  FacilitiesMaintenance
 }
