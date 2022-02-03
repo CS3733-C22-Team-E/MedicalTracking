@@ -66,16 +66,9 @@ public class LandingPageController implements Initializable {
         "External Patient Transportation",
         "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
     configureTab(medicalEquipmentTab, "Medical Equipment", null);
-
-    configureTab(
-        sanitationServicesTab,
-        "Sanitation Services",
-        "views/serviceRequests/SanitationServiceRequestPage.fxml");
-
-    configureTab(
-        medicineDeliveryTab,
-        "Medicine Delivery",
-        "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml");
+    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
+    configureTab(sanitationServicesTab, "Sanitation Services", null);
+    configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
 
     configureTab(
         facilitiesMaintenanceTab,
