@@ -35,7 +35,8 @@ public class MapPageController implements Initializable {
   @FXML private AnchorPane mapPane;
   @FXML private Text Xposition;
   @FXML private Text Yposition;
-  @FXML private Text coordinateText;
+  @FXML private Text LabelX;
+  @FXML private Text LabelY;
   private double conversionFactorX;
   private double conversionFactorY;
   private boolean deletedButton = false;
@@ -134,40 +135,41 @@ public class MapPageController implements Initializable {
     deletedButton = !deletedButton;
   }
 
+  private void updateMap(FloorType floor_) {
+    mapPane.getChildren().addAll(FloorIconLists.get(floor));
+    mapPane.getChildren().addAll(Xposition, Yposition, LabelX, LabelY);
+    floor = floor_;
+  }
+
   @FXML
   private void comboBoxChanged() {
     mapPane.getChildren().clear();
     System.out.println(dropDown.getValue());
+
     switch (dropDown.getValue()) {
       case "Ground Floor":
         switchImage("images/00_thegroundfloor.png");
-        floor = FloorType.GroundFloor;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.GroundFloor);
         break;
       case "Lower Level 1":
         switchImage("images/00_thelowerlevel1.png");
-        floor = FloorType.LowerLevel1;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.LowerLevel1);
         break;
       case "Lower Level 2":
         switchImage("images/00_thelowerlevel2.png");
-        floor = FloorType.LowerLevel2;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.LowerLevel2);
         break;
       case "First Floor":
         switchImage("images/01_thefirstfloor.png");
-        floor = FloorType.FirstFloor;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.FirstFloor);
         break;
       case "Second Floor":
         switchImage("images/02_thesecondfloor.png");
-        floor = FloorType.SecondFloor;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.SecondFloor);
         break;
       case "Third Floor":
         switchImage("images/03_thethirdfloor.png");
-        floor = FloorType.ThirdFloor;
-        mapPane.getChildren().addAll(FloorIconLists.get(floor));
+        updateMap(FloorType.ThirdFloor);
         break;
     }
   }
