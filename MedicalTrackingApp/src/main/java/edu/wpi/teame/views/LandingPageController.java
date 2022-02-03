@@ -58,27 +58,8 @@ public class LandingPageController implements Initializable {
 
     configureTab(
         medicalEquipmentTab,
-        "Medical Equipment",
+        "Equipment Delivery",
         "views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml");
-
-    configureTab(
-        externalPatientTransportationTab,
-        "External Patient Transportation",
-        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
-    configureTab(medicalEquipmentTab, "Medical Equipment", null);
-    configureTab(medicineDeliveryTab, "Medicine Delivery", null);
-    configureTab(sanitationServicesTab, "Sanitation Services", null);
-    configureTab(externalPatientTransportationTab, "External Patient Transportation", null);
-
-    configureTab(
-        facilitiesMaintenanceTab,
-        "Facilities Maintenance",
-        "views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml");
-
-    configureTab(
-        internalPatientTransportationTab,
-        "Internal Patient Transportation",
-        "views/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml");
 
     configureTab(
         foodDeliveryTab,
@@ -86,9 +67,21 @@ public class LandingPageController implements Initializable {
         "views/serviceRequests/FoodDeliveryServiceRequestPage.fxml");
 
     configureTab(
+        medicineDeliveryTab,
+        "Medicine Delivery",
+        "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml");
+
+    configureTab(
         giftDeliveryTab,
-        "Gift Delivery",
+        "Gift And Floral Delivery",
         "views/serviceRequests/GiftAndFloralServiceRequestPage.fxml");
+
+    configureTab(
+        languageInterpreterTab,
+        "Language Services",
+        "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml");
+
+    configureTab(sanitationServicesTab, "Sanitation Services", null);
 
     configureTab(
         laundryServicesTab,
@@ -96,9 +89,19 @@ public class LandingPageController implements Initializable {
         "views/serviceRequests/LaundryServiceRequestPage.fxml");
 
     configureTab(
-        languageInterpreterTab,
-        "Language Services",
-        "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml");
+        religiousRequestTab,
+        "Religious Services",
+        "views/serviceRequests/ReligiousServiceRequestPage.fxml");
+
+    configureTab(
+        internalPatientTransportationTab,
+        "Internal Patient Transportation",
+        "views/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml");
+
+    configureTab(
+        externalPatientTransportationTab,
+        "External Patient Transportation",
+        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
 
     configureTab(
         audioVisualServicesTab,
@@ -111,19 +114,14 @@ public class LandingPageController implements Initializable {
         "views/serviceRequests/ComputerServiceRequestPage.fxml");
 
     configureTab(
-        religiousRequestTab,
-        "Religious Services",
-        "views/serviceRequests/ReligiousServiceRequestPage.fxml");
-
-    configureTab(
         securityServiceRequestTab,
         "Security Services",
         "views/serviceRequests/SecurityServiceRequestPage.fxml");
 
     configureTab(
-        securityServiceRequestTab,
-        "Security Service Request",
-        "views/serviceRequests/SecurityServiceRequestPage.fxml");
+        facilitiesMaintenanceTab,
+        "Facilities Maintenance",
+        "views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml");
   }
 
   private void configureTab(Tab tab, String title, String pageUrl) throws IOException {

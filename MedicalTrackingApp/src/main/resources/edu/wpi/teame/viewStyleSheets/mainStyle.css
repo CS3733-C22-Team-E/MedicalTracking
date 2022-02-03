@@ -48,6 +48,17 @@
   -fx-background-radius: 5;
 }
 
+.combo-box {
+  -fx-background-color: -fx-button-background-color;
+  -fx-text-fill: -fx-button-text-color;
+  -fx-background-radius: 5;
+}
+
+.combo-box .list-cell{
+  -fx-background-color: -fx-button-background-color;
+  -fx-text-fill: -fx-button-text-color;
+}
+
 .text-box {
   -fx-background-color: -fx-text-box-background-color;
   -fx-text-fill: -fx-text-color;

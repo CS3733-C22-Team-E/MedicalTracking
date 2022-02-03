@@ -45,8 +45,8 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <DatePicker promptText="Choose start date..." GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-            <DatePicker promptText="Choose end date..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+            <DatePicker promptText="Choose start date..." styleClass="calendar-picker" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+            <DatePicker promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Date: " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Date:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             <GridPane GridPane.columnIndex="2" GridPane.rowIndex="5">

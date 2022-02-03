@@ -7,23 +7,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="date" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ExternalPatientTransportationServiceRequestPageServiceRequestController">
+<AnchorPane fx:id="date" prefHeight="400.0" prefWidth="600.0" styleClass="anchor-pane" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ExternalPatientTransportationServiceRequestPageServiceRequestController">
    <children>
-      <Text fx:id="externalPatientTransportationServiceRequest" layoutX="175.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="External Patient Transportation Service Request" />
-      <Text fx:id="patientNameText" layoutX="14.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Patient Name: " />
-      <TextField fx:id="floorNum" layoutX="342.0" layoutY="94.0" />
-      <Text fx:id="roomText" layoutX="35.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:" />
-      <TextField fx:id="roomNum" layoutX="101.0" layoutY="94.0" />
-      <Text fx:id="floorText" layoutX="285.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Floor:" />
-      <TextField fx:id="patientName" layoutX="101.0" layoutY="47.0" />
-      <Text fx:id="chooseTransportationText" layoutX="285.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Transportation:" />
-      <Text fx:id="dropoffAddressText" layoutX="7.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dropoff Address:" />
-      <TextField fx:id="dropoffAddress" layoutX="100.0" layoutY="235.0" />
-      <Button fx:id="sendButton" layoutX="278.0" layoutY="328.0" mnemonicParsing="false" text="Send" />
-      <Text fx:id="dateText" layoutX="38.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
-      <DatePicker fx:id="datePickup" layoutX="101.0" layoutY="141.0" />
-      <Text fx:id="pickupTimeText" layoutX="18.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pickup Time:" />
-      <TextField fx:id="pickupTime" layoutX="101.0" layoutY="188.0" />
-      <JFXComboBox fx:id="chooseTransportation" layoutX="425.0" layoutY="188.0" />
+      <Text fx:id="externalPatientTransportationServiceRequest" layoutX="8.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="External Patient Transportation Service Request" />
+      <Text fx:id="patientNameText" layoutX="84.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name: " />
+      <TextField fx:id="floorNum" layoutX="412.0" layoutY="116.0" styleClass="text-box" />
+      <Text fx:id="roomText" layoutX="105.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room:" />
+      <TextField fx:id="roomNum" layoutX="171.0" layoutY="116.0" styleClass="text-box" />
+      <Text fx:id="floorText" layoutX="355.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" />
+      <TextField fx:id="patientName" layoutX="171.0" layoutY="69.0" styleClass="text-box" />
+      <Text fx:id="chooseTransportationText" layoutX="355.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Choose Transportation:" />
+      <Text fx:id="dropoffAddressText" layoutX="77.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Dropoff Address:" />
+      <TextField fx:id="dropoffAddress" layoutX="170.0" layoutY="257.0" styleClass="text-box" />
+      <Button fx:id="sendButton" layoutX="334.0" layoutY="325.0" mnemonicParsing="false" text="Send" />
+      <Text fx:id="dateText" layoutX="108.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" />
+      <DatePicker fx:id="datePickup" layoutX="171.0" layoutY="163.0" styleClass="calendar-picker" />
+      <Text fx:id="pickupTimeText" layoutX="88.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Pickup Time:" />
+      <TextField fx:id="pickupTime" layoutX="171.0" layoutY="210.0" styleClass="text-box" />
+      <JFXComboBox fx:id="chooseTransportation" layoutX="495.0" layoutY="210.0" />
    </children>
 </AnchorPane>
