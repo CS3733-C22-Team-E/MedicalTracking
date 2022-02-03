@@ -136,7 +136,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <JFXComboBox fx:id="breakfastMealDropdown" prefHeight="25.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXComboBox fx:id="breakfastMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane prefHeight="120.0" prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
@@ -174,7 +174,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <JFXComboBox fx:id="lunchMealDropdown" prefHeight="25.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXComboBox fx:id="lunchMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="2" GridPane.rowIndex="6">
@@ -201,7 +201,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <JFXComboBox fx:id="dinnerMealDropdown" prefHeight="25.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXComboBox fx:id="dinnerMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <CheckBox fx:id="dietaryRestrictions" mnemonicParsing="false" onAction="#DietaryRestrictionsCallBack" text="Dietary Restrictions (Y/N)" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -214,7 +214,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room Number:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
