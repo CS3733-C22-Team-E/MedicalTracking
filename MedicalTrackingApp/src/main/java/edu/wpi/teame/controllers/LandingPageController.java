@@ -1,4 +1,4 @@
-package edu.wpi.teame.views;
+package edu.wpi.teame.controllers;
 
 import edu.wpi.teame.App;
 import java.io.IOException;
@@ -141,7 +141,7 @@ public class LandingPageController implements Initializable {
 
     if (pageUrl != null) {
       Parent pageNode = new FXMLLoader(App.class.getResource(pageUrl)).load();
-      pageNode.setStyle("@../viewStyleSheets/mainStyle.css");
+      pageNode.setStyle("@../css/mainStyle.css");
 
       // Create a gridPane to center the page we load into the tab
       GridPane gridPane = createGridPane();

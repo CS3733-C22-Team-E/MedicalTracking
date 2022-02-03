@@ -1,4 +1,4 @@
-package edu.wpi.teame.views.serviceRequests;
+package edu.wpi.teame.model.enums;
 
 public enum ServiceRequestTypes {
   AudioVisual,

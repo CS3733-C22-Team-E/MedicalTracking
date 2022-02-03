@@ -1,4 +1,4 @@
-package edu.wpi.teame.views;
+package edu.wpi.teame.controllers;
 
 import java.awt.*;
 import java.io.IOException;

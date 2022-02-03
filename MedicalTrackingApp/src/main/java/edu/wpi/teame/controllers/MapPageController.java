@@ -1,8 +1,8 @@
-package edu.wpi.teame.views.serviceRequests;
+package edu.wpi.teame.controllers;
 
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.FloorType;
-import edu.wpi.teame.views.MapIcon;
+import edu.wpi.teame.model.MapIcon;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +56,7 @@ public class MapPageController implements Initializable {
     FloorIconLists.put(FloorType.FirstFloor, new ArrayList<ImageView>());
     FloorIconLists.put(FloorType.SecondFloor, new ArrayList<ImageView>());
     FloorIconLists.put(FloorType.ThirdFloor, new ArrayList<ImageView>());
+
     ResourceNames.put("Patient Room", "images/Icons/HospitalBedIcon.png");
     ResourceNames.put("Equipment Storage Room", "images/Icons/EquipmentStorageIcon.png");
     System.out.println("Setting Up");
@@ -148,27 +149,27 @@ public class MapPageController implements Initializable {
 
     switch (dropDown.getValue()) {
       case "Ground Floor":
-        switchImage("images/00_thegroundfloor.png");
+        switchImage("images/map/00_thegroundfloor.png");
         updateMap(FloorType.GroundFloor);
         break;
       case "Lower Level 1":
-        switchImage("images/00_thelowerlevel1.png");
+        switchImage("images/map/00_thelowerlevel1.png");
         updateMap(FloorType.LowerLevel1);
         break;
       case "Lower Level 2":
-        switchImage("images/00_thelowerlevel2.png");
+        switchImage("images/map/00_thelowerlevel2.png");
         updateMap(FloorType.LowerLevel2);
         break;
       case "First Floor":
-        switchImage("images/01_thefirstfloor.png");
+        switchImage("images/map/01_thefirstfloor.png");
         updateMap(FloorType.FirstFloor);
         break;
       case "Second Floor":
-        switchImage("images/02_thesecondfloor.png");
+        switchImage("images/map/02_thesecondfloor.png");
         updateMap(FloorType.SecondFloor);
         break;
       case "Third Floor":
-        switchImage("images/03_thethirdfloor.png");
+        switchImage("images/map/03_thethirdfloor.png");
         updateMap(FloorType.ThirdFloor);
         break;
     }

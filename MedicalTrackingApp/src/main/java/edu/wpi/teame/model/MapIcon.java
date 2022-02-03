@@ -1,4 +1,4 @@
-package edu.wpi.teame.views;
+package edu.wpi.teame.model;
 
 import javafx.scene.image.ImageView;
 
