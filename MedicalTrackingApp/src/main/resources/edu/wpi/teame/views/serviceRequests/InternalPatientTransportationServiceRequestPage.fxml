@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.InternalPatientTransportationServiceRequestPageServiceRequestController">
     <children>
-      <GridPane alignment="CENTER" layoutX="1.0" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../viewStyleSheets/mainStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane alignment="CENTER" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../viewStyleSheets/mainStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,6 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="78.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="161.0" minHeight="10.0" prefHeight="161.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -34,7 +35,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -52,7 +53,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room Number:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -77,7 +78,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <GridPane GridPane.rowIndex="5">
+            <GridPane GridPane.rowIndex="6">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -93,7 +94,7 @@
                   </Text>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -110,8 +111,8 @@
                   </Text>
                </children>
             </GridPane>
-            <JFXComboBox fx:id="transferToPicker" onAction="#toPickerCallback" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <GridPane GridPane.rowIndex="6">
+            <JFXComboBox fx:id="transferToPicker" onAction="#toPickerCallback" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <GridPane GridPane.rowIndex="7">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -138,7 +139,7 @@
                   </Text>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="6">
+            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="7">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -167,7 +168,7 @@
                   </TextField>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="7">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -211,22 +212,22 @@
                   <TextField fx:id="fromOtherFloorTextbox" promptText="Enter floor..." visible="false" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-                <Text disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Transfer Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                <Text disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Transfer Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Transfer Date:" wrappingWidth="73.400390625" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Transfer Date:" wrappingWidth="73.400390625" GridPane.halignment="RIGHT" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                <TextField fx:id="deliveryTimeTextbox" promptText="Enter transfer time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="deliveryTimeTextbox" promptText="Enter transfer time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-                <DatePicker fx:id="deliveryDateDatebox" promptText="Select transfer date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <DatePicker fx:id="deliveryDateDatebox" promptText="Select transfer date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="9">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
