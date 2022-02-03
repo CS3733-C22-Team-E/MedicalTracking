@@ -166,4 +166,14 @@ public class MedicalEquipmentServiceRequestManager
       e.printStackTrace();
     }
   }
+
+  @Override
+  public void readCSV(String csvFilePath) {
+
+  }
+
+  @Override
+  public void writeToCSV(String outputFilePath) {
+
+  }
 }

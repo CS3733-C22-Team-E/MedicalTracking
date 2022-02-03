@@ -2,7 +2,8 @@ package edu.wpi.teame.db;
 
 public class Location {
   private String id;
-  private String name;
+  private String longName;
+  private String shortName;
   private LocationType type;
 
   private BuildingType building;
@@ -12,19 +13,21 @@ public class Location {
 
   public Location(
       String id,
-      String name,
+      String longName,
       int x,
       int y,
       FloorType floorType,
       BuildingType buildingType,
-      LocationType locationType) {
+      LocationType locationType,
+      String shortName) {
     building = buildingType;
     type = locationType;
     floor = floorType;
-    this.name = name;
+    this.longName = longName;
     this.id = id;
     this.x = x;
     this.y = y;
+    this.shortName = shortName;
   }
 
   public String getId() {
@@ -35,12 +38,20 @@ public class Location {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getLongName() {
+    return longName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLongName(String name) {
+    this.longName = name;
+  }
+
+  public String getShortName() {
+    return shortName;
+  }
+
+  public void setShortName(String shortName) {
+    this.shortName = shortName;
   }
 
   public LocationType getType() {
@@ -97,6 +108,6 @@ public class Location {
         + ", nodeType: "
         + type
         + ", longName: "
-        + name;
+        + longName;
   }
 }

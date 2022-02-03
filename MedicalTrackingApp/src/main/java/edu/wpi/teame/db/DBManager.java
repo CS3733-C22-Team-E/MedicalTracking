@@ -57,7 +57,8 @@ public final class DBManager {
               + "floor int, "
               + "building int, "
               + "locationType int,"
-              + "name VARCHAR(100))";
+              + "longName VARCHAR(100), "
+              + "shortName VARCHAR(100))";
 
       stmt.execute(createLocationsTable);
       System.out.println("Locations created");

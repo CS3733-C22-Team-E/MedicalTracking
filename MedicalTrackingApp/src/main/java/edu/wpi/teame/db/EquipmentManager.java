@@ -161,4 +161,14 @@ public class EquipmentManager implements IManager<Equipment> {
       e.printStackTrace();
     }
   }
+
+  @Override
+  public void readCSV(String csvFilePath) {
+
+  }
+
+  @Override
+  public void writeToCSV(String outputFilePath) {
+
+  }
 }
