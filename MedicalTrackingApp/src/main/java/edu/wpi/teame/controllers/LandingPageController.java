@@ -1,8 +1,12 @@
 package edu.wpi.teame.controllers;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.model.StyledTab;
+import edu.wpi.teame.model.enums.SortOrder;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +42,7 @@ public class LandingPageController implements Initializable {
   @FXML private Tab mapTab;
 
   @FXML private AnchorPane mainAnchorPane;
-  @FXML private TabPane tabContainer;
+  @FXML private TabPane mainTabPane;
   private double tabHeight = 250;
   private double tabWidth = 35;
 
@@ -49,82 +53,111 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
 
-    tabContainer.setTabMaxHeight(tabHeight);
-    tabContainer.setRotateGraphic(true);
-    tabContainer.setMaxWidth(tabWidth);
+    mainTabPane.setTabMaxHeight(tabHeight);
+    mainTabPane.setRotateGraphic(true);
+    mainTabPane.setMaxWidth(tabWidth);
 
-    configureTab(homeTab, "Home", "views/HomePage.fxml");
-    configureTab(mapTab, "Hospital Map", "views/MapPage.fxml");
+    List<StyledTab> tabs = new ArrayList<>();
+    tabs.add(new StyledTab("Home", SortOrder.First, "views/HomePage.fxml"));
+    tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, "views/MapPage.fxml"));
 
-    configureTab(
-        medicalEquipmentTab,
-        "Equipment Delivery",
-        "views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml");
+    tabs.add(
+        new StyledTab(
+            "Medical Equipment Delivery",
+            SortOrder.ByName,
+            "views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml"));
 
-    configureTab(
-        foodDeliveryTab,
-        "Food Delivery",
-        "views/serviceRequests/FoodDeliveryServiceRequestPage.fxml");
+    tabs.add(
+        new StyledTab(
+            "Food Delivery",
+            SortOrder.ByName,
+            "views/serviceRequests/FoodDeliveryServiceRequestPage.fxml"));
 
-    configureTab(
-        medicineDeliveryTab,
-        "Medicine Delivery",
-        "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "Medicine Delivery",
+                    SortOrder.ByName,
+                    "views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml"));
 
-    configureTab(
-        giftDeliveryTab,
-        "Gift And Floral Delivery",
-        "views/serviceRequests/GiftAndFloralServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "Gift And Floral Delivery",
+                    SortOrder.ByName,
+                    "views/serviceRequests/GiftAndFloralServiceRequestPage.fxml"));
 
-    configureTab(
-        languageInterpreterTab,
-        "Language Services",
-        "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "Language Services",
+                    SortOrder.ByName,
+                    "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml"));
 
-    configureTab(
-        sanitationServicesTab,
-        "Sanitation Services",
-        "views/serviceRequests/SanitationServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "Sanitation Services",
+                    SortOrder.ByName,
+                    "views/serviceRequests/SanitationServiceRequestPage.fxml"));
 
-    configureTab(
-        laundryServicesTab,
-        "Laundry Services",
-        "views/serviceRequests/LaundryServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "",
+                    SortOrder.ByName,
+                    "views/serviceRequests/.fxml"));
 
-    configureTab(
-        religiousRequestTab,
-        "Religious Services",
-        "views/serviceRequests/ReligiousServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "",
+                    SortOrder.ByName,
+                    "views/serviceRequests/.fxml"));
 
-    configureTab(
-        internalPatientTransportationTab,
-        "Internal Patient Transportation",
-        "views/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml");
+    tabs.add(
+            new StyledTab(
+                    "",
+                    SortOrder.ByName,
+                    "views/serviceRequests/.fxml"));
 
-    configureTab(
-        externalPatientTransportationTab,
-        "External Patient Transportation",
-        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
-
-    configureTab(
-        audioVisualServicesTab,
-        "Audio/Video Services",
-        "views/serviceRequests/AudioVisualServiceRequestPage.fxml");
-
-    configureTab(
-        computerServiceRequestTab,
-        "Computer Services",
-        "views/serviceRequests/ComputerServiceRequestPage.fxml");
-
-    configureTab(
-        securityServiceRequestTab,
-        "Security Services",
-        "views/serviceRequests/SecurityServiceRequestPage.fxml");
-
-    configureTab(
-        facilitiesMaintenanceTab,
-        "Facilities Maintenance",
-        "views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml");
+    tabs.sort(StyledTab::compareTo);
+    mainTabPane.getTabs().setAll(tabs);
+    
+    //
+    //    configureTab(
+    //        laundryServicesTab,
+    //        "Laundry Services",
+    //        "views/serviceRequests/LaundryServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        religiousRequestTab,
+    //        "Religious Services",
+    //        "views/serviceRequests/ReligiousServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        internalPatientTransportationTab,
+    //        "Internal Patient Transportation",
+    //        "views/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        externalPatientTransportationTab,
+    //        "External Patient Transportation",
+    //        "views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        audioVisualServicesTab,
+    //        "Audio/Video Services",
+    //        "views/serviceRequests/AudioVisualServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        computerServiceRequestTab,
+    //        "Computer Services",
+    //        "views/serviceRequests/ComputerServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        securityServiceRequestTab,
+    //        "Security Services",
+    //        "views/serviceRequests/SecurityServiceRequestPage.fxml");
+    //
+    //    configureTab(
+    //        facilitiesMaintenanceTab,
+    //        "Facilities Maintenance",
+    //        "views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml");
   }
 
   private void configureTab(Tab tab, String title, String pageUrl) throws IOException {
