@@ -1,4 +1,4 @@
-package edu.wpi.teame.views.serviceRequests;
+package edu.wpi.teame.model.enums;
 
 public enum ServiceRequestTypes {
   AudioVisual,
@@ -10,5 +10,7 @@ public enum ServiceRequestTypes {
   Laundry,
   Religious,
   Security,
-  MedicineDelivery
+  MedicalEquipment,
+  MedicineDelivery,
+  FacilitiesMaintenance
 }

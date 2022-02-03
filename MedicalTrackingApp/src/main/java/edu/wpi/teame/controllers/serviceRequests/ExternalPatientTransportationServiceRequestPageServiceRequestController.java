@@ -1,7 +1,8 @@
-package edu.wpi.teame.views.serviceRequests;
+package edu.wpi.teame.controllers.serviceRequests;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
@@ -14,20 +15,24 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML private Text floorText;
   @FXML private Text dateText;
   @FXML private Text pickupTimeText;
-  @FXML private Text PickupAddressText;
+  @FXML private Text chooseTransportationText;
   @FXML private Text dropoffAddressText;
 
   @FXML private TextField patientName;
   @FXML private TextField floorNum;
   @FXML private TextField roomNum;
   @FXML private TextField pickupTime;
-  @FXML private TextField pickupAddress;
   @FXML private TextField dropoffAddress;
 
   @FXML private DatePicker datePickup;
 
+  @FXML private ComboBox<String> chooseTransportation;
+
   @FXML public Button sendButton;
 
   @Override
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    chooseTransportation.setItems(
+        FXCollections.observableArrayList("Ambulance", "Helicopter", "Car", "Other"));
+  }
 }

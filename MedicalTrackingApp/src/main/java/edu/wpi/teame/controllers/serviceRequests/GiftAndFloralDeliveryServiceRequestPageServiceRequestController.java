@@ -1,4 +1,4 @@
-package edu.wpi.teame.views.serviceRequests;
+package edu.wpi.teame.controllers.serviceRequests;
 
 import java.net.URL;
 import java.util.ResourceBundle;
