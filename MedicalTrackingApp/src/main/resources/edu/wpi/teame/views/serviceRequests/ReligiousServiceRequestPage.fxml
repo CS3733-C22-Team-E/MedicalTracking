@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane accessibleRole="TEXT" prefHeight="580.0" prefWidth="800.0" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ReligiousServiceRequestPageServiceRequestController">
+<AnchorPane accessibleRole="TEXT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" stylesheets="@../../viewStyleSheets/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.views.serviceRequests.ReligiousServiceRequestPageServiceRequestController">
    <children>
       <GridPane alignment="CENTER" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -30,7 +30,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
@@ -40,61 +39,61 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></JFXButton>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" textAlignment="RIGHT" wrappingWidth="66.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" textAlignment="RIGHT" wrappingWidth="66.0" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="startTime" prefHeight="27.0" prefWidth="98.0" promptText="Enter service time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextField fx:id="startTime" prefHeight="27.0" prefWidth="98.0" promptText="Enter service time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <DatePicker fx:id="datePicker" promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <DatePicker fx:id="datePicker" promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" textAlignment="RIGHT" wrappingWidth="87.98307228088379" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" textAlignment="RIGHT" wrappingWidth="87.98307228088379" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="floorNumber" prefHeight="26.0" prefWidth="81.0" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="floorNumber" prefHeight="26.0" prefWidth="81.0" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" textAlignment="RIGHT" wrappingWidth="35.41212272644043" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" textAlignment="RIGHT" wrappingWidth="35.41212272644043" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="roomNumber" prefHeight="21.0" prefWidth="83.0" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="roomNumber" prefHeight="21.0" prefWidth="83.0" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room:" textAlignment="RIGHT" wrappingWidth="40.626657485961914" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room:" textAlignment="RIGHT" wrappingWidth="40.626657485961914" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="patientName" prefHeight="26.0" prefWidth="142.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="patientName" prefHeight="26.0" prefWidth="142.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name:" textAlignment="RIGHT" wrappingWidth="87.98307228088379" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name:" textAlignment="RIGHT" wrappingWidth="87.98307228088379" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <GridPane layoutX="-100.0" prefHeight="150.0" prefWidth="500.0">
                     <columnConstraints>

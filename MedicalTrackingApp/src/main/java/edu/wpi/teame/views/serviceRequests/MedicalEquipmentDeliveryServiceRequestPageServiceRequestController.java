@@ -2,21 +2,21 @@ package edu.wpi.teame.views.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
 
-  @FXML private JFXTextArea patientName;
-  @FXML private JFXTextArea roomNumber;
-  @FXML private JFXTextArea startTime;
-  @FXML private JFXTextArea endTime;
-  @FXML private JFXTextArea nameAssigned;
+  @FXML private TextField patientName;
+  @FXML private TextField roomNumber;
+  @FXML private TextField startTime;
+  @FXML private TextField endTime;
+  @FXML private TextField nameAssigned;
 
   @FXML private DatePicker datePicker;
 
