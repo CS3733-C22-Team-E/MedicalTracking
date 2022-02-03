@@ -81,7 +81,10 @@ public class LandingPageController implements Initializable {
         "Language Services",
         "views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml");
 
-    configureTab(sanitationServicesTab, "Sanitation Services", null);
+    configureTab(
+        sanitationServicesTab,
+        "Sanitation Services",
+        "views/serviceRequests/SanitationServiceRequestPage.fxml");
 
     configureTab(
         laundryServicesTab,
