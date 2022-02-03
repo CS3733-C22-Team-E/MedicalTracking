@@ -6,16 +6,16 @@
 }
 
 * {
-  -fx-text-box-background-color: #2c2c2c;
-  -fx-button-background-color: #4c4c4c;
-  -fx-pane-background-color: #000000;
+  -fx-text-box-background-color: #6d6d6d;
+  -fx-button-background-color: #6d6d6d;
+  -fx-pane-background-color: #212121;
 
   -fx-text-box-text-color: #ffffff;
   -fx-button-text-color: #ffffff;
-  -fx-header-color: #094067;
-  -fx-text-color: #ffffff;
+  -fx-header-color: #5579C5;
+  -fx-text-color: #e0eef4;
 
-  -fx-highlight-color: #3da9fc;
+  -fx-highlight-color: #5579C5;
   -fx-secondary-color: #90b4ce;
   -fx-tertiary-color: #ef4565;
 }
