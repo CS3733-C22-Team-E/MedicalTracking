@@ -26,7 +26,7 @@ public class App extends Application {
 
     appPrimaryStage
         .getIcons()
-        .add(new Image(App.class.getResource("images/hospital-icon.png").toString()));
+        .add(new Image(App.class.getResource("images/Icons/AppIcon.png").toString()));
 
     Scene primaryScene =
         new Scene(FXMLLoader.load(getClass().getResource("views/LandingPage.fxml")));
