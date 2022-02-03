@@ -15,6 +15,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 
 public class StyledTab extends Tab implements Comparable<StyledTab> {
+  public static final double Height = 250;
+  public static final double Width = 35;
+
   private SortOrder tabOrder;
   private String tabPageUrl;
   private String tabName;
