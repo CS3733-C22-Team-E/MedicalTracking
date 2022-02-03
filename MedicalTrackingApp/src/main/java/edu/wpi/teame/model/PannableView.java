@@ -4,6 +4,7 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.Pannable;
+import java.util.ArrayList;
 import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,10 +17,11 @@ public class PannableView {
   private final Image backgroundImage;
   private final int WIDTH = 1280;
   private final int HEIGHT = 720;
+  private final int ICONSIZE = 60;
 
-  private boolean hamburgerOpen = false;
+  private boolean hamburgerDeployed = false;
 
-  private ScrollPane hamburgerMenu;
+  private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
 
   public PannableView(String imageURL) {
     backgroundImage =
@@ -35,10 +37,12 @@ public class PannableView {
     // wrap the scene contents in a pannable scroll pane.
     ScrollPane scroll = createScrollPane(layout);
 
-    initHamburgerMenu();
-
     StackPane staticWrapper = new StackPane();
-    staticWrapper.getChildren().setAll(scroll, createHamburgerButton(), hamburgerMenu);
+    staticWrapper.getChildren().setAll(scroll, createHamburgerButton());
+    addHamburgerDeployments();
+    for (ImageView imageView : hamburgerDeployments) {
+      staticWrapper.getChildren().add(imageView);
+    }
 
     // show the scene.
     Scene scene = new Scene(staticWrapper);
@@ -81,38 +85,32 @@ public class PannableView {
     hamburgerButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));
     hamburgerButton.setOnAction(
         (event) -> {
-          hamburgerOpen = !hamburgerOpen;
-          updateHamburgerMenu(hamburgerMenu);
+          hamburgerDeployed = !hamburgerDeployed;
+          deployHamburger();
         });
     return hamburgerButton;
   }
 
-  private void initHamburgerMenu() {
+  private void addHamburgerDeployments() {
     String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
-    hamburgerMenu = new ScrollPane();
-    hamburgerMenu.setPrefSize(100, 100);
-    populateHamburgerMenu(hamburgerMenu, allIcons);
-    hamburgerMenu.setVisible(false);
-  }
-
-  private void populateHamburgerMenu(ScrollPane scrollPane, String[] icons) {
-    GridPane grid = new GridPane();
-    grid.setVgap(20);
     int iconNum = 0;
-    for (String icon : icons) {
-      ImageView node =
-          new ImageView(new Image(Pannable.class.getResource("images/Icons/" + icon).toString()));
-      node.setFitWidth(30);
-      node.setFitHeight(30);
-      grid.add(node, 0, iconNum);
+    for (String icon : allIcons) {
+      Image imageIcon = new Image(Pannable.class.getResource("images/Icons/" + icon).toString());
+      ImageView imageVew = new ImageView(imageIcon);
+      imageVew.setFitWidth(ICONSIZE);
+      imageVew.setFitHeight(ICONSIZE);
+      imageVew.setTranslateX(WIDTH / 2 - 10 - ICONSIZE);
+      imageVew.setTranslateY(-(HEIGHT / 2) + 100 + iconNum * (ICONSIZE) + iconNum * 10);
+      imageVew.setVisible(false);
+      hamburgerDeployments.add(imageVew);
+      iconNum++;
     }
-    grid.setTranslateX(0);
-    grid.setTranslateY(0);
-    scrollPane.setContent(grid);
   }
 
-  private void updateHamburgerMenu(ScrollPane hamburgerMenu) {
-    hamburgerMenu.setVisible(hamburgerOpen);
+  private void deployHamburger() {
+    for (ImageView imageView : hamburgerDeployments) {
+      imageView.setVisible(hamburgerDeployed);
+    }
   }
 
   private ScrollPane createScrollPane(Pane layout) {
