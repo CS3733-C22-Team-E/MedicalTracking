@@ -70,7 +70,6 @@ public class PannableView {
     icon.setFitHeight(30);
     icon.setFitWidth(30);
     final JFXButton addButton = new JFXButton("", icon);
-    addButton.setStyle("-fx-base: firebrick;");
     addButton.setTranslateX(610);
     addButton.setTranslateY(-320);
     addButton.setOnAction(
