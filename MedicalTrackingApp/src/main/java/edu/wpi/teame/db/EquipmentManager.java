@@ -1,5 +1,6 @@
 package edu.wpi.teame.db;
 
+import java.io.*;
 import java.sql.*;
 import java.util.LinkedList;
 
@@ -163,12 +164,43 @@ public class EquipmentManager implements IManager<Equipment> {
   }
 
   @Override
-  public void readCSV(String csvFilePath) {
+  public void readCSV(String csvFile) {
+    try {
+      File file = new File(csvFile);
+      FileReader fr = new FileReader(file);
+      BufferedReader br = new BufferedReader(fr);
+      String line = " ";
+      String[] tempArr;
 
+      LocationManager locTable= DBManager.getInstance().getLocationManager();
+      boolean firstLine = true;
+      String delimiter = ",";
+      while ((line = br.readLine()) != null) {
+        if (!firstLine) {
+          tempArr = line.split(delimiter);
+          Equipment tempEquipment =
+                  new Equipment(
+                          tempArr[0],
+                          locTable.get(tempArr[1]),
+                          LocationType.valueOf(tempArr[2]),
+                          tempArr[3],
+                          Boolean.parseBoolean(tempArr[4]),
+                          Boolean.parseBoolean(tempArr[5]));
+
+          insert(tempEquipment);
+        } else {
+          firstLine = false;
+        }
+      }
+
+      br.close();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
   }
 
   @Override
   public void writeToCSV(String outputFilePath) {
-
   }
+
 }

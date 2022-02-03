@@ -7,5 +7,4 @@ public enum FloorType {
   FirstFloor,
   SecondFloor,
   ThirdFloor;
-
 }

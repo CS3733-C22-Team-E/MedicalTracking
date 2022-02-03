@@ -168,12 +168,8 @@ public class MedicalEquipmentServiceRequestManager
   }
 
   @Override
-  public void readCSV(String csvFilePath) {
-
-  }
+  public void readCSV(String csvFilePath) {}
 
   @Override
-  public void writeToCSV(String outputFilePath) {
-
-  }
+  public void writeToCSV(String outputFilePath) {}
 }
