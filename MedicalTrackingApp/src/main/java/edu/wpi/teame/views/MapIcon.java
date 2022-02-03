@@ -1,40 +1,22 @@
 package edu.wpi.teame.views;
 
+import javafx.scene.image.ImageView;
+
 public class MapIcon {
-  Double PixelX;
-  Double PixelY;
-  String IconResourcePath;
+  ImageView Icon;
   String Descriptor;
 
-  public MapIcon(Double pixelX, Double pixelY, String iconResourcePath, String descriptor) {
-    PixelX = pixelX;
-    PixelY = pixelY;
-    IconResourcePath = iconResourcePath;
+  public MapIcon(ImageView icon, String descriptor) {
+    Icon = icon;
     Descriptor = descriptor;
   }
 
-  public Double getPixelX() {
-    return PixelX;
+  public ImageView getIcon() {
+    return Icon;
   }
 
-  public void setPixelX(Double pixelX) {
-    PixelX = pixelX;
-  }
-
-  public Double getPixelY() {
-    return PixelY;
-  }
-
-  public void setPixelY(Double pixelY) {
-    PixelY = pixelY;
-  }
-
-  public String getIconResourcePath() {
-    return IconResourcePath;
-  }
-
-  public void setIconResourcePath(String iconResourcePath) {
-    IconResourcePath = iconResourcePath;
+  public void setIcon(ImageView icon) {
+    Icon = icon;
   }
 
   public String getDescriptor() {
