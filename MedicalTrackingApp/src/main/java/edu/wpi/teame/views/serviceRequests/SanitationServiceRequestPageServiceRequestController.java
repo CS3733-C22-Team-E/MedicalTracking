@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class LaundryServiceRequestPageServiceRequestController extends ServiceRequestController {
+public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML public JFXButton sendButton;
   @FXML private TextField patientName;
   @FXML private TextField roomNumber;
