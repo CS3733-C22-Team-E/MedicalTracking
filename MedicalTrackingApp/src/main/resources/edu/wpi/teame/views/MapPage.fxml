@@ -40,8 +40,8 @@
             <Cursor fx:constant="CROSSHAIR" />
          </cursor>
          <children>
-            <Text layoutX="3.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Position:" />
-            <Text layoutX="3.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y Position: " />
+            <Text fx:id="LabelX" layoutX="3.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="X Position:" />
+            <Text fx:id="LabelY" layoutX="3.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Y Position: " />
             <Text fx:id="Xposition" layoutX="62.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
             <Text fx:id="Yposition" layoutX="62.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
          </children></AnchorPane>
