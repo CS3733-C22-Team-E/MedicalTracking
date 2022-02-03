@@ -11,4 +11,6 @@ public enum ServiceRequestTypes {
   Religious,
   Security,
   MedicalEquipment
+  MedicineDelivery,
+  FacilitiesMaintenance
 }
