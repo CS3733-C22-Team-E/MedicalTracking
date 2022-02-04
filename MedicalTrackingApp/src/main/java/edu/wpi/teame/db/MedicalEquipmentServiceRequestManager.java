@@ -1,6 +1,10 @@
 package edu.wpi.teame.db;
 
-import java.sql.*;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 public class MedicalEquipmentServiceRequestManager
@@ -168,8 +172,154 @@ public class MedicalEquipmentServiceRequestManager
   }
 
   @Override
-  public void readCSV(String csvFilePath) {}
+  public void readCSV(String csvFile) {
+    try {
+      File file = new File(csvFile);
+      FileReader fr = new FileReader(file);
+      BufferedReader br = new BufferedReader(fr);
+      String line = " ";
+      String[] tempArr;
+
+      LocationManager locTable = DBManager.getInstance().getLocationManager();
+      EquipmentManager equipTable = DBManager.getInstance().getEquipmentManager();
+
+      boolean firstLine = true;
+      String delimiter = ",";
+      while ((line = br.readLine()) != null) {
+        if (!firstLine) {
+          tempArr = line.split(delimiter);
+          MedicalEquipmentServiceRequest tempSerReq =
+              new MedicalEquipmentServiceRequest(
+                  tempArr[0],
+                  1 >= tempArr.length ? "" : tempArr[1],
+                  2 >= tempArr.length ? null : locTable.get(tempArr[2]),
+                  3 >= tempArr.length ? "" : tempArr[3],
+                  4 >= tempArr.length ? "" : tempArr[4],
+                  5 >= tempArr.length ? "" : tempArr[5],
+                  6 >= tempArr.length ? "" : tempArr[6],
+                  7 >= tempArr.length ? null : equipTable.get(tempArr[7]),
+                  8 >= tempArr.length
+                      ? null
+                      : MedicalEquipmentServiceRequestStatus.valueOf(tempArr[8]));
+
+          insert(tempSerReq);
+        } else {
+          firstLine = false;
+        }
+      }
+
+      br.close();
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
+  }
 
   @Override
-  public void writeToCSV(String outputFilePath) {}
+  public void writeToCSV(String outputFilePath) {
+    String csvSeparator = ",";
+    try {
+      try {
+        File myObj = new File(outputFilePath + ".csv");
+        if (myObj.createNewFile()) {
+          System.out.println("File created: " + myObj.getName());
+        } else {
+          System.out.println("File already exists.");
+        }
+      } catch (IOException e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+      }
+
+      BufferedWriter bw =
+          new BufferedWriter(
+              new OutputStreamWriter(new FileOutputStream(outputFilePath + ".csv"), "UTF-8"));
+
+      // Create a title for the CSV as the list of Locations doesn't have one
+      // Put the title at the start of the locations list
+      StringBuffer title =
+          new StringBuffer(
+              "ServiceRequestID,Patient,Room,StartTime,EndTime,Date,Assignee,Equipment,Status");
+      // Add buffer string to buffered writer
+      bw.write(title.toString());
+      // Drops down to next row
+      bw.newLine();
+
+      LinkedList<MedicalEquipmentServiceRequest> serReqList = getAll();
+
+      // Go through each Location in the list
+      for (MedicalEquipmentServiceRequest serReq : serReqList) {
+        String room = serReq.getRoom().getId();
+        String equipmentID = serReq.getEquipment().getNodeID();
+        String status = serReq.getStatus().toString();
+
+        // Create a single temporary string buffer
+        StringBuffer oneLine = new StringBuffer();
+        // Add nodeID to buffer
+        oneLine.append(serReq.getId().trim().length() == 0 ? "" : serReq.getId());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add xcoord to buffer
+        oneLine.append(
+            serReq.getPatient() == null || (serReq.getPatient().trim().length() == 0)
+                ? ""
+                : serReq.getPatient());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add ycoord to buffer
+        oneLine.append(room == null || (room.trim().length() == 0) ? "" : room);
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add floor to buffer
+        oneLine.append(
+            serReq.getStartTIme() == null || (serReq.getStartTIme().trim().length() == 0)
+                ? ""
+                : serReq.getStartTIme());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add building to buffer
+        oneLine.append(
+            serReq.getEndTime() == null || (serReq.getEndTime().trim().length() == 0)
+                ? ""
+                : serReq.getEndTime());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add nodeType to buffer
+        oneLine.append(
+            serReq.getDate() == null || (serReq.getDate().trim().length() == 0)
+                ? ""
+                : serReq.getDate());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add longName to buffer
+        oneLine.append(
+            serReq.getAssignee() == null || (serReq.getAssignee().trim().length() == 0)
+                ? ""
+                : serReq.getAssignee());
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add shortName to buffer
+        oneLine.append(
+            equipmentID == null || (equipmentID.trim().length() == 0) ? "" : equipmentID);
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add longName to buffer
+        oneLine.append(status == null || (status.trim().length() == 0) ? "" : status);
+
+        // Add buffer string to buffered writer
+        bw.write(oneLine.toString());
+        // Drops down to next row
+        bw.newLine();
+      }
+      // Applies buffer to file
+      bw.flush();
+      bw.close();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

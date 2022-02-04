@@ -1,7 +1,10 @@
 package edu.wpi.teame.db;
 
 import java.io.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 public class LocationManager implements IManager<Location> {
@@ -155,13 +158,13 @@ public class LocationManager implements IManager<Location> {
           Location tempLocation =
               new Location(
                   tempArr[0],
-                  tempArr[6],
-                  Integer.parseInt(tempArr[1]),
-                  Integer.parseInt(tempArr[2]),
-                  csvValToFloorType(tempArr[3]),
-                  BuildingType.valueOf(tempArr[4]),
-                  LocationType.valueOf(tempArr[5]),
-                  tempArr[7]);
+                  6 >= tempArr.length ? "" : tempArr[6],
+                  1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),
+                  2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
+                  3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
+                  4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
+                  5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
+                  7 >= tempArr.length ? "" : tempArr[7]);
 
           insert(tempLocation);
         } else {

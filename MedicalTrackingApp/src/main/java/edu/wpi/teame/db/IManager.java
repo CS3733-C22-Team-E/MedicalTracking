@@ -13,7 +13,7 @@ public interface IManager<TableObject> {
 
   public void update(TableObject updatedObject);
 
-  public void readCSV(String csvFilePath);
+  public void readCSV(String csvFile);
 
   public void writeToCSV(String outputFilePath);
 }

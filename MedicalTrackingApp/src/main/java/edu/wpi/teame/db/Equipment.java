@@ -5,7 +5,7 @@ public class Equipment {
   private Location locationNode;
   // private FloorType floor;
   // private BuildingType building;
-  private LocationType type;
+  private EquipmentType type;
   private String name;
   private boolean hasPatient;
   private boolean isClean;
@@ -13,7 +13,7 @@ public class Equipment {
   public Equipment(
       String ID,
       Location locationNodeID,
-      LocationType type,
+      EquipmentType type,
       String name,
       boolean hasPatient,
       boolean isClean) {
@@ -68,11 +68,11 @@ public class Equipment {
     this.name = name;
   }
 
-  public LocationType getType() {
+  public EquipmentType getType() {
     return type;
   }
 
-  public void setType(LocationType type) {
+  public void setType(EquipmentType type) {
     this.type = type;
   }
 

@@ -108,6 +108,8 @@ public class Location {
         + ", nodeType: "
         + type
         + ", longName: "
-        + longName;
+        + longName
+        + ", shortName: "
+        + shortName;
   }
 }
