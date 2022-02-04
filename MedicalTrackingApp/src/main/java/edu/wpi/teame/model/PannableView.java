@@ -4,8 +4,8 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.Pannable;
+import edu.wpi.teame.model.enums.MapFloor;
 import java.util.ArrayList;
-import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -29,11 +29,30 @@ public class PannableView {
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
   private StackPane layout = new StackPane();
 
-  public PannableView(String imageURL) {
-    backgroundImage =
-        new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
+  public PannableView(MapFloor floor) {
+    String mapImg = getMapImg(floor);
+    backgroundImage = new Image(Pannable.class.getResource(mapImg).toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
+  }
+
+  private String getMapImg(MapFloor f) {
+    switch (f) {
+      case GroundFloor:
+        return "images/map/00_thegroundfloor.png";
+      case LowerLevel1:
+        return "images/map/00_thelowerlevel1.png";
+      case LowerLevel2:
+        return "images/map/00_thelowerlevel2.png";
+      case FirstFloor:
+        return "images/map/01_thefirstfloor.png";
+      case SecondFloor:
+        return "images/map/02_thesecondfloor.png";
+      case ThirdFloor:
+        return "images/map/03_thethirdfloor.png";
+      default:
+        return "";
+    }
   }
 
   public void start(Stage stage) {

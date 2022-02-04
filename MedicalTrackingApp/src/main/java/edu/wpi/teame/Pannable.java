@@ -1,6 +1,7 @@
 package edu.wpi.teame;
 
 import edu.wpi.teame.model.PannableView;
+import edu.wpi.teame.model.enums.MapFloor;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ public class Pannable extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    PannableView pv = new PannableView("String");
+    PannableView pv = new PannableView(MapFloor.FirstFloor);
     pv.start(primaryStage);
   }
 
