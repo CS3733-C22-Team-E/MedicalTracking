@@ -18,28 +18,35 @@ import javafx.scene.layout.*;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
+
+  // Init constants
   private final Image backgroundImage;
   private final int WIDTH = 1280;
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
+  private final double ZOOMINMAX = 1.5;
+  private final double ZOOMOUTMAX = .2;
+  private final double MAPIMGWIDTH = 5000;
+  private final double MAPIMGHEIGHT = 3400;
+  private final double ZOOMAMPLIFIER = .1;
 
-  private double mapImageWidth = 0;
-  private double mapImageHeight = 0;
-
+  // Init booleans
   private boolean hamburgerDeployed = false;
   private boolean addMode = false;
 
+  // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
+
+  // Init panes
   private StackPane layout = new StackPane();
 
+  // Init everything else
   private FloorType currFloor;
 
   public PannableView(FloorType floor) {
     backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
-    mapImageHeight = backgroundImage.getHeight();
-    mapImageWidth = backgroundImage.getWidth();
     currFloor = floor;
   }
 
@@ -72,7 +79,12 @@ public class PannableView {
     updateLayoutChildren();
     layout.setScaleX(.5);
     layout.setScaleY(.5);
-
+    layout.setOnScroll(
+        (event) -> {
+          double scrollVal = event.getDeltaY();
+          // Zoom amplifier is accounted for inside handleScrollZoom
+          handleScrollZoom(scrollVal);
+        });
     ScrollPane scroll = createScrollPane(layout);
 
     StackPane staticWrapper = new StackPane();
@@ -125,12 +137,15 @@ public class PannableView {
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
     final JFXButton newButton = new JFXButton(type, iconGraphic);
-    double x = xCoordinate - mapImageWidth / 2;
-    double y = yCoordinate - mapImageHeight / 2;
+    double x = xCoordinate - MAPIMGWIDTH / 2;
+    double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
     newButton.setTranslateY(y);
     newButton.setOnAction(
         (event) -> {
+          // TODO Implement click functionality.
+          // Click currently removes added nodes. Does not yet work on equipment nodes.
+          // For click functionality on equipment nodes, add an onclick in the equipment translator
           newButton.setVisible(false);
         });
     MapIcon newIcon = new MapIcon(newButton, type);
@@ -148,7 +163,8 @@ public class PannableView {
     zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));
     zoomInButton.setOnAction(
         (event) -> {
-          zoomIn();
+          // double value zoomAmplifier is 1 for buttons
+          zoomIn(1);
         });
     return zoomInButton;
   }
@@ -163,7 +179,8 @@ public class PannableView {
     zoomOutButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 90)));
     zoomOutButton.setOnAction(
         (event) -> {
-          zoomOut();
+          // double value zoomAmplifier is 1 for buttons
+          zoomOut(1);
         });
     return zoomOutButton;
   }
@@ -203,6 +220,7 @@ public class PannableView {
   }
 
   private void deployHamburger() {
+    // Hamburger currently unused
     for (ImageView imageView : hamburgerDeployments) {
       imageView.setVisible(hamburgerDeployed);
     }
@@ -243,17 +261,47 @@ public class PannableView {
     launch(args);
   }
 
-  private void zoomIn() {
-    if (layout.getScaleX() < 1) {
-      layout.setScaleX(layout.getScaleX() * 1.1);
-      layout.setScaleY(layout.getScaleY() * 1.1);
+  private Slider createZoomBar() {
+    Slider zoomBar = new Slider();
+    zoomBar.setMax(ZOOMINMAX);
+    zoomBar.setMin(ZOOMOUTMAX);
+    zoomBar.setOnMouseMoved(
+        (event) -> {
+          zoomBarScrolled(zoomBar.getValue());
+        });
+    zoomBar.setTranslateX(WIDTH / 2 - (zoomBar.getWidth() + 10));
+    zoomBar.setTranslateY(-(HEIGHT / 2 - (zoomBar.getHeight() + 50)));
+    return zoomBar;
+  }
+
+  private void zoomBarScrolled(double value) {
+    if (layout.getScaleX() < ZOOMINMAX && layout.getScaleX() > ZOOMOUTMAX) {
+      layout.setScaleX(value);
+      layout.setScaleY(value);
     }
   }
 
-  private void zoomOut() {
-    if (layout.getScaleX() > .2) {
-      layout.setScaleX(layout.getScaleX() * 1 / (1.1));
-      layout.setScaleY(layout.getScaleY() * 1 / (1.1));
+  private void handleScrollZoom(double scrollVal) {
+    if (scrollVal > 0) {
+      zoomIn(ZOOMAMPLIFIER);
+    } else {
+      zoomOut(ZOOMAMPLIFIER);
+    }
+  }
+
+  private void zoomIn(double amp) {
+    amp /= 10;
+    if (layout.getScaleX() < ZOOMINMAX) {
+      layout.setScaleX(layout.getScaleX() * (1 + amp));
+      layout.setScaleY(layout.getScaleY() * (1 + amp));
+    }
+  }
+
+  private void zoomOut(double amp) {
+    amp /= 10;
+    if (layout.getScaleX() > ZOOMOUTMAX) {
+      layout.setScaleX(layout.getScaleX() * 1 / (1 + amp));
+      layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));
     }
   }
 }
