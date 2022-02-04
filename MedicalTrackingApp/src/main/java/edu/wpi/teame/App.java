@@ -12,6 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
   private static Stage appPrimaryStage;
 
+  public static Stage getAppPrimaryStage() {
+    return appPrimaryStage;
+  }
+
   @Override
   public void init() {
     log.info("Starting Up");

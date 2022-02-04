@@ -3,14 +3,12 @@ package edu.wpi.teame.model;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.teame.Pannable;
+import edu.wpi.teame.App;
 import java.util.ArrayList;
-import javafx.event.*;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
@@ -31,12 +29,12 @@ public class PannableView {
 
   public PannableView(String imageURL) {
     backgroundImage =
-        new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
+        new Image(App.class.getResource("images/map/00_thelowerlevel1.png").toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
   }
 
-  public void start(Stage stage) {
+  public Parent getMapScene(double height, double width) {
     layout.setOnMouseClicked(
         (e -> {
           if (addMode) {
@@ -58,15 +56,10 @@ public class PannableView {
       staticWrapper.getChildren().add(imageView);
     }
 
-    Scene scene = new Scene(staticWrapper);
-    stage.setScene(scene);
-    stage.show();
-
-    scroll.prefWidthProperty().bind(scene.widthProperty());
-    scroll.prefHeightProperty().bind(scene.widthProperty());
-
+    scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+    return staticWrapper;
   }
 
   private void updateLayoutChildren() {
@@ -77,7 +70,7 @@ public class PannableView {
   }
 
   private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
-    Image iconImage = new Image(Pannable.class.getResource("images/Icons/" + type).toString());
+    Image iconImage = new Image(App.class.getResource("images/Icons/" + type).toString());
     ImageView iconGraphic = new ImageView(iconImage);
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
@@ -96,7 +89,7 @@ public class PannableView {
   }
 
   private JFXButton createZoomInButton() {
-    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomIn.png").toString());
+    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomIn.png").toString());
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -111,7 +104,7 @@ public class PannableView {
   }
 
   private JFXButton createZoomOutButton() {
-    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomOut.png").toString());
+    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomOut.png").toString());
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -127,7 +120,7 @@ public class PannableView {
 
   private JFXButton createHamburgerButton() {
     Image hamburgerIcon =
-        new Image(Pannable.class.getResource("images/Icons/HamburgerMenu.png").toString());
+        new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
     ImageView icon = new ImageView(hamburgerIcon);
     icon.setFitHeight(30);
     icon.setFitWidth(30);
@@ -147,7 +140,7 @@ public class PannableView {
     String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
     int iconNum = 0;
     for (String icon : allIcons) {
-      Image imageIcon = new Image(Pannable.class.getResource("images/Icons/" + icon).toString());
+      Image imageIcon = new Image(App.class.getResource("images/Icons/" + icon).toString());
       ImageView imageVew = new ImageView(imageIcon);
       imageVew.setFitWidth(ICONSIZE);
       imageVew.setFitHeight(ICONSIZE);
