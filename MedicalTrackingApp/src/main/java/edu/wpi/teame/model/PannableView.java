@@ -4,7 +4,10 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.Pannable;
+import edu.wpi.teame.db.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,21 +22,40 @@ public class PannableView {
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
 
-  private double mapImageWidth = 0;
-  private double mapImageHeight = 0;
+  private double mapImageWidth = 5000;
+  private double mapImageHeight = 3400;
 
   private boolean hamburgerDeployed = false;
+
   private boolean addMode = false;
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
+
+  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+    MapIcon retval =
+        new MapIcon(
+            (double) equip.getLocationNode().getX(),
+            (double) equip.getLocationNode().getX(),
+            equip.getLocationNode().getLongName(),
+            TypeGraphics.get(equip.getType()));
+    mapIcons.add(retval);
+    updateLayoutChildren();
+    return retval;
+  }
+
+  public void getFromDB() {
+    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    for (Equipment currEquipment : equipment) {
+      ConvertLocationToMapIcon(currEquipment);
+    }
+  }
 
   public PannableView(String imageURL) {
     backgroundImage =
         new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
-    mapImageHeight = backgroundImage.getHeight();
-    mapImageWidth = backgroundImage.getWidth();
   }
 
   public void start(Stage stage) {
