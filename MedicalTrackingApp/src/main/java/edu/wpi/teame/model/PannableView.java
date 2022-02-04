@@ -45,11 +45,13 @@ public class PannableView {
   // Init everything else
   private FloorType currFloor;
 
+  // Constructor sets the background image and currentFloor enum
   public PannableView(FloorType floor) {
     backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
     currFloor = floor;
   }
 
+  // Convert from enum to a background image
   private String getMapImg(FloorType f) {
     switch (f) {
       case GroundFloor:
@@ -69,6 +71,8 @@ public class PannableView {
     }
   }
 
+  // This is essentially the Main function
+  // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
     layout.setOnMouseClicked(
         (e -> {
@@ -124,6 +128,7 @@ public class PannableView {
     return staticWrapper;
   }
 
+  // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
     for (MapIcon icon : mapIcons) {
@@ -131,6 +136,8 @@ public class PannableView {
     }
   }
 
+  // Adds icon on click
+  // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to make
   private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
     Image iconImage = new Image(App.class.getResource("images/Icons/" + type).toString());
     ImageView iconGraphic = new ImageView(iconImage);
@@ -153,6 +160,7 @@ public class PannableView {
     updateLayoutChildren();
   }
 
+  // Init zoomInButton
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomIn.png").toString());
     ImageView icon = new ImageView(zoomIcon);
@@ -169,6 +177,7 @@ public class PannableView {
     return zoomInButton;
   }
 
+  // init zoomOutButton
   private JFXButton createZoomOutButton() {
     Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomOut.png").toString());
     ImageView icon = new ImageView(zoomIcon);
@@ -185,6 +194,7 @@ public class PannableView {
     return zoomOutButton;
   }
 
+  // Init currently unused hamburger button
   private JFXButton createHamburgerButton() {
     Image hamburgerIcon =
         new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
@@ -203,6 +213,8 @@ public class PannableView {
     return hamburgerButton;
   }
 
+  // Adds icons to the hamburger menu
+  // TODO styling— probably a complete redesign
   private void addHamburgerDeployments() {
     String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
     int iconNum = 0;
@@ -219,6 +231,7 @@ public class PannableView {
     }
   }
 
+  // Displays the hamburger menu by just setting all hamburgerDeployments to visible
   private void deployHamburger() {
     // Hamburger currently unused
     for (ImageView imageView : hamburgerDeployments) {
@@ -226,6 +239,7 @@ public class PannableView {
     }
   }
 
+  // Init ScrollPane that holds the StackPane containing map and all icons
   private ScrollPane createScrollPane(Pane layout) {
     ScrollPane scroll = new ScrollPane();
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -236,6 +250,7 @@ public class PannableView {
     return scroll;
   }
 
+  // Turn a location into an icon
   public MapIcon ConvertLocationToMapIcon(Equipment equip) {
     MapIcon retval =
         new MapIcon(
@@ -261,6 +276,8 @@ public class PannableView {
     launch(args);
   }
 
+  // This zoomBar is totally broken. I'm not quite sure how to fix it.
+  // TODO make this zoomBar work and display properly so that it may be used like a setting
   private Slider createZoomBar() {
     Slider zoomBar = new Slider();
     zoomBar.setMax(ZOOMINMAX);
@@ -274,6 +291,7 @@ public class PannableView {
     return zoomBar;
   }
 
+  // Currently unused because zoomBar is busted
   private void zoomBarScrolled(double value) {
     if (layout.getScaleX() < ZOOMINMAX && layout.getScaleX() > ZOOMOUTMAX) {
       layout.setScaleX(value);
@@ -281,7 +299,10 @@ public class PannableView {
     }
   }
 
+  // Called when user scrolls in or out on the layout ScrollPane (map)
   private void handleScrollZoom(double scrollVal) {
+    // positive scroll values are up and negative scroll values are down
+    // TODO add a setting to invert scrolling (this makes sense to me— I usually reverse mine)
     if (scrollVal > 0) {
       zoomIn(ZOOMAMPLIFIER);
     } else {
@@ -289,16 +310,18 @@ public class PannableView {
     }
   }
 
+  // Catch-all zoomIn method
   private void zoomIn(double amp) {
-    amp /= 10;
+    amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() < ZOOMINMAX) {
       layout.setScaleX(layout.getScaleX() * (1 + amp));
       layout.setScaleY(layout.getScaleY() * (1 + amp));
     }
   }
 
+  // Catch-all zoomOut method
   private void zoomOut(double amp) {
-    amp /= 10;
+    amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() > ZOOMOUTMAX) {
       layout.setScaleX(layout.getScaleX() * 1 / (1 + amp));
       layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));
