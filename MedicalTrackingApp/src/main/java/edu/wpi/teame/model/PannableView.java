@@ -9,7 +9,6 @@ import edu.wpi.teame.db.Equipment;
 import edu.wpi.teame.db.EquipmentType;
 import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -31,7 +30,6 @@ public class PannableView {
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
-  private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
   private FloorType currFloor;
@@ -87,27 +85,6 @@ public class PannableView {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    ImageView PBEDIV =
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString()));
-    PBEDIV.setFitHeight(30);
-    PBEDIV.setFitWidth(30);
-    ImageView XRAYIV =
-        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString()));
-    XRAYIV.setFitHeight(30);
-    XRAYIV.setFitWidth(30);
-    ImageView RECLIV =
-        new ImageView(new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString()));
-    RECLIV.setFitWidth(30);
-    RECLIV.setFitHeight(30);
-    ImageView PUMPIV =
-        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString()));
-    PUMPIV.setFitWidth(30);
-    PUMPIV.setFitHeight(30);
-    TypeGraphics.put(EquipmentType.PBED, PBEDIV);
-    TypeGraphics.put(EquipmentType.XRAY, XRAYIV);
-    TypeGraphics.put(EquipmentType.RECL, RECLIV);
-    TypeGraphics.put(EquipmentType.PUMP, PUMPIV);
 
     return staticWrapper;
   }
@@ -124,7 +101,8 @@ public class PannableView {
     ImageView iconGraphic = new ImageView(iconImage);
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
-    final JFXButton newButton = new JFXButton(type, iconGraphic);
+    final JFXButton newButton = new JFXButton();
+    newButton.setGraphic(iconGraphic);
     double x = xCoordinate - mapImageWidth / 2;
     double y = yCoordinate - mapImageHeight / 2;
     newButton.setTranslateX(x);
@@ -133,6 +111,8 @@ public class PannableView {
         (event) -> {
           newButton.setVisible(false);
         });
+    Tooltip tooltip = new Tooltip(type);
+    Tooltip.install(newButton, tooltip);
     MapIcon newIcon = new MapIcon(newButton, type);
     mapIcons.add(newIcon);
     updateLayoutChildren();
@@ -218,13 +198,40 @@ public class PannableView {
     return scroll;
   }
 
-  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+  private ImageView getImageViewFromEquipmentType(EquipmentType t) {
+    ImageView equipmentIcon = new ImageView();
+    equipmentIcon.setFitHeight(30);
+    equipmentIcon.setFitWidth(30);
+    String png = "";
+    switch (t) {
+      case PBED:
+        png = "HospitalBedIcon.png";
+        break;
+      case PUMP:
+        png = "PumpIcon.png";
+        break;
+      case RECL:
+        png = "ReclinerIcon.png";
+        break;
+      case XRAY:
+        png = "XRayIcon.png";
+        break;
+      default:
+        png = "";
+        break;
+    }
+    Image i = new Image(App.class.getResource("images/Icons/" + png).toString());
+    equipmentIcon.setImage(i);
+    return equipmentIcon;
+  }
+
+  public MapIcon convertLocationToMapIcon(Equipment equip) {
     MapIcon retval =
         new MapIcon(
             (double) equip.getLocationNode().getX(),
             (double) equip.getLocationNode().getY(),
             equip.getLocationNode().getLongName(),
-            TypeGraphics.get(equip.getType()));
+            getImageViewFromEquipmentType(equip.getType()));
     mapIcons.add(retval);
     updateLayoutChildren();
     return retval;
@@ -234,7 +241,7 @@ public class PannableView {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
       if (currEquipment.getLocationNode().getFloor() == currFloor) {
-        ConvertLocationToMapIcon(currEquipment);
+        convertLocationToMapIcon(currEquipment);
       }
     }
   }
@@ -244,7 +251,7 @@ public class PannableView {
   }
 
   private void zoomIn() {
-    if (layout.getScaleX() < 1) {
+    if (layout.getScaleX() < 1.5) {
       layout.setScaleX(layout.getScaleX() * 1.1);
       layout.setScaleY(layout.getScaleY() * 1.1);
     }
