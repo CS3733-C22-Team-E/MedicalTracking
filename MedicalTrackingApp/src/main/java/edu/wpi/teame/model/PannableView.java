@@ -22,6 +22,7 @@ public class PannableView {
   private boolean hamburgerDeployed = false;
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
+  private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
 
   public PannableView(String imageURL) {
     backgroundImage =
@@ -32,7 +33,10 @@ public class PannableView {
 
     // construct the scene contents over a stacked background.
     StackPane layout = new StackPane();
-    layout.getChildren().setAll(new ImageView(backgroundImage), createKillButton());
+    layout.getChildren().setAll(new ImageView(backgroundImage));
+    for (MapIcon icon : mapIcons) {
+      layout.getChildren().add(icon.getButton());
+    }
 
     // wrap the scene contents in a pannable scroll pane.
     ScrollPane scroll = createScrollPane(layout);
@@ -58,20 +62,20 @@ public class PannableView {
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
   }
 
-  private Button createKillButton() {
-    final Button killButton = new Button("Kill the evil witch");
-    killButton.setStyle("-fx-base: firebrick;");
-    killButton.setTranslateX(65);
-    killButton.setTranslateY(-130);
-    killButton.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent t) {
-            killButton.setStyle("-fx-base: forestgreen;");
-            killButton.setText("Ding-Dong! The Witch is Dead");
-          }
+  private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
+    Image iconImage = new Image(Pannable.class.getResource("images/Icons/" + type).toString());
+    ImageView iconGraphic = new ImageView(iconImage);
+    iconGraphic.setFitWidth(30);
+    iconGraphic.setFitHeight(30);
+    final JFXButton newButton = new JFXButton(type, iconGraphic);
+    newButton.setTranslateX(xCoordinate);
+    newButton.setTranslateY(yCoordinate);
+    newButton.setOnAction(
+        (event) -> {
+          newButton.setVisible(false);
         });
-    return killButton;
+    MapIcon newIcon = new MapIcon(newButton, type);
+    mapIcons.add(newIcon);
   }
 
   private JFXButton createHamburgerButton() {

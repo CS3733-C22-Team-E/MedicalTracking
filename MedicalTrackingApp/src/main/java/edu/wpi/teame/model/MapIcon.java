@@ -1,22 +1,18 @@
 package edu.wpi.teame.model;
 
-import javafx.scene.image.ImageView;
+import com.jfoenix.controls.JFXButton;
 
 public class MapIcon {
-  ImageView Icon;
+  JFXButton Button;
   String Descriptor;
 
-  public MapIcon(ImageView icon, String descriptor) {
-    Icon = icon;
+  public MapIcon(JFXButton button, String descriptor) {
+    Button = button;
     Descriptor = descriptor;
   }
 
-  public ImageView getIcon() {
-    return Icon;
-  }
-
-  public void setIcon(ImageView icon) {
-    Icon = icon;
+  public JFXButton getButton() {
+    return Button;
   }
 
   public String getDescriptor() {
