@@ -4,8 +4,14 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.Pannable;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.Equipment;
+import edu.wpi.teame.db.EquipmentType;
 import edu.wpi.teame.model.enums.MapFloor;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -27,6 +33,7 @@ public class PannableView {
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
   public PannableView(MapFloor floor) {
@@ -192,7 +199,24 @@ public class PannableView {
     scroll.setContent(layout);
     return scroll;
   }
+  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+    MapIcon retval =
+            new MapIcon(
+                    (double) equip.getLocationNode().getX(),
+                    (double) equip.getLocationNode().getX(),
+                    equip.getLocationNode().getLongName(),
+                    TypeGraphics.get(equip.getType()));
+    mapIcons.add(retval);
+    updateLayoutChildren();
+    return retval;
+  }
 
+  public void getFromDB() {
+    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    for (Equipment currEquipment : equipment) {
+      ConvertLocationToMapIcon(currEquipment);
+    }
+  }
   public static void main(String[] args) {
     launch(args);
   }
