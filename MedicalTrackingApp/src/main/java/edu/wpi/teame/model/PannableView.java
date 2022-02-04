@@ -4,11 +4,8 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.Pannable;
-import edu.wpi.teame.db.*;
+import edu.wpi.teame.model.enums.MapFloor;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import javafx.event.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -22,40 +19,39 @@ public class PannableView {
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
 
-  private double mapImageWidth = 5000;
-  private double mapImageHeight = 3400;
+  private double mapImageWidth = 0;
+  private double mapImageHeight = 0;
 
   private boolean hamburgerDeployed = false;
-
   private boolean addMode = false;
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
-  private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
-  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
-    MapIcon retval =
-        new MapIcon(
-            (double) equip.getLocationNode().getX(),
-            (double) equip.getLocationNode().getX(),
-            equip.getLocationNode().getLongName(),
-            TypeGraphics.get(equip.getType()));
-    mapIcons.add(retval);
-    updateLayoutChildren();
-    return retval;
+  public PannableView(MapFloor floor) {
+    backgroundImage = new Image(Pannable.class.getResource(getMapImg(floor)).toString());
+    mapImageHeight = backgroundImage.getHeight();
+    mapImageWidth = backgroundImage.getWidth();
   }
 
-  public void getFromDB() {
-    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
-    for (Equipment currEquipment : equipment) {
-      ConvertLocationToMapIcon(currEquipment);
+  private String getMapImg(MapFloor f) {
+    switch (f) {
+      case GroundFloor:
+        return "images/map/00_thegroundfloor.png";
+      case LowerLevel1:
+        return "images/map/00_thelowerlevel1.png";
+      case LowerLevel2:
+        return "images/map/00_thelowerlevel2.png";
+      case FirstFloor:
+        return "images/map/01_thefirstfloor.png";
+      case SecondFloor:
+        return "images/map/02_thesecondfloor.png";
+      case ThirdFloor:
+        return "images/map/03_thethirdfloor.png";
+      default:
+        return "";
     }
-  }
-
-  public PannableView(String imageURL) {
-    backgroundImage =
-        new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
   }
 
   public void start(Stage stage) {
