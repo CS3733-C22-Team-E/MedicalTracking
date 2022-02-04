@@ -35,4 +35,15 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
   public void initialize(URL location, ResourceBundle resources) {
     chooseIssue.setItems(FXCollections.observableArrayList("Elevator", "Power", "Other"));
   }
+
+  @FXML
+  private void clearText() {
+    reporterName.setText("");
+    floorNum.setText("");
+    roomNum.setText("");
+    issueDescription.setText("");
+    reportDate.setValue(null);
+    reportDate.getEditor().clear();
+    chooseIssue.valueProperty().set(null);
+  }
 }

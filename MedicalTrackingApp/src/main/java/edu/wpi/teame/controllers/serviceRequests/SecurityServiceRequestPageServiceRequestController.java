@@ -11,4 +11,10 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
 
   @FXML
   public void initialize(URL location, ResourceBundle resources) {}
+
+  @FXML
+  private void clearText() {
+    floorTextBox.setText("");
+    roomTextBox.setText("");
+  }
 }

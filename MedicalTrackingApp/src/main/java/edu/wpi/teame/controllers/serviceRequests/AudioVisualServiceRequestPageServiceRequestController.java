@@ -18,4 +18,17 @@ public class AudioVisualServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {}
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    roomNumber.setText("");
+    floor.setText("");
+    startTime.setText("");
+    endTime.setText("");
+    startDate.setValue(null);
+    startDate.getEditor().clear();
+    endDate.setValue(null);
+    endDate.getEditor().clear();
+  }
 }

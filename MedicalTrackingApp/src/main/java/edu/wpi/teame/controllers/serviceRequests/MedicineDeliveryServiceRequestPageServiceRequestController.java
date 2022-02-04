@@ -15,8 +15,20 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   @FXML private TextField roomNumber;
   @FXML private TextField floorNumber;
   @FXML private TextField medicineRequested;
+  @FXML private TextField timeNeeded;
   @FXML private DatePicker datePicker;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {}
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    roomNumber.setText("");
+    floorNumber.setText("");
+    medicineRequested.setText("");
+    timeNeeded.setText("");
+    datePicker.setValue(null);
+    datePicker.getEditor().clear();
+  }
 }

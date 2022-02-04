@@ -37,7 +37,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+            <JFXButton fx:id="sendButton" buttonType="RAISED" mnemonicParsing="false" text="Submit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,7 +47,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField promptText="Enter any additional information..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <TextField fx:id="remarks" promptText="Enter any additional information..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -60,7 +60,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="93.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="patientName" prefHeight="26.0" prefWidth="93.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -70,7 +70,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="56.0" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="roomNumber" prefHeight="26.0" prefWidth="56.0" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -80,7 +80,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="56.0" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="floorNumber" prefHeight="26.0" prefWidth="56.0" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -90,12 +90,12 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <DatePicker promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <DatePicker fx:id="datePicker" promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-            <TextField prefHeight="26.0" prefWidth="168.0" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="startTime" prefHeight="26.0" prefWidth="168.0" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -110,11 +110,16 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="56.0" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextField fx:id="endTime" prefHeight="26.0" prefWidth="56.0" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
          </children>
       </GridPane>
    </children>

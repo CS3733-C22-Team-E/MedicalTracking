@@ -17,6 +17,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private TextField startTime;
   @FXML private TextField endTime;
   @FXML private TextField nameAssigned;
+  @FXML private TextField floor;
 
   @FXML private DatePicker datePicker;
 
@@ -32,5 +33,19 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
         FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
     requestState.setItems(
         FXCollections.observableArrayList("Blank", "Waiting For Equipment", "Cancelled", "Done"));
+  }
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    roomNumber.setText("");
+    nameAssigned.setText("");
+    startTime.setText("");
+    endTime.setText("");
+    floor.setText("");
+    datePicker.setValue(null);
+    datePicker.getEditor().clear();
+    equipmentNeeded.valueProperty().set(null);
+    requestState.valueProperty().set(null);
   }
 }
