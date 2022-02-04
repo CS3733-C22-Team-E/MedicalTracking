@@ -3,17 +3,22 @@ package edu.wpi.teame.model;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.App;
+import java.util.ArrayList;
+import javafx.scene.Parent;
 import edu.wpi.teame.Pannable;
-import edu.wpi.teame.db.*;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.Equipment;
+import edu.wpi.teame.db.EquipmentType;
+import edu.wpi.teame.model.enums.MapFloor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import javafx.event.*;
+
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
@@ -22,11 +27,10 @@ public class PannableView {
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
 
-  private double mapImageWidth = 5000;
-  private double mapImageHeight = 3400;
+  private double mapImageWidth = 0;
+  private double mapImageHeight = 0;
 
   private boolean hamburgerDeployed = false;
-
   private boolean addMode = false;
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
@@ -34,40 +38,41 @@ public class PannableView {
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
-  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
-    MapIcon retval =
-        new MapIcon(
-            (double) equip.getLocationNode().getX(),
-            (double) equip.getLocationNode().getX(),
-            equip.getLocationNode().getLongName(),
-            TypeGraphics.get(equip.getType()));
-    mapIcons.add(retval);
-    updateLayoutChildren();
-    return retval;
+  public PannableView(MapFloor floor) {
+    backgroundImage = new Image(Pannable.class.getResource(getMapImg(floor)).toString());
+    mapImageHeight = backgroundImage.getHeight();
+    mapImageWidth = backgroundImage.getWidth();
   }
-
-  public void getFromDB() {
-    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
-    for (Equipment currEquipment : equipment) {
-      ConvertLocationToMapIcon(currEquipment);
+  
+  private String getMapImg(MapFloor f) {
+    switch (f) {
+      case GroundFloor:
+        return "images/map/00_thegroundfloor.png";
+      case LowerLevel1:
+        return "images/map/00_thelowerlevel1.png";
+      case LowerLevel2:
+        return "images/map/00_thelowerlevel2.png";
+      case FirstFloor:
+        return "images/map/01_thefirstfloor.png";
+      case SecondFloor:
+        return "images/map/02_thesecondfloor.png";
+      case ThirdFloor:
+        return "images/map/03_thethirdfloor.png";
+      default:
+        return "";
     }
   }
 
-  public PannableView(String imageURL) {
-    backgroundImage =
-        new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
-  }
-
-  public void start(Stage stage) {
+  public Parent getMapScene(double height, double width) {
     layout.setOnMouseClicked(
         (e -> {
           if (addMode) {
             addMapIcon(e.getX(), e.getY(), "AppIcon.png");
-            System.out.println(e.getX());
-            System.out.println(e.getY());
           }
         }));
     updateLayoutChildren();
+    layout.setScaleX(.5);
+    layout.setScaleY(.5);
 
     ScrollPane scroll = createScrollPane(layout);
 
@@ -80,15 +85,13 @@ public class PannableView {
       staticWrapper.getChildren().add(imageView);
     }
 
-    Scene scene = new Scene(staticWrapper);
-    stage.setScene(scene);
-    stage.show();
-
-    scroll.prefWidthProperty().bind(scene.widthProperty());
-    scroll.prefHeightProperty().bind(scene.widthProperty());
-
+    scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+    TypeGraphics.put(EquipmentType.PBED, new ImageView(new Image("images/Icons/HospitalBedIcon.png")));
+    TypeGraphics.put(EquipmentType.XRAY, new ImageView(new Image("images/Icons/XRayIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/ReclinerIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/PumpIcon.png")));
   }
 
   private void updateLayoutChildren() {
@@ -99,7 +102,7 @@ public class PannableView {
   }
 
   private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
-    Image iconImage = new Image(Pannable.class.getResource("images/Icons/" + type).toString());
+    Image iconImage = new Image(App.class.getResource("images/Icons/" + type).toString());
     ImageView iconGraphic = new ImageView(iconImage);
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
@@ -118,7 +121,7 @@ public class PannableView {
   }
 
   private JFXButton createZoomInButton() {
-    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomIn.png").toString());
+    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomIn.png").toString());
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -133,7 +136,7 @@ public class PannableView {
   }
 
   private JFXButton createZoomOutButton() {
-    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomOut.png").toString());
+    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomOut.png").toString());
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -149,7 +152,7 @@ public class PannableView {
 
   private JFXButton createHamburgerButton() {
     Image hamburgerIcon =
-        new Image(Pannable.class.getResource("images/Icons/HamburgerMenu.png").toString());
+        new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
     ImageView icon = new ImageView(hamburgerIcon);
     icon.setFitHeight(30);
     icon.setFitWidth(30);
@@ -169,7 +172,7 @@ public class PannableView {
     String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
     int iconNum = 0;
     for (String icon : allIcons) {
-      Image imageIcon = new Image(Pannable.class.getResource("images/Icons/" + icon).toString());
+      Image imageIcon = new Image(App.class.getResource("images/Icons/" + icon).toString());
       ImageView imageVew = new ImageView(imageIcon);
       imageVew.setFitWidth(ICONSIZE);
       imageVew.setFitHeight(ICONSIZE);
@@ -196,18 +199,39 @@ public class PannableView {
     scroll.setContent(layout);
     return scroll;
   }
+  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+    MapIcon retval =
+            new MapIcon(
+                    (double) equip.getLocationNode().getX(),
+                    (double) equip.getLocationNode().getX(),
+                    equip.getLocationNode().getLongName(),
+                    TypeGraphics.get(equip.getType()));
+    mapIcons.add(retval);
+    updateLayoutChildren();
+    return retval;
+  }
 
+  public void getFromDB() {
+    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    for (Equipment currEquipment : equipment) {
+      ConvertLocationToMapIcon(currEquipment);
+    }
+  }
   public static void main(String[] args) {
     launch(args);
   }
 
   private void zoomIn() {
-    layout.setScaleX(layout.getScaleX() * 1.1);
-    layout.setScaleY(layout.getScaleY() * 1.1);
+    if (layout.getScaleX() < 1) {
+      layout.setScaleX(layout.getScaleX() * 1.1);
+      layout.setScaleY(layout.getScaleY() * 1.1);
+    }
   }
 
   private void zoomOut() {
-    layout.setScaleX(layout.getScaleX() * 1 / (1.1));
-    layout.setScaleY(layout.getScaleY() * 1 / (1.1));
+    if (layout.getScaleX() > .2) {
+      layout.setScaleX(layout.getScaleX() * 1 / (1.1));
+      layout.setScaleY(layout.getScaleY() * 1 / (1.1));
+    }
   }
 }
