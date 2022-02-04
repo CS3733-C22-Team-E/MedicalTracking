@@ -30,8 +30,7 @@ public class PannableView {
   private StackPane layout = new StackPane();
 
   public PannableView(MapFloor floor) {
-    String mapImg = getMapImg(floor);
-    backgroundImage = new Image(Pannable.class.getResource(mapImg).toString());
+    backgroundImage = new Image(Pannable.class.getResource(getMapImg(floor)).toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
   }
