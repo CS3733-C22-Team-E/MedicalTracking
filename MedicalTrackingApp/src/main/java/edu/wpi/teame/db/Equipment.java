@@ -2,23 +2,23 @@ package edu.wpi.teame.db;
 
 public class Equipment {
   private String ID;
-  private String locationNodeID;
+  private Location locationNode;
   // private FloorType floor;
   // private BuildingType building;
-  private LocationType type;
+  private EquipmentType type;
   private String name;
   private boolean hasPatient;
   private boolean isClean;
 
   public Equipment(
       String ID,
-      String locationNodeID,
-      LocationType type,
+      Location locationNodeID,
+      EquipmentType type,
       String name,
       boolean hasPatient,
       boolean isClean) {
     this.ID = ID;
-    this.locationNodeID = locationNodeID;
+    this.locationNode = locationNodeID;
     // this.floor = floor;
     // this.building = building;
     this.type = type;
@@ -35,12 +35,12 @@ public class Equipment {
     this.ID = nodeID;
   }
 
-  public String getLocationNodeID() {
-    return locationNodeID;
+  public Location getLocationNode() {
+    return locationNode;
   }
 
-  public void setLocationNodeID(String locationNodeID) {
-    this.locationNodeID = locationNodeID;
+  public void setLocationNode(Location locationNodeID) {
+    this.locationNode = locationNodeID;
   }
   /*
      public FloorType getFloor() {
@@ -68,11 +68,11 @@ public class Equipment {
     this.name = name;
   }
 
-  public LocationType getType() {
+  public EquipmentType getType() {
     return type;
   }
 
-  public void setType(LocationType type) {
+  public void setType(EquipmentType type) {
     this.type = type;
   }
 
@@ -90,5 +90,20 @@ public class Equipment {
 
   public void setClean(boolean clean) {
     isClean = clean;
+  }
+
+  public String toString() {
+    return "ID: "
+        + ID
+        + ", locationNode: "
+        + locationNode.getId()
+        + ", type: "
+        + type
+        + ", name: "
+        + name
+        + ", hasPatient: "
+        + hasPatient
+        + ", isClean: "
+        + isClean;
   }
 }
