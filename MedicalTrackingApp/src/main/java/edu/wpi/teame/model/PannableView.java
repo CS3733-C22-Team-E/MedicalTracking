@@ -50,7 +50,9 @@ public class PannableView {
     ScrollPane scroll = createScrollPane(layout);
 
     StackPane staticWrapper = new StackPane();
-    staticWrapper.getChildren().setAll(scroll, createHamburgerButton());
+    staticWrapper
+        .getChildren()
+        .setAll(scroll, createHamburgerButton(), createZoomInButton(), createZoomOutButton());
     addHamburgerDeployments();
     for (ImageView imageView : hamburgerDeployments) {
       staticWrapper.getChildren().add(imageView);
@@ -91,6 +93,36 @@ public class PannableView {
     MapIcon newIcon = new MapIcon(newButton, type);
     mapIcons.add(newIcon);
     updateLayoutChildren();
+  }
+
+  private JFXButton createZoomInButton() {
+    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomIn.png").toString());
+    ImageView icon = new ImageView(zoomIcon);
+    icon.setFitWidth(30);
+    icon.setFitHeight(30);
+    final JFXButton zoomInButton = new JFXButton("", icon);
+    zoomInButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
+    zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));
+    zoomInButton.setOnAction(
+        (event) -> {
+          zoomIn();
+        });
+    return zoomInButton;
+  }
+
+  private JFXButton createZoomOutButton() {
+    Image zoomIcon = new Image(Pannable.class.getResource("images/Icons/ZoomOut.png").toString());
+    ImageView icon = new ImageView(zoomIcon);
+    icon.setFitWidth(30);
+    icon.setFitHeight(30);
+    final JFXButton zoomOutButton = new JFXButton("", icon);
+    zoomOutButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
+    zoomOutButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 90)));
+    zoomOutButton.setOnAction(
+        (event) -> {
+          zoomOut();
+        });
+    return zoomOutButton;
   }
 
   private JFXButton createHamburgerButton() {
@@ -145,5 +177,15 @@ public class PannableView {
 
   public static void main(String[] args) {
     launch(args);
+  }
+
+  private void zoomIn() {
+    layout.setScaleX(layout.getScaleX() * 1.1);
+    layout.setScaleY(layout.getScaleY() * 1.1);
+  }
+
+  private void zoomOut() {
+    layout.setScaleX(layout.getScaleX() * 1 / (1.1));
+    layout.setScaleY(layout.getScaleY() * 1 / (1.1));
   }
 }
