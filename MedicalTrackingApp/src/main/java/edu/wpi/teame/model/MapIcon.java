@@ -14,8 +14,9 @@ public class MapIcon {
 
   public MapIcon(Double x, Double y, String descriptor, Node graphic) {
     Button = new JFXButton(descriptor, graphic);
-    Button.setTranslateX(x);
-    Button.setTranslateY(y);
+    Button.setTranslateX(x - (2500));
+    Button.setTranslateY(y - (1700));
+    Button.setOpacity(.5);
   }
 
   public JFXButton getButton() {

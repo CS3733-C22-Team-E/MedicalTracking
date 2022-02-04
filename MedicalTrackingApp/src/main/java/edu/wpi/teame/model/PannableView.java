@@ -7,7 +7,7 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.Equipment;
 import edu.wpi.teame.db.EquipmentType;
-import edu.wpi.teame.model.enums.MapFloor;
+import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,13 +34,16 @@ public class PannableView {
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
-  public PannableView(MapFloor floor) {
+  private FloorType currFloor;
+
+  public PannableView(FloorType floor) {
     backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
+    currFloor = floor;
   }
 
-  private String getMapImg(MapFloor f) {
+  private String getMapImg(FloorType f) {
     switch (f) {
       case GroundFloor:
         return "images/map/00_thegroundfloor.png";
@@ -84,20 +87,27 @@ public class PannableView {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    TypeGraphics.put(
-        EquipmentType.PBED,
+    ImageView PBEDIV =
         new ImageView(
-            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.XRAY,
-        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.RECL,
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.PUMP,
-        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString()));
+    PBEDIV.setFitHeight(30);
+    PBEDIV.setFitWidth(30);
+    ImageView XRAYIV =
+        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString()));
+    XRAYIV.setFitHeight(30);
+    XRAYIV.setFitWidth(30);
+    ImageView RECLIV =
+        new ImageView(new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString()));
+    RECLIV.setFitWidth(30);
+    RECLIV.setFitHeight(30);
+    ImageView PUMPIV =
+        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString()));
+    PUMPIV.setFitWidth(30);
+    PUMPIV.setFitHeight(30);
+    TypeGraphics.put(EquipmentType.PBED, PBEDIV);
+    TypeGraphics.put(EquipmentType.XRAY, XRAYIV);
+    TypeGraphics.put(EquipmentType.RECL, RECLIV);
+    TypeGraphics.put(EquipmentType.PUMP, PUMPIV);
 
     return staticWrapper;
   }
@@ -212,7 +222,7 @@ public class PannableView {
     MapIcon retval =
         new MapIcon(
             (double) equip.getLocationNode().getX(),
-            (double) equip.getLocationNode().getX(),
+            (double) equip.getLocationNode().getY(),
             equip.getLocationNode().getLongName(),
             TypeGraphics.get(equip.getType()));
     mapIcons.add(retval);
@@ -223,7 +233,9 @@ public class PannableView {
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
-      ConvertLocationToMapIcon(currEquipment);
+      if (currEquipment.getLocationNode().getFloor() == currFloor) {
+        ConvertLocationToMapIcon(currEquipment);
+      }
     }
   }
 

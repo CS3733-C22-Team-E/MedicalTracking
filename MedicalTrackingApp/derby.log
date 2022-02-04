@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Thu Feb 03 23:54:59 EST 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-c315-e47c-00000768c610 
-on database directory memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66 
-Loaded from file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
-java.vendor=Microsoft
-java.runtime.version=11.0.12+7
-user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp
+Fri Feb 04 00:22:43 EST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-c32f-49ab-0000075621f0 
+on database directory memory:F:\Code\MedicalTracking\MedicalTrackingApp\ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@2aaf7cc2 
+Loaded from file:/C:/Users/invad/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
+java.vendor=JetBrains s.r.o.
+java.runtime.version=11.0.13+7-b1751.21
+user.dir=F:\Code\MedicalTracking\MedicalTrackingApp
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
