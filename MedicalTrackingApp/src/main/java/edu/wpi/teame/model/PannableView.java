@@ -6,6 +6,16 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import java.util.ArrayList;
 import javafx.scene.Parent;
+import edu.wpi.teame.Pannable;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.Equipment;
+import edu.wpi.teame.db.EquipmentType;
+import edu.wpi.teame.model.enums.MapFloor;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
@@ -25,13 +35,33 @@ public class PannableView {
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private StackPane layout = new StackPane();
 
-  public PannableView(String imageURL) {
-    backgroundImage =
-        new Image(App.class.getResource("images/map/00_thelowerlevel1.png").toString());
+  public PannableView(MapFloor floor) {
+    backgroundImage = new Image(Pannable.class.getResource(getMapImg(floor)).toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
+  }
+
+  public Parent getMapScene(double height, double width) {
+  private String getMapImg(MapFloor f) {
+    switch (f) {
+      case GroundFloor:
+        return "images/map/00_thegroundfloor.png";
+      case LowerLevel1:
+        return "images/map/00_thelowerlevel1.png";
+      case LowerLevel2:
+        return "images/map/00_thelowerlevel2.png";
+      case FirstFloor:
+        return "images/map/01_thefirstfloor.png";
+      case SecondFloor:
+        return "images/map/02_thesecondfloor.png";
+      case ThirdFloor:
+        return "images/map/03_thethirdfloor.png";
+      default:
+        return "";
+    }
   }
 
   public Parent getMapScene(double height, double width) {
@@ -59,7 +89,10 @@ public class PannableView {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    return staticWrapper;
+    TypeGraphics.put(EquipmentType.PBED, new ImageView(new Image("images/Icons/HospitalBedIcon.png")));
+    TypeGraphics.put(EquipmentType.XRAY, new ImageView(new Image("images/Icons/XRayIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/ReclinerIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/PumpIcon.png")));
   }
 
   private void updateLayoutChildren() {
@@ -167,7 +200,24 @@ public class PannableView {
     scroll.setContent(layout);
     return scroll;
   }
+  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+    MapIcon retval =
+            new MapIcon(
+                    (double) equip.getLocationNode().getX(),
+                    (double) equip.getLocationNode().getX(),
+                    equip.getLocationNode().getLongName(),
+                    TypeGraphics.get(equip.getType()));
+    mapIcons.add(retval);
+    updateLayoutChildren();
+    return retval;
+  }
 
+  public void getFromDB() {
+    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    for (Equipment currEquipment : equipment) {
+      ConvertLocationToMapIcon(currEquipment);
+    }
+  }
   public static void main(String[] args) {
     launch(args);
   }
