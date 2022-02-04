@@ -20,14 +20,28 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
 
   private SortOrder tabOrder;
   private String tabPageUrl;
+  private Parent tabPage;
   private String tabName;
   private Image tabIcon;
+
+  public StyledTab(String name, SortOrder order, Parent page) throws IOException {
+    tabPageUrl = null;
+    tabOrder = order;
+    tabName = name;
+    tabPage = page;
+    setUpTab();
+  }
 
   public StyledTab(String name, SortOrder order, String pageUrl) throws IOException {
     tabPageUrl = pageUrl;
     tabOrder = order;
     tabName = name;
 
+    tabPage = new FXMLLoader(App.class.getResource(tabPageUrl)).load();
+    setUpTab();
+  }
+
+  private void setUpTab() throws IOException {
     Label label = new Label(tabName);
     label.setTextAlignment(TextAlignment.CENTER);
     label.setStyle("-fx-text-fill: -fx-text-color");
@@ -36,10 +50,9 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     AnchorPane anchorPane = new AnchorPane();
     anchorPane.getChildren().add(label);
 
-    Parent pageNode = new FXMLLoader(App.class.getResource(tabPageUrl)).load();
-    pageNode.setStyle("@../css/mainStyle.css");
+    tabPage.setStyle("@../css/mainStyle.css");
     GridPane gridPane = createContentPane();
-    gridPane.add(pageNode, 0, 0);
+    gridPane.add(tabPage, 0, 0);
 
     setGraphic(anchorPane);
     setContent(gridPane);
