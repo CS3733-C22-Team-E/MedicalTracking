@@ -19,8 +19,8 @@ public class PannableView {
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
 
-  private final double mapImageWidth = 0;
-  private final double mapImageHeight = 0;
+  private double mapImageWidth = 0;
+  private double mapImageHeight = 0;
 
   private boolean hamburgerDeployed = false;
   private boolean addMode = false;
@@ -32,6 +32,8 @@ public class PannableView {
   public PannableView(String imageURL) {
     backgroundImage =
         new Image(Pannable.class.getResource("images/map/00_thelowerlevel1.png").toString());
+    mapImageHeight = backgroundImage.getHeight();
+    mapImageWidth = backgroundImage.getWidth();
   }
 
   public void start(Stage stage) {
@@ -78,8 +80,10 @@ public class PannableView {
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
     final JFXButton newButton = new JFXButton(type, iconGraphic);
-    newButton.setTranslateX(xCoordinate);
-    newButton.setTranslateY(yCoordinate);
+    double x = xCoordinate - mapImageWidth / 2;
+    double y = yCoordinate - mapImageHeight / 2;
+    newButton.setTranslateX(x);
+    newButton.setTranslateY(y);
     newButton.setOnAction(
         (event) -> {
           newButton.setVisible(false);
