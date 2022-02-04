@@ -19,10 +19,15 @@ public class PannableView {
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
 
+  private final double mapImageWidth = 0;
+  private final double mapImageHeight = 0;
+
   private boolean hamburgerDeployed = false;
+  private boolean addMode = false;
 
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  private StackPane layout = new StackPane();
 
   public PannableView(String imageURL) {
     backgroundImage =
@@ -30,15 +35,16 @@ public class PannableView {
   }
 
   public void start(Stage stage) {
+    layout.setOnMouseClicked(
+        (e -> {
+          if (addMode) {
+            addMapIcon(e.getX(), e.getY(), "AppIcon.png");
+            System.out.println(e.getX());
+            System.out.println(e.getY());
+          }
+        }));
+    updateLayoutChildren();
 
-    // construct the scene contents over a stacked background.
-    StackPane layout = new StackPane();
-    layout.getChildren().setAll(new ImageView(backgroundImage));
-    for (MapIcon icon : mapIcons) {
-      layout.getChildren().add(icon.getButton());
-    }
-
-    // wrap the scene contents in a pannable scroll pane.
     ScrollPane scroll = createScrollPane(layout);
 
     StackPane staticWrapper = new StackPane();
@@ -48,18 +54,22 @@ public class PannableView {
       staticWrapper.getChildren().add(imageView);
     }
 
-    // show the scene.
     Scene scene = new Scene(staticWrapper);
     stage.setScene(scene);
     stage.show();
 
-    // bind the preferred size of the scroll area to the size of the scene.
     scroll.prefWidthProperty().bind(scene.widthProperty());
     scroll.prefHeightProperty().bind(scene.widthProperty());
 
-    // center the scroll contents.
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+  }
+
+  private void updateLayoutChildren() {
+    layout.getChildren().setAll(new ImageView(backgroundImage));
+    for (MapIcon icon : mapIcons) {
+      layout.getChildren().add(icon.getButton());
+    }
   }
 
   private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
@@ -76,6 +86,7 @@ public class PannableView {
         });
     MapIcon newIcon = new MapIcon(newButton, type);
     mapIcons.add(newIcon);
+    updateLayoutChildren();
   }
 
   private JFXButton createHamburgerButton() {
@@ -90,7 +101,8 @@ public class PannableView {
     hamburgerButton.setOnAction(
         (event) -> {
           hamburgerDeployed = !hamburgerDeployed;
-          deployHamburger();
+          addMode = !addMode;
+          // deployHamburger();
         });
     return hamburgerButton;
   }
