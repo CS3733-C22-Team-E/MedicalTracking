@@ -8,9 +8,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
@@ -41,9 +42,20 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "views/HomePage.fxml"));
 
-    Parent mapScene =
-        new PannableView(MapFloor.LowerLevel1).getMapScene(tabContentHeight, tabContentWidth);
-    tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, mapScene));
+    PannableView mapView = new PannableView(MapFloor.LowerLevel1);
+    StyledTab mapTab =
+        new StyledTab(
+            "Hospital Map",
+            SortOrder.ByName,
+            mapView.getMapScene(tabContentHeight, tabContentWidth));
+    mapTab.setOnSelectionChanged(
+        new EventHandler<Event>() {
+          @Override
+          public void handle(Event event) {
+            mapView.getFromDB();
+          }
+        });
+    tabs.add(mapTab);
 
     tabs.add(
         new StyledTab(

@@ -171,39 +171,38 @@ public class EquipmentManager implements IManager<Equipment> {
   }
 
   @Override
-  public void readCSV(String csvFile) {
-    try {
-      File file = new File(csvFile);
-      FileReader fr = new FileReader(file);
-      BufferedReader br = new BufferedReader(fr);
-      String line = " ";
-      String[] tempArr;
+  public void readCSV(String csvFile) throws IOException {
+    csvFile =
+        "C:\\Users\\aberf\\Documents\\GitHub\\MedicalTracking\\MedicalTrackingApp\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EquipmentE.csv";
 
-      LocationManager locTable = DBManager.getInstance().getLocationManager();
-      boolean firstLine = true;
-      String delimiter = ",";
-      while ((line = br.readLine()) != null) {
-        if (!firstLine) {
-          tempArr = line.split(delimiter);
-          Equipment tempEquipment =
-              new Equipment(
-                  tempArr[0],
-                  1 >= tempArr.length ? null : locTable.get(tempArr[1]),
-                  2 >= tempArr.length ? null : EquipmentType.valueOf(tempArr[2]),
-                  3 >= tempArr.length ? "" : tempArr[3],
-                  4 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[4]),
-                  5 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[5]));
+    File file = new File(csvFile);
+    FileReader fr = new FileReader(file);
+    BufferedReader br = new BufferedReader(fr);
+    String line = " ";
+    String[] tempArr;
 
-          insert(tempEquipment);
-        } else {
-          firstLine = false;
-        }
+    LocationManager locTable = DBManager.getInstance().getLocationManager();
+    boolean firstLine = true;
+    String delimiter = ",";
+    while ((line = br.readLine()) != null) {
+      if (!firstLine) {
+        tempArr = line.split(delimiter);
+        Equipment tempEquipment =
+            new Equipment(
+                tempArr[0],
+                1 >= tempArr.length ? null : locTable.get(tempArr[1]),
+                2 >= tempArr.length ? null : EquipmentType.valueOf(tempArr[2]),
+                3 >= tempArr.length ? "" : tempArr[3],
+                4 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[4]),
+                5 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[5]));
+
+        insert(tempEquipment);
+      } else {
+        firstLine = false;
       }
-
-      br.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
     }
+
+    br.close();
   }
 
   @Override

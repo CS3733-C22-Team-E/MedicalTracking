@@ -142,40 +142,38 @@ public class LocationManager implements IManager<Location> {
   }
 
   @Override
-  public void readCSV(String csvFile) {
-    try {
-      File file = new File(csvFile);
-      FileReader fr = new FileReader(file);
-      BufferedReader br = new BufferedReader(fr);
-      String line = " ";
-      String[] tempArr;
+  public void readCSV(String csvFile) throws IOException {
+    csvFile =
+        "C:\\Users\\aberf\\Documents\\GitHub\\MedicalTracking\\MedicalTrackingApp\\src\\main\\resources\\edu\\wpi\\teame\\csv\\TowerLocationsE.csv";
 
-      boolean firstLine = true;
-      String delimiter = ",";
-      while ((line = br.readLine()) != null) {
-        if (!firstLine) {
-          tempArr = line.split(delimiter);
-          Location tempLocation =
-              new Location(
-                  tempArr[0],
-                  6 >= tempArr.length ? "" : tempArr[6],
-                  1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),
-                  2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
-                  3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
-                  4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
-                  5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
-                  7 >= tempArr.length ? "" : tempArr[7]);
+    File file = new File(csvFile);
+    FileReader fr = new FileReader(file);
+    BufferedReader br = new BufferedReader(fr);
+    String line = " ";
+    String[] tempArr;
 
-          insert(tempLocation);
-        } else {
-          firstLine = false;
-        }
+    boolean firstLine = true;
+    String delimiter = ",";
+    while ((line = br.readLine()) != null) {
+      if (!firstLine) {
+        tempArr = line.split(delimiter);
+        Location tempLocation =
+            new Location(
+                tempArr[0],
+                6 >= tempArr.length ? "" : tempArr[6],
+                1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),
+                2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
+                3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
+                4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
+                5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
+                7 >= tempArr.length ? "" : tempArr[7]);
+
+        insert(tempLocation);
+      } else {
+        firstLine = false;
       }
-
-      br.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
     }
+    br.close();
   }
 
   @Override

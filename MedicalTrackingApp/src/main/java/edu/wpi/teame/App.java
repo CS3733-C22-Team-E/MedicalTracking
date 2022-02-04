@@ -1,6 +1,5 @@
 package edu.wpi.teame;
 
-import edu.wpi.teame.db.DBManager;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +36,6 @@ public class App extends Application {
         new Scene(FXMLLoader.load(getClass().getResource("views/LandingPage.fxml")));
     appPrimaryStage.setScene(primaryScene);
     appPrimaryStage.show();
-    DBManager.getInstance().setupDB();
   }
 
   @Override

@@ -1,5 +1,6 @@
 package edu.wpi.teame.db;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public interface IManager<TableObject> {
@@ -13,7 +14,7 @@ public interface IManager<TableObject> {
 
   public void update(TableObject updatedObject);
 
-  public void readCSV(String csvFile);
+  public void readCSV(String csvFile) throws IOException;
 
   public void writeToCSV(String outputFilePath);
 }
