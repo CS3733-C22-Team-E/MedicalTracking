@@ -43,8 +43,7 @@ public class PannableView {
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
   }
-
-  public Parent getMapScene(double height, double width) {
+  
   private String getMapImg(MapFloor f) {
     switch (f) {
       case GroundFloor:
