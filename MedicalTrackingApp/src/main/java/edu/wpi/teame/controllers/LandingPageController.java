@@ -2,6 +2,7 @@ package edu.wpi.teame.controllers;
 
 import edu.wpi.teame.model.PannableView;
 import edu.wpi.teame.model.StyledTab;
+import edu.wpi.teame.model.enums.MapFloor;
 import edu.wpi.teame.model.enums.SortOrder;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "views/HomePage.fxml"));
 
-    Parent mapScene = new PannableView("").getMapScene(tabContentHeight, tabContentWidth);
+    Parent mapScene =
+        new PannableView(MapFloor.LowerLevel1).getMapScene(tabContentHeight, tabContentWidth);
     tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, mapScene));
 
     tabs.add(

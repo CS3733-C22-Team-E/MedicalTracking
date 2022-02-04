@@ -11,6 +11,7 @@ public class MapIcon {
     Button = button;
     Descriptor = descriptor;
   }
+
   public MapIcon(Double x, Double y, String descriptor, Node graphic) {
     Button = new JFXButton(descriptor, graphic);
     Button.setTranslateX(x);

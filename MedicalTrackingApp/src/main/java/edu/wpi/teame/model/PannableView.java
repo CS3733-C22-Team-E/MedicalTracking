@@ -4,9 +4,6 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
-import java.util.ArrayList;
-import javafx.scene.Parent;
-import edu.wpi.teame.Pannable;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.Equipment;
 import edu.wpi.teame.db.EquipmentType;
@@ -14,8 +11,7 @@ import edu.wpi.teame.model.enums.MapFloor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
@@ -39,11 +35,11 @@ public class PannableView {
   private StackPane layout = new StackPane();
 
   public PannableView(MapFloor floor) {
-    backgroundImage = new Image(Pannable.class.getResource(getMapImg(floor)).toString());
+    backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
     mapImageHeight = backgroundImage.getHeight();
     mapImageWidth = backgroundImage.getWidth();
   }
-  
+
   private String getMapImg(MapFloor f) {
     switch (f) {
       case GroundFloor:
@@ -88,10 +84,22 @@ public class PannableView {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    TypeGraphics.put(EquipmentType.PBED, new ImageView(new Image("images/Icons/HospitalBedIcon.png")));
-    TypeGraphics.put(EquipmentType.XRAY, new ImageView(new Image("images/Icons/XRayIcon.png")));
-    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/ReclinerIcon.png")));
-    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/PumpIcon.png")));
+    TypeGraphics.put(
+        EquipmentType.PBED,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.XRAY,
+        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.RECL,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.PUMP,
+        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+
+    return staticWrapper;
   }
 
   private void updateLayoutChildren() {
@@ -199,13 +207,14 @@ public class PannableView {
     scroll.setContent(layout);
     return scroll;
   }
+
   public MapIcon ConvertLocationToMapIcon(Equipment equip) {
     MapIcon retval =
-            new MapIcon(
-                    (double) equip.getLocationNode().getX(),
-                    (double) equip.getLocationNode().getX(),
-                    equip.getLocationNode().getLongName(),
-                    TypeGraphics.get(equip.getType()));
+        new MapIcon(
+            (double) equip.getLocationNode().getX(),
+            (double) equip.getLocationNode().getX(),
+            equip.getLocationNode().getLongName(),
+            TypeGraphics.get(equip.getType()));
     mapIcons.add(retval);
     updateLayoutChildren();
     return retval;
@@ -217,6 +226,7 @@ public class PannableView {
       ConvertLocationToMapIcon(currEquipment);
     }
   }
+
   public static void main(String[] args) {
     launch(args);
   }

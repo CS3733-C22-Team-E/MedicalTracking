@@ -1,8 +1,7 @@
 package edu.wpi.teame;
 
-import java.io.IOException;
-
 import edu.wpi.teame.db.DBManager;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
