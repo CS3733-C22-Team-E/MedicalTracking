@@ -59,11 +59,11 @@ public class PannableView {
         (e -> {
           if (addMode) {
             addMapIcon(e.getX(), e.getY(), "AppIcon.png");
-            System.out.println(e.getX());
-            System.out.println(e.getY());
           }
         }));
     updateLayoutChildren();
+    layout.setScaleX(.5);
+    layout.setScaleY(.5);
 
     ScrollPane scroll = createScrollPane(layout);
 
@@ -198,12 +198,16 @@ public class PannableView {
   }
 
   private void zoomIn() {
-    layout.setScaleX(layout.getScaleX() * 1.1);
-    layout.setScaleY(layout.getScaleY() * 1.1);
+    if (layout.getScaleX() < 1) {
+      layout.setScaleX(layout.getScaleX() * 1.1);
+      layout.setScaleY(layout.getScaleY() * 1.1);
+    }
   }
 
   private void zoomOut() {
-    layout.setScaleX(layout.getScaleX() * 1 / (1.1));
-    layout.setScaleY(layout.getScaleY() * 1 / (1.1));
+    if (layout.getScaleX() > .2) {
+      layout.setScaleX(layout.getScaleX() * 1 / (1.1));
+      layout.setScaleY(layout.getScaleY() * 1 / (1.1));
+    }
   }
 }
