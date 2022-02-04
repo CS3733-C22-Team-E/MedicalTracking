@@ -12,4 +12,8 @@ public interface IManager<TableObject> {
   public void remove(String id);
 
   public void update(TableObject updatedObject);
+
+  public void readCSV(String csvFile);
+
+  public void writeToCSV(String outputFilePath);
 }
