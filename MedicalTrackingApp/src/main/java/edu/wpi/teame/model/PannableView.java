@@ -92,6 +92,10 @@ public class PannableView {
 
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+    TypeGraphics.put(EquipmentType.PBED, new ImageView(new Image("images/Icons/HospitalBedIcon.png")));
+    TypeGraphics.put(EquipmentType.XRAY, new ImageView(new Image("images/Icons/XRayIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/ReclinerIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/PumpIcon.png")));
   }
 
   private void updateLayoutChildren() {
