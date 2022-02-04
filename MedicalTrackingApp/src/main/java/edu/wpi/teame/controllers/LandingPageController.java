@@ -1,5 +1,6 @@
 package edu.wpi.teame.controllers;
 
+import edu.wpi.teame.model.PannableView;
 import edu.wpi.teame.model.StyledTab;
 import edu.wpi.teame.model.enums.SortOrder;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
@@ -24,13 +26,22 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
 
+    // Get the tab content size using our init tab
+    double tabContentHeight =
+        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();
+    double tabContentWidth =
+        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getWidth();
+    mainTabPane.getTabs().clear();
+
     mainTabPane.setTabMaxHeight(StyledTab.Height);
     mainTabPane.setMaxWidth(StyledTab.Width);
     mainTabPane.setRotateGraphic(true);
 
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "views/HomePage.fxml"));
-    tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, "views/MapPage.fxml"));
+
+    Parent mapScene = new PannableView("").getMapScene(tabContentHeight, tabContentWidth);
+    tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, mapScene));
 
     tabs.add(
         new StyledTab(
