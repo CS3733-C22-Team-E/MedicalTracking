@@ -9,6 +9,7 @@ import edu.wpi.teame.db.Equipment;
 import edu.wpi.teame.db.EquipmentType;
 import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -123,8 +124,8 @@ public class PannableView {
     iconGraphic.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
     newButton.setGraphic(iconGraphic);
-    double x = xCoordinate - mapImageWidth / 2;
-    double y = yCoordinate - mapImageHeight / 2;
+    double x = xCoordinate - MAPIMGWIDTH / 2;
+    double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
     newButton.setTranslateY(y);
     newButton.setOnAction(
