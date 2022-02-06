@@ -116,7 +116,8 @@ public class PannableView {
   }
 
   // Adds icon on click
-  // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to make
+  // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
+  // make
   private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
     Image iconImage = new Image(App.class.getResource("images/Icons/" + type).toString());
     ImageView iconGraphic = new ImageView(iconImage);
@@ -264,7 +265,7 @@ public class PannableView {
         new MapIcon(
             (double) equip.getLocationNode().getX(),
             (double) equip.getLocationNode().getY(),
-            equip.getLocationNode().getLongName(),
+            equip.getName(),
             getImageViewFromEquipmentType(equip.getType()));
     mapIcons.add(retval);
     updateLayoutChildren();
