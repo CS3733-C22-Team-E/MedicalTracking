@@ -36,7 +36,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-             <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+             <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
