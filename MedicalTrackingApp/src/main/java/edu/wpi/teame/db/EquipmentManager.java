@@ -173,8 +173,7 @@ public class EquipmentManager implements IManager<Equipment> {
   @Override
   public void readCSV(String csvFile) throws IOException {
     csvFile =
-        System.getProperty("user.dir")
-            + "\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EquipmentE.csv";
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/EquipmentE.csv";
 
     File file = new File(csvFile);
     FileReader fr = new FileReader(file);
