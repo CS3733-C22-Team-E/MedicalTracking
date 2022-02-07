@@ -120,6 +120,7 @@ public class PannableView {
         new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
     System.out.println("Addded Graphics");
     EquipmentMenu = new ContextMenu();
+    EquipmentMenu.getStyleClass().add("combo-box");
     PaneMenu = new ContextMenu();
     AddMenu = new ContextMenu();
     MenuItem AddMenuItem1 = new MenuItem("1");
@@ -138,6 +139,7 @@ public class PannableView {
             }
           });
       PaneMenu.getItems().add(currItem);
+      PaneMenu.getStyleClass().add("combo-box");
     }
 
     MenuItem equipmentItem1 = new MenuItem("Delete");
