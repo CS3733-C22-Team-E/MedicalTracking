@@ -27,6 +27,12 @@ public class ServiceRequestCard {
   private int BORDERRADIUS = 10;
   private int BORDERWIDTH = 5;
 
+  // Details
+  private String patientName;
+  private int roomNumber;
+  private int floor;
+  private String otherInfo;
+
   public ServiceRequestCard(
       ServiceRequestBacklog backlog,
       ServiceRequestTypes SRType,
@@ -68,7 +74,28 @@ public class ServiceRequestCard {
     titleAndDescription.add(getDescriptionText(), 0, 1);
     card.getChildren().add(titleAndDescription);
 
+    GridPane detailsGrid = new GridPane();
+    detailsGrid.setAlignment(Pos.CENTER);
+    detailsGrid.add(generateDetailText("Patient Name: "), 0, 0);
+    detailsGrid.add(generateDetailText("Room Number: "), 0, 1);
+    detailsGrid.add(generateDetailText("Floor: "), 0, 2);
+    detailsGrid.add(generateDetailText("Other Info: "), 0, 3);
+    detailsGrid.add(generateDetailText(patientName), 1, 0);
+    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 1, 1);
+    detailsGrid.add(generateDetailText(String.valueOf(floor)), 1, 2);
+    detailsGrid.add(generateDetailText(otherInfo), 1, 3);
+
+    card.getChildren().add(detailsGrid);
+
     return card;
+  }
+
+  private Text generateDetailText(String text) {
+    Text detailText = new Text(text);
+    detailText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    detailText.setFill(Color.BLACK);
+    detailText.setTextAlignment(TextAlignment.RIGHT);
+    return detailText;
   }
 
   private Text getTitleText() {
@@ -94,12 +121,28 @@ public class ServiceRequestCard {
   private Text getDescriptionText() {
     Text descriptionText = new Text(description);
     descriptionText.setFont(Font.font("Arial", 12));
-    descriptionText.setFill(Color.LIGHTGRAY);
+    descriptionText.setFill(Color.DARKGRAY);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
     return descriptionText;
   }
 
   private void deleteRequest(ServiceRequestBacklog b) {
     // TODO Implement this method
+  }
+
+  public void setPatientName(String patientName) {
+    this.patientName = patientName;
+  }
+
+  public void setRoomNumber(int roomNumber) {
+    this.roomNumber = roomNumber;
+  }
+
+  public void setFloor(int floor) {
+    this.floor = floor;
+  }
+
+  public void setOtherInfo(String otherInfo) {
+    this.otherInfo = otherInfo;
   }
 }
