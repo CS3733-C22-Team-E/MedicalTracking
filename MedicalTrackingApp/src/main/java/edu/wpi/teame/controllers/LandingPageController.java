@@ -2,6 +2,7 @@ package edu.wpi.teame.controllers;
 
 import edu.wpi.teame.db.FloorType;
 import edu.wpi.teame.model.PannableView;
+import edu.wpi.teame.model.ServiceRequestBacklog;
 import edu.wpi.teame.model.StyledTab;
 import edu.wpi.teame.model.enums.SortOrder;
 import java.net.URL;
@@ -56,6 +57,16 @@ public class LandingPageController implements Initializable {
           }
         });
     tabs.add(mapTab);
+
+    ServiceRequestBacklog backlogView =
+        new ServiceRequestBacklog(tabContentWidth, tabContentHeight);
+    StyledTab backlogTab =
+        new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
+    backlogTab.setOnSelectionChanged(
+        (event) -> {
+          // TODO something on click
+        });
+    tabs.add(backlogTab);
 
     tabs.add(
         new StyledTab(
