@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -129,7 +130,11 @@ public class PannableView {
           new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-              addMapIcon(PressX, PressY, TypeGraphics.get(currEquipment), "Hi");
+              addMapIcon(
+                  PressX,
+                  PressY,
+                  getImageViewFromEquipmentType(currEquipment),
+                  currEquipment.toString());
             }
           });
       PaneMenu.getItems().add(currItem);
@@ -213,19 +218,7 @@ public class PannableView {
           }
         });
     EquipmentMenu.getItems().addAll(equipmentItem1, equipmentItem2);
-    //        layout.setOnMouseClicked(
-    //            (e -> {
-    //
-    ////              if (addMode) {
-    ////                addMapIcon(e.getX(), e.getY(), "AppIcon.png", "Hi");
-    ////              }
-    //            }));
     updateLayoutChildren();
-    layout.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {}
-        });
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     layout.setOnScroll(
@@ -529,8 +522,9 @@ public class PannableView {
             System.out.println("Started");
             node.setCursor(Cursor.MOVE);
             // When a press event occurs, the location coordinates of the event are cached
-            pos.x = event.getX();
-            pos.y = event.getY();
+            pos.x = node.getTranslateX();
+            pos.y = node.getTranslateY();
+            System.out.println(pos.x + " " + pos.y);
           }
         });
     node.addEventHandler(
@@ -546,21 +540,13 @@ public class PannableView {
         MouseEvent.MOUSE_DRAGGED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-            System.out.println("Init");
-            double distanceX = event.getX() - pos.x;
-            double distanceY = event.getY() - pos.y;
 
-            double x = node.getLayoutX() + distanceX;
-            double y = node.getLayoutY() + distanceY;
-            x = x - MAPIMGWIDTH / 2;
-            y = y - MAPIMGHEIGHT / 2;
+            Point2D updatedLocation =
+                layout.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+            double x = updatedLocation.getX() - MAPIMGWIDTH / 2;
+            double y = updatedLocation.getY() - MAPIMGHEIGHT / 2;
             node.setTranslateX(x);
             node.setTranslateY(y);
-
-            // Update mouse location while dragging
-
-            // After calculating X and y, relocate the node to the specified coordinate point (x, y)
-
           }
         });
   }
