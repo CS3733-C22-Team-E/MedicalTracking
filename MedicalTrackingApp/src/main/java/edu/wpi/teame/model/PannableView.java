@@ -11,10 +11,25 @@ import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
+import javafx.util.Pair;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
@@ -38,6 +53,14 @@ public class PannableView {
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
+  private ContextMenu EquipmentMenu;
+  private ContextMenu PaneMenu;
+  private ContextMenu AddMenu;
+
+  // Keeping track of Events
+  private JFXButton lastPressed;
+  private double PressX;
+  private double PressY;
 
   // Init panes
   private StackPane layout = new StackPane();
@@ -70,17 +93,139 @@ public class PannableView {
         return "";
     }
   }
+  // Checks if X and Y strings are on the map coordinates;
+  private boolean CoordinateChecker(String X, String Y) {
+    Double doubleX = Double.parseDouble(X);
+    Double doubleY = Double.parseDouble(Y);
+    return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
+  }
 
   // This is essentially the Main function
   // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
-    layout.setOnMouseClicked(
-        (e -> {
-          if (addMode) {
-            addMapIcon(e.getX(), e.getY(), "AppIcon.png");
+    TypeGraphics.put(
+        EquipmentType.PBED,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.XRAY,
+        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.RECL,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.PUMP,
+        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+    System.out.println("Addded Graphics");
+    EquipmentMenu = new ContextMenu();
+    PaneMenu = new ContextMenu();
+    AddMenu = new ContextMenu();
+    MenuItem AddMenuItem1 = new MenuItem("1");
+    AddMenu.getItems().add(AddMenuItem1);
+    for (EquipmentType currEquipment : EquipmentType.values()) {
+      MenuItem currItem = new MenuItem(currEquipment.name());
+      currItem.setOnAction(
+          new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              addMapIcon(PressX, PressY, TypeGraphics.get(currEquipment), "Hi");
+            }
+          });
+      PaneMenu.getItems().add(currItem);
+    }
+
+    MenuItem equipmentItem1 = new MenuItem("Delete");
+    equipmentItem1.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            lastPressed.setVisible(false);
+            lastPressed.setDisable(true);
           }
-        }));
+        });
+    MenuItem equipmentItem2 = new MenuItem("Edit");
+    equipmentItem2.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            Dialog<Pair<Double, Double>> dialog = new Dialog<>();
+            dialog.setTitle("Move Equipment");
+            dialog.setHeaderText("Choose the X and Y Position");
+            // Set the button types.
+            ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
+
+            // Create the username and password labels and fields.
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField XPosition = new TextField();
+            XPosition.setPromptText("X Position");
+            TextField YPosition = new TextField();
+            YPosition.setPromptText("Y Position");
+
+            grid.add(new Label("X Position:"), 0, 0);
+            grid.add(XPosition, 1, 0);
+            grid.add(new Label("Y Position:"), 0, 1);
+            grid.add(YPosition, 1, 1);
+
+            // Enable/Disable login button depending on whether a username was entered.
+            Node MoveButton = dialog.getDialogPane().lookupButton(Move);
+            MoveButton.setDisable(true);
+
+            // Do some validation (using the Java 8 lambda syntax).
+            XPosition.textProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      MoveButton.setDisable(
+                          newValue.trim().isEmpty()
+                              || YPosition.getText().isBlank()
+                              || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+                    });
+            YPosition.textProperty()
+                .addListener(
+                    (observable, oldValue, newValue) -> {
+                      MoveButton.setDisable(
+                          newValue.trim().isEmpty()
+                              || XPosition.getText().isBlank()
+                              || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
+                    });
+
+            dialog.getDialogPane().setContent(grid);
+
+            // Convert the result to a username-password-pair when the login button is clicked.
+            dialog.setResultConverter(
+                dialogButton -> {
+                  if (dialogButton == Move) {
+                    double xCo = Double.parseDouble(XPosition.getText());
+                    double yCo = Double.parseDouble(YPosition.getText());
+                    double x = xCo - MAPIMGWIDTH / 2;
+                    double y = yCo - MAPIMGHEIGHT / 2;
+                    lastPressed.setTranslateX(x);
+                    lastPressed.setTranslateY(y);
+                  }
+                  return null;
+                });
+            dialog.showAndWait();
+          }
+        });
+    EquipmentMenu.getItems().addAll(equipmentItem1, equipmentItem2);
+    //        layout.setOnMouseClicked(
+    //            (e -> {
+    //
+    ////              if (addMode) {
+    ////                addMapIcon(e.getX(), e.getY(), "AppIcon.png", "Hi");
+    ////              }
+    //            }));
     updateLayoutChildren();
+    layout.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {}
+        });
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     layout.setOnScroll(
@@ -92,9 +237,7 @@ public class PannableView {
     ScrollPane scroll = createScrollPane(layout);
 
     StackPane staticWrapper = new StackPane();
-    staticWrapper
-        .getChildren()
-        .setAll(scroll, createHamburgerButton(), createZoomInButton(), createZoomOutButton());
+    staticWrapper.getChildren().setAll(scroll, createZoomInButton(), createZoomOutButton());
     addHamburgerDeployments();
     for (ImageView imageView : hamburgerDeployments) {
       staticWrapper.getChildren().add(imageView);
@@ -104,6 +247,18 @@ public class PannableView {
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
+    layout.setOnMouseReleased(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              PressX = event.getX();
+              PressY = event.getY();
+              scroll.setContextMenu(PaneMenu);
+              PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
+            }
+          }
+        });
     return staticWrapper;
   }
 
@@ -118,9 +273,8 @@ public class PannableView {
   // Adds icon on click
   // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
   // make
-  private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
-    Image iconImage = new Image(App.class.getResource("images/Icons/" + type).toString());
-    ImageView iconGraphic = new ImageView(iconImage);
+  private void addMapIcon(double xCoordinate, double yCoordinate, ImageView image, String toolTip) {
+    ImageView iconGraphic = image;
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
@@ -129,16 +283,22 @@ public class PannableView {
     double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
     newButton.setTranslateY(y);
-    newButton.setOnAction(
-        (event) -> {
-          // TODO Implement click functionality.
-          // Click currently removes added nodes. Does not yet work on equipment nodes.
-          // For click functionality on equipment nodes, add an onclick in the equipment translator
-          newButton.setVisible(false);
+    newButton.setOpacity(1);
+    newButton.setContextMenu(EquipmentMenu);
+    draggable(newButton);
+    newButton.setOnMouseReleased(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              lastPressed = newButton;
+              newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+            }
+          }
         });
-    Tooltip tooltip = new Tooltip(type);
+    Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
-    MapIcon newIcon = new MapIcon(newButton, type);
+    MapIcon newIcon = new MapIcon(newButton, toolTip);
     mapIcons.add(newIcon);
     updateLayoutChildren();
   }
@@ -150,8 +310,8 @@ public class PannableView {
     icon.setFitWidth(30);
     icon.setFitHeight(30);
     final JFXButton zoomInButton = new JFXButton("", icon);
-    zoomInButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
-    zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));
+    zoomInButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
+    zoomInButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 60);
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
@@ -167,8 +327,8 @@ public class PannableView {
     icon.setFitWidth(30);
     icon.setFitHeight(30);
     final JFXButton zoomOutButton = new JFXButton("", icon);
-    zoomOutButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
-    zoomOutButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 90)));
+    zoomOutButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
+    zoomOutButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     zoomOutButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
@@ -178,23 +338,23 @@ public class PannableView {
   }
 
   // Init currently unused hamburger button
-  private JFXButton createHamburgerButton() {
-    Image hamburgerIcon =
-        new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
-    ImageView icon = new ImageView(hamburgerIcon);
-    icon.setFitHeight(30);
-    icon.setFitWidth(30);
-    final JFXButton hamburgerButton = new JFXButton("", icon);
-    hamburgerButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
-    hamburgerButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));
-    hamburgerButton.setOnAction(
-        (event) -> {
-          hamburgerDeployed = !hamburgerDeployed;
-          addMode = !addMode;
-          // deployHamburger();
-        });
-    return hamburgerButton;
-  }
+  //  private JFXButton createHamburgerButton() {
+  //    Image hamburgerIcon =
+  //        new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
+  //    ImageView icon = new ImageView(hamburgerIcon);
+  //    icon.setFitHeight(30);
+  //    icon.setFitWidth(30);
+  //    final JFXButton hamburgerButton = new JFXButton("", icon);
+  //    hamburgerButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
+  //    hamburgerButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 110);
+  //    hamburgerButton.setOnAction(
+  //        (event) -> {
+  //          hamburgerDeployed = !hamburgerDeployed;
+  //          addMode = !addMode;
+  //          // deployHamburger();
+  //        });
+  //    return hamburgerButton;
+  //  }
 
   // Adds icons to the hamburger menu
   // TODO styling— probably a complete redesign
@@ -260,16 +420,20 @@ public class PannableView {
     return equipmentIcon;
   }
 
-  public MapIcon convertLocationToMapIcon(Equipment equip) {
-    MapIcon retval =
-        new MapIcon(
-            (double) equip.getLocationNode().getX(),
-            (double) equip.getLocationNode().getY(),
-            equip.getName(),
-            getImageViewFromEquipmentType(equip.getType()));
-    mapIcons.add(retval);
+  public void convertLocationToMapIcon(Equipment equip) {
+    //    MapIcon retval = new MapIcon(
+    //            (double) equip.getLocationNode().getX(),
+    //            (double) equip.getLocationNode().getY(),
+    //            equip.getName(),
+    //            getImageViewFromEquipmentType(equip.getType()));
+    //    mapIcons.add(retval);
+    addMapIcon(
+        (double) equip.getLocationNode().getX(),
+        (double) equip.getLocationNode().getY(),
+        getImageViewFromEquipmentType(equip.getType()),
+        equip.getName());
+
     updateLayoutChildren();
-    return retval;
   }
 
   public void getFromDB() {
@@ -335,5 +499,69 @@ public class PannableView {
       layout.setScaleX(layout.getScaleX() * 1 / (1 + amp));
       layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));
     }
+  }
+
+  private static class Position {
+    double x;
+    double y;
+  }
+
+  private void draggable(JFXButton node) {
+    final Position pos = new Position();
+
+    // Prompt the user that the node can be clicked
+    node.addEventHandler(
+        MouseEvent.MOUSE_ENTERED,
+        event -> {
+          node.setCursor(Cursor.HAND);
+        });
+    node.addEventHandler(
+        MouseEvent.MOUSE_EXITED,
+        event -> {
+          node.setCursor(Cursor.DEFAULT);
+        });
+
+    // Prompt the user that the node can be dragged
+    node.addEventHandler(
+        MouseEvent.MOUSE_PRESSED,
+        event -> {
+          if (event.getButton() == MouseButton.PRIMARY) {
+            System.out.println("Started");
+            node.setCursor(Cursor.MOVE);
+            // When a press event occurs, the location coordinates of the event are cached
+            pos.x = event.getX();
+            pos.y = event.getY();
+          }
+        });
+    node.addEventHandler(
+        MouseEvent.MOUSE_RELEASED,
+        event -> {
+          System.out.println("Done");
+          node.setCursor(Cursor.DEFAULT);
+          updateLayoutChildren();
+        });
+
+    // Realize drag and drop function
+    node.addEventHandler(
+        MouseEvent.MOUSE_DRAGGED,
+        event -> {
+          if (event.getButton() == MouseButton.PRIMARY) {
+            System.out.println("Init");
+            double distanceX = event.getX() - pos.x;
+            double distanceY = event.getY() - pos.y;
+
+            double x = node.getLayoutX() + distanceX;
+            double y = node.getLayoutY() + distanceY;
+            x = x - MAPIMGWIDTH / 2;
+            y = y - MAPIMGHEIGHT / 2;
+            node.setTranslateX(x);
+            node.setTranslateY(y);
+
+            // Update mouse location while dragging
+
+            // After calculating X and y, relocate the node to the specified coordinate point (x, y)
+
+          }
+        });
   }
 }
