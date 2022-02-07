@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.enums.ServiceRequestTypes;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
@@ -121,7 +120,7 @@ public class ServiceRequestCard {
 
   private Text generateDetailText(String text) {
     Text detailText = new Text(text);
-    detailText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    detailText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
     detailText.setFill(Color.BLACK);
     detailText.setTextAlignment(TextAlignment.RIGHT);
     return detailText;
