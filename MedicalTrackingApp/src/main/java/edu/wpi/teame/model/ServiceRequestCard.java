@@ -48,9 +48,9 @@ public class ServiceRequestCard {
 
   // TODO Cards are displayed with wrong width
   // TODO Cards are displayed with funky internal spacing (Squished!)
-  public GridPane getCard(double width, double height) {
+  public HBox getCard(double width, double height) {
     // Setup grid
-    GridPane card = new GridPane();
+    HBox card = new HBox();
     card.setBorder(
         new Border(
             new BorderStroke(
@@ -60,12 +60,13 @@ public class ServiceRequestCard {
                 new BorderWidths(BORDERWIDTH))));
     card.setPrefSize(width, height);
 
-    card.add(getDoneCheckbox(), 0, 0);
+    card.getChildren().add(getDoneCheckbox());
+
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
     titleAndDescription.add(getTitleText(), 0, 0);
     titleAndDescription.add(getDescriptionText(), 0, 1);
-    card.add(titleAndDescription, 1, 0);
+    card.getChildren().add(titleAndDescription);
 
     return card;
   }
