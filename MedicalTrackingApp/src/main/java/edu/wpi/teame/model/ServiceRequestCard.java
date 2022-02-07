@@ -2,6 +2,7 @@ package edu.wpi.teame.model;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.enums.ServiceRequestTypes;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
@@ -74,17 +75,11 @@ public class ServiceRequestCard {
     // Setup grid
     HBox card = new HBox();
     card.setBorder(BORDER);
-    card.setPrefSize(width, height);
-
-    card.setOnMouseEntered(
-        e -> {
-          card.setBorder(HOVERBOARDER);
-        });
-
-    card.setOnMouseExited(
-        e -> {
-          card.setBorder(BORDER);
-        });
+    card.setBackground(
+        new Background(
+            new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
+    card.setPrefSize(1000, height);
+    setHoverStyling(card);
 
     card.getChildren().add(getDoneCheckbox());
 
@@ -164,5 +159,24 @@ public class ServiceRequestCard {
 
   public void setOtherInfo(String otherInfo) {
     this.otherInfo = otherInfo;
+  }
+
+  private void setHoverStyling(HBox c) {
+    c.setOnMouseEntered(
+        e -> {
+          c.setBorder(HOVERBOARDER);
+          c.setBackground(
+              new Background(
+                  new BackgroundFill(
+                      Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
+        });
+
+    c.setOnMouseExited(
+        e -> {
+          c.setBorder(BORDER);
+          c.setBackground(
+              new Background(
+                  new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
+        });
   }
 }
