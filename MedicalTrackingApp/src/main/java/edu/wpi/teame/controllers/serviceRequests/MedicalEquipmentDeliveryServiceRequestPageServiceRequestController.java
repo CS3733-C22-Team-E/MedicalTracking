@@ -50,7 +50,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   public void sendToMEDB(MouseEvent mouseEvent) {
     String pName = patientName.getText();
-    // String roomNum = roomNumber.getText();
+
     String startingTime = startTime.getText();
     String endingTime = endTime.getText();
     String assignee = nameAssigned.getText();
@@ -61,9 +61,10 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     String MRSRStatus = (String) requestState.getValue();
     String equipNeeded = (String) equipmentNeeded.getValue();
+    String roomNum = (String) roomNumber.getValue();
 
     System.out.println(pName);
-    // System.out.println(roomNum);
+    System.out.println(roomNum);
     System.out.println(startingTime);
     System.out.println(endingTime);
     System.out.println(assignee);

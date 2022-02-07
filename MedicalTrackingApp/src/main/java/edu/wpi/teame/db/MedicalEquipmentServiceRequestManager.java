@@ -54,6 +54,37 @@ public class MedicalEquipmentServiceRequestManager
     return result;
   }
 
+  public MedicalEquipmentServiceRequest getFromLongName(String longName) {
+    String getQuery = "SELECT * FROM EQUIPMENTSERVICEREQUEST WHERE id='" + longName + "'";
+    MedicalEquipmentServiceRequest result = null;
+
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
+    EquipmentManager equipmentTable = DBManager.getInstance().getEquipmentManager();
+    try {
+      ResultSet rset = stmt.executeQuery(getQuery);
+
+      while (rset.next()) {
+        Location serReqLocation = locationTable.get(rset.getString("roomID"));
+        Equipment serReqEquipment = equipmentTable.get(rset.getString("equipmentID"));
+
+        result =
+                new MedicalEquipmentServiceRequest(
+                        rset.getString("id"),
+                        rset.getString("patient"),
+                        serReqLocation,
+                        rset.getString("startTime"),
+                        rset.getString("endTime"),
+                        rset.getString("date"),
+                        rset.getString("assignee"),
+                        serReqEquipment,
+                        MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
   @Override
   public LinkedList<MedicalEquipmentServiceRequest> getAll() {
     String getQuery = "SELECT * FROM EQUIPMENTSERVICEREQUEST";
