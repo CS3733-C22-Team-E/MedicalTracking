@@ -143,11 +143,11 @@ public class LocationManager implements IManager<Location> {
 
   @Override
   public void readCSV(String csvFile) throws IOException {
-    csvFile =
+    String path =
         System.getProperty("user.dir")
-            + "/src/main/resources/edu/wpi/teame/csv/TowerLocationsE.csv";
+            + "/src/main/resources/edu/wpi/teame/" + csvFile;
 
-    File file = new File(csvFile);
+    File file = new File(path);
     FileReader fr = new FileReader(file);
     BufferedReader br = new BufferedReader(fr);
     String line = " ";
