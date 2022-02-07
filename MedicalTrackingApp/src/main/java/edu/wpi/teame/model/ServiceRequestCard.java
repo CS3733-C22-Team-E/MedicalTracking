@@ -26,6 +26,22 @@ public class ServiceRequestCard {
   private Color BORDERCOLOR = Color.GREEN;
   private int BORDERRADIUS = 10;
   private int BORDERWIDTH = 5;
+  private Border BORDER =
+      new Border(
+          new BorderStroke(
+              BORDERCOLOR,
+              BorderStrokeStyle.SOLID,
+              new CornerRadii(BORDERRADIUS),
+              new BorderWidths(BORDERWIDTH)));
+
+  private Color BORDERHOVERCOLOR = Color.BLUE;
+  private Border HOVERBOARDER =
+      new Border(
+          new BorderStroke(
+              BORDERHOVERCOLOR,
+              BorderStrokeStyle.SOLID,
+              new CornerRadii(BORDERRADIUS),
+              new BorderWidths(BORDERWIDTH)));
 
   // Details
   private String patientName;
@@ -57,14 +73,18 @@ public class ServiceRequestCard {
   public HBox getCard(double width, double height) {
     // Setup grid
     HBox card = new HBox();
-    card.setBorder(
-        new Border(
-            new BorderStroke(
-                BORDERCOLOR,
-                BorderStrokeStyle.SOLID,
-                new CornerRadii(BORDERRADIUS),
-                new BorderWidths(BORDERWIDTH))));
+    card.setBorder(BORDER);
     card.setPrefSize(width, height);
+
+    card.setOnMouseEntered(
+        e -> {
+          card.setBorder(HOVERBOARDER);
+        });
+
+    card.setOnMouseExited(
+        e -> {
+          card.setBorder(BORDER);
+        });
 
     card.getChildren().add(getDoneCheckbox());
 
