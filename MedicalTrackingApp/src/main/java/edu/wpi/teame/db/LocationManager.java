@@ -95,7 +95,7 @@ public class LocationManager implements IManager<Location> {
     try {
       stmt.executeUpdate(insertQuery);
     } catch (SQLException e) {
-      System.out.println("Case 3: Could not create new node");
+      System.out.println("Could not insert into Locations");
       e.printStackTrace();
     }
   }
