@@ -2,7 +2,10 @@ package edu.wpi.teame.model;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.enums.ServiceRequestTypes;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -91,7 +94,8 @@ public class ServiceRequestCard {
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
     titleAndDescription.add(getTitleText(), 0, 0);
-    titleAndDescription.add(getDescriptionText(), 0, 1);
+    titleAndDescription.add(getSeparator(), 0, 1);
+    titleAndDescription.add(getDescriptionText(), 0, 2);
     card.getChildren().add(titleAndDescription);
 
     GridPane detailsGrid = new GridPane();
@@ -100,10 +104,10 @@ public class ServiceRequestCard {
     detailsGrid.add(generateDetailText("Room Number: "), 0, 1);
     detailsGrid.add(generateDetailText("Floor: "), 0, 2);
     detailsGrid.add(generateDetailText("Other Info: "), 0, 3);
-    detailsGrid.add(generateDetailText(patientName), 1, 0);
-    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 1, 1);
-    detailsGrid.add(generateDetailText(String.valueOf(floor)), 1, 2);
-    detailsGrid.add(generateDetailText(otherInfo), 1, 3);
+    detailsGrid.add(generateDetailText(patientName), 100, 0);
+    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 100, 1);
+    detailsGrid.add(generateDetailText(String.valueOf(floor)), 100, 2);
+    detailsGrid.add(generateDetailText(otherInfo), 100, 3);
 
     card.getChildren().add(detailsGrid);
 
@@ -129,6 +133,10 @@ public class ServiceRequestCard {
     JFXCheckBox doneBox = new JFXCheckBox();
     doneBox.setCheckedColor(Color.LIGHTBLUE);
     doneBox.setCheckedColor(Color.LIGHTGRAY);
+    doneBox.setAlignment(Pos.CENTER_LEFT);
+    doneBox.setScaleX(2);
+    doneBox.setScaleY(2);
+    doneBox.setPadding(new Insets(40, 40, 40, 40));
     doneBox.setOnMouseClicked(
         (event -> {
           deleteRequest(backlog);
@@ -144,6 +152,14 @@ public class ServiceRequestCard {
     descriptionText.setFill(Color.DARKGRAY);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
     return descriptionText;
+  }
+
+  private Separator getSeparator() {
+    Separator titleSeparator = new Separator();
+    titleSeparator.setScaleX(1);
+    titleSeparator.setScaleY(2);
+    titleSeparator.setHalignment(HPos.CENTER);
+    return titleSeparator;
   }
 
   private void deleteRequest(ServiceRequestBacklog b) {
