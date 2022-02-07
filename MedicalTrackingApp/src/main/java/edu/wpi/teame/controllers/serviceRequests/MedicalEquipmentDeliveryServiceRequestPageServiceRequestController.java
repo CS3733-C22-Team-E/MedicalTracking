@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+
+import edu.wpi.teame.db.MedicalEquipmentServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -71,5 +73,9 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     System.out.println(serviceRequestDate);
     System.out.println(MRSRStatus);
     System.out.println(equipNeeded);
+
+    System.out.println(DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
+    MedicalEquipmentServiceRequest serReq = new MedicalEquipmentServiceRequest(null, pName, DBManager.getInstance().getLocationManager().getFromLongName(roomNum), startingTime, endingTime, srDate, assignee, );
+    DBManager.getInstance().getMEServiceRequestManager().insert(serReq);
   }
 }

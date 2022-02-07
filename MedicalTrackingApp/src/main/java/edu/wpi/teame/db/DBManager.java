@@ -76,7 +76,7 @@ public final class DBManager {
       System.out.println("EQUIPMENT created");
 
       String createEquipmentServiceRequestTable =
-          "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
+          "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key Generated as Identity,"
               + "patient VARCHAR(100), "
               + "roomID VARCHAR(10) ,"
               + "startTime VARCHAR(50),"

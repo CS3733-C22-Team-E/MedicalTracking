@@ -45,6 +45,30 @@ public class LocationManager implements IManager<Location> {
     return result;
   }
 
+  public Location getFromLongName(String getLongName) {
+    Location result = null;
+    String getQuery = "SELECT * FROM LOCATIONS WHERE longName='" + getLongName + "'";
+    try {
+      ResultSet rset = stmt.executeQuery(getQuery);
+      while (rset.next()) {
+        String id = rset.getString("id");
+        int x = rset.getInt("x");
+        int y = rset.getInt("y");
+        String longName = rset.getString("longName");
+        FloorType floor = FloorType.values()[rset.getInt("floor")];
+        BuildingType building = BuildingType.values()[rset.getInt("building")];
+        LocationType locationType = LocationType.values()[rset.getInt("locationType")];
+        String shortName = rset.getString("shortName");
+
+        // convert strings to proper type
+        result = new Location(id, longName, x, y, floor, building, locationType, shortName);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
   @Override
   public LinkedList<Location> getAll() {
     String getAllQuery = "SELECT * FROM LOCATIONS";
@@ -143,9 +167,7 @@ public class LocationManager implements IManager<Location> {
 
   @Override
   public void readCSV(String csvFile) throws IOException {
-    String path =
-        System.getProperty("user.dir")
-            + "/src/main/resources/edu/wpi/teame/" + csvFile;
+    String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
 
     File file = new File(path);
     FileReader fr = new FileReader(file);
