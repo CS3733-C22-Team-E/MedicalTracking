@@ -63,7 +63,7 @@ public class ServiceRequestBacklog {
             SCENEHEIGHT,
             cardCursor);
     testCard.setPatientName("Joe Dobbelaar");
-    testCard.setRoomNumber(33);
+    testCard.setRoomNumber(cardCursor);
     testCard.setFloor(2);
     testCard.setOtherInfo("Super cool and very cool");
     for (int i = 0; i < num; i++) {
