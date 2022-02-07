@@ -1,9 +1,6 @@
 package edu.wpi.teame.db;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -122,51 +119,59 @@ public class EmployeeManager implements IManager<Employee> {
 
   @Override
   public void readCSV(String csvFile) throws IOException {
+
     csvFile =
         System.getProperty("user.dir")
             + "\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EmployeesE.csv";
 
-    File file = new File(csvFile);
-    FileReader fr = new FileReader(file);
-    BufferedReader br = new BufferedReader(fr);
-    String line = " ";
-    String[] tempArr;
+    // TODO: why are we passing in a csv if it is being hardcoded in the method body
 
-    boolean firstLine = true;
-    String delimiter = ",";
-    while ((line = br.readLine()) != null) {
-      if (!firstLine) {
-        tempArr = line.split(delimiter);
-        /*
-        Employee tempEmployee =
-                new Employee(
-                        tempArr[0],
-                        6 >= tempArr.length ? "" : tempArr[6],
-                        1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]), //if there is only one node in tempArray, there will not be a value for this field. don't input
-                        2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
-                        3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
-                        4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
-                        5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
-                        7 >= tempArr.length ? "" : tempArr[7]);
-         */
-        String tempID = tempArr[0];
-        DepartmentType tempDept = csvValToDepartmentType(tempArr[1]);
-        String tempName = tempArr[2];
-        boolean tempIsDoctor = Boolean.parseBoolean(tempArr[3]);
+    try {
+      File file = new File(csvFile);
+      FileReader fr = new FileReader(file);
+      BufferedReader br = new BufferedReader(fr);
+      String line = " ";
+      String[] tempArr;
 
-        Employee tempEmployee =
-            new Employee(
-                tempID,
-                1 >= tempArr.length ? null : tempDept,
-                2 >= tempArr.length ? "" : tempName,
-                3 >= tempArr.length ? false : tempIsDoctor);
+      boolean firstLine = true;
+      String delimiter = ",";
+      while ((line = br.readLine()) != null) {
+        if (!firstLine) {
+          tempArr = line.split(delimiter);
+          /*
+          Employee tempEmployee =
+                  new Employee(
+                          tempArr[0],
+                          6 >= tempArr.length ? "" : tempArr[6],
+                          1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]), //if there is only one node in tempArray, there will not be a value for this field. don't input
+                          2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
+                          3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
+                          4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
+                          5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
+                          7 >= tempArr.length ? "" : tempArr[7]);
+           */
+          String tempID = tempArr[0];
+          DepartmentType tempDept = csvValToDepartmentType(tempArr[1]);
+          String tempName = tempArr[2];
+          boolean tempIsDoctor = Boolean.parseBoolean(tempArr[3]);
 
-        insert(tempEmployee);
-      } else {
-        firstLine = false;
+          Employee tempEmployee =
+              new Employee(
+                  tempID,
+                  1 >= tempArr.length ? null : tempDept,
+                  2 >= tempArr.length ? "" : tempName,
+                  3 >= tempArr.length ? false : tempIsDoctor);
+
+          insert(tempEmployee);
+        } else {
+          firstLine = false;
+        }
       }
+      br.close();
+    } catch (IOException e) {
+      System.out.println("Could not read Employees.csv.");
+      e.printStackTrace();
     }
-    br.close();
   }
 
   private DepartmentType csvValToDepartmentType(String csvVal) {
@@ -188,5 +193,76 @@ public class EmployeeManager implements IManager<Employee> {
   }
 
   @Override
-  public void writeToCSV(String outputFilePath) {}
+  public void writeToCSV(String outputFilePath) {
+
+    // create CSV or find CSV to write to
+    String csvSeparator = ",";
+    try {
+      try {
+        File myObj = new File(outputFilePath + ".csv");
+        if (myObj.createNewFile()) {
+          System.out.println("File created: " + myObj.getName());
+        } else {
+          System.out.println("File already exists.");
+        }
+      } catch (IOException e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+      }
+
+      BufferedWriter bw =
+          new BufferedWriter(
+              new OutputStreamWriter(new FileOutputStream(outputFilePath + ".csv"), "UTF-8"));
+
+      // Create a title for the CSV as the list of Locations doesn't have one
+      // Put the title at the start of the locations list
+      StringBuffer title = new StringBuffer("employeeID,dept,name,isDoctor");
+      // Add buffer string to buffered writer
+      bw.write(title.toString());
+      // Drops down to next row
+      bw.newLine();
+
+      LinkedList<Employee> employeesList = getAll();
+
+      // Go through each Location in the list
+      for (Employee employee : employeesList) {
+        String employeeID = employee.getEmployeeID();
+        String dept = employee.getDept().toString();
+        String name = employee.getName();
+        String isDoctor = String.valueOf(employee.isDoctor());
+
+        // Create a single temporary string buffer
+        StringBuffer oneLine = new StringBuffer();
+        // Add employeeID to buffer
+        oneLine.append(employeeID.trim().length() == 0 ? "" : employeeID);
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add dept to buffer
+        oneLine.append(dept == null || (dept.trim().length() == 0) ? "" : dept);
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add name to buffer
+        oneLine.append(name == null || (name.trim().length() == 0) ? "" : name);
+        // Add comma separator
+        oneLine.append(csvSeparator);
+        // Add isDoctor to buffer
+        oneLine.append(isDoctor == null || (isDoctor.trim().length() == 0) ? "" : isDoctor);
+
+        // Add buffer string to buffered writer
+        bw.write(oneLine.toString());
+        // Drops down to next row
+        bw.newLine();
+      }
+      // Applies buffer to file
+      bw.flush();
+      bw.close();
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

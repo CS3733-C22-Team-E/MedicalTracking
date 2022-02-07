@@ -13,6 +13,16 @@ public class Employee {
     this.isDoctor = isDoctor;
   }
 
+  public String toString() {
+    StringBuilder employeeString = new StringBuilder();
+    employeeString.append("employeeID: ").append(this.employeeID).append(" ");
+    employeeString.append("department: ").append(this.dept).append(" ");
+    employeeString.append("name: ").append(this.name).append(" ");
+    employeeString.append("isDoctor: ").append(this.isDoctor);
+
+    return employeeString.toString();
+  }
+
   // GETTERS & SETTERS
   public String getEmployeeID() {
     return employeeID;

@@ -223,7 +223,7 @@ public class LocationManager implements IManager<Location> {
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add xcoord to buffer
-        oneLine.append(xcoord == null || (xcoord.trim().length() == 0) ? "" : locationType);
+        oneLine.append(xcoord == null || (xcoord.trim().length() == 0) ? "" : xcoord);
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add ycoord to buffer

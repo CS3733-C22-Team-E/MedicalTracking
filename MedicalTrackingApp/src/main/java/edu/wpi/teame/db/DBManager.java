@@ -62,7 +62,7 @@ public final class DBManager {
               + "shortName VARCHAR(100))";
 
       stmt.execute(createLocationsTable);
-      System.out.println("Locations created");
+      System.out.println("LOCATIONS created");
 
       String createEquipmentTable =
           "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
@@ -89,6 +89,15 @@ public final class DBManager {
               + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
       stmt.execute(createEquipmentServiceRequestTable);
       System.out.println("EQUIPMENTSERVICEREQUEST created");
+
+      String createEmployeesTable =
+          "CREATE TABLE Employees(employeeID VARCHAR(10) Primary Key,"
+              + "dept VARCHAR(50), "
+              + "name VARCHAR(100), "
+              + "isDoctor BOOLEAN)";
+
+      stmt.execute(createEmployeesTable);
+      System.out.println("EMPLOYEES created");
     } catch (SQLException e) {
 
       e.printStackTrace();
