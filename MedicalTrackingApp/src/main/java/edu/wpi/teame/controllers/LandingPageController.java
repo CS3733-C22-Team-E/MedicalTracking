@@ -59,7 +59,9 @@ public class LandingPageController implements Initializable {
     tabs.add(mapTab);
 
     ServiceRequestBacklog backlogView =
-        new ServiceRequestBacklog(tabContentWidth, tabContentHeight);
+        new ServiceRequestBacklog(
+            Screen.getPrimary().getBounds().getWidth() - tabContentWidth,
+            Screen.getPrimary().getBounds().getHeight() - tabContentHeight);
     StyledTab backlogTab =
         new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
     backlogTab.setOnSelectionChanged(

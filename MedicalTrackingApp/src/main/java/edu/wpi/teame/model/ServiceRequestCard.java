@@ -2,6 +2,7 @@ package edu.wpi.teame.model;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.enums.ServiceRequestTypes;
+import javafx.geometry.Pos;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -22,7 +23,9 @@ public class ServiceRequestCard {
   private int backlogID;
 
   // Styling
-  private Color BORDERCOLOR = Color.LIGHTGRAY;
+  private Color BORDERCOLOR = Color.GREEN;
+  private int BORDERRADIUS = 10;
+  private int BORDERWIDTH = 5;
 
   public ServiceRequestCard(
       ServiceRequestBacklog backlog,
@@ -43,17 +46,26 @@ public class ServiceRequestCard {
     backlogID = ID;
   }
 
+  // TODO Cards are displayed with wrong width
+  // TODO Cards are displayed with funky internal spacing (Squished!)
   public GridPane getCard(double width, double height) {
     // Setup grid
     GridPane card = new GridPane();
     card.setBorder(
         new Border(
             new BorderStroke(
-                BORDERCOLOR, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+                BORDERCOLOR,
+                BorderStrokeStyle.SOLID,
+                new CornerRadii(BORDERRADIUS),
+                new BorderWidths(BORDERWIDTH))));
     card.setPrefSize(width, height);
 
     card.add(getDoneCheckbox(), 0, 0);
-    card.add(getTitleText(), 1, 0);
+    GridPane titleAndDescription = new GridPane();
+    titleAndDescription.setAlignment(Pos.CENTER);
+    titleAndDescription.add(getTitleText(), 0, 0);
+    titleAndDescription.add(getDescriptionText(), 0, 1);
+    card.add(titleAndDescription, 1, 0);
 
     return card;
   }
@@ -73,13 +85,20 @@ public class ServiceRequestCard {
         (event -> {
           deleteRequest(backlog);
         }));
-      Tooltip t = new Tooltip("Click to delete");
-      Tooltip.install(doneBox, t);
+    Tooltip t = new Tooltip("Click to delete");
+    Tooltip.install(doneBox, t);
     return doneBox;
   }
 
+  private Text getDescriptionText() {
+    Text descriptionText = new Text(description);
+    descriptionText.setFont(Font.font("Arial", 12));
+    descriptionText.setFill(Color.LIGHTGRAY);
+    descriptionText.setTextAlignment(TextAlignment.CENTER);
+    return descriptionText;
+  }
+
   private void deleteRequest(ServiceRequestBacklog b) {
-    b.removeServiceRequest(this.backlogID);
-    System.out.println("Deleting ID: " + this.backlogID);
+    // TODO Implement this method
   }
 }
