@@ -76,7 +76,8 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return id + ", " + department.ordinal() + ", " + name + ", " + isDoctor;
+    int isDoctorInt = isDoctor ? 1 : 0;
+    return department.ordinal() + ", '" + name + "', " + isDoctorInt;
   }
 
   @Override
@@ -89,5 +90,15 @@ public class Employee implements ISQLSerializable {
         + name
         + ", isDoctor = "
         + isDoctor;
+  }
+
+  /**
+   * + "department int, " + "name VARCHAR(100), " + "isDoctor int)
+   *
+   * @return
+   */
+  @Override
+  public String getTableColumns() {
+    return "(department, name, isDoctor)";
   }
 }

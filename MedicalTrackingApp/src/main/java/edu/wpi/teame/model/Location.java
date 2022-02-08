@@ -41,9 +41,9 @@ public class Location implements ISQLSerializable {
     this.id = resultSet.getInt("id");
     this.longName = resultSet.getString("longName");
     this.shortName = resultSet.getString("shortName");
-    this.floor = FloorType.values()[resultSet.getInt("floorType")];
+    this.floor = FloorType.values()[resultSet.getInt("floor")];
     this.type = LocationType.values()[resultSet.getInt("locationType")];
-    this.building = BuildingType.values()[resultSet.getInt("buildingType")];
+    this.building = BuildingType.values()[resultSet.getInt("building")];
   }
 
   public int getId() {
@@ -136,7 +136,9 @@ public class Location implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return type.ordinal()
+    return id
+        + ", "
+        + type.ordinal()
         + ", '"
         + shortName
         + "', '"
@@ -169,5 +171,10 @@ public class Location implements ISQLSerializable {
         + x
         + ", y = "
         + y;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return " (id, locationType, shortName, longName, building, floor, x, y)";
   }
 }

@@ -94,9 +94,7 @@ public abstract class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String toSQLUpdateString() {
-    return "id = "
-        + id
-        + ", locationID = "
+    return "locationID = "
         + location.getId()
         + ", status = "
         + status.toString()
@@ -106,5 +104,10 @@ public abstract class ServiceRequest implements ISQLSerializable {
         + closeDate.toString()
         + ", openDate = "
         + openDate.toString();
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, status, employeeID, closeDate, endTime, openDate, ";
   }
 }

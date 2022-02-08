@@ -48,7 +48,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public T get(int id) throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = '" + id + "'";
+    String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = " + id;
     ResultSet resultSet = statement.executeQuery(getQuery);
     if (resultSet.next()) {
       return getCastedType(resultSet);
@@ -70,14 +70,15 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public T insert(T newObject) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
-    insertQuery.append(getTableName()).append(" VALUES(");
+    insertQuery.append(getTableName()).append(newObject.getTableColumns());
+    insertQuery.append(" VALUES(");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
     System.out.println(insertQuery);
     statement.executeUpdate(insertQuery.toString());
 
-    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
-    int id = resultSet.getInt("id");
-    return get(id);
+    //    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
+    //    int id = resultSet.getInt("id");
+    return newObject;
   }
 
   @Override

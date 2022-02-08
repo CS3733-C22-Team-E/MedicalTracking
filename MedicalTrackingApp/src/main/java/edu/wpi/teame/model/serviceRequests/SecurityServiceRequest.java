@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SecurityServiceRequest extends ServiceRequest {
-  protected SecurityServiceRequest(
+  public SecurityServiceRequest(
       ServiceRequestStatus requestStatus,
       Employee assignee,
       Location location,
@@ -32,5 +32,24 @@ public class SecurityServiceRequest extends ServiceRequest {
   @Override
   public DataBaseObjectType getDBType() {
     return DataBaseObjectType.SecuritySR;
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return "locationID = "
+        + location.getId()
+        + ", status = "
+        + status.toString()
+        + ", employeeID = "
+        + employee.getId()
+        + ", closeDate = "
+        + closeDate.toString()
+        + ", openDate = "
+        + openDate.toString();
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, status, employeeID, closeDate, endTime, openDate) ";
   }
 }

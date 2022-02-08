@@ -91,4 +91,9 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
         + ", patient = "
         + patient.toString();
   }
+
+  @Override
+  public String getTableColumns() {
+    return super.getTableColumns() + "equipmentID, patient)";
+  }
 }
