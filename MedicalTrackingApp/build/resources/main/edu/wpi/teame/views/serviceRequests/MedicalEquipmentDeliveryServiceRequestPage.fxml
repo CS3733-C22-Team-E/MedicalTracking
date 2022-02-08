@@ -40,7 +40,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton fx:id="submitButton" buttonType="RAISED" onMouseClicked="#sendToMEDB" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+            <JFXButton fx:id="submitButton" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -98,11 +98,12 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <JFXComboBox fx:id="roomNumber" promptText="Room" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </JFXComboBox>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="10">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXComboBox fx:id="roomNumber" prefHeight="26.0" prefWidth="220.0" promptText="Choose. equipment.." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

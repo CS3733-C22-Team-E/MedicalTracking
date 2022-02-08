@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Sun Feb 06 22:03:40 EST 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-d223-0fad-000005a84490 
+Tue Feb 08 12:56:55 EST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-da7b-38ab-00000fb58750 
 on database directory memory:/Users/camilocordobaescobar/Documents/GitHub/MedicalTracking/MedicalTrackingApp/ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@6fffcba5 
 Loaded from file:/Users/camilocordobaescobar/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
 java.vendor=Microsoft
