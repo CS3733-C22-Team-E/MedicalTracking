@@ -1,5 +1,6 @@
 package edu.wpi.teame.db.objectManagers;
 
+import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.ISQLSerializable;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,7 +17,8 @@ public interface IManager<T extends ISQLSerializable> {
 
   public void update(T updatedObject) throws SQLException;
 
-  public void readCSV(String csvFile) throws IOException;
+  public void readCSV(String inputFileName)
+      throws IOException, CsvValidationException, SQLException;
 
-  public void writeToCSV(String outputFilePath);
+  public void writeToCSV(String outputFileName) throws IOException;
 }

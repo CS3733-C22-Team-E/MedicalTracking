@@ -1,11 +1,6 @@
 package edu.wpi.teame.db;
 
-import edu.wpi.teame.db.objectManagers.EmployeeManager;
-import edu.wpi.teame.db.objectManagers.EquipmentManager;
-import edu.wpi.teame.db.objectManagers.LocationManager;
-import edu.wpi.teame.db.objectManagers.ObjectManager;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.db.objectManagers.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -61,10 +56,10 @@ public final class DBManager {
 
     // creating the table for the locations
     String createLocationsTable =
-        "CREATE TABLE LOCATION(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+        "CREATE TABLE LOCATION(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
             + "locationType int, "
             + "shortName VARCHAR(100), "
-            + "longName VARCHAR(100), "
+            + "longName VARCHAR(250), "
             + "building int, "
             + "floor int, "
             + "x int, "
@@ -73,7 +68,7 @@ public final class DBManager {
     System.out.println("Location Table created");
 
     String createEquipmentTable =
-        "CREATE TABLE Equipment(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+        "CREATE TABLE Equipment(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
             + "locationID int, "
             + "name VARCHAR(100), "
             + "type int, "
@@ -84,7 +79,7 @@ public final class DBManager {
     System.out.println("Equipment Table created");
 
     String createEmployeeTable =
-        "CREATE TABLE Employee(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+        "CREATE TABLE Employee(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
             + "department int, "
             + "name VARCHAR(100), "
             + "isDoctor int)";
@@ -92,7 +87,7 @@ public final class DBManager {
     System.out.println("Employee Table created");
 
     String createEquipmentServiceRequestTable =
-        "CREATE TABLE MedicalEquipmentSR(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+        "CREATE TABLE MedicalEquipmentSR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
             + "locationID int, "
             + "status int, "
             + "employeeID int, "
@@ -107,8 +102,8 @@ public final class DBManager {
     System.out.println("MedicalEquipmentSR Table created");
   }
 
-  public ObjectManager<MedicalEquipmentServiceRequest> getMEServiceRequestManager() {
-    return new ObjectManager<MedicalEquipmentServiceRequest>(DataBaseObjectType.MedicalEquipmentSR);
+  public MedicalEquipmentSRManager getMedicalEquipmentSRManager() {
+    return new MedicalEquipmentSRManager();
   }
 
   public EquipmentManager getEquipmentManager() {

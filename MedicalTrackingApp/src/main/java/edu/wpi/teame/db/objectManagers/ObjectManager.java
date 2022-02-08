@@ -4,7 +4,6 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
+public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   private DataBaseObjectType objectType;
   private Connection connection;
   private Statement statement;
@@ -63,7 +62,7 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   @Override
   public T insert(T newObject) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
-    insertQuery.append(getTableName()).append(" VALUES('");
+    insertQuery.append(getTableName()).append(" VALUES(");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
     statement.executeUpdate(insertQuery.toString());
 
@@ -87,14 +86,6 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
     insertQuery.append(updatedObject.toSQLUpdateString());
     statement.executeUpdate(insertQuery.toString());
   }
-
-  @Override
-  public void readCSV(String csvFile) throws IOException {
-    CSVReader
-  }
-
-  @Override
-  public void writeToCSV(String outputFilePath) {}
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {

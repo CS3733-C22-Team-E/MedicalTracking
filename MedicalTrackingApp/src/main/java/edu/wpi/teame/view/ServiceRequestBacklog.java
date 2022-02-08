@@ -44,7 +44,7 @@ public class ServiceRequestBacklog {
 
   public void getFromDB() throws SQLException { // TODO Implement DB
     List<MedicalEquipmentServiceRequest> medicalEquipmentServiceRequests =
-        DBManager.getInstance().getMEServiceRequestManager().getAll();
+        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {

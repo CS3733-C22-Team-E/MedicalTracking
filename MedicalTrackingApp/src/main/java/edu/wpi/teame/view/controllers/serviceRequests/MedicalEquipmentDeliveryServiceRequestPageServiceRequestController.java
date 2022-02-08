@@ -93,10 +93,10 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             availableEquipment,
             pName);
 
-    DBManager.getInstance().getMEServiceRequestManager().insert(serReq);
+    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serReq);
 
     List<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMEServiceRequestManager().getAll();
+        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }

@@ -136,14 +136,12 @@ public class Location implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return id
-        + ", "
-        + type.ordinal()
-        + ", "
+    return type.ordinal()
+        + ", '"
         + shortName
-        + ", "
+        + "', '"
         + longName
-        + ", "
+        + "', "
         + building.ordinal()
         + ", "
         + floor.ordinal()
@@ -159,11 +157,11 @@ public class Location implements ISQLSerializable {
         + id
         + ", type = "
         + type.ordinal()
-        + ", shortName"
+        + ", shortName = '"
         + shortName
-        + ", longName = "
+        + "', longName = '"
         + longName
-        + ", building = "
+        + "', building = "
         + building.ordinal()
         + ", floor = "
         + floor.ordinal()
