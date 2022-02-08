@@ -5,12 +5,14 @@ public enum ServiceRequestTypes {
   Computer,
   FoodDelivery,
   GiftAndFloral,
-  InternalPatientTransfer,
+  InternalPatientTransportation,
   LanguageInterpreter,
   Laundry,
   Religious,
   Security,
-  MedicalEquipment,
+  MedicalEquipmentDelivery,
   MedicineDelivery,
-  FacilitiesMaintenance
+  FacilitiesMaintenance,
+  ExternalPatientTransportation,
+  Sanitation
 }
