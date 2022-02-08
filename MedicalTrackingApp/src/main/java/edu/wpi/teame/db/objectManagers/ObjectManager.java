@@ -7,6 +7,8 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -96,9 +98,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case MedicalEquipmentSR:
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
-        return null;
+        return (T) new MedicineDeliveryServiceRequest(resultSet);
       case SanitationSR:
-        return null;
+        return (T) new SanitationServiceRequest(resultSet);
       case SecuritySR:
         return null;
       case Location:
