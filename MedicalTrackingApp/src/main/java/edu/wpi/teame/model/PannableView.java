@@ -6,15 +6,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.Equipment;
-import edu.wpi.teame.db.EquipmentType;
-import edu.wpi.teame.db.FloorType;
+import edu.wpi.teame.db.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -54,6 +50,7 @@ public class PannableView {
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
+  private HashMap<FloorType, ArrayList<ImageView>> locationsByFloor = new HashMap<>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private ContextMenu EquipmentMenu;
   private ContextMenu PaneMenu;
@@ -74,6 +71,7 @@ public class PannableView {
   public PannableView(FloorType floor) {
     for (FloorType currFloor : FloorType.values()) {
       mapIconsByFloor.put(currFloor, new ArrayList<>());
+      locationsByFloor.put(currFloor, new ArrayList<>());
     }
     switchFloors(floor);
   }
@@ -123,15 +121,13 @@ public class PannableView {
   public Parent getMapScene(double height, double width) {
     TypeGraphics.put(
         EquipmentType.PBED,
-        new ImageView(
-            new Image(getImageResource("images/Icons/HospitalBedIcon.png"))));
+        new ImageView(new Image(getImageResource("images/Icons/HospitalBedIcon.png"))));
     TypeGraphics.put(
         EquipmentType.XRAY,
         new ImageView(new Image(getImageResource("images/Icons/XRayIcon.png"))));
     TypeGraphics.put(
         EquipmentType.RECL,
-        new ImageView(
-            new Image(getImageResource("images/Icons/ReclinerIcon.png"))));
+        new ImageView(new Image(getImageResource("images/Icons/ReclinerIcon.png"))));
     TypeGraphics.put(
         EquipmentType.PUMP,
         new ImageView(new Image(getImageResource("images/Icons/PumpIcon.png"))));
@@ -253,14 +249,14 @@ public class PannableView {
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
     layout.setOnMouseReleased(
-            event -> {
-              if (event.getButton() == MouseButton.SECONDARY) {
-                PressX = event.getX();
-                PressY = event.getY();
-                scroll.setContextMenu(PaneMenu);
-                PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
-              }
-            });
+        event -> {
+          if (event.getButton() == MouseButton.SECONDARY) {
+            PressX = event.getX();
+            PressY = event.getY();
+            scroll.setContextMenu(PaneMenu);
+            PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
+          }
+        });
     return staticWrapper;
   }
 
@@ -269,6 +265,9 @@ public class PannableView {
     layout.getChildren().setAll(new ImageView(backgroundImage));
     for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
+    }
+    for (ImageView locationDot : locationsByFloor.get(currFloor)) {
+      layout.getChildren().add(locationDot);
     }
   }
 
@@ -443,7 +442,7 @@ public class PannableView {
     return equipmentIcon;
   }
 
-  public void convertLocationToMapIcon(Equipment equip) {
+  public void convertEquipmentToMapIcon(Equipment equip) {
     addMapIcon(
         equip.getLocationNode().getX(),
         equip.getLocationNode().getY(),
@@ -451,13 +450,16 @@ public class PannableView {
         equip.getName(),
         equip.getLocationNode().getFloor(),
         equip);
-    updateLayoutChildren();
   }
 
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
-      convertLocationToMapIcon(currEquipment);
+      convertEquipmentToMapIcon(currEquipment);
+    }
+    LinkedList<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    for (Location currLocation : locations) {
+      locationToMapElement(currLocation);
     }
   }
 
@@ -565,5 +567,26 @@ public class PannableView {
 
   public String getImageResource(String filePath) {
     return Objects.requireNonNull(App.class.getResource(filePath)).toString();
+  }
+
+  private void locationToMapElement(Location location) {
+    ImageView locationDot = new ImageView();
+    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
+    locationDot.setFitWidth(10);
+    locationDot.setFitHeight(10);
+    double x = location.getX() - MAPIMGWIDTH / 2;
+    double y = location.getY() - MAPIMGHEIGHT / 2;
+    locationDot.setTranslateX(x);
+    locationDot.setTranslateY(y);
+    locationsByFloor.get(currFloor).add(locationDot);
+    System.out.println(
+        "Added location \""
+            + location.getLongName()
+            + "\" at coordinates ["
+            + location.getX()
+            + ","
+            + location.getY()
+            + "]");
+    updateLayoutChildren();
   }
 }
