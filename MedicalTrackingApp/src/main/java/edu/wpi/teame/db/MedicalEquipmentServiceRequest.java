@@ -1,7 +1,7 @@
 package edu.wpi.teame.db;
 
 public class MedicalEquipmentServiceRequest {
-  private String id;
+  private int id;
   private String patient;
   private Location roomID;
   private String startTIme;
@@ -24,7 +24,7 @@ public class MedicalEquipmentServiceRequest {
    */
 
   public MedicalEquipmentServiceRequest(
-      String id,
+      int id,
       String patient,
       Location room,
       String startTIme,
@@ -44,7 +44,7 @@ public class MedicalEquipmentServiceRequest {
     this.status = status;
   }
 
-  public String getId() {
+  public int getId() {
     return id;
   }
 
@@ -80,8 +80,8 @@ public class MedicalEquipmentServiceRequest {
     return status;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setId(int id) {
+    id = id;
   }
 
   public void setPatient(String patient) {
