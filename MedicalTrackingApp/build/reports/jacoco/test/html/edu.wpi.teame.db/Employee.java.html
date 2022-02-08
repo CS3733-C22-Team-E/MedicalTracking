@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Employee.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db</a> &gt; <span class="el_source">Employee.java</span></div><h1>Employee.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db;
+
+public class Employee {
+  private String employeeID;
+  private DepartmentType dept;
+  private String name;
+  private boolean isDoctor;
+
+<span class="nc" id="L9">  public Employee(String id, DepartmentType dept, String name, boolean isDoctor) {</span>
+<span class="nc" id="L10">    employeeID = id;</span>
+<span class="nc" id="L11">    this.dept = dept;</span>
+<span class="nc" id="L12">    this.name = name;</span>
+<span class="nc" id="L13">    this.isDoctor = isDoctor;</span>
+<span class="nc" id="L14">  }</span>
+
+  public String toString() {
+<span class="nc" id="L17">    StringBuilder employeeString = new StringBuilder();</span>
+<span class="nc" id="L18">    employeeString.append(&quot;employeeID: &quot;).append(this.employeeID).append(&quot; &quot;);</span>
+<span class="nc" id="L19">    employeeString.append(&quot;department: &quot;).append(this.dept).append(&quot; &quot;);</span>
+<span class="nc" id="L20">    employeeString.append(&quot;name: &quot;).append(this.name).append(&quot; &quot;);</span>
+<span class="nc" id="L21">    employeeString.append(&quot;isDoctor: &quot;).append(this.isDoctor);</span>
+
+<span class="nc" id="L23">    return employeeString.toString();</span>
+  }
+
+  // GETTERS &amp; SETTERS
+  public String getEmployeeID() {
+<span class="nc" id="L28">    return employeeID;</span>
+  }
+
+  public void setEmployeeID(String employeeID) {
+<span class="nc" id="L32">    this.employeeID = employeeID;</span>
+<span class="nc" id="L33">  }</span>
+
+  public DepartmentType getDept() {
+<span class="nc" id="L36">    return dept;</span>
+  }
+
+  public void setDept(DepartmentType dept) {
+<span class="nc" id="L40">    this.dept = dept;</span>
+<span class="nc" id="L41">  }</span>
+
+  public String getName() {
+<span class="nc" id="L44">    return name;</span>
+  }
+
+  public void setName(String name) {
+<span class="nc" id="L48">    this.name = name;</span>
+<span class="nc" id="L49">  }</span>
+
+  public boolean isDoctor() {
+<span class="nc" id="L52">    return isDoctor;</span>
+  }
+
+  public void setDoctor(boolean doctor) {
+<span class="nc" id="L56">    isDoctor = doctor;</span>
+<span class="nc" id="L57">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

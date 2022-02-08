@@ -64,17 +64,6 @@ public final class DBManager {
       stmt.execute(createLocationsTable);
       System.out.println("LOCATIONS created");
 
-      String createEquipmentTable =
-          "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
-              + "locationNode VARCHAR(10), "
-              + "type int,"
-              + "name VARCHAR(100),"
-              + "hasPatient BOOLEAN,"
-              + "isClean BOOLEAN,"
-              + "FOREIGN KEY (locationNode) REFERENCES LOCATIONS(id))";
-      stmt.execute(createEquipmentTable);
-      System.out.println("EQUIPMENT created");
-
       String createEquipmentServiceRequestTable =
           "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
               + "patient VARCHAR(100), "
@@ -91,8 +80,8 @@ public final class DBManager {
       System.out.println("EQUIPMENTSERVICEREQUEST created");
 
       String createEmployeesTable =
-          "CREATE TABLE Employees(employeeID VARCHAR(10) Primary Key,"
-              + "dept VARCHAR(50), "
+          "CREATE TABLE EMPLOYEES(employeeID VARCHAR(20) Primary Key,"
+              + "dept INTEGER, "
               + "name VARCHAR(100), "
               + "isDoctor BOOLEAN)";
 
@@ -100,6 +89,23 @@ public final class DBManager {
       System.out.println("EMPLOYEES created");
     } catch (SQLException e) {
 
+      e.printStackTrace();
+      return;
+    }
+
+    try {
+      String createEquipmentTable =
+          "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key,"
+              + "locationNode VARCHAR(10), "
+              + "type int,"
+              + "name VARCHAR(100),"
+              + "hasPatient BOOLEAN,"
+              + "isClean BOOLEAN,"
+              + "FOREIGN KEY (locationNode) REFERENCES LOCATIONS(id))";
+      stmt.execute(createEquipmentTable);
+      System.out.println("EQUIPMENT created");
+    } catch (SQLException e) {
+      System.out.println("Could not create EQUIPMENT table");
       e.printStackTrace();
       return;
     }
@@ -115,5 +121,9 @@ public final class DBManager {
 
   public LocationManager getLocationManager() {
     return new LocationManager();
+  }
+
+  public EmployeeManager getEmployeeManager() {
+    return new EmployeeManager();
   }
 }

@@ -45,7 +45,7 @@ public class EmployeeManager implements IManager<Employee> {
 
   @Override
   public LinkedList<Employee> getAll() {
-    LinkedList<Employee> result = null;
+    LinkedList<Employee> result = new LinkedList<Employee>();
     String getQuery = "SELECT * FROM Employees";
     try {
       ResultSet rset = stmt.executeQuery(getQuery);
@@ -71,10 +71,10 @@ public class EmployeeManager implements IManager<Employee> {
         "INSERT INTO Employees VALUES('"
             + newObject.getEmployeeID()
             + "',"
-            + newObject.getDept()
-            + ","
+            + newObject.getDept().ordinal()
+            + ",'"
             + newObject.getName()
-            + ","
+            + "',"
             + newObject.isDoctor()
             + ")";
     try {
@@ -120,14 +120,9 @@ public class EmployeeManager implements IManager<Employee> {
   @Override
   public void readCSV(String csvFile) throws IOException {
 
-    csvFile =
-        System.getProperty("user.dir")
-            + "\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EmployeesE.csv";
-
-    // TODO: why are we passing in a csv if it is being hardcoded in the method body
-
     try {
-      File file = new File(csvFile);
+      String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
+      File file = new File(path);
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
       String line = " ";
@@ -138,18 +133,6 @@ public class EmployeeManager implements IManager<Employee> {
       while ((line = br.readLine()) != null) {
         if (!firstLine) {
           tempArr = line.split(delimiter);
-          /*
-          Employee tempEmployee =
-                  new Employee(
-                          tempArr[0],
-                          6 >= tempArr.length ? "" : tempArr[6],
-                          1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]), //if there is only one node in tempArray, there will not be a value for this field. don't input
-                          2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
-                          3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
-                          4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
-                          5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
-                          7 >= tempArr.length ? "" : tempArr[7]);
-           */
           String tempID = tempArr[0];
           DepartmentType tempDept = csvValToDepartmentType(tempArr[1]);
           String tempName = tempArr[2];
@@ -206,7 +189,7 @@ public class EmployeeManager implements IManager<Employee> {
           System.out.println("File already exists.");
         }
       } catch (IOException e) {
-        System.out.println("An error occurred.");
+        System.out.println("Could not create this CSV file: " + outputFilePath);
         e.printStackTrace();
       }
 
