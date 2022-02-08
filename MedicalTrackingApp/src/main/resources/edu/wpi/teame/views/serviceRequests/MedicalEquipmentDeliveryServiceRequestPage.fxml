@@ -40,7 +40,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton fx:id="submitButton" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+            <JFXButton fx:id="submitButton" buttonType="RAISED" onMouseClicked="#sendToMEDB" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
