@@ -1,5 +1,6 @@
 package edu.wpi.teame;
 
+import edu.wpi.teame.db.DBManager;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,8 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
+    DBManager.getInstance().getLocationManager().readCSV("csv/TowerLocationsE.csv");
+    DBManager.getInstance().getEquipmentManager().readCSV("csv/EquipmentE.csv");
     appPrimaryStage = primaryStage;
     appPrimaryStage.setResizable(true);
     appPrimaryStage.setFullScreen(true);
@@ -33,7 +36,7 @@ public class App extends Application {
         .add(new Image(App.class.getResource("images/Icons/AppIcon.png").toString()));
 
     Scene primaryScene =
-        new Scene(FXMLLoader.load(getClass().getResource("views/LandingPage.fxml")));
+        new Scene(FXMLLoader.load(getClass().getResource("view/LandingPage.fxml")));
     appPrimaryStage.setScene(primaryScene);
     appPrimaryStage.show();
   }

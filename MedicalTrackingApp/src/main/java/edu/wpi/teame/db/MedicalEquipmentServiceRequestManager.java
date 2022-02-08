@@ -1,5 +1,9 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,7 +42,7 @@ public class MedicalEquipmentServiceRequestManager
 
         result =
             new MedicalEquipmentServiceRequest(
-                rset.getString("id"),
+                rset.getInt("id"),
                 rset.getString("patient"),
                 serReqLocation,
                 rset.getString("startTime"),
@@ -46,7 +50,7 @@ public class MedicalEquipmentServiceRequestManager
                 rset.getString("date"),
                 rset.getString("assignee"),
                 serReqEquipment,
-                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]);
+                ServiceRequestStatus.values()[rset.getInt("status")]);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -69,7 +73,7 @@ public class MedicalEquipmentServiceRequestManager
 
         result.add(
             new MedicalEquipmentServiceRequest(
-                rset.getString("id"),
+                rset.getInt("id"),
                 rset.getString("patient"),
                 serReqLocation,
                 rset.getString("startTime"),
@@ -77,29 +81,33 @@ public class MedicalEquipmentServiceRequestManager
                 rset.getString("date"),
                 rset.getString("assignee"),
                 serReqEquipment,
-                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]));
+                ServiceRequestStatus.values()[rset.getInt("status")]));
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
     return result;
+    /**
+     * + "patient VARCHAR(100), " + "roomID VARCHAR(10) ," + "startTime VARCHAR(50)," + "endTime
+     * VARCHAR(50)," + "date VARCHAR(100)," + "assignee VARCHAR(100)," + "equipmentID VARCHAR(10),"
+     * + "status int," + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id)," + "FOREIGN KEY
+     * (equipmentID) REFERENCES EQUIPMENT(id))";
+     */
   }
 
   @Override
   public void insert(MedicalEquipmentServiceRequest newObject) {
     String insertQuery =
-        "INSERT INTO EQUIPMENTSERVICEREQUEST VALUES('"
-            + newObject.getId()
-            + "','"
+        "INSERT INTO EQUIPMENTSERVICEREQUEST (patient, roomID, startTime, endTime, date, assignee, equipmentID, status)VALUES('"
             + newObject.getPatient()
             + "','"
-            + newObject.getRoom().getId()
+            + newObject.getLocation().getId()
             + "','"
             + newObject.getStartTIme()
             + "','"
             + newObject.getEndTime()
             + "','"
-            + newObject.getDate()
+            + newObject.getCreationDate()
             + "','"
             + newObject.getAssignee()
             + "','"
@@ -107,6 +115,10 @@ public class MedicalEquipmentServiceRequestManager
             + "',"
             + newObject.getStatus().ordinal()
             + ")";
+
+    newObject.getEquipment().setHasPatient(true);
+    newObject.getEquipment().setLocationNode(newObject.getRoom());
+    DBManager.getInstance().getEquipmentManager().update(newObject.getEquipment());
 
     try {
       stmt.executeUpdate(insertQuery);
@@ -144,14 +156,12 @@ public class MedicalEquipmentServiceRequestManager
     String updateQuery =
         "UPDATE EQUIPMENTSERVICEREQUEST SET patient = '"
             + updatedObject.getPatient()
-            + "', roomID = '"
-            + updatedObject.getRoom().getId()
-            + "', startTime = '"
-            + updatedObject.getStartTIme()
-            + "', endTime = '"
-            + updatedObject.getEndTime()
-            + "', date = '"
-            + updatedObject.getDate()
+            + "', locationID = '"
+            + updatedObject.getLocation().getId()
+            + "', openDate = '"
+            + updatedObject.getOpenDate()
+            + "', closeDate = '"
+            + updatedObject.getCloseDate()
             + "', assignee = '"
             + updatedObject.getAssignee()
             + "', equipmentID = '"
@@ -174,7 +184,8 @@ public class MedicalEquipmentServiceRequestManager
   @Override
   public void readCSV(String csvFile) {
     try {
-      File file = new File(csvFile);
+      String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
+      File file = new File(path);
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
       String line = " ";
@@ -190,7 +201,7 @@ public class MedicalEquipmentServiceRequestManager
           tempArr = line.split(delimiter);
           MedicalEquipmentServiceRequest tempSerReq =
               new MedicalEquipmentServiceRequest(
-                  tempArr[0],
+                  Integer.parseInt(tempArr[0]),
                   1 >= tempArr.length ? "" : tempArr[1],
                   2 >= tempArr.length ? null : locTable.get(tempArr[2]),
                   3 >= tempArr.length ? "" : tempArr[3],
@@ -198,9 +209,7 @@ public class MedicalEquipmentServiceRequestManager
                   5 >= tempArr.length ? "" : tempArr[5],
                   6 >= tempArr.length ? "" : tempArr[6],
                   7 >= tempArr.length ? null : equipTable.get(tempArr[7]),
-                  8 >= tempArr.length
-                      ? null
-                      : MedicalEquipmentServiceRequestStatus.valueOf(tempArr[8]));
+                  8 >= tempArr.length ? null : ServiceRequestStatus.valueOf(tempArr[8]));
 
           insert(tempSerReq);
         } else {
@@ -248,6 +257,7 @@ public class MedicalEquipmentServiceRequestManager
 
       // Go through each Location in the list
       for (MedicalEquipmentServiceRequest serReq : serReqList) {
+        String locId = Integer.toString(serReq.getId());
         String room = serReq.getRoom().getId();
         String equipmentID = serReq.getEquipment().getNodeID();
         String status = serReq.getStatus().toString();
@@ -255,7 +265,7 @@ public class MedicalEquipmentServiceRequestManager
         // Create a single temporary string buffer
         StringBuffer oneLine = new StringBuffer();
         // Add nodeID to buffer
-        oneLine.append(serReq.getId().trim().length() == 0 ? "" : serReq.getId());
+        oneLine.append(locId.trim().length() == 0 ? "" : serReq.getId());
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add xcoord to buffer
@@ -285,9 +295,9 @@ public class MedicalEquipmentServiceRequestManager
         oneLine.append(csvSeparator);
         // Add nodeType to buffer
         oneLine.append(
-            serReq.getDate() == null || (serReq.getDate().trim().length() == 0)
+            serReq.getCreationDate() == null || (serReq.getCreationDate().trim().length() == 0)
                 ? ""
-                : serReq.getDate());
+                : serReq.getCreationDate());
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add longName to buffer
