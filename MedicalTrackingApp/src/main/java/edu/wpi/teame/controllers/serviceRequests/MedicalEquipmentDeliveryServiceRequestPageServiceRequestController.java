@@ -2,15 +2,12 @@ package edu.wpi.teame.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.Location;
+import edu.wpi.teame.db.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-
-import edu.wpi.teame.db.MedicalEquipmentServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -47,9 +44,10 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     equipmentNeeded.setItems(
         FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
     requestState.setItems(
-        FXCollections.observableArrayList("Waiting For Equipment", "Cancelled", "Done"));
+        FXCollections.observableArrayList("Open", "Waiting For Equipment", "Cancelled", "Done"));
   }
 
+  // todo either make the submit button disabled until everything is filled or add error handling
   public void sendToMEDB(MouseEvent mouseEvent) {
     String pName = patientName.getText();
 
@@ -73,9 +71,64 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     System.out.println(serviceRequestDate);
     System.out.println(MRSRStatus);
     System.out.println(equipNeeded);
+    System.out.println(
+        DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
 
-    System.out.println(DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
-    MedicalEquipmentServiceRequest serReq = new MedicalEquipmentServiceRequest(null, pName, DBManager.getInstance().getLocationManager().getFromLongName(roomNum), startingTime, endingTime, srDate, assignee, );
+    Equipment availableEquipment =
+        DBManager.getInstance().getEquipmentManager().getAvailable(comboBoxValToType(equipNeeded));
+
+    System.out.println(availableEquipment);
+
+    MedicalEquipmentServiceRequest serReq =
+        new MedicalEquipmentServiceRequest(
+            0,
+            pName,
+            DBManager.getInstance().getLocationManager().getFromLongName(roomNum),
+            startingTime,
+            endingTime,
+            serviceRequestDate,
+            assignee,
+            availableEquipment,
+            comboBoxValToStatus(MRSRStatus));
+
     DBManager.getInstance().getMEServiceRequestManager().insert(serReq);
+
+    LinkedList<MedicalEquipmentServiceRequest> allSerReq =
+        DBManager.getInstance().getMEServiceRequestManager().getAll();
+    for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
+      System.out.println(serviceReq);
+    }
+    System.out.println(availableEquipment);
+  }
+
+  private EquipmentType comboBoxValToType(String val) {
+    switch (val) {
+      case "Bed":
+        return EquipmentType.PBED;
+      case "X-Ray":
+        return EquipmentType.XRAY;
+      case "Infusion Pump":
+        return EquipmentType.PBED;
+      case "Recliner":
+        return EquipmentType.RECL;
+      default:
+        return null;
+    }
+  }
+
+  // "Open", "Waiting For Equipment", "Cancelled", "Done"
+  private MedicalEquipmentServiceRequestStatus comboBoxValToStatus(String val) {
+    switch (val) {
+      case "Open":
+        return MedicalEquipmentServiceRequestStatus.OPEN;
+      case "Waiting For Equipment":
+        return MedicalEquipmentServiceRequestStatus.WAITING;
+      case "Cancelled":
+        return MedicalEquipmentServiceRequestStatus.CANCELLED;
+      case "Done":
+        return MedicalEquipmentServiceRequestStatus.DONE;
+      default:
+        return null;
+    }
   }
 }

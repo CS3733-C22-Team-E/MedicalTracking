@@ -1,6 +1,7 @@
 package edu.wpi.teame.db;
 
 public enum MedicalEquipmentServiceRequestStatus {
+  OPEN,
   WAITING,
   DONE,
   CANCELLED;

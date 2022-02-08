@@ -84,18 +84,13 @@ public class MedicalEquipmentServiceRequestManager
     }
     return result;
     /**
-     * + "patient VARCHAR(100), "
-     *               + "roomID VARCHAR(10) ,"
-     *               + "startTime VARCHAR(50),"
-     *               + "endTime VARCHAR(50),"
-     *               + "date VARCHAR(100),"
-     *               + "assignee VARCHAR(100),"
-     *               + "equipmentID VARCHAR(10),"
-     *               + "status int,"
-     *               + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id),"
-     *               + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
+     * + "patient VARCHAR(100), " + "roomID VARCHAR(10) ," + "startTime VARCHAR(50)," + "endTime
+     * VARCHAR(50)," + "date VARCHAR(100)," + "assignee VARCHAR(100)," + "equipmentID VARCHAR(10),"
+     * + "status int," + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id)," + "FOREIGN KEY
+     * (equipmentID) REFERENCES EQUIPMENT(id))";
      */
   }
+
   @Override
   public void insert(MedicalEquipmentServiceRequest newObject) {
     String insertQuery =
@@ -116,6 +111,10 @@ public class MedicalEquipmentServiceRequestManager
             + "',"
             + newObject.getStatus().ordinal()
             + ")";
+
+    newObject.getEquipment().setHasPatient(true);
+    newObject.getEquipment().setLocationNode(newObject.getRoom());
+    DBManager.getInstance().getEquipmentManager().update(newObject.getEquipment());
 
     try {
       stmt.executeUpdate(insertQuery);

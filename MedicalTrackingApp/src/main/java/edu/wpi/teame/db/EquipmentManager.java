@@ -49,8 +49,9 @@ public class EquipmentManager implements IManager<Equipment> {
     return result;
   }
 
-  public Equipment getAvailable() {
-    String getQuery = "SELECT * FROM EQUIPMENT WHERE hasPatient = FALSE";
+  public Equipment getAvailable(EquipmentType equipmentType) {
+    String getQuery =
+        "SELECT * FROM EQUIPMENT WHERE hasPatient = FALSE AND type =" + equipmentType.ordinal();
     Equipment result = null;
     LocationManager locationTable = DBManager.getInstance().getLocationManager();
     try {
