@@ -6,6 +6,8 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -92,7 +94,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case MedicalEquipmentSR:
-        return null;
+        return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return null;
       case SanitationSR:
