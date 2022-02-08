@@ -3,6 +3,7 @@ package edu.wpi.teame.model;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
@@ -56,7 +57,7 @@ public class PannableView {
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   // private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
-  private HashMap<FloorType, ArrayList<MapIcon>> mapIconsByFloor = new HashMap<>();
+  private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private ContextMenu EquipmentMenu;
   private ContextMenu PaneMenu;
@@ -115,6 +116,13 @@ public class PannableView {
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 
+  public void deleteMapIcon(JFXButton button) {
+    for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
+      if (mapIcon.Button.equals(button)) {
+        mapIconsByFloor.get(currFloor).remove(mapIcon);
+      }
+    }
+  }
   // This is essentially the Main function
   // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
@@ -145,6 +153,7 @@ public class PannableView {
           new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
               addMapIcon(
                   PressX,
                   PressY,
@@ -161,8 +170,10 @@ public class PannableView {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-            lastPressed.setVisible(false);
-            lastPressed.setDisable(true);
+            //            lastPressed.setVisible(false);
+            //            lastPressed.setDisable(false);
+            deleteMapIcon(lastPressed);
+            updateLayoutChildren();
           }
         });
     MenuItem equipmentItem2 = new MenuItem("Edit");
@@ -248,6 +259,7 @@ public class PannableView {
     staticWrapper
         .getChildren()
         .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
+    staticWrapper.getChildren().addAll(createCheckBoxes());
     for (ImageView imageView : hamburgerDeployments) {
       staticWrapper.getChildren().add(imageView);
     }
@@ -274,13 +286,18 @@ public class PannableView {
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
-    for (MapIcon icon : mapIconsByFloor.get(currFloor)) {
+    for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
     }
   }
 
   private void addMapIcon(
-      double xCoordinate, double yCoordinate, ImageView image, String toolTip, FloorType floor) {
+      double xCoordinate,
+      double yCoordinate,
+      ImageView image,
+      String toolTip,
+      FloorType floor,
+      Equipment equipment) {
     ImageView iconGraphic = image;
     iconGraphic.setFitWidth(30);
     iconGraphic.setFitHeight(30);
@@ -305,9 +322,17 @@ public class PannableView {
         });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
-    MapIcon newIcon = new MapIcon(newButton, toolTip);
+    MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip, equipment);
     mapIconsByFloor.get(floor).add(newIcon);
     updateLayoutChildren();
+  }
+  // Show all of the Equipment types passed in
+  private void filter(EquipmentType e) {
+    for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
+      if (mapIcon.equipment.getType() == e) {
+        mapIcon.getButton().setVisible(!mapIcon.getButton().isVisible());
+      }
+    }
   }
   // Adds icon on click
   // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
@@ -337,11 +362,35 @@ public class PannableView {
         });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
-    MapIcon newIcon = new MapIcon(newButton, toolTip);
+    // TODO new MapEquipment Icon add equipment to parameter
+    MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip);
     mapIconsByFloor.get(currFloor).add(newIcon);
     updateLayoutChildren();
   }
 
+  private ArrayList<JFXCheckBox> createCheckBoxes() {
+    ArrayList<JFXCheckBox> retval = new ArrayList<>();
+
+    for (EquipmentType currEquipment : EquipmentType.values()) {
+      JFXCheckBox equipmentCheckBox = new JFXCheckBox(currEquipment.toString());
+      equipmentCheckBox.getStyleClass().add("combo-box");
+
+      equipmentCheckBox.setSelected(true);
+      equipmentCheckBox.setOnAction(
+          new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+              filter(currEquipment);
+            }
+          });
+      retval.add(equipmentCheckBox);
+
+      equipmentCheckBox.setTranslateY(
+          -30 * currEquipment.ordinal() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+      equipmentCheckBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 3);
+    }
+    return retval;
+  }
   // Init zoomInButton
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomIn.png").toString());
@@ -490,7 +539,8 @@ public class PannableView {
         (double) equip.getLocationNode().getY(),
         getImageViewFromEquipmentType(equip.getType()),
         equip.getName(),
-        equip.getLocationNode().getFloor());
+        equip.getLocationNode().getFloor(),
+        equip);
     updateLayoutChildren();
   }
 
