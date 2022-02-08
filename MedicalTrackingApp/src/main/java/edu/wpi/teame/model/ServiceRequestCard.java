@@ -88,20 +88,30 @@ public class ServiceRequestCard {
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
     titleAndDescription.add(getTitleText(), 0, 0);
-    titleAndDescription.add(getSeparator(), 0, 1);
+    titleAndDescription.add(getSeparatorH(), 0, 1);
     titleAndDescription.add(getDescriptionText(), 0, 2);
     card.getChildren().add(titleAndDescription);
 
     GridPane detailsGrid = new GridPane();
     detailsGrid.setAlignment(Pos.CENTER);
-    detailsGrid.add(generateDetailText("Patient Name: "), 0, 0);
-    detailsGrid.add(generateDetailText("Room Number: "), 0, 1);
-    detailsGrid.add(generateDetailText("Floor: "), 0, 2);
-    detailsGrid.add(generateDetailText("Other Info: "), 0, 3);
-    detailsGrid.add(generateDetailText(patientName), 100, 0);
-    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 100, 1);
-    detailsGrid.add(generateDetailText(String.valueOf(floor)), 100, 2);
-    detailsGrid.add(generateDetailText(otherInfo), 100, 3);
+    detailsGrid.setHgap(20);
+    detailsGrid.add(generateDetailText("Patient Name: "), 2, 0);
+    detailsGrid.add(getSeparatorH(), 2, 1);
+    detailsGrid.add(generateDetailText("Room Number: "), 2, 2);
+    detailsGrid.add(getSeparatorH(), 2, 3);
+    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
+    detailsGrid.add(getSeparatorH(), 2, 5);
+    detailsGrid.add(generateDetailText("Other Info: "), 2, 6);
+    detailsGrid.add(getSeparatorH(), 2, 7);
+
+    detailsGrid.add(generateDetailText(patientName), 3, 0);
+    detailsGrid.add(getSeparatorH(), 3, 1);
+    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 3, 2);
+    detailsGrid.add(getSeparatorH(), 3, 3);
+    detailsGrid.add(generateDetailText(String.valueOf(floor)), 3, 4);
+    detailsGrid.add(getSeparatorH(), 3, 5);
+    detailsGrid.add(generateDetailText(otherInfo), 3, 6);
+    detailsGrid.add(getSeparatorH(), 3, 7);
 
     card.getChildren().add(detailsGrid);
 
@@ -110,7 +120,7 @@ public class ServiceRequestCard {
 
   private Text generateDetailText(String text) {
     Text detailText = new Text(text);
-    detailText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    detailText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
     detailText.setFill(Color.BLACK);
     detailText.setTextAlignment(TextAlignment.RIGHT);
     return detailText;
@@ -149,10 +159,10 @@ public class ServiceRequestCard {
     return descriptionText;
   }
 
-  private Separator getSeparator() {
+  private Separator getSeparatorH() {
     Separator titleSeparator = new Separator();
     titleSeparator.setScaleX(1);
-    titleSeparator.setScaleY(2);
+    titleSeparator.setScaleY(1);
     titleSeparator.setHalignment(HPos.CENTER);
     return titleSeparator;
   }
