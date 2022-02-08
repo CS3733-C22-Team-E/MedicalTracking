@@ -76,9 +76,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     System.out.println(insertQuery);
     statement.executeUpdate(insertQuery.toString());
 
-    //    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
-    //    int id = resultSet.getInt("id");
-    return newObject;
+    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
+    int id = resultSet.getInt("id");
+    return get(id);
   }
 
   @Override
