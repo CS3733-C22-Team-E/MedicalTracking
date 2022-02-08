@@ -13,7 +13,6 @@ import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -42,7 +41,6 @@ public class PannableView {
   private Image backgroundImage;
   private final int WIDTH = 1280;
   private final int HEIGHT = 720;
-  private final int ICONSIZE = 60;
   private final double ZOOMINMAX = 1.5;
   private final double ZOOMOUTMAX = .2;
   private double MAPIMGWIDTH;
@@ -50,13 +48,10 @@ public class PannableView {
   private final double ZOOMAMPLIFIER = .1;
 
   // Init booleans
-  private boolean hamburgerDeployed = false;
-  private boolean addMode = false;
   private boolean invertZoomScroll = false;
 
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
-  // private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
   private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private ContextMenu EquipmentMenu;
@@ -109,20 +104,19 @@ public class PannableView {
         return "";
     }
   }
+
   // Checks if X and Y strings are on the map coordinates;
-  private boolean CoordinateChecker(String X, String Y) {
+  private boolean coordinateChecker(String X, String Y) {
     Double doubleX = Double.parseDouble(X);
     Double doubleY = Double.parseDouble(Y);
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 
+  // Removes map icon if it contains the button passed in
   public void deleteMapIcon(JFXButton button) {
-    for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
-      if (mapIcon.Button.equals(button)) {
-        mapIconsByFloor.get(currFloor).remove(mapIcon);
-      }
-    }
+    mapIconsByFloor.get(currFloor).removeIf(mapIcon -> mapIcon.Button.equals(button));
   }
+
   // This is essentially the Main function
   // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
@@ -150,100 +144,88 @@ public class PannableView {
     for (EquipmentType currEquipment : EquipmentType.values()) {
       MenuItem currItem = new MenuItem(currEquipment.toString());
       currItem.setOnAction(
-          new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-              addMapIcon(
+              event -> addMapIcon(
                   PressX,
                   PressY,
                   getImageViewFromEquipmentType(currEquipment),
-                  currEquipment.toString());
-            }
-          });
+                  currEquipment.toString()));
       PaneMenu.getItems().add(currItem);
       PaneMenu.getStyleClass().add("combo-box");
     }
 
     MenuItem equipmentItem1 = new MenuItem("Delete");
     equipmentItem1.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            //            lastPressed.setVisible(false);
-            //            lastPressed.setDisable(false);
-            deleteMapIcon(lastPressed);
-            updateLayoutChildren();
-          }
-        });
+            event -> {
+              //            lastPressed.setVisible(false);
+              //            lastPressed.setDisable(false);
+              deleteMapIcon(lastPressed);
+              updateLayoutChildren();
+            });
     MenuItem equipmentItem2 = new MenuItem("Edit");
     equipmentItem2.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            Dialog<Pair<Double, Double>> dialog = new Dialog<>();
-            dialog.setTitle("Move Equipment");
-            dialog.setHeaderText("Choose the X and Y Position");
-            // Set the button types.
-            ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
+            event -> {
+              Dialog<Pair<Double, Double>> dialog = new Dialog<>();
+              dialog.setTitle("Move Equipment");
+              dialog.setHeaderText("Choose the X and Y Position");
+              // Set the button types.
+              ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
+              dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
 
-            // Create the username and password labels and fields.
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(20, 150, 10, 10));
+              // Create the username and password labels and fields.
+              GridPane grid = new GridPane();
+              grid.setHgap(10);
+              grid.setVgap(10);
+              grid.setPadding(new Insets(20, 150, 10, 10));
 
-            TextField XPosition = new TextField();
-            XPosition.setPromptText("X Position");
-            TextField YPosition = new TextField();
-            YPosition.setPromptText("Y Position");
+              TextField XPosition = new TextField();
+              XPosition.setPromptText("X Position");
+              TextField YPosition = new TextField();
+              YPosition.setPromptText("Y Position");
 
-            grid.add(new Label("X Position:"), 0, 0);
-            grid.add(XPosition, 1, 0);
-            grid.add(new Label("Y Position:"), 0, 1);
-            grid.add(YPosition, 1, 1);
+              grid.add(new Label("X Position:"), 0, 0);
+              grid.add(XPosition, 1, 0);
+              grid.add(new Label("Y Position:"), 0, 1);
+              grid.add(YPosition, 1, 1);
 
-            // Enable/Disable login button depending on whether a username was entered.
-            Node MoveButton = dialog.getDialogPane().lookupButton(Move);
-            MoveButton.setDisable(true);
+              // Enable/Disable login button depending on whether a username was entered.
+              Node MoveButton = dialog.getDialogPane().lookupButton(Move);
+              MoveButton.setDisable(true);
 
-            // Do some validation (using the Java 8 lambda syntax).
-            XPosition.textProperty()
-                .addListener(
-                    (observable, oldValue, newValue) -> {
-                      MoveButton.setDisable(
-                          newValue.trim().isEmpty()
-                              || YPosition.getText().isBlank()
-                              || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
-                    });
-            YPosition.textProperty()
-                .addListener(
-                    (observable, oldValue, newValue) -> {
-                      MoveButton.setDisable(
-                          newValue.trim().isEmpty()
-                              || XPosition.getText().isBlank()
-                              || !CoordinateChecker(XPosition.getText(), YPosition.getText()));
-                    });
+              // Do some validation (using the Java 8 lambda syntax).
+              XPosition.textProperty()
+                  .addListener(
+                      (observable, oldValue, newValue) -> {
+                        MoveButton.setDisable(
+                            newValue.trim().isEmpty()
+                                || YPosition.getText().isBlank()
+                                || !coordinateChecker(XPosition.getText(), YPosition.getText()));
+                      });
+              YPosition.textProperty()
+                  .addListener(
+                      (observable, oldValue, newValue) -> {
+                        MoveButton.setDisable(
+                            newValue.trim().isEmpty()
+                                || XPosition.getText().isBlank()
+                                || !coordinateChecker(XPosition.getText(), YPosition.getText()));
+                      });
 
-            dialog.getDialogPane().setContent(grid);
+              dialog.getDialogPane().setContent(grid);
 
-            // Convert the result to a username-password-pair when the login button is clicked.
-            dialog.setResultConverter(
-                dialogButton -> {
-                  if (dialogButton == Move) {
-                    double xCo = Double.parseDouble(XPosition.getText());
-                    double yCo = Double.parseDouble(YPosition.getText());
-                    double x = xCo - MAPIMGWIDTH / 2;
-                    double y = yCo - MAPIMGHEIGHT / 2;
-                    lastPressed.setTranslateX(x);
-                    lastPressed.setTranslateY(y);
-                  }
-                  return null;
-                });
-            dialog.showAndWait();
-          }
-        });
+              // Convert the result to a username-password-pair when the login button is clicked.
+              dialog.setResultConverter(
+                  dialogButton -> {
+                    if (dialogButton == Move) {
+                      double xCo = Double.parseDouble(XPosition.getText());
+                      double yCo = Double.parseDouble(YPosition.getText());
+                      double x = xCo - MAPIMGWIDTH / 2;
+                      double y = yCo - MAPIMGHEIGHT / 2;
+                      lastPressed.setTranslateX(x);
+                      lastPressed.setTranslateY(y);
+                    }
+                    return null;
+                  });
+              dialog.showAndWait();
+            });
     EquipmentMenu.getItems().addAll(equipmentItem1, equipmentItem2);
     updateLayoutChildren();
     layout.setScaleX(.5);
@@ -298,11 +280,10 @@ public class PannableView {
       String toolTip,
       FloorType floor,
       Equipment equipment) {
-    ImageView iconGraphic = image;
-    iconGraphic.setFitWidth(30);
-    iconGraphic.setFitHeight(30);
+    image.setFitWidth(30);
+    image.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
-    newButton.setGraphic(iconGraphic);
+    newButton.setGraphic(image);
     double x = xCoordinate - MAPIMGWIDTH / 2;
     double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
@@ -311,15 +292,12 @@ public class PannableView {
     newButton.setContextMenu(EquipmentMenu);
     draggable(newButton);
     newButton.setOnMouseReleased(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) {
-              lastPressed = newButton;
-              newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
-            }
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.SECONDARY) {
+                lastPressed = newButton;
+                newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+              }
+            });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
     MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip, equipment);
@@ -338,11 +316,10 @@ public class PannableView {
   // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
   // make
   private void addMapIcon(double xCoordinate, double yCoordinate, ImageView image, String toolTip) {
-    ImageView iconGraphic = image;
-    iconGraphic.setFitWidth(30);
-    iconGraphic.setFitHeight(30);
+    image.setFitWidth(30);
+    image.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
-    newButton.setGraphic(iconGraphic);
+    newButton.setGraphic(image);
     double x = xCoordinate - MAPIMGWIDTH / 2;
     double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
@@ -351,15 +328,12 @@ public class PannableView {
     newButton.setContextMenu(EquipmentMenu);
     draggable(newButton);
     newButton.setOnMouseReleased(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) {
-              lastPressed = newButton;
-              newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
-            }
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.SECONDARY) {
+                lastPressed = newButton;
+                newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+              }
+            });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
     // TODO new MapEquipment Icon add equipment to parameter
@@ -377,12 +351,7 @@ public class PannableView {
 
       equipmentCheckBox.setSelected(true);
       equipmentCheckBox.setOnAction(
-          new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-              filter(currEquipment);
-            }
-          });
+              event -> filter(currEquipment));
       retval.add(equipmentCheckBox);
 
       equipmentCheckBox.setTranslateY(
@@ -427,7 +396,7 @@ public class PannableView {
 
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
-    final JFXComboBox<String> comboBox = new JFXComboBox();
+    final JFXComboBox<String> comboBox = new JFXComboBox<>();
     for (FloorType floorType : FloorType.values()) {
       comboBox.getItems().add(floorType.toString());
     }
@@ -435,58 +404,8 @@ public class PannableView {
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
     comboBox.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent event) {
-            switchFloors(currFloor.getFloorFromString(comboBox.getValue()));
-          }
-        });
+            event -> switchFloors(currFloor.getFloorFromString(comboBox.getValue())));
     return comboBox;
-  }
-
-  // Init currently unused hamburger button
-  //  private JFXButton createHamburgerButton() {
-  //    Image hamburgerIcon =
-  //        new Image(App.class.getResource("images/Icons/HamburgerMenu.png").toString());
-  //    ImageView icon = new ImageView(hamburgerIcon);
-  //    icon.setFitHeight(30);
-  //    icon.setFitWidth(30);
-  //    final JFXButton hamburgerButton = new JFXButton("", icon);
-  //    hamburgerButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
-  //    hamburgerButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 110);
-  //    hamburgerButton.setOnAction(
-  //        (event) -> {
-  //          hamburgerDeployed = !hamburgerDeployed;
-  //          addMode = !addMode;
-  //          // deployHamburger();
-  //        });
-  //    return hamburgerButton;
-  //  }
-
-  //  // Adds icons to the hamburger menu
-  //  // TODO styling— probably a complete redesign
-  //  private void addHamburgerDeployments() {
-  //    String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
-  //    int iconNum = 0;
-  //    for (String icon : allIcons) {
-  //      Image imageIcon = new Image(App.class.getResource("images/Icons/" + icon).toString());
-  //      ImageView imageVew = new ImageView(imageIcon);
-  //      imageVew.setFitWidth(ICONSIZE);
-  //      imageVew.setFitHeight(ICONSIZE);
-  //      imageVew.setTranslateX(WIDTH / 2 - 10 - ICONSIZE);
-  //      imageVew.setTranslateY(-(HEIGHT / 2) + 100 + iconNum * (ICONSIZE) + iconNum * 10);
-  //      imageVew.setVisible(false);
-  //      hamburgerDeployments.add(imageVew);
-  //      iconNum++;
-  //    }
-  //  }
-
-  // Displays the hamburger menu by just setting all hamburgerDeployments to visible
-  private void deployHamburger() {
-    // Hamburger currently unused
-    for (ImageView imageView : hamburgerDeployments) {
-      imageView.setVisible(hamburgerDeployed);
-    }
   }
 
   // Init ScrollPane that holds the StackPane containing map and all icons
@@ -528,15 +447,9 @@ public class PannableView {
   }
 
   public void convertLocationToMapIcon(Equipment equip) {
-    //    MapIcon retval = new MapIcon(
-    //            (double) equip.getLocationNode().getX(),
-    //            (double) equip.getLocationNode().getY(),
-    //            equip.getName(),
-    //            getImageViewFromEquipmentType(equip.getType()));
-    //    mapIcons.add(retval);
     addMapIcon(
-        (double) equip.getLocationNode().getX(),
-        (double) equip.getLocationNode().getY(),
+            equip.getLocationNode().getX(),
+            equip.getLocationNode().getY(),
         getImageViewFromEquipmentType(equip.getType()),
         equip.getName(),
         equip.getLocationNode().getFloor(),
@@ -547,9 +460,6 @@ public class PannableView {
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
-      //      if (currEquipment.getLocationNode().getFloor() == currFloor) {
-      //        convertLocationToMapIcon(currEquipment);
-      //      }
       convertLocationToMapIcon(currEquipment);
     }
   }
@@ -558,33 +468,9 @@ public class PannableView {
     launch(args);
   }
 
-  // This zoomBar is totally broken. I'm not quite sure how to fix it.
-  // TODO make this zoomBar work and display properly so that it may be used like a setting
-  private Slider createZoomBar() {
-    Slider zoomBar = new Slider();
-    zoomBar.setMax(ZOOMINMAX);
-    zoomBar.setMin(ZOOMOUTMAX);
-    zoomBar.setOnMouseMoved(
-        (event) -> {
-          zoomBarScrolled(zoomBar.getValue());
-        });
-    zoomBar.setTranslateX(WIDTH / 2 - (zoomBar.getWidth() + 10));
-    zoomBar.setTranslateY(-(HEIGHT / 2 - (zoomBar.getHeight() + 50)));
-    return zoomBar;
-  }
-
-  // Currently unused because zoomBar is busted
-  private void zoomBarScrolled(double value) {
-    if (layout.getScaleX() < ZOOMINMAX && layout.getScaleX() > ZOOMOUTMAX) {
-      layout.setScaleX(value);
-      layout.setScaleY(value);
-    }
-  }
-
   // Called when user scrolls in or out on the layout ScrollPane (map)
   private void handleScrollZoom(double scrollVal) {
     // positive scroll values are up and negative scroll values are down
-    // TODO add a setting to invert scrolling (this makes sense to me— I usually reverse mine)
     if (invertZoomScroll) {
       if (scrollVal > 0) {
         zoomOut(ZOOMAMPLIFIER);
