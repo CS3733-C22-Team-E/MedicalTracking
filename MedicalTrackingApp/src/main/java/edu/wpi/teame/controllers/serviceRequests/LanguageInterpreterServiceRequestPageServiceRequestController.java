@@ -25,4 +25,18 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
         FXCollections.observableArrayList(
             "English", "Spanish", "Hindi", "Mandarin", "French", "Arabic"));
   }
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    roomNumber.setText("");
+    floor.setText("");
+    startTime.setText("");
+    endTime.setText("");
+    endDate.setValue(null);
+    endDate.getEditor().clear();
+    startDate.setValue(null);
+    startDate.getEditor().clear();
+    languageDropdown.valueProperty().set(null);
+  }
 }

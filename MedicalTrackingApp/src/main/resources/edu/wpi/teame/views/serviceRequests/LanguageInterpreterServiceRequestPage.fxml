@@ -39,7 +39,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton buttonType="RAISED" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <JFXButton buttonType="RAISED" mnemonicParsing="false" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -127,6 +127,11 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="9">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
          </children>
       </GridPane>
    </children>
