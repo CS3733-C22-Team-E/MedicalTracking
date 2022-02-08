@@ -12,10 +12,7 @@ import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -73,12 +70,15 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     insertQuery.append(getTableName()).append(newObject.getTableColumns());
     insertQuery.append(" VALUES(");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
-    System.out.println(insertQuery);
-    statement.executeUpdate(insertQuery.toString());
 
-    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
-    int id = resultSet.getInt("id");
-    return get(id);
+    PreparedStatement insertStatement =
+        connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
+    int rowsAffected = insertStatement.executeUpdate();
+    ResultSet resultSet = insertStatement.getGeneratedKeys();
+
+    resultSet.next();
+    long id = resultSet.getLong(1);
+    return get((int) id);
   }
 
   @Override
