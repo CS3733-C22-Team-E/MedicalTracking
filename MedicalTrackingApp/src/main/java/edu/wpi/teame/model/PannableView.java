@@ -3,6 +3,7 @@ package edu.wpi.teame.model;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.Equipment;
@@ -29,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Pair;
 
@@ -36,14 +38,14 @@ import javafx.util.Pair;
 public class PannableView {
 
   // Init constants
-  private final Image backgroundImage;
+  private Image backgroundImage;
   private final int WIDTH = 1280;
   private final int HEIGHT = 720;
   private final int ICONSIZE = 60;
   private final double ZOOMINMAX = 1.5;
   private final double ZOOMOUTMAX = .2;
-  private final double MAPIMGWIDTH = 5000;
-  private final double MAPIMGHEIGHT = 3400;
+  private double MAPIMGWIDTH;
+  private double MAPIMGHEIGHT;
   private final double ZOOMAMPLIFIER = .1;
 
   // Init booleans
@@ -52,7 +54,8 @@ public class PannableView {
 
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
-  private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  // private ArrayList<MapIcon> mapIcons = new ArrayList<MapIcon>();
+  private HashMap<FloorType, ArrayList<MapIcon>> mapIconsByFloor = new HashMap<>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private ContextMenu EquipmentMenu;
   private ContextMenu PaneMenu;
@@ -71,25 +74,35 @@ public class PannableView {
 
   // Constructor sets the background image and currentFloor enum
   public PannableView(FloorType floor) {
-    backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
-    currFloor = floor;
+    for (FloorType currFloor : FloorType.values()) {
+      mapIconsByFloor.put(currFloor, new ArrayList<>());
+    }
+    switchFloors(floor);
+  }
+
+  private void switchFloors(FloorType newFloor) {
+    backgroundImage = new Image(App.class.getResource(getMapImg(newFloor)).toString());
+    MAPIMGHEIGHT = backgroundImage.getHeight();
+    MAPIMGWIDTH = backgroundImage.getWidth();
+    currFloor = newFloor;
+    updateLayoutChildren();
   }
 
   // Convert from enum to a background image
   private String getMapImg(FloorType f) {
     switch (f) {
       case GroundFloor:
-        return "images/map/00_thegroundfloor.png";
+        return "images/map/00_thegroundfloorNew.png";
       case LowerLevel1:
-        return "images/map/00_thelowerlevel1.png";
+        return "images/map/00_thelowerlevel1New.png";
       case LowerLevel2:
-        return "images/map/00_thelowerlevel2.png";
+        return "images/map/00_thelowerlevel2New.png";
       case FirstFloor:
-        return "images/map/01_thefirstfloor.png";
+        return "images/map/01_thefirstfloorNew.png";
       case SecondFloor:
-        return "images/map/02_thesecondfloor.png";
+        return "images/map/02_thesecondfloorNew.png";
       case ThirdFloor:
-        return "images/map/03_thethirdfloor.png";
+        return "images/map/03_thethirdfloorNew.png";
       default:
         return "";
     }
@@ -230,10 +243,10 @@ public class PannableView {
           handleScrollZoom(scrollVal);
         });
     ScrollPane scroll = createScrollPane(layout);
-
     StackPane staticWrapper = new StackPane();
-    staticWrapper.getChildren().setAll(scroll, createZoomInButton(), createZoomOutButton());
-    addHamburgerDeployments();
+    staticWrapper
+        .getChildren()
+        .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
     for (ImageView imageView : hamburgerDeployments) {
       staticWrapper.getChildren().add(imageView);
     }
@@ -260,11 +273,41 @@ public class PannableView {
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
-    for (MapIcon icon : mapIcons) {
+    for (MapIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
     }
   }
 
+  private void addMapIcon(
+      double xCoordinate, double yCoordinate, ImageView image, String toolTip, FloorType floor) {
+    ImageView iconGraphic = image;
+    iconGraphic.setFitWidth(30);
+    iconGraphic.setFitHeight(30);
+    final JFXButton newButton = new JFXButton();
+    newButton.setGraphic(iconGraphic);
+    double x = xCoordinate - MAPIMGWIDTH / 2;
+    double y = yCoordinate - MAPIMGHEIGHT / 2;
+    newButton.setTranslateX(x);
+    newButton.setTranslateY(y);
+    newButton.setOpacity(1);
+    newButton.setContextMenu(EquipmentMenu);
+    draggable(newButton);
+    newButton.setOnMouseReleased(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              lastPressed = newButton;
+              newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+            }
+          }
+        });
+    Tooltip tooltip = new Tooltip(toolTip);
+    Tooltip.install(newButton, tooltip);
+    MapIcon newIcon = new MapIcon(newButton, toolTip);
+    mapIconsByFloor.get(floor).add(newIcon);
+    updateLayoutChildren();
+  }
   // Adds icon on click
   // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
   // make
@@ -294,7 +337,7 @@ public class PannableView {
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
     MapIcon newIcon = new MapIcon(newButton, toolTip);
-    mapIcons.add(newIcon);
+    mapIconsByFloor.get(currFloor).add(newIcon);
     updateLayoutChildren();
   }
 
@@ -332,6 +375,25 @@ public class PannableView {
     return zoomOutButton;
   }
 
+  // init ComboBox
+  private JFXComboBox<String> createFloorSwitcher() {
+    final JFXComboBox<String> comboBox = new JFXComboBox();
+    for (FloorType floorType : FloorType.values()) {
+      comboBox.getItems().add(floorType.toString());
+    }
+    comboBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 2);
+    comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
+    comboBox.setFocusColor(Color.rgb(0, 0, 255));
+    comboBox.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            switchFloors(currFloor.getFloorFromString(comboBox.getValue()));
+          }
+        });
+    return comboBox;
+  }
+
   // Init currently unused hamburger button
   //  private JFXButton createHamburgerButton() {
   //    Image hamburgerIcon =
@@ -351,23 +413,23 @@ public class PannableView {
   //    return hamburgerButton;
   //  }
 
-  // Adds icons to the hamburger menu
-  // TODO styling— probably a complete redesign
-  private void addHamburgerDeployments() {
-    String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
-    int iconNum = 0;
-    for (String icon : allIcons) {
-      Image imageIcon = new Image(App.class.getResource("images/Icons/" + icon).toString());
-      ImageView imageVew = new ImageView(imageIcon);
-      imageVew.setFitWidth(ICONSIZE);
-      imageVew.setFitHeight(ICONSIZE);
-      imageVew.setTranslateX(WIDTH / 2 - 10 - ICONSIZE);
-      imageVew.setTranslateY(-(HEIGHT / 2) + 100 + iconNum * (ICONSIZE) + iconNum * 10);
-      imageVew.setVisible(false);
-      hamburgerDeployments.add(imageVew);
-      iconNum++;
-    }
-  }
+  //  // Adds icons to the hamburger menu
+  //  // TODO styling— probably a complete redesign
+  //  private void addHamburgerDeployments() {
+  //    String[] allIcons = {"EquipmentStorageIcon.png", "HospitalBedIcon.png"};
+  //    int iconNum = 0;
+  //    for (String icon : allIcons) {
+  //      Image imageIcon = new Image(App.class.getResource("images/Icons/" + icon).toString());
+  //      ImageView imageVew = new ImageView(imageIcon);
+  //      imageVew.setFitWidth(ICONSIZE);
+  //      imageVew.setFitHeight(ICONSIZE);
+  //      imageVew.setTranslateX(WIDTH / 2 - 10 - ICONSIZE);
+  //      imageVew.setTranslateY(-(HEIGHT / 2) + 100 + iconNum * (ICONSIZE) + iconNum * 10);
+  //      imageVew.setVisible(false);
+  //      hamburgerDeployments.add(imageVew);
+  //      iconNum++;
+  //    }
+  //  }
 
   // Displays the hamburger menu by just setting all hamburgerDeployments to visible
   private void deployHamburger() {
@@ -426,17 +488,18 @@ public class PannableView {
         (double) equip.getLocationNode().getX(),
         (double) equip.getLocationNode().getY(),
         getImageViewFromEquipmentType(equip.getType()),
-        equip.getName());
-
+        equip.getName(),
+        equip.getLocationNode().getFloor());
     updateLayoutChildren();
   }
 
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
-      if (currEquipment.getLocationNode().getFloor() == currFloor) {
-        convertLocationToMapIcon(currEquipment);
-      }
+      //      if (currEquipment.getLocationNode().getFloor() == currFloor) {
+      //        convertLocationToMapIcon(currEquipment);
+      //      }
+      convertLocationToMapIcon(currEquipment);
     }
   }
 
