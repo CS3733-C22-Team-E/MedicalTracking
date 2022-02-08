@@ -33,13 +33,14 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     LinkedList<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     LinkedList<String> locationName = new LinkedList<String>();
     for (Location loc : locations) {
       locationName.add(loc.getLongName());
     }
-    System.out.println(locations.size());
 
+    // Set the comboBox items
     roomNumber.setItems(FXCollections.observableArrayList(locationName));
     equipmentNeeded.setItems(
         FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
@@ -49,20 +50,19 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   // todo either make the submit button disabled until everything is filled or add error handling
   public void sendToMEDB(MouseEvent mouseEvent) {
+    // store all the values from the fields
     String pName = patientName.getText();
-
     String startingTime = startTime.getText();
     String endingTime = endTime.getText();
     String assignee = nameAssigned.getText();
-
     LocalDate srDate = datePicker.getValue();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddYYYY");
     String serviceRequestDate = srDate.format(formatter);
-
     String MRSRStatus = (String) requestState.getValue();
     String equipNeeded = (String) equipmentNeeded.getValue();
     String roomNum = (String) roomNumber.getValue();
 
+    // prints them to see what they are
     System.out.println(pName);
     System.out.println(roomNum);
     System.out.println(startingTime);
@@ -74,6 +74,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     System.out.println(
         DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
 
+    // calls a function that returns an equipment object in the database
     Equipment availableEquipment =
         DBManager.getInstance().getEquipmentManager().getAvailable(comboBoxValToType(equipNeeded));
 
