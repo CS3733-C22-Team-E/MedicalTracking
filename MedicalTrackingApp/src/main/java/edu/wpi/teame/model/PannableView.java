@@ -578,7 +578,7 @@ public class PannableView {
     double y = location.getY() - MAPIMGHEIGHT / 2;
     locationDot.setTranslateX(x);
     locationDot.setTranslateY(y);
-    locationsByFloor.get(currFloor).add(locationDot);
+    locationsByFloor.get(location.getFloor()).add(locationDot);
     System.out.println(
         "Added location \""
             + location.getLongName()
