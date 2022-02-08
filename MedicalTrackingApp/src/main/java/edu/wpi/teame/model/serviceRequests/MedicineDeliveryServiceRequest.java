@@ -1,5 +1,7 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -26,9 +28,9 @@ public class MedicineDeliveryServiceRequest extends ServiceRequest {
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     // TODO: actually call employee, location, equipment in constructor
     super(
-        ServiceRequestStatus.values()[resultSet.getInt("requestStatus")],
-        null,
-        null,
+        ServiceRequestStatus.values()[resultSet.getInt("status")],
+        new EmployeeManager().get(resultSet.getInt("employeeID")),
+        new LocationManager().get(resultSet.getInt("locationID")),
         resultSet.getDate("closeDate"),
         resultSet.getDate("openDate"),
         resultSet.getInt("id"));
@@ -37,12 +39,17 @@ public class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String toSQLInsertString() {
-    return super.toSQLInsertString() + ", " + deliveryDate.toString();
+    return super.toSQLInsertString() + ", '" + deliveryDate + "'";
   }
 
   @Override
   public String toSQLUpdateString() {
-    return super.toSQLUpdateString() + ", deliveryDate = " + deliveryDate.toString();
+    return super.toSQLUpdateString()
+        + ", deliveryDate = '"
+        + deliveryDate
+        + "'"
+        + " WHERE id = "
+        + id;
   }
 
   @Override
@@ -56,5 +63,10 @@ public class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   public void setDeliveryDate(Date deliveryDate) {
     this.deliveryDate = deliveryDate;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return super.getTableColumns() + "deliveryDate)";
   }
 }

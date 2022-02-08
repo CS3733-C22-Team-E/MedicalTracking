@@ -1,5 +1,7 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -20,11 +22,10 @@ public class SanitationServiceRequest extends ServiceRequest {
   }
 
   public SanitationServiceRequest(ResultSet resultSet) throws SQLException {
-    // TODO: actually call employee, location, equipment in constructor
     super(
-        ServiceRequestStatus.values()[resultSet.getInt("requestStatus")],
-        null,
-        null,
+        ServiceRequestStatus.values()[resultSet.getInt("status")],
+        new EmployeeManager().get(resultSet.getInt("employeeID")),
+        new LocationManager().get(resultSet.getInt("locationID")),
         resultSet.getDate("closeDate"),
         resultSet.getDate("openDate"),
         resultSet.getInt("id"));
@@ -33,5 +34,24 @@ public class SanitationServiceRequest extends ServiceRequest {
   @Override
   public DataBaseObjectType getDBType() {
     return DataBaseObjectType.SanitationSR;
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return "locationID = "
+        + location.getId()
+        + ", status = "
+        + status.toString()
+        + ", employeeID = "
+        + employee.getId()
+        + ", closeDate = "
+        + closeDate.toString()
+        + ", openDate = "
+        + openDate.toString();
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, status, employeeID, closeDate, openDate) ";
   }
 }

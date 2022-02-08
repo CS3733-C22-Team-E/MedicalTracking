@@ -82,14 +82,15 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toSQLUpdateString() {
-    return "id = "
-        + id
-        + ", department = "
+    int isDoctorInt = isDoctor ? 1 : 0;
+    return "department = "
         + department.ordinal()
-        + ", name = "
+        + ", name = '"
         + name
-        + ", isDoctor = "
-        + isDoctor;
+        + "', isDoctor = "
+        + isDoctorInt
+        + " WHERE id = "
+        + id;
   }
 
   /**

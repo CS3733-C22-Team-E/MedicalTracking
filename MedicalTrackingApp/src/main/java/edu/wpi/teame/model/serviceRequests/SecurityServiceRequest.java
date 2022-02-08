@@ -1,5 +1,7 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -22,8 +24,8 @@ public class SecurityServiceRequest extends ServiceRequest {
   public SecurityServiceRequest(ResultSet resultSet) throws SQLException {
     super(
         ServiceRequestStatus.values()[resultSet.getInt("status")],
-        null,
-        null,
+        new EmployeeManager().get(resultSet.getInt("employeeID")),
+        new LocationManager().get(resultSet.getInt("locationID")),
         resultSet.getDate("closeDate"),
         resultSet.getDate("openDate"),
         resultSet.getInt("id"));
@@ -50,6 +52,6 @@ public class SecurityServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return "(locationID, status, employeeID, closeDate, endTime, openDate) ";
+    return "(locationID, status, employeeID, closeDate, openDate) ";
   }
 }

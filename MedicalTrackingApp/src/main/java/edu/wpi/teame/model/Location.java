@@ -155,9 +155,7 @@ public class Location implements ISQLSerializable {
 
   @Override
   public String toSQLUpdateString() {
-    return "id = "
-        + id
-        + ", type = "
+    return "locationType = "
         + type.ordinal()
         + ", shortName = '"
         + shortName

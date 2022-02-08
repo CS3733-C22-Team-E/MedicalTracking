@@ -1,13 +1,13 @@
 package edu.wpi.teame;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.objectManagers.EmployeeManager;
-import edu.wpi.teame.db.objectManagers.EquipmentManager;
-import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
+import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import java.io.IOException;
 import java.sql.Date;
@@ -63,6 +63,20 @@ public class Main {
       System.out.println(loc);
     }
 
+    location.update(
+        new Location(
+            1,
+            "Center for something",
+            1617,
+            825,
+            FloorType.FirstFloor,
+            BuildingType.Tower,
+            LocationType.DEPT,
+            "some"));
+
+    System.out.println(location.get(1));
+    System.out.println();
+
     Equipment equipment1 =
         new Equipment(1, loc1, EquipmentType.PBED, "Hospital Bed 1", true, false);
     Equipment equipment2 =
@@ -79,6 +93,11 @@ public class Main {
     for (Equipment equip : equipmentLinkedList) {
       System.out.println(equip);
     }
+
+    equipmentManager.update(
+        new Equipment(1, loc1, EquipmentType.PBED, "Hospital Bed for jose", true, true));
+    System.out.println(equipmentManager.get(1));
+    System.out.println();
 
     /**
      * eSBURNHAM001,FAMILYMEDICINE,Shannon L. Burnham,true eMPEARSON002,CLINICALSERVICES,Madelyn
@@ -101,6 +120,12 @@ public class Main {
       System.out.println(emp);
     }
 
+    employeeManager.update(new Employee(1, DepartmentType.PLASTICSURGERY, "Jose L", false));
+    employeeList = employeeManager.getAll();
+    for (Employee emp : employeeList) {
+      System.out.println(emp);
+    }
+
     long d = System.currentTimeMillis();
     Date date = new Date(d);
     DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
@@ -117,16 +142,58 @@ public class Main {
     SecurityServiceRequest secReq3 =
         new SecurityServiceRequest(ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3);
 
-    //    SecurityServiceRequestManager secReqManager = new SecurityServiceRequestManager();
-    //    //secReqManager.insert(secReq1);
-    //    //secReqManager.insert(secReq2);
-    //    //secReqManager.insert(secReq3);
-    //
-    //    List<SecurityServiceRequest> securitylist = secReqManager.getAll();
-    //    for (SecurityServiceRequest sec : securitylist) {
-    //      System.out.println(sec);
-    //    }
+    SecurityServiceRequestManager secReqManager = new SecurityServiceRequestManager();
+    secReqManager.insert(secReq1);
+    secReqManager.insert(secReq2);
+    secReqManager.insert(secReq3);
 
-    App.launch(App.class, args);
+    List<SecurityServiceRequest> securitylist = secReqManager.getAll();
+    for (SecurityServiceRequest sec : securitylist) {
+      System.out.println(sec);
+    }
+
+    // secReqManager.update();
+    System.out.println();
+
+    SanitationServiceRequest sanReq1 =
+        new SanitationServiceRequest(ServiceRequestStatus.OPEN, emp1, loc1, date, date, 1);
+    SanitationServiceRequest sanReq2 =
+        new SanitationServiceRequest(ServiceRequestStatus.PENDING, emp2, loc2, date, date, 2);
+    SanitationServiceRequest sanReq3 =
+        new SanitationServiceRequest(ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3);
+
+    SanitationServiceRequestManager sanReqManager = new SanitationServiceRequestManager();
+    sanReqManager.insert(sanReq1);
+    sanReqManager.insert(sanReq2);
+    sanReqManager.insert(sanReq3);
+
+    List<SanitationServiceRequest> sanReqlist = sanReqManager.getAll();
+    for (SanitationServiceRequest san : sanReqlist) {
+      System.out.println(san);
+    }
+
+    System.out.println();
+    MedicineDeliveryServiceRequest medReq1 =
+        new MedicineDeliveryServiceRequest(
+            ServiceRequestStatus.OPEN, emp1, loc1, date, date, 1, date);
+    MedicineDeliveryServiceRequest medReq2 =
+        new MedicineDeliveryServiceRequest(
+            ServiceRequestStatus.PENDING, emp2, loc2, date, date, 2, date);
+    MedicineDeliveryServiceRequest medReq3 =
+        new MedicineDeliveryServiceRequest(
+            ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3, date);
+
+    MedicineDeliveryServiceRequestManager medReqManager =
+        new MedicineDeliveryServiceRequestManager();
+    medReqManager.insert(medReq1);
+    medReqManager.insert(medReq2);
+    medReqManager.insert(medReq3);
+
+    List<MedicineDeliveryServiceRequest> medReqlist = medReqManager.getAll();
+    for (MedicineDeliveryServiceRequest san : medReqlist) {
+      System.out.println(san);
+    }
+
+    // App.launch(App.class, args);
   }
 }

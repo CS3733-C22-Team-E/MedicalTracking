@@ -94,6 +94,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder insertQuery = new StringBuilder("UPDATE ");
     insertQuery.append(getTableName()).append(" SET ");
     insertQuery.append(updatedObject.toSQLUpdateString());
+    System.out.println(insertQuery.toString());
     statement.executeUpdate(insertQuery.toString());
   }
 
