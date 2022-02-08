@@ -1,6 +1,6 @@
 package edu.wpi.teame.db.objectManagers;
 
-import com.opencsv.exceptions.CsvValidationException;
+// import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
@@ -20,8 +20,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
   }
 
   @Override
-  public void readCSV(String inputFileName)
-      throws IOException, CsvValidationException, SQLException {}
+  public void readCSV(String inputFileName) throws IOException, SQLException {}
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException {}

@@ -1,5 +1,7 @@
 package edu.wpi.teame.db.objectManagers;
 
+import static edu.wpi.teame.model.enums.DataBaseObjectType.SecuritySR;
+
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
@@ -9,7 +11,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
-
+import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -70,6 +72,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
     insertQuery.append(getTableName()).append(" VALUES(");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
+    System.out.println(insertQuery);
     statement.executeUpdate(insertQuery.toString());
 
     ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
@@ -102,7 +105,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
         return (T) new SanitationServiceRequest(resultSet);
       case SecuritySR:
-        return null;
+        return (T) new SecurityServiceRequest(resultSet);
       case Location:
         return (T) new Location(resultSet);
       case Equipment:

@@ -3,7 +3,6 @@ package edu.wpi.teame.model;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -26,6 +25,7 @@ public class Employee implements ISQLSerializable {
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
   }
+
   public String toString() {
     StringBuilder employeeString = new StringBuilder();
     employeeString.append("id: ").append(this.id).append(" ");

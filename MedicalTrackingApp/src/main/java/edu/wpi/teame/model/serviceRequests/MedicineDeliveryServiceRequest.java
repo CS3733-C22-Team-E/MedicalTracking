@@ -24,10 +24,14 @@ public class MedicineDeliveryServiceRequest extends ServiceRequest {
   }
 
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
-    //TODO: actually call employee, location, equipment in constructor
-    super(ServiceRequestStatus.values()[resultSet.getInt("requestStatus")], null, null,
-            resultSet.getDate("closeDate"), resultSet.getDate("openDate"),
-            resultSet.getInt("id"));
+    // TODO: actually call employee, location, equipment in constructor
+    super(
+        ServiceRequestStatus.values()[resultSet.getInt("requestStatus")],
+        null,
+        null,
+        resultSet.getDate("closeDate"),
+        resultSet.getDate("openDate"),
+        resultSet.getInt("id"));
     this.deliveryDate = resultSet.getDate("deliveryDate");
   }
 

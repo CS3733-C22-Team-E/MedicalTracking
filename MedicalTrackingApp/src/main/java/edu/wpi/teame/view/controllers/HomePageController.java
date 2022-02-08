@@ -1,6 +1,6 @@
 package edu.wpi.teame.view.controllers;
 
-import com.opencsv.exceptions.CsvValidationException;
+// import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.DBManager;
 import java.awt.*;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class HomePageController {
   }
 
   @FXML
-  private void onLoadCSVButtonClick() throws IOException, CsvValidationException, SQLException {
+  private void onLoadCSVButtonClick() throws IOException, SQLException {
     if (hasLoaded) {
       return;
     }

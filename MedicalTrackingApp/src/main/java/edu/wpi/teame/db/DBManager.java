@@ -56,7 +56,7 @@ public final class DBManager {
 
     // creating the table for the locations
     String createLocationsTable =
-        "CREATE TABLE LOCATION(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+        "CREATE TABLE LOCATION(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
             + "locationType int, "
             + "shortName VARCHAR(100), "
             + "longName VARCHAR(250), "
@@ -68,7 +68,7 @@ public final class DBManager {
     System.out.println("Location Table created");
 
     String createEquipmentTable =
-        "CREATE TABLE Equipment(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+        "CREATE TABLE Equipment(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
             + "locationID int, "
             + "name VARCHAR(100), "
             + "type int, "
@@ -79,7 +79,7 @@ public final class DBManager {
     System.out.println("Equipment Table created");
 
     String createEmployeeTable =
-        "CREATE TABLE Employee(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+        "CREATE TABLE Employee(id int Primary Key GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
             + "department int, "
             + "name VARCHAR(100), "
             + "isDoctor int)";
@@ -102,40 +102,38 @@ public final class DBManager {
     System.out.println("MedicalEquipmentSR Table created");
 
     String createMedicineDeliverySRTable =
-            "CREATE TABLE MedicineDeliverySR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                    + "locationID int, "
-                    + "status int, "
-                    + "employeeID int, "
-                    + "closeDate Date, "
-                    + "endTime VARCHAR(50), "
-                    + "openDate VARCHAR(100), "
-                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+        "CREATE TABLE MedicineDeliverySR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+            + "locationID int, "
+            + "status int, "
+            + "employeeID int, "
+            + "closeDate Date, "
+            + "endTime VARCHAR(50), "
+            + "openDate VARCHAR(100), "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
     stmt.execute(createMedicineDeliverySRTable);
     System.out.println("MedicineDeliverySR Table created");
 
     String createSanitationSRTable =
-            "CREATE TABLE SanitationSR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                    + "locationID int, "
-                    + "status int, "
-                    + "employeeID int, "
-                    + "closeDate Date, "
-                    + "endTime VARCHAR(50), "
-                    + "openDate VARCHAR(100), "
-                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+        "CREATE TABLE SanitationSR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+            + "locationID int, "
+            + "status int, "
+            + "employeeID int, "
+            + "closeDate Date, "
+            + "endTime VARCHAR(50), "
+            + "openDate VARCHAR(100), "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
     stmt.execute(createSanitationSRTable);
     System.out.println("SanitationSR Table created");
 
     String createSecuritySRTable =
-            "CREATE TABLE createSecuritySRTable(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                    + "locationID int, "
-                    + "status int, "
-                    + "employeeID int, "
-                    + "closeDate Date, "
-                    + "endTime VARCHAR(50), "
-                    + "openDate VARCHAR(100), "
-                    + "equipmentID int, "
-                    + "patient VARCHAR(100), "
-                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+        "CREATE TABLE createSecuritySRTable(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+            + "locationID int, "
+            + "status int, "
+            + "employeeID int, "
+            + "closeDate Date, "
+            + "endTime VARCHAR(50), "
+            + "openDate VARCHAR(100), "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
     stmt.execute(createSecuritySRTable);
     System.out.println("MedicalEquipmentSR Table created");
   }

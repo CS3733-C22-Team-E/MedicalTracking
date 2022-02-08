@@ -5,6 +5,8 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SecurityServiceRequest extends ServiceRequest {
   protected SecurityServiceRequest(
@@ -15,6 +17,16 @@ public class SecurityServiceRequest extends ServiceRequest {
       Date openDate,
       int id) {
     super(requestStatus, assignee, location, closeDate, openDate, id);
+  }
+
+  public SecurityServiceRequest(ResultSet resultSet) throws SQLException {
+    super(
+        ServiceRequestStatus.values()[resultSet.getInt("status")],
+        null,
+        null,
+        resultSet.getDate("closeDate"),
+        resultSet.getDate("openDate"),
+        resultSet.getInt("id"));
   }
 
   @Override
