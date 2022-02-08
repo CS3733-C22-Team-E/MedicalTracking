@@ -1,4 +1,4 @@
-package edu.wpi.teame.model.serviceRequests;
+package edu.wpi.teame.db;
 
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 

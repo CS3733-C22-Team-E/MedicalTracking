@@ -1,8 +1,8 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
-import edu.wpi.teame.model.serviceRequests.ISQLSerializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,10 +12,10 @@ public class Equipment implements ISQLSerializable {
   private Location location;
   private boolean isClean;
   private String name;
-  private String id;
+  private int id;
 
   public Equipment(
-      String ID,
+      int ID,
       Location locationNodeID,
       EquipmentType type,
       String name,
@@ -30,7 +30,7 @@ public class Equipment implements ISQLSerializable {
   }
 
   public Equipment(ResultSet resultSet) throws SQLException {
-    this.id = resultSet.getString("id");
+    this.id = resultSet.getInt("id");
     this.location = null; // DBManager.getInstance().get(resultSet.getString("location"));
     this.type = EquipmentType.values()[resultSet.getInt("type")];
     this.name = resultSet.getString("name");
@@ -38,12 +38,12 @@ public class Equipment implements ISQLSerializable {
     this.isClean = resultSet.getBoolean("isClean");
   }
 
-  public String getNodeID() {
+  public int getId() {
     return id;
   }
 
-  public void setNodeID(String nodeID) {
-    this.id = nodeID;
+  public void setId(int id) {
+    this.id = id;
   }
 
   public Location getLocation() {

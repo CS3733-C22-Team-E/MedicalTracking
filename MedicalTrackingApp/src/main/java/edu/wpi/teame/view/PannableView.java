@@ -8,9 +8,10 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -272,8 +273,8 @@ public class PannableView {
     return retval;
   }
 
-  public void getFromDB() {
-    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+  public void getFromDB() throws SQLException {
+    List<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
       if (currEquipment.getLocation().getFloor() == currFloor) {
         convertLocationToMapIcon(currEquipment);

@@ -6,6 +6,7 @@ import edu.wpi.teame.view.PannableView;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -53,7 +54,11 @@ public class LandingPageController implements Initializable {
         new EventHandler<Event>() {
           @Override
           public void handle(Event event) {
-            mapView.getFromDB();
+            try {
+              mapView.getFromDB();
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     tabs.add(mapTab);

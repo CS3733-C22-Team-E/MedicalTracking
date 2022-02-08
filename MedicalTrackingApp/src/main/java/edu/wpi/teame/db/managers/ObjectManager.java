@@ -1,8 +1,10 @@
-package edu.wpi.teame.db;
+package edu.wpi.teame.db.managers;
 
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.IManager;
+import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.serviceRequests.ISQLSerializable;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -28,7 +30,7 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   }
 
   @Override
-  public T get(String id) throws SQLException {
+  public T get(int id) throws SQLException {
     String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = '" + id + "'";
     ResultSet resultSet = statement.executeQuery(getQuery);
     if (resultSet.next()) {
@@ -48,18 +50,32 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
     return listResult;
   }
 
+  public List<T> getBy(String whereClause) throws SQLException {
+    String getQuery = "SELECT * FROM " + getTableName() + " " + whereClause;
+    ResultSet resultSet = statement.executeQuery(getQuery);
+    List<T> listResult = new LinkedList<>();
+    while (resultSet.next()) {
+      listResult.add(getCastedType(resultSet));
+    }
+    return listResult;
+  }
+
   @Override
-  public void insert(T newObject) throws SQLException {
+  public T insert(T newObject) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
     insertQuery.append(getTableName()).append(" VALUES('");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
     statement.executeUpdate(insertQuery.toString());
+
+    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
+    int id = resultSet.getInt("id");
+    return get(id);
   }
 
   @Override
-  public void remove(String id) throws SQLException {
+  public void remove(int id) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("DELETE FROM ");
-    insertQuery.append(getTableName()).append(" WHERE id='");
+    insertQuery.append(getTableName()).append(" WHERE id = '");
     insertQuery.append(id).append("'");
     statement.executeUpdate(insertQuery.toString());
   }
@@ -78,8 +94,7 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   @Override
   public void writeToCSV(String outputFilePath) {}
 
-  private T getCastedType(ResultSet resultSet)
-      throws SQLException {
+  private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case MedicalEquipmentSR:
         return null;
@@ -92,7 +107,7 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
       case Location:
         return null;
       case Equipment:
-        return (T)(new Equipment(resultSet));
+        return (T) new Equipment(resultSet);
       case Employee:
         return null;
       default:

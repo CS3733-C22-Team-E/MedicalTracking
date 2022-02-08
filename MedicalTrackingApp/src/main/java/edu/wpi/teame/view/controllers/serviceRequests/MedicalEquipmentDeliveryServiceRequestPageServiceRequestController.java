@@ -3,6 +3,7 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.*;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
@@ -23,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+  @FXML private JFXComboBox equipmentNeeded;
+  @FXML private JFXComboBox requestState;
 
   @FXML private TextField patientName;
   @FXML private JFXComboBox roomNumber;
@@ -34,9 +37,6 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
-
-  @FXML private JFXComboBox equipmentNeeded;
-  @FXML private JFXComboBox requestState;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -71,42 +71,40 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddYYYY");
     String serviceRequestDate = srDate.format(formatter);
     String MRSRStatus = (String) requestState.getValue();
-    String equipNeeded = (String) equipmentNeeded.getValue();
-    String roomNum = (String) roomNumber.getValue();
-
-    // prints them to see what they are
-    System.out.println(pName);
-    System.out.println(roomNum);
-    System.out.println(startingTime);
-    System.out.println(endingTime);
-    System.out.println(assignee);
-    System.out.println(serviceRequestDate);
-    System.out.println(MRSRStatus);
-    System.out.println(equipNeeded);
-    System.out.println(
-        DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
+    EquipmentType equipmentType = comboBoxValToType((String) equipmentNeeded.getValue());
+    String locationName = (String) roomNumber.getValue();
 
     // calls a function that returns an equipment object in the database
     Equipment availableEquipment =
-        DBManager.getInstance().getEquipmentManager().getAvailable(comboBoxValToType(equipNeeded));
+        DBManager.getInstance()
+            .getEquipmentManager()
+            .getBy("WHERE hasPatient = FALSE AND type = " + equipmentType.ordinal())
+            .get(0);
 
-    System.out.println(availableEquipment);
+    Location location =
+        DBManager.getInstance()
+            .getLocationManager()
+            .getBy("WHERE locationType = " + locationName)
+            .get(0);
+
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getBy("WHERE name = " + assignee).get(0);
 
     MedicalEquipmentServiceRequest serReq =
         new MedicalEquipmentServiceRequest(
-            0,
-            pName,
-            DBManager.getInstance().getLocationManager().getFromLongName(roomNum),
-            startingTime,
-            endingTime,
-            serviceRequestDate,
-            assignee,
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            null,
+            null,
+            -1,
             availableEquipment,
-            comboBoxValToStatus(MRSRStatus));
+            pName);
 
     DBManager.getInstance().getMEServiceRequestManager().insert(serReq);
 
-    List<MedicalEquipmentServiceRequest> allSerReq = DBManager.getInstance().getMEServiceRequestManager().getAll();
+    List<MedicalEquipmentServiceRequest> allSerReq =
+        DBManager.getInstance().getMEServiceRequestManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }

@@ -1,8 +1,8 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 
@@ -10,7 +10,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
   protected ServiceRequestStatus status;
   protected Employee assignee;
   protected Location location;
-  protected FloorType floor;
   protected Date closeDate;
   protected Date openDate;
   protected int id;
@@ -19,7 +18,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
       ServiceRequestStatus requestStatus,
       Employee assignee,
       Location location,
-      FloorType floorType,
       Date closeDate,
       Date openDate,
       int id) {
@@ -28,7 +26,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
     this.assignee = assignee;
     this.location = location;
     this.openDate = openDate;
-    this.floor = floorType;
     this.id = id;
   }
 
@@ -39,8 +36,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
         + assignee
         + ", "
         + location.getId()
-        + ", "
-        + floor.toString()
         + ", "
         + closeDate.toString()
         + ", "
@@ -54,8 +49,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
         + assignee
         + ", location = "
         + location.getId()
-        + ", floor = "
-        + floor.toString()
         + ", closeDate = "
         + closeDate.toString()
         + ", openDate = "
@@ -84,14 +77,6 @@ public abstract class ServiceRequest implements ISQLSerializable {
 
   public void setLocation(Location location) {
     this.location = location;
-  }
-
-  public FloorType getFloor() {
-    return floor;
-  }
-
-  public void setFloor(FloorType floor) {
-    this.floor = floor;
   }
 
   public Date getCloseDate() {

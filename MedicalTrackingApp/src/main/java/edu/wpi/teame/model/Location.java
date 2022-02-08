@@ -1,16 +1,15 @@
 package edu.wpi.teame.model;
 
-import edu.wpi.teame.model.enums.BuildingType;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.enums.FloorType;
-import edu.wpi.teame.model.enums.LocationType;
-import edu.wpi.teame.model.serviceRequests.ISQLSerializable;
+import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.enums.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Location implements ISQLSerializable {
-  private String id;
-  private String longName;
-  private String shortName;
   private LocationType type;
+  private String shortName;
+  private String longName;
+  private int id;
 
   private BuildingType building;
   private FloorType floor;
@@ -18,7 +17,7 @@ public class Location implements ISQLSerializable {
   private int y;
 
   public Location(
-      String id,
+      int id,
       String longName,
       int x,
       int y,
@@ -36,11 +35,22 @@ public class Location implements ISQLSerializable {
     this.shortName = shortName;
   }
 
-  public String getId() {
+  public Location(ResultSet resultSet) throws SQLException {
+    this.x = resultSet.getInt("x");
+    this.y = resultSet.getInt("y");
+    this.id = resultSet.getInt("id");
+    this.longName = resultSet.getString("longName");
+    this.shortName = resultSet.getString("shortName");
+    this.floor = FloorType.values()[resultSet.getInt("floorType")];
+    this.type = LocationType.values()[resultSet.getInt("locationType")];
+    this.building = BuildingType.values()[resultSet.getInt("buildingType")];
+  }
+
+  public int getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(int id) {
     this.id = id;
   }
 

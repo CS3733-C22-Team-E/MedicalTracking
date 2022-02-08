@@ -1,7 +1,7 @@
 package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXCheckBox;
-import edu.wpi.teame.model.enums.ServiceRequestTypes;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +19,7 @@ public class ServiceRequestCard {
   private int hexColor;
   private String title;
   private String description;
-  private ServiceRequestTypes type;
+  private DataBaseObjectType type;
   private double WIDTH;
   private double HEIGHT;
   private ServiceRequestBacklog backlog;
@@ -54,7 +54,7 @@ public class ServiceRequestCard {
 
   public ServiceRequestCard(
       ServiceRequestBacklog backlog,
-      ServiceRequestTypes SRType,
+      DataBaseObjectType SRType,
       String SRDescription,
       String SRTitle,
       int SRColor,
