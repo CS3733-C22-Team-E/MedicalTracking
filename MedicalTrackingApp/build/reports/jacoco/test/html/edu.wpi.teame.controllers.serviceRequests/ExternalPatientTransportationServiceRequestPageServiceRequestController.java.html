@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExternalPatientTransportationServiceRequestPageServiceRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.controllers.serviceRequests</a> &gt; <span class="el_source">ExternalPatientTransportationServiceRequestPageServiceRequestController.java</span></div><h1>ExternalPatientTransportationServiceRequestPageServiceRequestController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.controllers.serviceRequests;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
+
+<span class="nc" id="L10">public class ExternalPatientTransportationServiceRequestPageServiceRequestController</span>
+    extends ServiceRequestController {
+  @FXML private Text externalPatientTransportationServiceRequest;
+  @FXML private Text patientNameText;
+  @FXML private Text roomText;
+  @FXML private Text floorText;
+  @FXML private Text dateText;
+  @FXML private Text pickupTimeText;
+  @FXML private Text chooseTransportationText;
+  @FXML private Text dropoffAddressText;
+
+  @FXML private TextField patientName;
+  @FXML private TextField floorNum;
+  @FXML private TextField roomNum;
+  @FXML private TextField pickupTime;
+  @FXML private TextField dropoffAddress;
+
+  @FXML private DatePicker datePickup;
+
+  @FXML private ComboBox&lt;String&gt; chooseTransportation;
+
+  @FXML public Button sendButton;
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L35">    chooseTransportation.setItems(</span>
+<span class="nc" id="L36">        FXCollections.observableArrayList(&quot;Ambulance&quot;, &quot;Helicopter&quot;, &quot;Car&quot;, &quot;Other&quot;));</span>
+<span class="nc" id="L37">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

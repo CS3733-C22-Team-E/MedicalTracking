@@ -122,7 +122,7 @@ public class LocationManager implements IManager<Location> {
     try {
       stmt.executeUpdate(insertQuery);
     } catch (SQLException e) {
-      System.out.println("Case 3: Could not create new node");
+      System.out.println("Could not insert into Locations");
       e.printStackTrace();
     }
   }
@@ -248,7 +248,7 @@ public class LocationManager implements IManager<Location> {
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add xcoord to buffer
-        oneLine.append(xcoord == null || (xcoord.trim().length() == 0) ? "" : locationType);
+        oneLine.append(xcoord == null || (xcoord.trim().length() == 0) ? "" : xcoord);
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add ycoord to buffer

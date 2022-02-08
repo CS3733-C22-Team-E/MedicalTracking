@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db</a> &gt; <span class="el_source">EmployeeManager.java</span></div><h1>EmployeeManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db;
+
+import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+
+public class EmployeeManager implements IManager&lt;Employee&gt; {
+  private static Connection connection;
+  private static Statement stmt;
+
+<span class="nc" id="L14">  public EmployeeManager() {</span>
+<span class="nc" id="L15">    connection = DBManager.getInstance().getConnection();</span>
+
+    try {
+<span class="nc" id="L18">      stmt = connection.createStatement();</span>
+<span class="nc" id="L19">    } catch (SQLException e) {</span>
+<span class="nc" id="L20">      e.printStackTrace();</span>
+<span class="nc" id="L21">    }</span>
+<span class="nc" id="L22">  }</span>
+
+  @Override
+  public Employee get(String id) {
+<span class="nc" id="L26">    Employee result = null;</span>
+<span class="nc" id="L27">    String getQuery = &quot;SELECT * FROM Employees WHERE id='&quot; + id + &quot;'&quot;;</span>
+    try {
+<span class="nc" id="L29">      ResultSet rset = stmt.executeQuery(getQuery);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">      while (rset.next()) {</span>
+<span class="nc" id="L31">        String employeeID = rset.getString(&quot;employeeID&quot;);</span>
+<span class="nc" id="L32">        DepartmentType dept = DepartmentType.values()[rset.getInt(&quot;dept&quot;)];</span>
+<span class="nc" id="L33">        String name = rset.getString(&quot;name&quot;);</span>
+<span class="nc" id="L34">        boolean isDoctor = rset.getBoolean(&quot;isDoctor&quot;);</span>
+
+        // convert strings to proper type
+<span class="nc" id="L37">        result = new Employee(employeeID, dept, name, isDoctor);</span>
+<span class="nc" id="L38">      }</span>
+<span class="nc" id="L39">    } catch (SQLException e) {</span>
+<span class="nc" id="L40">      e.printStackTrace();</span>
+<span class="nc" id="L41">      System.out.println(&quot;Could not select from Employees&quot;);</span>
+<span class="nc" id="L42">    }</span>
+<span class="nc" id="L43">    return result;</span>
+  }
+
+  @Override
+  public LinkedList&lt;Employee&gt; getAll() {
+<span class="nc" id="L48">    LinkedList&lt;Employee&gt; result = null;</span>
+<span class="nc" id="L49">    String getQuery = &quot;SELECT * FROM Employees&quot;;</span>
+    try {
+<span class="nc" id="L51">      ResultSet rset = stmt.executeQuery(getQuery);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">      while (rset.next()) {</span>
+<span class="nc" id="L53">        String employeeID = rset.getString(&quot;employeeID&quot;);</span>
+<span class="nc" id="L54">        DepartmentType dept = DepartmentType.values()[rset.getInt(&quot;dept&quot;)];</span>
+<span class="nc" id="L55">        String name = rset.getString(&quot;name&quot;);</span>
+<span class="nc" id="L56">        boolean isDoctor = rset.getBoolean(&quot;isDoctor&quot;);</span>
+
+        // convert strings to proper type
+<span class="nc" id="L59">        result.add(new Employee(employeeID, dept, name, isDoctor));</span>
+<span class="nc" id="L60">      }</span>
+<span class="nc" id="L61">    } catch (SQLException e) {</span>
+<span class="nc" id="L62">      e.printStackTrace();</span>
+<span class="nc" id="L63">      System.out.println(&quot;Could not select all tuples from Employees&quot;);</span>
+<span class="nc" id="L64">    }</span>
+<span class="nc" id="L65">    return result;</span>
+  }
+
+  @Override
+  public void insert(Employee newObject) {
+<span class="nc" id="L70">    String insertQuery =</span>
+        &quot;INSERT INTO Employees VALUES('&quot;
+<span class="nc" id="L72">            + newObject.getEmployeeID()</span>
+            + &quot;',&quot;
+<span class="nc" id="L74">            + newObject.getDept()</span>
+            + &quot;,&quot;
+<span class="nc" id="L76">            + newObject.getName()</span>
+            + &quot;,&quot;
+<span class="nc" id="L78">            + newObject.isDoctor()</span>
+            + &quot;)&quot;;
+    try {
+<span class="nc" id="L81">      stmt.executeUpdate(insertQuery);</span>
+<span class="nc" id="L82">    } catch (SQLException e) {</span>
+<span class="nc" id="L83">      System.out.println(&quot;Could not insert into Employees&quot;);</span>
+<span class="nc" id="L84">      e.printStackTrace();</span>
+<span class="nc" id="L85">    }</span>
+<span class="nc" id="L86">  }</span>
+
+  @Override
+  public void remove(String id) {
+<span class="nc" id="L90">    String removeQuery = &quot;DELETE FROM Employees WHERE id='&quot; + id + &quot;'&quot;;</span>
+    try {
+<span class="nc" id="L92">      stmt.executeUpdate(removeQuery);</span>
+<span class="nc" id="L93">    } catch (SQLException e) {</span>
+<span class="nc" id="L94">      System.out.println(&quot;Could not delete from Employees&quot;);</span>
+<span class="nc" id="L95">      e.printStackTrace();</span>
+<span class="nc" id="L96">    }</span>
+<span class="nc" id="L97">  }</span>
+
+  @Override
+  public void update(Employee updatedObject) {
+<span class="nc" id="L101">    String updateQuery =</span>
+        &quot;UPDATE LOCATIONS SET employeeID = &quot;
+<span class="nc" id="L103">            + updatedObject.getEmployeeID()</span>
+            + &quot;, dept = &quot;
+<span class="nc" id="L105">            + updatedObject.getDept()</span>
+            + &quot;, name = &quot;
+<span class="nc" id="L107">            + updatedObject.getName()</span>
+            + &quot;, isDoctor = &quot;
+<span class="nc" id="L109">            + updatedObject.isDoctor()</span>
+            + &quot;)&quot;;
+    try {
+<span class="nc" id="L112">      stmt.executeUpdate(updateQuery);</span>
+<span class="nc" id="L113">      System.out.println(&quot;Employee updated successfully&quot;);</span>
+<span class="nc" id="L114">    } catch (SQLException e) {</span>
+<span class="nc" id="L115">      System.out.println(&quot;Could not update Employees table&quot;);</span>
+<span class="nc" id="L116">      e.printStackTrace();</span>
+<span class="nc" id="L117">    }</span>
+<span class="nc" id="L118">  }</span>
+
+  @Override
+  public void readCSV(String csvFile) throws IOException {
+<span class="nc" id="L122">    csvFile =</span>
+<span class="nc" id="L123">        System.getProperty(&quot;user.dir&quot;)</span>
+            + &quot;\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EmployeesE.csv&quot;;
+    // TODO: why are we passing in a csv if it is being hardcoded in the method body
+
+<span class="nc" id="L127">    File file = new File(csvFile);</span>
+<span class="nc" id="L128">    FileReader fr = new FileReader(file);</span>
+<span class="nc" id="L129">    BufferedReader br = new BufferedReader(fr);</span>
+<span class="nc" id="L130">    String line = &quot; &quot;;</span>
+    String[] tempArr;
+
+<span class="nc" id="L133">    boolean firstLine = true;</span>
+<span class="nc" id="L134">    String delimiter = &quot;,&quot;;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">    while ((line = br.readLine()) != null) {</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">      if (!firstLine) {</span>
+<span class="nc" id="L137">        tempArr = line.split(delimiter);</span>
+        /*
+        Employee tempEmployee =
+                new Employee(
+                        tempArr[0],
+                        6 &gt;= tempArr.length ? &quot;&quot; : tempArr[6],
+                        1 &gt;= tempArr.length ? -1 : Integer.parseInt(tempArr[1]), //if there is only one node in tempArray, there will not be a value for this field. don't input
+                        2 &gt;= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
+                        3 &gt;= tempArr.length ? null : csvValToFloorType(tempArr[3]),
+                        4 &gt;= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
+                        5 &gt;= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
+                        7 &gt;= tempArr.length ? &quot;&quot; : tempArr[7]);
+         */
+<span class="nc" id="L150">        String tempID = tempArr[0];</span>
+<span class="nc" id="L151">        DepartmentType tempDept = csvValToDepartmentType(tempArr[1]);</span>
+<span class="nc" id="L152">        String tempName = tempArr[2];</span>
+<span class="nc" id="L153">        boolean tempIsDoctor = Boolean.parseBoolean(tempArr[3]);</span>
+
+<span class="nc" id="L155">        Employee tempEmployee =</span>
+            new Employee(
+                tempID,
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                1 &gt;= tempArr.length ? null : tempDept,</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                2 &gt;= tempArr.length ? &quot;&quot; : tempName,</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                3 &gt;= tempArr.length ? false : tempIsDoctor);</span>
+
+<span class="nc" id="L162">        insert(tempEmployee);</span>
+<span class="nc" id="L163">      } else {</span>
+<span class="nc" id="L164">        firstLine = false;</span>
+      }
+    }
+<span class="nc" id="L167">    br.close();</span>
+<span class="nc" id="L168">  }</span>
+
+  private DepartmentType csvValToDepartmentType(String csvVal) {
+<span class="nc bnc" id="L171" title="All 6 branches missed.">    switch (csvVal) {</span>
+      case &quot;Family Medicine&quot;:
+<span class="nc" id="L173">        return DepartmentType.FAMILYMEDICINE;</span>
+      case &quot;Clinical Services&quot;:
+<span class="nc" id="L175">        return DepartmentType.CLINICALSERVICES;</span>
+      case &quot;Plastic Surgery&quot;:
+<span class="nc" id="L177">        return DepartmentType.PLASTICSURGERY;</span>
+      case &quot;Neurosurgery&quot;:
+<span class="nc" id="L179">        return DepartmentType.NEUROSURGERY;</span>
+      case &quot;Medical Intensive Care Unit&quot;:
+<span class="nc" id="L181">        return DepartmentType.MICU;</span>
+
+      default:
+<span class="nc" id="L184">        return null;</span>
+    }
+  }
+
+  @Override
+  public void writeToCSV(String outputFilePath) {
+
+    // create CSV or find CSV to write to
+<span class="nc" id="L192">    String csvSeparator = &quot;,&quot;;</span>
+    try {
+      try {
+<span class="nc" id="L195">        File myObj = new File(outputFilePath + &quot;.csv&quot;);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (myObj.createNewFile()) {</span>
+<span class="nc" id="L197">          System.out.println(&quot;File created: &quot; + myObj.getName());</span>
+        } else {
+<span class="nc" id="L199">          System.out.println(&quot;File already exists.&quot;);</span>
+        }
+<span class="nc" id="L201">      } catch (IOException e) {</span>
+<span class="nc" id="L202">        System.out.println(&quot;An error occurred.&quot;);</span>
+<span class="nc" id="L203">        e.printStackTrace();</span>
+<span class="nc" id="L204">      }</span>
+
+<span class="nc" id="L206">      BufferedWriter bw =</span>
+          new BufferedWriter(
+              new OutputStreamWriter(new FileOutputStream(outputFilePath + &quot;.csv&quot;), &quot;UTF-8&quot;));
+
+      // Create a title for the CSV as the list of Locations doesn't have one
+      // Put the title at the start of the locations list
+<span class="nc" id="L212">      StringBuffer title = new StringBuffer(&quot;employeeID,dept,name,isDoctor&quot;);</span>
+      // Add buffer string to buffered writer
+<span class="nc" id="L214">      bw.write(title.toString());</span>
+      // Drops down to next row
+<span class="nc" id="L216">      bw.newLine();</span>
+
+<span class="nc" id="L218">      LinkedList&lt;Employee&gt; employeesList = getAll();</span>
+
+      // Go through each Location in the list
+<span class="nc bnc" id="L221" title="All 2 branches missed.">      for (Employee employee : employeesList) {</span>
+<span class="nc" id="L222">        String employeeID = employee.getEmployeeID();</span>
+<span class="nc" id="L223">        String dept = employee.getDept().toString();</span>
+<span class="nc" id="L224">        String name = employee.getName();</span>
+<span class="nc" id="L225">        String isDoctor = String.valueOf(employee.isDoctor());</span>
+
+        // Create a single temporary string buffer
+<span class="nc" id="L228">        StringBuffer oneLine = new StringBuffer();</span>
+        // Add employeeID to buffer
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        oneLine.append(employeeID.trim().length() == 0 ? &quot;&quot; : employeeID);</span>
+        // Add comma separator
+<span class="nc" id="L232">        oneLine.append(csvSeparator);</span>
+        // Add dept to buffer
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        oneLine.append(dept == null || (dept.trim().length() == 0) ? &quot;&quot; : dept);</span>
+        // Add comma separator
+<span class="nc" id="L236">        oneLine.append(csvSeparator);</span>
+        // Add name to buffer
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        oneLine.append(name == null || (name.trim().length() == 0) ? &quot;&quot; : name);</span>
+        // Add comma separator
+<span class="nc" id="L240">        oneLine.append(csvSeparator);</span>
+        // Add isDoctor to buffer
+<span class="nc bnc" id="L242" title="All 4 branches missed.">        oneLine.append(isDoctor == null || (isDoctor.trim().length() == 0) ? &quot;&quot; : isDoctor);</span>
+
+        // Add buffer string to buffered writer
+<span class="nc" id="L245">        bw.write(oneLine.toString());</span>
+        // Drops down to next row
+<span class="nc" id="L247">        bw.newLine();</span>
+<span class="nc" id="L248">      }</span>
+      // Applies buffer to file
+<span class="nc" id="L250">      bw.flush();</span>
+<span class="nc" id="L251">      bw.close();</span>
+<span class="nc" id="L252">    } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L253">      e.printStackTrace();</span>
+<span class="nc" id="L254">    } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L255">      e.printStackTrace();</span>
+
+<span class="nc" id="L257">    } catch (IOException e) {</span>
+<span class="nc" id="L258">      e.printStackTrace();</span>
+<span class="nc" id="L259">    }</span>
+<span class="nc" id="L260">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
