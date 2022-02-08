@@ -50,7 +50,7 @@ public class PannableView {
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
   private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
-  private HashMap<FloorType, ArrayList<ImageView>> locationsByFloor = new HashMap<>();
+  private HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
   private HashMap<EquipmentType, ImageView> TypeGraphics = new HashMap<EquipmentType, ImageView>();
   private ContextMenu EquipmentMenu;
   private ContextMenu PaneMenu;
@@ -266,8 +266,8 @@ public class PannableView {
     for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
     }
-    for (ImageView locationDot : locationsByFloor.get(currFloor)) {
-      layout.getChildren().add(locationDot);
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      layout.getChildren().add(dot.getImageView());
     }
   }
 
@@ -288,7 +288,6 @@ public class PannableView {
     newButton.setTranslateY(y);
     newButton.setOpacity(1);
     newButton.setContextMenu(EquipmentMenu);
-    draggable(newButton);
     newButton.setOnMouseReleased(
         event -> {
           if (event.getButton() == MouseButton.SECONDARY) {
@@ -300,6 +299,7 @@ public class PannableView {
     Tooltip.install(newButton, tooltip);
     MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip, equipment);
     mapIconsByFloor.get(floor).add(newIcon);
+    draggable(newIcon);
     updateLayoutChildren();
   }
   // Show all of the Equipment types passed in
@@ -324,7 +324,6 @@ public class PannableView {
     newButton.setTranslateY(y);
     newButton.setOpacity(1);
     newButton.setContextMenu(EquipmentMenu);
-    draggable(newButton);
     newButton.setOnMouseReleased(
         event -> {
           if (event.getButton() == MouseButton.SECONDARY) {
@@ -336,6 +335,7 @@ public class PannableView {
     Tooltip.install(newButton, tooltip);
     // TODO new MapEquipment Icon add equipment to parameter
     MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip);
+    draggable(newIcon);
     mapIconsByFloor.get(currFloor).add(newIcon);
     updateLayoutChildren();
   }
@@ -361,8 +361,8 @@ public class PannableView {
     locationsCheckBox.setSelected(true);
     locationsCheckBox.setOnAction(
         event -> {
-          for (ImageView locationDot : locationsByFloor.get(currFloor)) {
-            locationDot.setVisible(!locationDot.isVisible());
+          for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+            dot.getImageView().setVisible(!dot.getImageView().isVisible());
           }
         });
     locationsCheckBox.setTranslateY(
@@ -526,8 +526,9 @@ public class PannableView {
     double y;
   }
 
-  private void draggable(JFXButton node) {
-    final Position pos = new Position();
+  private void draggable(MapEquipmentIcon i) {
+    JFXButton node = i.getButton();
+    final Position startingPosition = new Position();
 
     // Prompt the user that the node can be clicked
     node.addEventHandler(
@@ -549,14 +550,30 @@ public class PannableView {
             System.out.println("Started");
             node.setCursor(Cursor.MOVE);
             // When a press event occurs, the location coordinates of the event are cached
-            pos.x = node.getTranslateX();
-            pos.y = node.getTranslateY();
-            System.out.println(pos.x + " " + pos.y);
+            startingPosition.x = node.getTranslateX();
+            startingPosition.y = node.getTranslateY();
+            System.out.println(startingPosition.x + " " + startingPosition.y);
+            System.out.println(startingPosition.x + " " + startingPosition.y);
           }
         });
     node.addEventHandler(
         MouseEvent.MOUSE_RELEASED,
         event -> {
+          Point2D updatedLocation =
+              layout.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+          Location nearestLocation =
+              getClosestLocation(updatedLocation.getX(), updatedLocation.getY());
+          if (nearestLocation == null) {
+            System.out.println("No node close enough to snap.");
+            node.setTranslateX(startingPosition.x);
+            node.setTranslateY(startingPosition.y);
+          } else {
+            System.out.println("Snapping to nearest node.");
+            node.setTranslateX(nearestLocation.getX() - MAPIMGWIDTH / 2);
+            node.setTranslateY(nearestLocation.getY() - MAPIMGHEIGHT / 2);
+            i.getEquipment().setLocationNode(nearestLocation);
+            System.out.println("Equipment location node updated.");
+          }
           System.out.println("Done");
           node.setCursor(Cursor.DEFAULT);
           updateLayoutChildren();
@@ -595,9 +612,33 @@ public class PannableView {
     double y = location.getY() - MAPIMGHEIGHT / 2;
     locationDot.setTranslateX(x);
     locationDot.setTranslateY(y);
-    locationsByFloor.get(location.getFloor()).add(locationDot);
+    MapLocationDot newDot = new MapLocationDot(locationDot, location);
+    locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+  }
+
+  private Location getClosestLocation(double x, double y) {
+    Location closestLocation = null;
+    double closestDistance = Double.MAX_VALUE;
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      Location l = dot.getLocation();
+      double d = dot.getDistanceToLocation(x, y);
+      System.out.println("Testing location: " + dot.getLocation().getShortName());
+      if (d < closestDistance) {
+        System.out.println("Found new closest location.");
+        closestDistance = d;
+        closestLocation = l;
+      }
+    }
+    if (closestDistance > 50) {
+      System.out.println("Not close enough to snap.");
+      return null;
+    }
+    System.out.println("Closest Location:");
+    System.out.println(closestLocation.getLongName());
+    System.out.println(closestDistance);
+    return closestLocation;
   }
 }
