@@ -76,19 +76,11 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     // calls a function that returns an equipment object in the database
     Equipment availableEquipment =
-        DBManager.getInstance()
-            .getEquipmentManager()
-            .getBy("WHERE hasPatient = FALSE AND type = " + equipmentType.ordinal())
-            .get(0);
+        DBManager.getInstance().getEquipmentManager().getByAvailability(equipmentType, true);
 
-    Location location =
-        DBManager.getInstance()
-            .getLocationManager()
-            .getBy("WHERE locationType = " + locationName)
-            .get(0);
+    Location location = DBManager.getInstance().getLocationManager().getByName(locationName);
 
-    Employee employee =
-        DBManager.getInstance().getEmployeeManager().getBy("WHERE name = " + assignee).get(0);
+    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
 
     MedicalEquipmentServiceRequest serReq =
         new MedicalEquipmentServiceRequest(

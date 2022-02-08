@@ -1,9 +1,9 @@
 package edu.wpi.teame.db;
 
-import edu.wpi.teame.db.managers.ObjectManager;
-import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
-import edu.wpi.teame.model.Location;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import java.sql.Connection;
@@ -111,15 +111,15 @@ public final class DBManager {
     return new ObjectManager<MedicalEquipmentServiceRequest>(DataBaseObjectType.MedicalEquipmentSR);
   }
 
-  public ObjectManager<Equipment> getEquipmentManager() {
-    return new ObjectManager<Equipment>(DataBaseObjectType.Equipment);
+  public EquipmentManager getEquipmentManager() {
+    return new EquipmentManager();
   }
 
-  public ObjectManager<Location> getLocationManager() {
-    return new ObjectManager<Location>(DataBaseObjectType.Location);
+  public LocationManager getLocationManager() {
+    return new LocationManager();
   }
 
-  public ObjectManager<Employee> getEmployeeManager() {
-    return new ObjectManager<Employee>(DataBaseObjectType.Employee);
+  public EmployeeManager getEmployeeManager() {
+    return new EmployeeManager();
   }
 }

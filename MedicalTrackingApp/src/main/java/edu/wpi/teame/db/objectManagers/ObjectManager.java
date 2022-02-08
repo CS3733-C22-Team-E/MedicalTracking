@@ -1,7 +1,6 @@
-package edu.wpi.teame.db.managers;
+package edu.wpi.teame.db.objectManagers;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.IManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.DataBaseObjectType;

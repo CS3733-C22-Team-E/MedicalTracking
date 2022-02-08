@@ -1,5 +1,6 @@
-package edu.wpi.teame.db;
+package edu.wpi.teame.db.objectManagers;
 
+import edu.wpi.teame.db.ISQLSerializable;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
