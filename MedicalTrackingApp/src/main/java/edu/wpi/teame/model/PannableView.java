@@ -239,7 +239,7 @@ public class PannableView {
     staticWrapper
         .getChildren()
         .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
-    staticWrapper.getChildren().addAll(createCheckBoxes());
+    staticWrapper.getChildren().addAll(createFilterCheckBoxes());
     for (ImageView imageView : hamburgerDeployments) {
       staticWrapper.getChildren().add(imageView);
     }
@@ -340,7 +340,7 @@ public class PannableView {
     updateLayoutChildren();
   }
 
-  private ArrayList<JFXCheckBox> createCheckBoxes() {
+  private ArrayList<JFXCheckBox> createFilterCheckBoxes() {
     ArrayList<JFXCheckBox> retval = new ArrayList<>();
 
     for (EquipmentType currEquipment : EquipmentType.values()) {
@@ -355,6 +355,21 @@ public class PannableView {
           -30 * currEquipment.ordinal() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
       equipmentCheckBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 3);
     }
+
+    JFXCheckBox locationsCheckBox = new JFXCheckBox("Location Dots");
+    locationsCheckBox.getStyleClass().add("combo-box");
+    locationsCheckBox.setSelected(true);
+    locationsCheckBox.setOnAction(
+        event -> {
+          for (ImageView locationDot : locationsByFloor.get(currFloor)) {
+            locationDot.setVisible(!locationDot.isVisible());
+          }
+        });
+    locationsCheckBox.setTranslateY(
+        -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+    locationsCheckBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 3);
+    retval.add(locationsCheckBox);
+
     return retval;
   }
   // Init zoomInButton
@@ -454,6 +469,8 @@ public class PannableView {
 
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    mapIconsByFloor.get(currFloor).clear();
+    locationsByFloor.get(currFloor).clear();
     for (Equipment currEquipment : equipment) {
       convertEquipmentToMapIcon(currEquipment);
     }
@@ -579,14 +596,8 @@ public class PannableView {
     locationDot.setTranslateX(x);
     locationDot.setTranslateY(y);
     locationsByFloor.get(location.getFloor()).add(locationDot);
-    System.out.println(
-        "Added location \""
-            + location.getLongName()
-            + "\" at coordinates ["
-            + location.getX()
-            + ","
-            + location.getY()
-            + "]");
+    Tooltip t = new Tooltip(location.getLongName());
+    Tooltip.install(locationDot, t);
     updateLayoutChildren();
   }
 }
