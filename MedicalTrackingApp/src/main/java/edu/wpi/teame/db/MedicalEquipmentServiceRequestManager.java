@@ -1,5 +1,9 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,7 +50,7 @@ public class MedicalEquipmentServiceRequestManager
                 rset.getString("date"),
                 rset.getString("assignee"),
                 serReqEquipment,
-                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]);
+                ServiceRequestStatus.values()[rset.getInt("status")]);
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -77,7 +81,7 @@ public class MedicalEquipmentServiceRequestManager
                 rset.getString("date"),
                 rset.getString("assignee"),
                 serReqEquipment,
-                MedicalEquipmentServiceRequestStatus.values()[rset.getInt("status")]));
+                ServiceRequestStatus.values()[rset.getInt("status")]));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -97,13 +101,13 @@ public class MedicalEquipmentServiceRequestManager
         "INSERT INTO EQUIPMENTSERVICEREQUEST (patient, roomID, startTime, endTime, date, assignee, equipmentID, status)VALUES('"
             + newObject.getPatient()
             + "','"
-            + newObject.getRoom().getId()
+            + newObject.getLocation().getId()
             + "','"
             + newObject.getStartTIme()
             + "','"
             + newObject.getEndTime()
             + "','"
-            + newObject.getDate()
+            + newObject.getCreationDate()
             + "','"
             + newObject.getAssignee()
             + "','"
@@ -152,14 +156,12 @@ public class MedicalEquipmentServiceRequestManager
     String updateQuery =
         "UPDATE EQUIPMENTSERVICEREQUEST SET patient = '"
             + updatedObject.getPatient()
-            + "', roomID = '"
-            + updatedObject.getRoom().getId()
-            + "', startTime = '"
-            + updatedObject.getStartTIme()
-            + "', endTime = '"
-            + updatedObject.getEndTime()
-            + "', date = '"
-            + updatedObject.getDate()
+            + "', locationID = '"
+            + updatedObject.getLocation().getId()
+            + "', openDate = '"
+            + updatedObject.getOpenDate()
+            + "', closeDate = '"
+            + updatedObject.getCloseDate()
             + "', assignee = '"
             + updatedObject.getAssignee()
             + "', equipmentID = '"
@@ -207,9 +209,7 @@ public class MedicalEquipmentServiceRequestManager
                   5 >= tempArr.length ? "" : tempArr[5],
                   6 >= tempArr.length ? "" : tempArr[6],
                   7 >= tempArr.length ? null : equipTable.get(tempArr[7]),
-                  8 >= tempArr.length
-                      ? null
-                      : MedicalEquipmentServiceRequestStatus.valueOf(tempArr[8]));
+                  8 >= tempArr.length ? null : ServiceRequestStatus.valueOf(tempArr[8]));
 
           insert(tempSerReq);
         } else {
@@ -295,9 +295,9 @@ public class MedicalEquipmentServiceRequestManager
         oneLine.append(csvSeparator);
         // Add nodeType to buffer
         oneLine.append(
-            serReq.getDate() == null || (serReq.getDate().trim().length() == 0)
+            serReq.getCreationDate() == null || (serReq.getCreationDate().trim().length() == 0)
                 ? ""
-                : serReq.getDate());
+                : serReq.getCreationDate());
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add longName to buffer

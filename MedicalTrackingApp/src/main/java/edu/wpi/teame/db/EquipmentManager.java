@@ -1,5 +1,8 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.EquipmentType;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
