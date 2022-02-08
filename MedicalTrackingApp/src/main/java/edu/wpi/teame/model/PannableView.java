@@ -73,6 +73,21 @@ public class PannableView {
   public PannableView(FloorType floor) {
     backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
     currFloor = floor;
+    TypeGraphics.put(
+        EquipmentType.PBED,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.XRAY,
+        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.RECL,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.PUMP,
+        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+    System.out.println("Addded Graphics");
   }
 
   // Convert from enum to a background image
@@ -104,21 +119,6 @@ public class PannableView {
   // This is essentially the Main function
   // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
-    TypeGraphics.put(
-        EquipmentType.PBED,
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.XRAY,
-        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.RECL,
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.PUMP,
-        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
-    System.out.println("Addded Graphics");
     EquipmentMenu = new ContextMenu();
     EquipmentMenu.getStyleClass().add("combo-box");
     PaneMenu = new ContextMenu();
