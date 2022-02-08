@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
@@ -45,36 +46,36 @@
                </font>
             </JFXButton>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Status of Request:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-            <JFXComboBox fx:id="requestState" prefHeight="26.0" prefWidth="219.0" promptText="Choose status..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+            <JFXComboBox fx:id="requestState" prefHeight="26.0" prefWidth="327.0" promptText="Choose status..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="equipmentNeeded" prefHeight="26.0" prefWidth="217.0" promptText="Choose. equipment.." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <JFXComboBox fx:id="equipmentNeeded" prefHeight="26.0" prefWidth="320.0" promptText="Choose equipment..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Equipment Needed:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Assigned To:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="202.0" promptText="Choose delivery date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Assigned To:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="330.0" promptText="Choose delivery date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-            <TextField fx:id="endTime" promptText="Enter end time..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+            <TextField fx:id="endTime" promptText="Enter end time..." GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-            <TextField fx:id="startTime" promptText="Enter start time..." GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <TextField fx:id="startTime" promptText="Enter start time..." GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <TextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
@@ -87,8 +88,15 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXComboBox fx:id="requestLocation" prefHeight="26.0" prefWidth="224.0" promptText="Choose location..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <JFXComboBox fx:id="requestAssignee" prefHeight="26.0" prefWidth="217.0" promptText="Choose assignee..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <JFXComboBox fx:id="requestLocation" prefHeight="26.0" prefWidth="375.0" promptText="Choose location..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></JFXComboBox>
+            <JFXComboBox fx:id="requestAssignee" prefHeight="26.0" prefWidth="293.0" promptText="Choose assignee..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin></JFXComboBox>
+            <JFXCheckBox fx:id="completed" text="Completed?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
          </children>
       </GridPane>
    </children>

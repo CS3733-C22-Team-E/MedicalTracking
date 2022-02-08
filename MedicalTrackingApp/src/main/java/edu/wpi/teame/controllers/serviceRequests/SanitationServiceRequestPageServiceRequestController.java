@@ -1,6 +1,7 @@
 package edu.wpi.teame.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,6 +19,9 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
   @FXML private DatePicker endDate;
 
   @FXML public JFXComboBox serviceLocation;
+  @FXML public JFXComboBox serviceAssignee;
+
+  @FXML public JFXCheckBox completed;
 
   public void initialize(URL location, ResourceBundle resources) {}
 
@@ -29,5 +33,7 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     endDate.setValue(null);
     endDate.getEditor().clear();
     serviceLocation.valueProperty().set(null);
+    serviceAssignee.valueProperty().set(null);
+    completed.setSelected(false);
   }
 }

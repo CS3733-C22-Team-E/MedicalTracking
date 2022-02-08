@@ -1,6 +1,7 @@
 package edu.wpi.teame.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.*;
 import java.net.URL;
@@ -30,6 +31,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox requestState;
   @FXML private JFXComboBox requestAssignee;
   @FXML private JFXComboBox requestLocation;
+
+  @FXML private JFXCheckBox completed;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -145,5 +148,6 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     requestAssignee.valueProperty().set(null);
     requestLocation.valueProperty().set(null);
     requestState.valueProperty().set(null);
+    completed.setSelected(false);
   }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
@@ -24,6 +25,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -35,12 +37,12 @@
                   <Font size="24.0" />
                </font>
             </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="245.0" promptText="Choose start date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="245.0" promptText="Choose start date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -48,7 +50,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-                  <DatePicker fx:id="endDate" prefHeight="25.0" prefWidth="244.0" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <DatePicker fx:id="endDate" prefHeight="25.0" prefWidth="244.0" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -56,17 +58,17 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Date: " GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Date: " GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <Text fx:id="TimeTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                  <Text fx:id="TimeTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <TextField fx:id="timeNeeded" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="timeNeeded" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -79,17 +81,24 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
             <JFXComboBox fx:id="serviceLocation" prefHeight="26.0" prefWidth="248.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <JFXCheckBox fx:id="completed" text="Completed?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <JFXComboBox fx:id="serviceAssignee" prefHeight="26.0" prefWidth="248.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Assigned To:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
          </children>
       </GridPane>
       </children>

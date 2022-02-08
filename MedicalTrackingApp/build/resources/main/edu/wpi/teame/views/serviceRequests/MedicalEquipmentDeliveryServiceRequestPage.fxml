@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
@@ -89,6 +90,7 @@
             </JFXButton>
             <JFXComboBox fx:id="requestLocation" prefHeight="26.0" prefWidth="224.0" promptText="Choose location..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <JFXComboBox fx:id="requestAssignee" prefHeight="26.0" prefWidth="217.0" promptText="Choose assignee..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <JFXCheckBox fx:id="completed" text="Completed?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
          </children>
       </GridPane>
    </children>
