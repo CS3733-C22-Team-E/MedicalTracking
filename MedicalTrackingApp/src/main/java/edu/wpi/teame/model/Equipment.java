@@ -1,6 +1,7 @@
 package edu.wpi.teame.model;
 
 import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import java.sql.ResultSet;
@@ -31,11 +32,16 @@ public class Equipment implements ISQLSerializable {
 
   public Equipment(ResultSet resultSet) throws SQLException {
     this.id = resultSet.getInt("id");
-    this.location = null; // DBManager.getInstance().get(resultSet.getString("location"));
+    this.location =
+        new LocationManager()
+            .get(
+                resultSet.getInt(
+                    "locationID")); // DBManager.getInstance().get(resultSet.getString("location"));
     this.type = EquipmentType.values()[resultSet.getInt("type")];
     this.name = resultSet.getString("name");
     this.hasPatient = resultSet.getBoolean("hasPatient");
     this.isClean = resultSet.getBoolean("isClean");
+    System.out.println(location);
   }
 
   public int getId() {
@@ -86,11 +92,13 @@ public class Equipment implements ISQLSerializable {
     isClean = clean;
   }
 
+  @Override
   public String toString() {
+    String locId = location == null ? "" : "" + location.getId();
     return "id: "
         + id
         + ", location: "
-        + location.getId()
+        + locId
         + ", type: "
         + type
         + ", name: "
@@ -108,32 +116,35 @@ public class Equipment implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return id
-        + ", "
-        + location.getId()
-        + ", "
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
+    return location.getId()
+        + ", '"
         + name
-        + ", "
+        + "', "
         + type.ordinal()
         + ", "
-        + isClean
+        + isCleanInt
         + ", "
-        + hasPatient;
+        + hasPatientInt;
   }
 
   @Override
   public String toSQLUpdateString() {
-    return "id = "
-        + id
-        + ", locationID = "
+    return "locationID = "
         + location.getId()
-        + ", name = "
+        + ", name = '"
         + name
-        + ", type = "
+        + "', type = "
         + type.ordinal()
         + ", isClean = "
         + isClean
         + ", hasPatient = "
         + hasPatient;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, name, type, isClean, hasPatient)";
   }
 }

@@ -4,6 +4,8 @@ import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MedicalEquipmentServiceRequest extends ServiceRequest {
   private Equipment equipment;
@@ -21,6 +23,19 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
     super(requestStatus, assignee, location, closeDate, openDate, id);
     this.equipment = equipment;
     this.patient = patient;
+  }
+
+  public MedicalEquipmentServiceRequest(ResultSet resultSet) throws SQLException {
+    // TODO: actually call employee, location, equipment in constructor
+    super(
+        ServiceRequestStatus.values()[resultSet.getInt("requestStatus")],
+        null,
+        null,
+        resultSet.getDate("closeDate"),
+        resultSet.getDate("openDate"),
+        resultSet.getInt("id"));
+    this.equipment = null;
+    this.patient = resultSet.getString("patient");
   }
 
   public String toString() {
@@ -75,5 +90,10 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
         + equipment.getId()
         + ", patient = "
         + patient.toString();
+  }
+
+  @Override
+  public String getTableColumns() {
+    return super.getTableColumns() + "equipmentID, patient)";
   }
 }

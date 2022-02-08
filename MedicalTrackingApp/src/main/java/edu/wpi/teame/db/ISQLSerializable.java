@@ -8,4 +8,6 @@ public interface ISQLSerializable {
   public String toSQLInsertString();
 
   public String toSQLUpdateString();
+
+  public String getTableColumns();
 }

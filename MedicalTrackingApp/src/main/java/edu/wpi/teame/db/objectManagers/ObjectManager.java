@@ -1,9 +1,17 @@
 package edu.wpi.teame.db.objectManagers;
 
+import static edu.wpi.teame.model.enums.DataBaseObjectType.SecuritySR;
+
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
+import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +48,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public T get(int id) throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = '" + id + "'";
+    String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = " + id;
     ResultSet resultSet = statement.executeQuery(getQuery);
     if (resultSet.next()) {
       return getCastedType(resultSet);
@@ -62,13 +70,15 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public T insert(T newObject) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
-    insertQuery.append(getTableName()).append(" VALUES(");
+    insertQuery.append(getTableName()).append(newObject.getTableColumns());
+    insertQuery.append(" VALUES(");
     insertQuery.append(newObject.toSQLInsertString()).append(")");
+    System.out.println(insertQuery);
     statement.executeUpdate(insertQuery.toString());
 
-    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
-    int id = resultSet.getInt("id");
-    return get(id);
+    //    ResultSet resultSet = statement.executeQuery("SELECT SCOPE_IDENTITY() as id");
+    //    int id = resultSet.getInt("id");
+    return newObject;
   }
 
   @Override
@@ -90,19 +100,19 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case MedicalEquipmentSR:
-        return null;
+        return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
-        return null;
+        return (T) new MedicineDeliveryServiceRequest(resultSet);
       case SanitationSR:
-        return null;
+        return (T) new SanitationServiceRequest(resultSet);
       case SecuritySR:
-        return null;
+        return (T) new SecurityServiceRequest(resultSet);
       case Location:
-        return null;
+        return (T) new Location(resultSet);
       case Equipment:
         return (T) new Equipment(resultSet);
       case Employee:
-        return null;
+        return (T) new Employee(resultSet);
       default:
         break;
     }

@@ -3,6 +3,8 @@ package edu.wpi.teame.model;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Employee implements ISQLSerializable {
   private DepartmentType department;
@@ -15,6 +17,13 @@ public class Employee implements ISQLSerializable {
     this.department = dept;
     this.name = name;
     this.id = id;
+  }
+
+  public Employee(ResultSet resultSet) throws SQLException {
+    this.isDoctor = resultSet.getBoolean("isDoctor");
+    this.department = DepartmentType.values()[resultSet.getInt("department")];
+    this.name = resultSet.getString("name");
+    this.id = resultSet.getInt("id");
   }
 
   public String toString() {
@@ -67,7 +76,8 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return id + ", " + department.ordinal() + ", " + name + ", " + isDoctor;
+    int isDoctorInt = isDoctor ? 1 : 0;
+    return department.ordinal() + ", '" + name + "', " + isDoctorInt;
   }
 
   @Override
@@ -80,5 +90,15 @@ public class Employee implements ISQLSerializable {
         + name
         + ", isDoctor = "
         + isDoctor;
+  }
+
+  /**
+   * + "department int, " + "name VARCHAR(100), " + "isDoctor int)
+   *
+   * @return
+   */
+  @Override
+  public String getTableColumns() {
+    return "(department, name, isDoctor)";
   }
 }
