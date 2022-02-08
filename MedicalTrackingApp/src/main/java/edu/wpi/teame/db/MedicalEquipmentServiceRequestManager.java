@@ -38,7 +38,7 @@ public class MedicalEquipmentServiceRequestManager
 
         result =
             new MedicalEquipmentServiceRequest(
-                rset.getString("id"),
+                rset.getInt("id"),
                 rset.getString("patient"),
                 serReqLocation,
                 rset.getString("startTime"),
@@ -69,7 +69,7 @@ public class MedicalEquipmentServiceRequestManager
 
         result.add(
             new MedicalEquipmentServiceRequest(
-                rset.getString("id"),
+                rset.getInt("id"),
                 rset.getString("patient"),
                 serReqLocation,
                 rset.getString("startTime"),
@@ -83,14 +83,18 @@ public class MedicalEquipmentServiceRequestManager
       e.printStackTrace();
     }
     return result;
+    /**
+     * + "patient VARCHAR(100), " + "roomID VARCHAR(10) ," + "startTime VARCHAR(50)," + "endTime
+     * VARCHAR(50)," + "date VARCHAR(100)," + "assignee VARCHAR(100)," + "equipmentID VARCHAR(10),"
+     * + "status int," + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id)," + "FOREIGN KEY
+     * (equipmentID) REFERENCES EQUIPMENT(id))";
+     */
   }
 
   @Override
   public void insert(MedicalEquipmentServiceRequest newObject) {
     String insertQuery =
-        "INSERT INTO EQUIPMENTSERVICEREQUEST VALUES('"
-            + newObject.getId()
-            + "','"
+        "INSERT INTO EQUIPMENTSERVICEREQUEST (patient, roomID, startTime, endTime, date, assignee, equipmentID, status)VALUES('"
             + newObject.getPatient()
             + "','"
             + newObject.getRoom().getId()
@@ -107,6 +111,10 @@ public class MedicalEquipmentServiceRequestManager
             + "',"
             + newObject.getStatus().ordinal()
             + ")";
+
+    newObject.getEquipment().setHasPatient(true);
+    newObject.getEquipment().setLocationNode(newObject.getRoom());
+    DBManager.getInstance().getEquipmentManager().update(newObject.getEquipment());
 
     try {
       stmt.executeUpdate(insertQuery);
@@ -174,7 +182,8 @@ public class MedicalEquipmentServiceRequestManager
   @Override
   public void readCSV(String csvFile) {
     try {
-      File file = new File(csvFile);
+      String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
+      File file = new File(path);
       FileReader fr = new FileReader(file);
       BufferedReader br = new BufferedReader(fr);
       String line = " ";
@@ -190,7 +199,7 @@ public class MedicalEquipmentServiceRequestManager
           tempArr = line.split(delimiter);
           MedicalEquipmentServiceRequest tempSerReq =
               new MedicalEquipmentServiceRequest(
-                  tempArr[0],
+                  Integer.parseInt(tempArr[0]),
                   1 >= tempArr.length ? "" : tempArr[1],
                   2 >= tempArr.length ? null : locTable.get(tempArr[2]),
                   3 >= tempArr.length ? "" : tempArr[3],
@@ -248,6 +257,7 @@ public class MedicalEquipmentServiceRequestManager
 
       // Go through each Location in the list
       for (MedicalEquipmentServiceRequest serReq : serReqList) {
+        String locId = Integer.toString(serReq.getId());
         String room = serReq.getRoom().getId();
         String equipmentID = serReq.getEquipment().getNodeID();
         String status = serReq.getStatus().toString();
@@ -255,7 +265,7 @@ public class MedicalEquipmentServiceRequestManager
         // Create a single temporary string buffer
         StringBuffer oneLine = new StringBuffer();
         // Add nodeID to buffer
-        oneLine.append(serReq.getId().trim().length() == 0 ? "" : serReq.getId());
+        oneLine.append(locId.trim().length() == 0 ? "" : serReq.getId());
         // Add comma separator
         oneLine.append(csvSeparator);
         // Add xcoord to buffer
