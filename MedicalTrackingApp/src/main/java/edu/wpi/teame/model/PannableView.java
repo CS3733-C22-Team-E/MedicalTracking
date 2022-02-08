@@ -51,6 +51,7 @@ public class PannableView {
   // Init booleans
   private boolean hamburgerDeployed = false;
   private boolean addMode = false;
+  private boolean invertZoomScroll = false;
 
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
@@ -534,10 +535,18 @@ public class PannableView {
   private void handleScrollZoom(double scrollVal) {
     // positive scroll values are up and negative scroll values are down
     // TODO add a setting to invert scrolling (this makes sense to me— I usually reverse mine)
-    if (scrollVal > 0) {
-      zoomIn(ZOOMAMPLIFIER);
+    if (invertZoomScroll) {
+      if (scrollVal > 0) {
+        zoomOut(ZOOMAMPLIFIER);
+      } else {
+        zoomIn(ZOOMAMPLIFIER);
+      }
     } else {
-      zoomOut(ZOOMAMPLIFIER);
+      if (scrollVal > 0) {
+        zoomIn(ZOOMAMPLIFIER);
+      } else {
+        zoomOut(ZOOMAMPLIFIER);
+      }
     }
   }
 
@@ -614,5 +623,9 @@ public class PannableView {
             node.setTranslateY(y);
           }
         });
+  }
+
+  public void setInvertZoomScroll(boolean value) {
+    invertZoomScroll = value;
   }
 }
