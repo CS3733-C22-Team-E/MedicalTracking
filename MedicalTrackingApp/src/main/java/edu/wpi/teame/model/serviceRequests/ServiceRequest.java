@@ -33,7 +33,7 @@ public abstract class ServiceRequest implements ISQLSerializable {
   }
 
   @Override
-  public String toSQLString() {
+  public String toSQLInsertString() {
     return status.toString()
         + ", "
         + assignee
@@ -44,6 +44,21 @@ public abstract class ServiceRequest implements ISQLSerializable {
         + ", "
         + closeDate.toString()
         + ", "
+        + openDate.toString();
+  }
+
+  public String toSQLUpdateString() {
+    return "status = "
+        + status.toString()
+        + ", assignee = "
+        + assignee
+        + ", location = "
+        + location.getId()
+        + ", floor = "
+        + floor.toString()
+        + ", closeDate = "
+        + closeDate.toString()
+        + ", openDate = "
         + openDate.toString();
   }
 

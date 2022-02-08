@@ -263,8 +263,8 @@ public class PannableView {
   public MapIcon convertLocationToMapIcon(Equipment equip) {
     MapIcon retval =
         new MapIcon(
-            (double) equip.getLocationNode().getX(),
-            (double) equip.getLocationNode().getY(),
+            (double) equip.getLocation().getX(),
+            (double) equip.getLocation().getY(),
             equip.getName(),
             getImageViewFromEquipmentType(equip.getType()));
     mapIcons.add(retval);
@@ -275,7 +275,7 @@ public class PannableView {
   public void getFromDB() {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
-      if (currEquipment.getLocationNode().getFloor() == currFloor) {
+      if (currEquipment.getLocation().getFloor() == currFloor) {
         convertLocationToMapIcon(currEquipment);
       }
     }

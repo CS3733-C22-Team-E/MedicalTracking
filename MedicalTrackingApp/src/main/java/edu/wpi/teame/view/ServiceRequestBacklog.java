@@ -3,7 +3,6 @@ package edu.wpi.teame.view;
 import static javafx.application.Application.launch;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.enums.ServiceRequestTypes;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -55,7 +54,7 @@ public class ServiceRequestBacklog {
     ServiceRequestCard testCard =
         new ServiceRequestCard(
             this,
-            ServiceRequestTypes.MedicalEquipment,
+            ServiceRequestTypes.MedicalEquipmentSR,
             "Test Card",
             "Test",
             0,

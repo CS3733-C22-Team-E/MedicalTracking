@@ -1,4 +1,4 @@
-package edu.wpi.teame.db;
+package edu.wpi.teame.model.enums;
 
 public enum DepartmentType {
   FAMILYMEDICINE,

@@ -3,16 +3,18 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.*;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.ResourceBundle;
-
 import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -39,7 +41,12 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    LinkedList<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Location> locations = null;
+    try {
+      locations = DBManager.getInstance().getLocationManager().getAll();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     LinkedList<String> locationName = new LinkedList<String>();
     for (Location loc : locations) {
       locationName.add(loc.getLongName());
@@ -54,7 +61,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   }
 
   // todo either make the submit button disabled until everything is filled or add error handling
-  public void sendToMEDB(MouseEvent mouseEvent) {
+  public void sendToMEDB(MouseEvent mouseEvent) throws SQLException {
     // store all the values from the fields
     String pName = patientName.getText();
     String startingTime = startTime.getText();
@@ -99,8 +106,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     DBManager.getInstance().getMEServiceRequestManager().insert(serReq);
 
-    LinkedList<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMEServiceRequestManager().getAll();
+    List<MedicalEquipmentServiceRequest> allSerReq = DBManager.getInstance().getMEServiceRequestManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }
@@ -114,7 +120,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
       case "X-Ray":
         return EquipmentType.XRAY;
       case "Infusion Pump":
-        return EquipmentType.PBED;
+        return EquipmentType.PUMP;
       case "Recliner":
         return EquipmentType.RECL;
       default:

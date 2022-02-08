@@ -1,5 +1,11 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -111,16 +117,16 @@ public final class DBManager {
     }
   }
 
-  public MedicalEquipmentServiceRequestManager getMEServiceRequestManager() {
-    return new MedicalEquipmentServiceRequestManager();
+  public ObjectManager<MedicalEquipmentServiceRequest> getMEServiceRequestManager() {
+    return new ObjectManager<MedicalEquipmentServiceRequest>(DataBaseObjectType.MedicalEquipmentSR);
   }
 
-  public EquipmentManager getEquipmentManager() {
-    return new EquipmentManager();
+  public ObjectManager<Equipment> getEquipmentManager() {
+    return new ObjectManager<Equipment>(DataBaseObjectType.Equipment);
   }
 
-  public LocationManager getLocationManager() {
-    return new LocationManager();
+  public ObjectManager<Location> getLocationManager() {
+    return new ObjectManager<Location>(DataBaseObjectType.Location);
   }
 
   public EmployeeManager getEmployeeManager() {

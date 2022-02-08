@@ -1,5 +1,7 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.enums.DepartmentType;
+
 public class Employee {
   private String employeeID;
   private DepartmentType dept;

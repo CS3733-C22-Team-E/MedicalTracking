@@ -1,5 +1,7 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.enums.DepartmentType;
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;

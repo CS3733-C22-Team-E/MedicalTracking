@@ -1,10 +1,12 @@
 package edu.wpi.teame.model;
 
-import edu.wpi.teame.db.BuildingType;
+import edu.wpi.teame.model.enums.BuildingType;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.LocationType;
+import edu.wpi.teame.model.serviceRequests.ISQLSerializable;
 
-public class Location {
+public class Location implements ISQLSerializable {
   private String id;
   private String longName;
   private String shortName;
@@ -115,5 +117,20 @@ public class Location {
         + longName
         + ", shortName: "
         + shortName;
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return null;
+  }
+
+  @Override
+  public String toSQLInsertString() {
+    return null;
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return null;
   }
 }

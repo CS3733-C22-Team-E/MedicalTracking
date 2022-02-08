@@ -1,16 +1,18 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
+import edu.wpi.teame.model.serviceRequests.ISQLSerializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class Equipment {
-  private String ID;
-  private Location locationNode;
-  // private FloorType floor;
-  // private BuildingType building;
-  private EquipmentType type;
-  private String name;
+public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
+  private EquipmentType type;
+  private Location location;
   private boolean isClean;
+  private String name;
+  private String id;
 
   public Equipment(
       String ID,
@@ -19,47 +21,39 @@ public class Equipment {
       String name,
       boolean hasPatient,
       boolean isClean) {
-    this.ID = ID;
-    this.locationNode = locationNodeID;
+    this.id = ID;
+    this.location = locationNodeID;
     this.type = type;
     this.name = name;
     this.hasPatient = hasPatient;
     this.isClean = isClean;
   }
 
+  public Equipment(ResultSet resultSet) throws SQLException {
+    this.id = resultSet.getString("id");
+    this.location = null; // DBManager.getInstance().get(resultSet.getString("location"));
+    this.type = EquipmentType.values()[resultSet.getInt("type")];
+    this.name = resultSet.getString("name");
+    this.hasPatient = resultSet.getBoolean("hasPatient");
+    this.isClean = resultSet.getBoolean("isClean");
+  }
+
   public String getNodeID() {
-    return ID;
+    return id;
   }
 
   public void setNodeID(String nodeID) {
-    this.ID = nodeID;
+    this.id = nodeID;
   }
 
-  public Location getLocationNode() {
-    return locationNode;
+  public Location getLocation() {
+    return location;
   }
 
-  public void setLocationNode(Location locationNodeID) {
-    this.locationNode = locationNodeID;
+  public void setLocation(Location locationNodeID) {
+    this.location = locationNodeID;
   }
-  /*
-     public FloorType getFloor() {
-         return floor;
-     }
 
-     public void setFloor(FloorType floor) {
-         this.floor = floor;
-     }
-
-     public BuildingType getBuilding() {
-         return building;
-     }
-
-     public void setBuilding(BuildingType building) {
-         this.building = building;
-     }
-
-  */
   public String getName() {
     return name;
   }
@@ -93,10 +87,10 @@ public class Equipment {
   }
 
   public String toString() {
-    return "ID: "
-        + ID
-        + ", locationNode: "
-        + locationNode.getId()
+    return "id: "
+        + id
+        + ", location: "
+        + location.getId()
         + ", type: "
         + type
         + ", name: "
@@ -105,5 +99,20 @@ public class Equipment {
         + hasPatient
         + ", isClean: "
         + isClean;
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.Equipment;
+  }
+
+  @Override
+  public String toSQLInsertString() {
+    return null;
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return null;
   }
 }
