@@ -20,8 +20,6 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private TextField patientName;
   @FXML private TextField startTime;
   @FXML private TextField endTime;
-  @FXML private TextField nameAssigned;
-  @FXML private TextField floor;
 
   @FXML private DatePicker datePicker;
 
@@ -30,7 +28,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @FXML private JFXComboBox equipmentNeeded;
   @FXML private JFXComboBox requestState;
-  @FXML private JFXComboBox roomNumber;
+  @FXML private JFXComboBox requestAssignee;
+  @FXML private JFXComboBox requestLocation;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -42,7 +41,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     }
 
     // Set the comboBox items
-    roomNumber.setItems(FXCollections.observableArrayList(locationName));
+    requestLocation.setItems(FXCollections.observableArrayList(locationName));
     equipmentNeeded.setItems(
         FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
     requestState.setItems(
@@ -55,25 +54,24 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     String pName = patientName.getText();
     String startingTime = startTime.getText();
     String endingTime = endTime.getText();
-    String assignee = nameAssigned.getText();
     LocalDate srDate = datePicker.getValue();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddYYYY");
     String serviceRequestDate = srDate.format(formatter);
     String MRSRStatus = (String) requestState.getValue();
     String equipNeeded = (String) equipmentNeeded.getValue();
-    String roomNum = (String) roomNumber.getValue();
+    String roomNum = (String) requestLocation.getValue();
+    String assignee = (String) requestAssignee.getValue();
 
     // prints them to see what they are
     System.out.println(pName);
-    System.out.println(roomNum);
     System.out.println(startingTime);
     System.out.println(endingTime);
-    System.out.println(assignee);
     System.out.println(serviceRequestDate);
     System.out.println(MRSRStatus);
     System.out.println(equipNeeded);
     System.out.println(
         DBManager.getInstance().getLocationManager().getFromLongName(roomNum).getId());
+    System.out.println(assignee);
 
     // calls a function that returns an equipment object in the database
     Equipment availableEquipment =
@@ -137,14 +135,13 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML
   private void clearText() {
     patientName.setText("");
-    nameAssigned.setText("");
     startTime.setText("");
     endTime.setText("");
-    floor.setText("");
     datePicker.setValue(null);
     datePicker.getEditor().clear();
     equipmentNeeded.valueProperty().set(null);
-    roomNumber.valueProperty().set(null);
+    requestAssignee.valueProperty().set(null);
+    requestLocation.valueProperty().set(null);
     requestState.valueProperty().set(null);
   }
 }
