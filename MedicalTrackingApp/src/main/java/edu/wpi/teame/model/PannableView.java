@@ -13,6 +13,7 @@ import edu.wpi.teame.db.FloorType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Objects;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -78,7 +79,7 @@ public class PannableView {
   }
 
   private void switchFloors(FloorType newFloor) {
-    backgroundImage = new Image(App.class.getResource(getMapImg(newFloor)).toString());
+    backgroundImage = new Image(getImageResource(getMapImg(newFloor)));
     MAPIMGHEIGHT = backgroundImage.getHeight();
     MAPIMGWIDTH = backgroundImage.getWidth();
     currFloor = newFloor;
@@ -107,8 +108,8 @@ public class PannableView {
 
   // Checks if X and Y strings are on the map coordinates;
   private boolean coordinateChecker(String X, String Y) {
-    Double doubleX = Double.parseDouble(X);
-    Double doubleY = Double.parseDouble(Y);
+    double doubleX = Double.parseDouble(X);
+    double doubleY = Double.parseDouble(Y);
     return doubleX > 0 && doubleX < 5000 && doubleY > 0 && doubleY < 3400;
   }
 
@@ -123,17 +124,17 @@ public class PannableView {
     TypeGraphics.put(
         EquipmentType.PBED,
         new ImageView(
-            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
+            new Image(getImageResource("images/Icons/HospitalBedIcon.png"))));
     TypeGraphics.put(
         EquipmentType.XRAY,
-        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
+        new ImageView(new Image(getImageResource("images/Icons/XRayIcon.png"))));
     TypeGraphics.put(
         EquipmentType.RECL,
         new ImageView(
-            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
+            new Image(getImageResource("images/Icons/ReclinerIcon.png"))));
     TypeGraphics.put(
         EquipmentType.PUMP,
-        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+        new ImageView(new Image(getImageResource("images/Icons/PumpIcon.png"))));
     System.out.println("Added Graphics");
     EquipmentMenu = new ContextMenu();
     EquipmentMenu.getStyleClass().add("combo-box");
@@ -144,7 +145,8 @@ public class PannableView {
     for (EquipmentType currEquipment : EquipmentType.values()) {
       MenuItem currItem = new MenuItem(currEquipment.toString());
       currItem.setOnAction(
-              event -> addMapIcon(
+          event ->
+              addMapIcon(
                   PressX,
                   PressY,
                   getImageViewFromEquipmentType(currEquipment),
@@ -155,77 +157,77 @@ public class PannableView {
 
     MenuItem equipmentItem1 = new MenuItem("Delete");
     equipmentItem1.setOnAction(
-            event -> {
-              //            lastPressed.setVisible(false);
-              //            lastPressed.setDisable(false);
-              deleteMapIcon(lastPressed);
-              updateLayoutChildren();
-            });
+        event -> {
+          //            lastPressed.setVisible(false);
+          //            lastPressed.setDisable(false);
+          deleteMapIcon(lastPressed);
+          updateLayoutChildren();
+        });
     MenuItem equipmentItem2 = new MenuItem("Edit");
     equipmentItem2.setOnAction(
-            event -> {
-              Dialog<Pair<Double, Double>> dialog = new Dialog<>();
-              dialog.setTitle("Move Equipment");
-              dialog.setHeaderText("Choose the X and Y Position");
-              // Set the button types.
-              ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
-              dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
+        event -> {
+          Dialog<Pair<Double, Double>> dialog = new Dialog<>();
+          dialog.setTitle("Move Equipment");
+          dialog.setHeaderText("Choose the X and Y Position");
+          // Set the button types.
+          ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
+          dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
 
-              // Create the username and password labels and fields.
-              GridPane grid = new GridPane();
-              grid.setHgap(10);
-              grid.setVgap(10);
-              grid.setPadding(new Insets(20, 150, 10, 10));
+          // Create the username and password labels and fields.
+          GridPane grid = new GridPane();
+          grid.setHgap(10);
+          grid.setVgap(10);
+          grid.setPadding(new Insets(20, 150, 10, 10));
 
-              TextField XPosition = new TextField();
-              XPosition.setPromptText("X Position");
-              TextField YPosition = new TextField();
-              YPosition.setPromptText("Y Position");
+          TextField XPosition = new TextField();
+          XPosition.setPromptText("X Position");
+          TextField YPosition = new TextField();
+          YPosition.setPromptText("Y Position");
 
-              grid.add(new Label("X Position:"), 0, 0);
-              grid.add(XPosition, 1, 0);
-              grid.add(new Label("Y Position:"), 0, 1);
-              grid.add(YPosition, 1, 1);
+          grid.add(new Label("X Position:"), 0, 0);
+          grid.add(XPosition, 1, 0);
+          grid.add(new Label("Y Position:"), 0, 1);
+          grid.add(YPosition, 1, 1);
 
-              // Enable/Disable login button depending on whether a username was entered.
-              Node MoveButton = dialog.getDialogPane().lookupButton(Move);
-              MoveButton.setDisable(true);
+          // Enable/Disable login button depending on whether a username was entered.
+          Node MoveButton = dialog.getDialogPane().lookupButton(Move);
+          MoveButton.setDisable(true);
 
-              // Do some validation (using the Java 8 lambda syntax).
-              XPosition.textProperty()
-                  .addListener(
-                      (observable, oldValue, newValue) -> {
-                        MoveButton.setDisable(
-                            newValue.trim().isEmpty()
-                                || YPosition.getText().isBlank()
-                                || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-                      });
-              YPosition.textProperty()
-                  .addListener(
-                      (observable, oldValue, newValue) -> {
-                        MoveButton.setDisable(
-                            newValue.trim().isEmpty()
-                                || XPosition.getText().isBlank()
-                                || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-                      });
-
-              dialog.getDialogPane().setContent(grid);
-
-              // Convert the result to a username-password-pair when the login button is clicked.
-              dialog.setResultConverter(
-                  dialogButton -> {
-                    if (dialogButton == Move) {
-                      double xCo = Double.parseDouble(XPosition.getText());
-                      double yCo = Double.parseDouble(YPosition.getText());
-                      double x = xCo - MAPIMGWIDTH / 2;
-                      double y = yCo - MAPIMGHEIGHT / 2;
-                      lastPressed.setTranslateX(x);
-                      lastPressed.setTranslateY(y);
-                    }
-                    return null;
+          // Do some validation (using the Java 8 lambda syntax).
+          XPosition.textProperty()
+              .addListener(
+                  (observable, oldValue, newValue) -> {
+                    MoveButton.setDisable(
+                        newValue.trim().isEmpty()
+                            || YPosition.getText().isBlank()
+                            || !coordinateChecker(XPosition.getText(), YPosition.getText()));
                   });
-              dialog.showAndWait();
-            });
+          YPosition.textProperty()
+              .addListener(
+                  (observable, oldValue, newValue) -> {
+                    MoveButton.setDisable(
+                        newValue.trim().isEmpty()
+                            || XPosition.getText().isBlank()
+                            || !coordinateChecker(XPosition.getText(), YPosition.getText()));
+                  });
+
+          dialog.getDialogPane().setContent(grid);
+
+          // Convert the result to a username-password-pair when the login button is clicked.
+          dialog.setResultConverter(
+              dialogButton -> {
+                if (dialogButton == Move) {
+                  double xCo = Double.parseDouble(XPosition.getText());
+                  double yCo = Double.parseDouble(YPosition.getText());
+                  double x = xCo - MAPIMGWIDTH / 2;
+                  double y = yCo - MAPIMGHEIGHT / 2;
+                  lastPressed.setTranslateX(x);
+                  lastPressed.setTranslateY(y);
+                }
+                return null;
+              });
+          dialog.showAndWait();
+        });
     EquipmentMenu.getItems().addAll(equipmentItem1, equipmentItem2);
     updateLayoutChildren();
     layout.setScaleX(.5);
@@ -251,17 +253,14 @@ public class PannableView {
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
 
     layout.setOnMouseReleased(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) {
-              PressX = event.getX();
-              PressY = event.getY();
-              scroll.setContextMenu(PaneMenu);
-              PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
-            }
-          }
-        });
+            event -> {
+              if (event.getButton() == MouseButton.SECONDARY) {
+                PressX = event.getX();
+                PressY = event.getY();
+                scroll.setContextMenu(PaneMenu);
+                PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
+              }
+            });
     return staticWrapper;
   }
 
@@ -292,12 +291,12 @@ public class PannableView {
     newButton.setContextMenu(EquipmentMenu);
     draggable(newButton);
     newButton.setOnMouseReleased(
-            event -> {
-              if (event.getButton() == MouseButton.SECONDARY) {
-                lastPressed = newButton;
-                newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
-              }
-            });
+        event -> {
+          if (event.getButton() == MouseButton.SECONDARY) {
+            lastPressed = newButton;
+            newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+          }
+        });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
     MapEquipmentIcon newIcon = new MapEquipmentIcon(newButton, toolTip, equipment);
@@ -328,12 +327,12 @@ public class PannableView {
     newButton.setContextMenu(EquipmentMenu);
     draggable(newButton);
     newButton.setOnMouseReleased(
-            event -> {
-              if (event.getButton() == MouseButton.SECONDARY) {
-                lastPressed = newButton;
-                newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
-              }
-            });
+        event -> {
+          if (event.getButton() == MouseButton.SECONDARY) {
+            lastPressed = newButton;
+            newButton.getContextMenu().show(newButton, event.getScreenX(), event.getScreenY());
+          }
+        });
     Tooltip tooltip = new Tooltip(toolTip);
     Tooltip.install(newButton, tooltip);
     // TODO new MapEquipment Icon add equipment to parameter
@@ -350,8 +349,7 @@ public class PannableView {
       equipmentCheckBox.getStyleClass().add("combo-box");
 
       equipmentCheckBox.setSelected(true);
-      equipmentCheckBox.setOnAction(
-              event -> filter(currEquipment));
+      equipmentCheckBox.setOnAction(event -> filter(currEquipment));
       retval.add(equipmentCheckBox);
 
       equipmentCheckBox.setTranslateY(
@@ -362,7 +360,7 @@ public class PannableView {
   }
   // Init zoomInButton
   private JFXButton createZoomInButton() {
-    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomIn.png").toString());
+    Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -379,7 +377,7 @@ public class PannableView {
 
   // init zoomOutButton
   private JFXButton createZoomOutButton() {
-    Image zoomIcon = new Image(App.class.getResource("images/Icons/ZoomOut.png").toString());
+    Image zoomIcon = new Image(getImageResource("images/Icons/ZoomOut.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
@@ -403,8 +401,7 @@ public class PannableView {
     comboBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 2);
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
-    comboBox.setOnAction(
-            event -> switchFloors(currFloor.getFloorFromString(comboBox.getValue())));
+    comboBox.setOnAction(event -> switchFloors(currFloor.getFloorFromString(comboBox.getValue())));
     return comboBox;
   }
 
@@ -423,7 +420,7 @@ public class PannableView {
     ImageView equipmentIcon = new ImageView();
     equipmentIcon.setFitHeight(30);
     equipmentIcon.setFitWidth(30);
-    String png = "";
+    String png;
     switch (t) {
       case PBED:
         png = "HospitalBedIcon.png";
@@ -441,15 +438,15 @@ public class PannableView {
         png = "";
         break;
     }
-    Image i = new Image(App.class.getResource("images/Icons/" + png).toString());
+    Image i = new Image(getImageResource("images/Icons/" + png));
     equipmentIcon.setImage(i);
     return equipmentIcon;
   }
 
   public void convertLocationToMapIcon(Equipment equip) {
     addMapIcon(
-            equip.getLocationNode().getX(),
-            equip.getLocationNode().getY(),
+        equip.getLocationNode().getX(),
+        equip.getLocationNode().getY(),
         getImageViewFromEquipmentType(equip.getType()),
         equip.getName(),
         equip.getLocationNode().getFloor(),
@@ -504,6 +501,7 @@ public class PannableView {
     }
   }
 
+  // Used in draggable() for tracking start and end locations of a node
   private static class Position {
     double x;
     double y;
@@ -563,5 +561,9 @@ public class PannableView {
 
   public void setInvertZoomScroll(boolean value) {
     invertZoomScroll = value;
+  }
+
+  public String getImageResource(String filePath) {
+    return Objects.requireNonNull(App.class.getResource(filePath)).toString();
   }
 }
