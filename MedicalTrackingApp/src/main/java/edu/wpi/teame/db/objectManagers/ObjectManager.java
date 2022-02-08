@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   private DataBaseObjectType objectType;
@@ -28,6 +29,16 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
     }
   }
 
+  protected List<T> getBy(String whereClause) throws SQLException {
+    String getQuery = "SELECT * FROM " + getTableName() + " " + whereClause;
+    ResultSet resultSet = statement.executeQuery(getQuery);
+    List<T> listResult = new LinkedList<>();
+    while (resultSet.next()) {
+      listResult.add(getCastedType(resultSet));
+    }
+    return listResult;
+  }
+
   @Override
   public T get(int id) throws SQLException {
     String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = '" + id + "'";
@@ -41,16 +52,6 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   @Override
   public List<T> getAll() throws SQLException {
     String getQuery = "SELECT * FROM " + getTableName();
-    ResultSet resultSet = statement.executeQuery(getQuery);
-    List<T> listResult = new LinkedList<>();
-    while (resultSet.next()) {
-      listResult.add(getCastedType(resultSet));
-    }
-    return listResult;
-  }
-
-  public List<T> getBy(String whereClause) throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " " + whereClause;
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -88,7 +89,9 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   }
 
   @Override
-  public void readCSV(String csvFile) throws IOException {}
+  public void readCSV(String csvFile) throws IOException {
+    CSVReader
+  }
 
   @Override
   public void writeToCSV(String outputFilePath) {}
@@ -116,6 +119,6 @@ public class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   }
 
   private String getTableName() {
-    return objectType.name();
+    return objectType.name().toUpperCase(Locale.ROOT);
   }
 }

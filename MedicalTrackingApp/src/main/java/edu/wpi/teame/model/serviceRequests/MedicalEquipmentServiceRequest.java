@@ -28,37 +28,18 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
         + id
         + ", Patient: "
         + patient
-        + ", roomID: "
+        + ", location: "
         + location.getId()
         + ", openDate: "
         + openDate
         + ", endTime: "
         + closeDate
-        + ", assignee: "
-        + assignee
+        + ", employee: "
+        + employee
         + ", equipment: "
         + equipment.getId()
         + ", status: "
         + status;
-  }
-
-  @Override
-  public String toSQLInsertString() {
-    return super.toSQLInsertString() + ", " + equipment.getId() + ", " + patient.toString();
-  }
-
-  @Override
-  public String toSQLUpdateString() {
-    return super.toSQLInsertString()
-        + ", equipment = "
-        + equipment.getId()
-        + ", patient = "
-        + patient.toString();
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.MedicalEquipmentSR;
   }
 
   public Equipment getEquipment() {
@@ -75,5 +56,24 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   public void setPatient(String patient) {
     this.patient = patient;
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.MedicalEquipmentSR;
+  }
+
+  @Override
+  public String toSQLInsertString() {
+    return super.toSQLInsertString() + ", " + equipment.getId() + ", " + patient.toString();
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return super.toSQLInsertString()
+        + ", equipment = "
+        + equipment.getId()
+        + ", patient = "
+        + patient.toString();
   }
 }

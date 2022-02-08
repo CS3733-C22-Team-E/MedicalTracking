@@ -108,11 +108,32 @@ public class Equipment implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return null;
+    return id
+        + ", "
+        + location.getId()
+        + ", "
+        + name
+        + ", "
+        + type.ordinal()
+        + ", "
+        + isClean
+        + ", "
+        + hasPatient;
   }
 
   @Override
   public String toSQLUpdateString() {
-    return null;
+    return "id = "
+        + id
+        + ", locationID = "
+        + location.getId()
+        + ", name = "
+        + name
+        + ", type = "
+        + type.ordinal()
+        + ", isClean = "
+        + isClean
+        + ", hasPatient = "
+        + hasPatient;
   }
 }

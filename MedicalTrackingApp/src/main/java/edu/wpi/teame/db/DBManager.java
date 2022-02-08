@@ -61,50 +61,50 @@ public final class DBManager {
 
     // creating the table for the locations
     String createLocationsTable =
-        "CREATE TABLE LOCATIONS(id VARCHAR(10) Primary Key GENERATED ALWAYS AS IDENTITY,"
-            + "x int, "
-            + "y int, "
-            + "floor int, "
-            + "building int, "
-            + "locationType int,"
+        "CREATE TABLE LOCATION(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+            + "locationType int, "
+            + "shortName VARCHAR(100), "
             + "longName VARCHAR(100), "
-            + "shortName VARCHAR(100))";
+            + "building int, "
+            + "floor int, "
+            + "x int, "
+            + "y int)";
     stmt.execute(createLocationsTable);
-    System.out.println("LOCATIONS created");
-
-    String createEquipmentServiceRequestTable =
-        "CREATE TABLE EQUIPMENTSERVICEREQUEST(id int Primary Key GENERATED ALWAYS AS IDENTITY,"
-            + "patient VARCHAR(100), "
-            + "roomID VARCHAR(10) ,"
-            + "startTime VARCHAR(50),"
-            + "endTime VARCHAR(50),"
-            + "date VARCHAR(100),"
-            + "assignee VARCHAR(100),"
-            + "equipmentID VARCHAR(10),"
-            + "status int,"
-            + "FOREIGN KEY (roomID) REFERENCES LOCATIONS(id),"
-            + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
-    stmt.execute(createEquipmentServiceRequestTable);
-    System.out.println("EQUIPMENTSERVICEREQUEST created");
-
-    String createEmployeesTable =
-        "CREATE TABLE EMPLOYEES(employeeID VARCHAR(20) Primary Key GENERATED ALWAYS AS IDENTITY,"
-            + "dept INTEGER, "
-            + "name VARCHAR(100), "
-            + "isDoctor BOOLEAN)";
-    stmt.execute(createEmployeesTable);
-    System.out.println("EMPLOYEES created");
+    System.out.println("Location Table created");
 
     String createEquipmentTable =
-        "CREATE TABLE EQUIPMENT(id VARCHAR(10) Primary Key GENERATED ALWAYS AS IDENTITY,"
-            + "locationNode VARCHAR(10), "
-            + "type int,"
-            + "name VARCHAR(100),"
-            + "hasPatient BOOLEAN,"
-            + "isClean BOOLEAN,"
-            + "FOREIGN KEY (locationNode) REFERENCES LOCATIONS(id))";
+        "CREATE TABLE Equipment(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+            + "locationID int, "
+            + "name VARCHAR(100), "
+            + "type int, "
+            + "isClean int, "
+            + "hasPatient int, "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
     stmt.execute(createEquipmentTable);
-    System.out.println("EQUIPMENT created");
+    System.out.println("Equipment Table created");
+
+    String createEmployeeTable =
+        "CREATE TABLE Employee(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+            + "department int, "
+            + "name VARCHAR(100), "
+            + "isDoctor int)";
+    stmt.execute(createEmployeeTable);
+    System.out.println("Employee Table created");
+
+    String createEquipmentServiceRequestTable =
+        "CREATE TABLE MedicalEquipmentSR(id int Primary Key GENERATED ALWAYS AS IDENTITY, "
+            + "locationID int, "
+            + "status int, "
+            + "employeeID int, "
+            + "closeDate Date, "
+            + "endTime VARCHAR(50), "
+            + "openDate VARCHAR(100), "
+            + "equipmentID int, "
+            + "patient VARCHAR(100), "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
+            + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
+    stmt.execute(createEquipmentServiceRequestTable);
+    System.out.println("MedicalEquipmentSR Table created");
   }
 
   public ObjectManager<MedicalEquipmentServiceRequest> getMEServiceRequestManager() {

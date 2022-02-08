@@ -5,22 +5,22 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
 
 public class Employee implements ISQLSerializable {
-  private DepartmentType dept;
-  private String employeeID;
+  private DepartmentType department;
   private boolean isDoctor;
   private String name;
+  private int id;
 
-  public Employee(String id, DepartmentType dept, String name, boolean isDoctor) {
-    employeeID = id;
-    this.dept = dept;
-    this.name = name;
+  public Employee(int id, DepartmentType dept, String name, boolean isDoctor) {
     this.isDoctor = isDoctor;
+    this.department = dept;
+    this.name = name;
+    this.id = id;
   }
 
   public String toString() {
     StringBuilder employeeString = new StringBuilder();
-    employeeString.append("employeeID: ").append(this.employeeID).append(" ");
-    employeeString.append("department: ").append(this.dept).append(" ");
+    employeeString.append("id: ").append(this.id).append(" ");
+    employeeString.append("department: ").append(this.department).append(" ");
     employeeString.append("name: ").append(this.name).append(" ");
     employeeString.append("isDoctor: ").append(this.isDoctor);
 
@@ -28,20 +28,20 @@ public class Employee implements ISQLSerializable {
   }
 
   // GETTERS & SETTERS
-  public String getEmployeeID() {
-    return employeeID;
+  public int getId() {
+    return id;
   }
 
-  public void setEmployeeID(String employeeID) {
-    this.employeeID = employeeID;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public DepartmentType getDept() {
-    return dept;
+  public DepartmentType getDepartment() {
+    return department;
   }
 
-  public void setDept(DepartmentType dept) {
-    this.dept = dept;
+  public void setDepartment(DepartmentType department) {
+    this.department = department;
   }
 
   public String getName() {
@@ -67,11 +67,18 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return null;
+    return id + ", " + department.ordinal() + ", " + name + ", " + isDoctor;
   }
 
   @Override
   public String toSQLUpdateString() {
-    return null;
+    return "id = "
+        + id
+        + ", department = "
+        + department.ordinal()
+        + ", name = "
+        + name
+        + ", isDoctor = "
+        + isDoctor;
   }
 }

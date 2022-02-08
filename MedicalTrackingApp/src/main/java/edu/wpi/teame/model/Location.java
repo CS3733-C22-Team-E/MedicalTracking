@@ -131,16 +131,45 @@ public class Location implements ISQLSerializable {
 
   @Override
   public DataBaseObjectType getDBType() {
-    return null;
+    return DataBaseObjectType.Location;
   }
 
   @Override
   public String toSQLInsertString() {
-    return null;
+    return id
+        + ", "
+        + type.ordinal()
+        + ", "
+        + shortName
+        + ", "
+        + longName
+        + ", "
+        + building.ordinal()
+        + ", "
+        + floor.ordinal()
+        + ", "
+        + x
+        + ", "
+        + y;
   }
 
   @Override
   public String toSQLUpdateString() {
-    return null;
+    return "id = "
+        + id
+        + ", type = "
+        + type.ordinal()
+        + ", shortName"
+        + shortName
+        + ", longName = "
+        + longName
+        + ", building = "
+        + building.ordinal()
+        + ", floor = "
+        + floor.ordinal()
+        + ", x = "
+        + x
+        + ", y = "
+        + y;
   }
 }

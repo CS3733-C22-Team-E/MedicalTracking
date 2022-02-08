@@ -1,4 +1,4 @@
-employeeID,dept,name,isDoctor
+id,department,name,isDoctor
 eSBURNHAM001,FAMILYMEDICINE,Shannon L. Burnham,true
 eMPEARSON002,CLINICALSERVICES,Madelyn Pearson,false
 eJTOLKIEN003,PLASTICSURGERY,John Ronald Reagan Tolkien,true

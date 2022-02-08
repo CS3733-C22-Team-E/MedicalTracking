@@ -1,6 +1,5 @@
 package edu.wpi.teame;
 
-import edu.wpi.teame.db.DBManager;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,12 +23,10 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    DBManager.getInstance().getLocationManager().readCSV("csv/TowerLocationsE.csv");
-    DBManager.getInstance().getEquipmentManager().readCSV("csv/EquipmentE.csv");
     appPrimaryStage = primaryStage;
-    appPrimaryStage.setResizable(true);
-    appPrimaryStage.setFullScreen(true);
     appPrimaryStage.setTitle("Hospital App");
+    appPrimaryStage.setFullScreen(true);
+    appPrimaryStage.setResizable(true);
 
     appPrimaryStage
         .getIcons()

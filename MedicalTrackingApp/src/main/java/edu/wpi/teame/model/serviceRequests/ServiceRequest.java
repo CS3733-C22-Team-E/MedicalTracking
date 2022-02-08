@@ -8,7 +8,7 @@ import java.sql.Date;
 
 public abstract class ServiceRequest implements ISQLSerializable {
   protected ServiceRequestStatus status;
-  protected Employee assignee;
+  protected Employee employee;
   protected Location location;
   protected Date closeDate;
   protected Date openDate;
@@ -16,43 +16,17 @@ public abstract class ServiceRequest implements ISQLSerializable {
 
   protected ServiceRequest(
       ServiceRequestStatus requestStatus,
-      Employee assignee,
+      Employee employee,
       Location location,
       Date closeDate,
       Date openDate,
       int id) {
     this.status = requestStatus;
     this.closeDate = closeDate;
-    this.assignee = assignee;
+    this.employee = employee;
     this.location = location;
     this.openDate = openDate;
     this.id = id;
-  }
-
-  @Override
-  public String toSQLInsertString() {
-    return status.toString()
-        + ", "
-        + assignee
-        + ", "
-        + location.getId()
-        + ", "
-        + closeDate.toString()
-        + ", "
-        + openDate.toString();
-  }
-
-  public String toSQLUpdateString() {
-    return "status = "
-        + status.toString()
-        + ", assignee = "
-        + assignee
-        + ", location = "
-        + location.getId()
-        + ", closeDate = "
-        + closeDate.toString()
-        + ", openDate = "
-        + openDate.toString();
   }
 
   public ServiceRequestStatus getStatus() {
@@ -63,12 +37,12 @@ public abstract class ServiceRequest implements ISQLSerializable {
     this.status = status;
   }
 
-  public Employee getAssignee() {
-    return assignee;
+  public Employee getEmployee() {
+    return employee;
   }
 
-  public void setAssignee(Employee assignee) {
-    this.assignee = assignee;
+  public void setEmployee(Employee employee) {
+    this.employee = employee;
   }
 
   public Location getLocation() {
@@ -101,5 +75,36 @@ public abstract class ServiceRequest implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  @Override
+  public String toSQLInsertString() {
+    return id
+        + ", "
+        + location.getId()
+        + ", "
+        + status.toString()
+        + ", "
+        + employee
+        + ", "
+        + closeDate.toString()
+        + ", "
+        + openDate.toString();
+  }
+
+  @Override
+  public String toSQLUpdateString() {
+    return "id = "
+        + id
+        + ", locationID = "
+        + location.getId()
+        + ", status = "
+        + status.toString()
+        + ", employeeID = "
+        + employee.getId()
+        + ", closeDate = "
+        + closeDate.toString()
+        + ", openDate = "
+        + openDate.toString();
   }
 }
