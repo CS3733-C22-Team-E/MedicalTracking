@@ -4,6 +4,10 @@ import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
+<<<<<<< Updated upstream
+=======
+import edu.wpi.teame.Pannable;
+>>>>>>> Stashed changes
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.Equipment;
 import edu.wpi.teame.db.EquipmentType;
@@ -51,8 +55,12 @@ public class PannableView {
     currFloor = floor;
   }
 
+<<<<<<< Updated upstream
   // Convert from enum to a background image
   private String getMapImg(FloorType f) {
+=======
+  private String getMapImg(MapFloor f) {
+>>>>>>> Stashed changes
     switch (f) {
       case GroundFloor:
         return "images/map/00_thegroundfloor.png";
@@ -103,8 +111,16 @@ public class PannableView {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
+<<<<<<< Updated upstream
 
     return staticWrapper;
+=======
+    TypeGraphics.put(
+        EquipmentType.PBED, new ImageView(new Image("images/Icons/HospitalBedIcon.png")));
+    TypeGraphics.put(EquipmentType.XRAY, new ImageView(new Image("images/Icons/XRayIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/ReclinerIcon.png")));
+    TypeGraphics.put(EquipmentType.PUMP, new ImageView(new Image("image/Icons/PumpIcon.png")));
+>>>>>>> Stashed changes
   }
 
   // Must be called whenever an icon is added to the map
@@ -233,6 +249,7 @@ public class PannableView {
     return scroll;
   }
 
+<<<<<<< Updated upstream
   private ImageView getImageViewFromEquipmentType(EquipmentType t) {
     ImageView equipmentIcon = new ImageView();
     equipmentIcon.setFitHeight(30);
@@ -267,6 +284,15 @@ public class PannableView {
             (double) equip.getLocationNode().getY(),
             equip.getName(),
             getImageViewFromEquipmentType(equip.getType()));
+=======
+  public MapIcon ConvertLocationToMapIcon(Equipment equip) {
+    MapIcon retval =
+        new MapIcon(
+            (double) equip.getLocationNode().getX(),
+            (double) equip.getLocationNode().getX(),
+            equip.getLocationNode().getLongName(),
+            TypeGraphics.get(equip.getType()));
+>>>>>>> Stashed changes
     mapIcons.add(retval);
     updateLayoutChildren();
     return retval;
