@@ -17,18 +17,17 @@ These positions are usually, but not always, filled by your CS majors. Initially
 2. Back-End Database Engineers: Apache Derby SQL DB, ORM/DAO/Repository ([Brinda Venkataraman](https://github.com/brindavenk8) and [Jose Morales](https://github.com/JoseMorales7))
 3. Algorithm specialists ([Maanav Iyengar](https://github.com/miyengar26) and [Jeremy Trembley](https://github.com/jtrembleywpi))
 
-### Project Manager ([Haohao Yi](https://github.com/HaohaoYi))
+### Project Manager ([Maanav Iyengar](https://github.com/xxmiap))
 This member will ideally have had experience with managing a multiple person project(s) in the past
 and has enough technical background to be involved in and understand the design of the application and how it is being implemented. This position is ideal for someone who is interested in learning how to manage software engineers. This person will be responsible for team management communications with the VP and help keep track of team tasks. It is very important that the team leaders understand that the most important task of a project manager is to help create and foster a collegial, professional environment in which the team and all its members can operate efficiently, effectively, productively, and with mutual respect. Please note that this person still has to contribute Java code to the project, however, at a reduced level taking into account the other responsibilities. I, as the VP, will provide project management advice and training as needed.
 
-### Co-Scrum Masters ([Joe Dobbelaar](https://github.com/r2pen2) and [Brinda Venkataraman](https://github.com/brindavenk8))
-
+### Co-Scrum Masters ([Maanav Iyengar](https://github.com/xxmiap))
 The scrum master will run the daily scrums, sprint planning meetings, sprint review meetings, and sprint reflection meetings. The scrum master will also train the rest of the team on how the sprints are executed, particularly the various meetings. I will provide information on how to run Scrums in class but team coaches will work with the scrum masters to ensure they perform their duties properly. Note that there will be other types of meetings that will be led by other members. For example, the project manager will lead longer meetings concerning task tracking, product owners will lead the meetings on requirements gathering and user stories, and the lead software engineer will lead meetings concerning design, refactoring, and implementation.
 
 ### Product Owner ([Camilo Cordoba Escobar](https://github.com/ccordoba464))
 This position is responsible for coordinating and tracking the prioritized list of software requirements and user stories. The person in this position will also serve initially as one of the Software Feature Engineers concentrating on user interfaces.
 
-### Documentation Analyst ([Maanav Iyengar](https://github.com/xxmiap))
+### Documentation Analyst [Jeremy Trembley](https://github.com/jtrembleywpi))
 One software engineer will also be responsible for coordinating the artifacts created by the project: project documentation, requirements documentation, models, user documentation and training materials, and software code documentation. This person is responsible for maintaining well organized documents so that the VP or the client can inspect them immediately upon request. A suitable person for this position would be someone who is meticulous and well organized. Normally this position would be filled by a team member who is NOT a computer science major and is interested in contributing significantly through non-programming tasks. An exception would be a computer science major who has a strong interest in becoming a technical writer instead of a software engineer. The document analyst does not, however, have the sole responsibility for creating documentation; this responsibility is shared equally by all team members, particularly in the case of source code documentation. Please note that the documentation analyst still has to contribute to the project by writing Java code.
 
 ## Project Introduction
