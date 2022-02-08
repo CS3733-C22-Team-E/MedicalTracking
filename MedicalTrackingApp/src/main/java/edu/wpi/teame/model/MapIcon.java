@@ -2,6 +2,7 @@ package edu.wpi.teame.model;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 
 public class MapIcon {
   JFXButton Button;
@@ -11,10 +12,15 @@ public class MapIcon {
     Button = button;
     Descriptor = descriptor;
   }
+
   public MapIcon(Double x, Double y, String descriptor, Node graphic) {
-    Button = new JFXButton(descriptor, graphic);
-    Button.setTranslateX(x);
-    Button.setTranslateY(y);
+    Button = new JFXButton();
+    Button.setGraphic(graphic);
+    Tooltip tooltip = new Tooltip(descriptor);
+    Tooltip.install(Button, tooltip);
+    Button.setTranslateX(x - (2500));
+    Button.setTranslateY(y - (1700));
+    Button.setOpacity(.5);
   }
 
   public JFXButton getButton() {

@@ -4,5 +4,5 @@ public enum EquipmentType {
   PBED,
   PUMP,
   XRAY,
-  RECL;
+  RECL
 }

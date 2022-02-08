@@ -45,6 +45,30 @@ public class LocationManager implements IManager<Location> {
     return result;
   }
 
+  public Location getFromLongName(String getLongName) {
+    Location result = null;
+    String getQuery = "SELECT * FROM LOCATIONS WHERE longName='" + getLongName + "'";
+    try {
+      ResultSet rset = stmt.executeQuery(getQuery);
+      while (rset.next()) {
+        String id = rset.getString("id");
+        int x = rset.getInt("x");
+        int y = rset.getInt("y");
+        String longName = rset.getString("longName");
+        FloorType floor = FloorType.values()[rset.getInt("floor")];
+        BuildingType building = BuildingType.values()[rset.getInt("building")];
+        LocationType locationType = LocationType.values()[rset.getInt("locationType")];
+        String shortName = rset.getString("shortName");
+
+        // convert strings to proper type
+        result = new Location(id, longName, x, y, floor, building, locationType, shortName);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
   @Override
   public LinkedList<Location> getAll() {
     String getAllQuery = "SELECT * FROM LOCATIONS";
@@ -142,40 +166,37 @@ public class LocationManager implements IManager<Location> {
   }
 
   @Override
-  public void readCSV(String csvFile) {
-    try {
-      File file = new File(csvFile);
-      FileReader fr = new FileReader(file);
-      BufferedReader br = new BufferedReader(fr);
-      String line = " ";
-      String[] tempArr;
+  public void readCSV(String csvFile) throws IOException {
+    String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
 
-      boolean firstLine = true;
-      String delimiter = ",";
-      while ((line = br.readLine()) != null) {
-        if (!firstLine) {
-          tempArr = line.split(delimiter);
-          Location tempLocation =
-              new Location(
-                  tempArr[0],
-                  6 >= tempArr.length ? "" : tempArr[6],
-                  1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),
-                  2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
-                  3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
-                  4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
-                  5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
-                  7 >= tempArr.length ? "" : tempArr[7]);
+    File file = new File(path);
+    FileReader fr = new FileReader(file);
+    BufferedReader br = new BufferedReader(fr);
+    String line = " ";
+    String[] tempArr;
 
-          insert(tempLocation);
-        } else {
-          firstLine = false;
-        }
+    boolean firstLine = true;
+    String delimiter = ",";
+    while ((line = br.readLine()) != null) {
+      if (!firstLine) {
+        tempArr = line.split(delimiter);
+        Location tempLocation =
+            new Location(
+                tempArr[0],
+                6 >= tempArr.length ? "" : tempArr[6],
+                1 >= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),
+                2 >= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),
+                3 >= tempArr.length ? null : csvValToFloorType(tempArr[3]),
+                4 >= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),
+                5 >= tempArr.length ? null : LocationType.valueOf(tempArr[5]),
+                7 >= tempArr.length ? "" : tempArr[7]);
+
+        insert(tempLocation);
+      } else {
+        firstLine = false;
       }
-
-      br.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
     }
+    br.close();
   }
 
   @Override

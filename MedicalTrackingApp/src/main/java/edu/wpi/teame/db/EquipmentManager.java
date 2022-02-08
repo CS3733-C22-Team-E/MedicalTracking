@@ -49,6 +49,33 @@ public class EquipmentManager implements IManager<Equipment> {
     return result;
   }
 
+  public Equipment getAvailable(EquipmentType equipmentType) {
+    String getQuery =
+        "SELECT * FROM EQUIPMENT WHERE hasPatient = FALSE AND type =" + equipmentType.ordinal();
+    Equipment result = null;
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
+    try {
+      ResultSet rset = stmt.executeQuery(getQuery);
+
+      while (rset.next()) {
+        String nodeID = rset.getString("ID");
+        Location locationNode = locationTable.get(rset.getString("locationNode"));
+        // FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        // BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        EquipmentType type = EquipmentType.values()[rset.getInt("type")];
+        String name = rset.getString("name");
+        boolean hasPatient = rset.getBoolean("hasPatient");
+        boolean isClean = rset.getBoolean("isClean");
+
+        // save the tuple that resulted from the query
+        result = new Equipment(nodeID, locationNode, type, name, hasPatient, isClean);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
   @Override
   public LinkedList<Equipment> getAll() {
     String getQuery = "SELECT * FROM EQUIPMENT";
@@ -171,39 +198,37 @@ public class EquipmentManager implements IManager<Equipment> {
   }
 
   @Override
-  public void readCSV(String csvFile) {
-    try {
-      File file = new File(csvFile);
-      FileReader fr = new FileReader(file);
-      BufferedReader br = new BufferedReader(fr);
-      String line = " ";
-      String[] tempArr;
+  public void readCSV(String csvFile) throws IOException {
+    String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
 
-      LocationManager locTable = DBManager.getInstance().getLocationManager();
-      boolean firstLine = true;
-      String delimiter = ",";
-      while ((line = br.readLine()) != null) {
-        if (!firstLine) {
-          tempArr = line.split(delimiter);
-          Equipment tempEquipment =
-              new Equipment(
-                  tempArr[0],
-                  1 >= tempArr.length ? null : locTable.get(tempArr[1]),
-                  2 >= tempArr.length ? null : EquipmentType.valueOf(tempArr[2]),
-                  3 >= tempArr.length ? "" : tempArr[3],
-                  4 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[4]),
-                  5 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[5]));
+    File file = new File(path);
+    FileReader fr = new FileReader(file);
+    BufferedReader br = new BufferedReader(fr);
+    String line = " ";
+    String[] tempArr;
 
-          insert(tempEquipment);
-        } else {
-          firstLine = false;
-        }
+    LocationManager locTable = DBManager.getInstance().getLocationManager();
+    boolean firstLine = true;
+    String delimiter = ",";
+    while ((line = br.readLine()) != null) {
+      if (!firstLine) {
+        tempArr = line.split(delimiter);
+        Equipment tempEquipment =
+            new Equipment(
+                tempArr[0],
+                1 >= tempArr.length ? null : locTable.get(tempArr[1]),
+                2 >= tempArr.length ? null : EquipmentType.valueOf(tempArr[2]),
+                3 >= tempArr.length ? "" : tempArr[3],
+                4 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[4]),
+                5 >= tempArr.length ? false : Boolean.parseBoolean(tempArr[5]));
+
+        insert(tempEquipment);
+      } else {
+        firstLine = false;
       }
-
-      br.close();
-    } catch (IOException ioe) {
-      ioe.printStackTrace();
     }
+
+    br.close();
   }
 
   @Override

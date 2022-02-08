@@ -10,18 +10,16 @@ public final class DBManager {
   private Connection connection;
   private Statement stmt;
 
-  private MedicalEquipmentServiceRequestManager MEServiceRequestManager;
-  private EquipmentManager equipmentManager;
-  private LocationManager locationManager;
-
-  public static DBManager getInstance() {
+  public static synchronized DBManager getInstance() {
     if (instance == null) {
       instance = new DBManager();
     }
     return instance;
   }
 
-  private DBManager() {}
+  private DBManager() {
+    setupDB();
+  }
 
   public Connection getConnection() {
     return connection;
@@ -78,7 +76,7 @@ public final class DBManager {
       System.out.println("EQUIPMENT created");
 
       String createEquipmentServiceRequestTable =
-          "CREATE TABLE EQUIPMENTSERVICEREQUEST(id VARCHAR(10) Primary Key,"
+          "CREATE TABLE EQUIPMENTSERVICEREQUEST(id int Primary Key GENERATED ALWAYS AS IDENTITY,"
               + "patient VARCHAR(100), "
               + "roomID VARCHAR(10) ,"
               + "startTime VARCHAR(50),"
@@ -91,11 +89,6 @@ public final class DBManager {
               + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
       stmt.execute(createEquipmentServiceRequestTable);
       System.out.println("EQUIPMENTSERVICEREQUEST created");
-
-      MEServiceRequestManager = new MedicalEquipmentServiceRequestManager();
-      equipmentManager = new EquipmentManager();
-      locationManager = new LocationManager();
-
     } catch (SQLException e) {
 
       e.printStackTrace();
@@ -104,14 +97,14 @@ public final class DBManager {
   }
 
   public MedicalEquipmentServiceRequestManager getMEServiceRequestManager() {
-    return MEServiceRequestManager;
+    return new MedicalEquipmentServiceRequestManager();
   }
 
   public EquipmentManager getEquipmentManager() {
-    return equipmentManager;
+    return new EquipmentManager();
   }
 
   public LocationManager getLocationManager() {
-    return locationManager;
+    return new LocationManager();
   }
 }

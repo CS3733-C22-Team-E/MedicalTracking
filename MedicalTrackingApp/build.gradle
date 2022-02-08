@@ -33,6 +33,7 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
     )
+    implementation 'org.jetbrains:annotations:20.1.0'
 
     testCompile(
             "org.testfx:testfx-core:4.0.16-alpha",

@@ -1,15 +1,18 @@
 package edu.wpi.teame.controllers;
 
+import edu.wpi.teame.db.FloorType;
 import edu.wpi.teame.model.PannableView;
+import edu.wpi.teame.model.ServiceRequestBacklog;
 import edu.wpi.teame.model.StyledTab;
 import edu.wpi.teame.model.enums.SortOrder;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
@@ -40,8 +43,32 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "views/HomePage.fxml"));
 
-    Parent mapScene = new PannableView("").getMapScene(tabContentHeight, tabContentWidth);
-    tabs.add(new StyledTab("Hospital Map", SortOrder.ByName, mapScene));
+    PannableView mapView = new PannableView(FloorType.ThirdFloor);
+    StyledTab mapTab =
+        new StyledTab(
+            "Hospital Map",
+            SortOrder.ByName,
+            mapView.getMapScene(tabContentHeight, tabContentWidth));
+    mapTab.setOnSelectionChanged(
+        new EventHandler<Event>() {
+          @Override
+          public void handle(Event event) {
+            mapView.getFromDB();
+          }
+        });
+    tabs.add(mapTab);
+
+    ServiceRequestBacklog backlogView =
+        new ServiceRequestBacklog(
+            Screen.getPrimary().getBounds().getWidth() - tabContentWidth,
+            Screen.getPrimary().getBounds().getHeight() - tabContentHeight);
+    StyledTab backlogTab =
+        new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
+    backlogTab.setOnSelectionChanged(
+        (event) -> {
+          // TODO something on click
+        });
+    tabs.add(backlogTab);
 
     tabs.add(
         new StyledTab(
