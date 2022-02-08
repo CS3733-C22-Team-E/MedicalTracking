@@ -55,7 +55,7 @@ public class ServiceRequestBacklog {
     ServiceRequestCard testCard =
         new ServiceRequestCard(
             this,
-            ServiceRequestTypes.MedicalEquipment,
+            ServiceRequestTypes.MedicalEquipmentDelivery,
             "Test Card",
             "Test",
             0,

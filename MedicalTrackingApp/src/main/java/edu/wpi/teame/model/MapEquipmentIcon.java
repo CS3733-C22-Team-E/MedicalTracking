@@ -1,19 +1,27 @@
 package edu.wpi.teame.model;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.db.Equipment;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 
-public class MapIcon {
+public class MapEquipmentIcon {
   JFXButton Button;
   String Descriptor;
+  Equipment equipment;
 
-  public MapIcon(JFXButton button, String descriptor) {
+  public MapEquipmentIcon(JFXButton button, String descriptor, Equipment equip) {
+    equipment = equip;
     Button = button;
     Descriptor = descriptor;
   }
 
-  public MapIcon(Double x, Double y, String descriptor, Node graphic) {
+  public MapEquipmentIcon(JFXButton button, String descriptor) {
+    Button = button;
+    Descriptor = descriptor;
+  }
+
+  public MapEquipmentIcon(Double x, Double y, String descriptor, Node graphic) {
     Button = new JFXButton();
     Button.setGraphic(graphic);
     Tooltip tooltip = new Tooltip(descriptor);
