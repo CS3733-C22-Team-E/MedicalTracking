@@ -140,7 +140,7 @@ public class PannableView {
     TypeGraphics.put(
         EquipmentType.PUMP,
         new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
-    System.out.println("Addded Graphics");
+    System.out.println("Added Graphics");
     EquipmentMenu = new ContextMenu();
     EquipmentMenu.getStyleClass().add("combo-box");
     PaneMenu = new ContextMenu();
