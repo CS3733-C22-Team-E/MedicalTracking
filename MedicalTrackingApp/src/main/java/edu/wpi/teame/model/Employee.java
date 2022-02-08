@@ -4,6 +4,9 @@ import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Employee implements ISQLSerializable {
   private DepartmentType department;
   private boolean isDoctor;
@@ -17,6 +20,12 @@ public class Employee implements ISQLSerializable {
     this.id = id;
   }
 
+  public Employee(ResultSet resultSet) throws SQLException {
+    this.isDoctor = resultSet.getBoolean("isDoctor");
+    this.department = DepartmentType.values()[resultSet.getInt("department")];
+    this.name = resultSet.getString("name");
+    this.id = resultSet.getInt("id");
+  }
   public String toString() {
     StringBuilder employeeString = new StringBuilder();
     employeeString.append("id: ").append(this.id).append(" ");

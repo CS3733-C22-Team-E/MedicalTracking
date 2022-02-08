@@ -2,7 +2,9 @@ package edu.wpi.teame.db.objectManagers;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -98,11 +100,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SecuritySR:
         return null;
       case Location:
-        return null;
+        return (T) new Location(resultSet);
       case Equipment:
         return (T) new Equipment(resultSet);
       case Employee:
-        return null;
+        return (T) new Employee(resultSet);
       default:
         break;
     }

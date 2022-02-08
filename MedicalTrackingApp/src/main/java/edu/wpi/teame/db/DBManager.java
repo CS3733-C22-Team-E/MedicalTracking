@@ -100,6 +100,44 @@ public final class DBManager {
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
     stmt.execute(createEquipmentServiceRequestTable);
     System.out.println("MedicalEquipmentSR Table created");
+
+    String createMedicineDeliverySRTable =
+            "CREATE TABLE MedicineDeliverySR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "locationID int, "
+                    + "status int, "
+                    + "employeeID int, "
+                    + "closeDate Date, "
+                    + "endTime VARCHAR(50), "
+                    + "openDate VARCHAR(100), "
+                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+    stmt.execute(createMedicineDeliverySRTable);
+    System.out.println("MedicineDeliverySR Table created");
+
+    String createSanitationSRTable =
+            "CREATE TABLE SanitationSR(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "locationID int, "
+                    + "status int, "
+                    + "employeeID int, "
+                    + "closeDate Date, "
+                    + "endTime VARCHAR(50), "
+                    + "openDate VARCHAR(100), "
+                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+    stmt.execute(createSanitationSRTable);
+    System.out.println("SanitationSR Table created");
+
+    String createSecuritySRTable =
+            "CREATE TABLE createSecuritySRTable(id int Primary Key NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "locationID int, "
+                    + "status int, "
+                    + "employeeID int, "
+                    + "closeDate Date, "
+                    + "endTime VARCHAR(50), "
+                    + "openDate VARCHAR(100), "
+                    + "equipmentID int, "
+                    + "patient VARCHAR(100), "
+                    + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+    stmt.execute(createSecuritySRTable);
+    System.out.println("MedicalEquipmentSR Table created");
   }
 
   public MedicalEquipmentSRManager getMedicalEquipmentSRManager() {
