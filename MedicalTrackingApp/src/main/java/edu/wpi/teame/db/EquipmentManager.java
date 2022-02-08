@@ -49,6 +49,33 @@ public class EquipmentManager implements IManager<Equipment> {
     return result;
   }
 
+  public Equipment getAvailable(EquipmentType equipmentType) {
+    String getQuery =
+        "SELECT * FROM EQUIPMENT WHERE hasPatient = FALSE AND type =" + equipmentType.ordinal();
+    Equipment result = null;
+    LocationManager locationTable = DBManager.getInstance().getLocationManager();
+    try {
+      ResultSet rset = stmt.executeQuery(getQuery);
+
+      while (rset.next()) {
+        String nodeID = rset.getString("ID");
+        Location locationNode = locationTable.get(rset.getString("locationNode"));
+        // FloorType floor = FloorType.valueOf(rset.getString("floor"));
+        // BuildingType building = BuildingType.valueOf(rset.getString("building"));
+        EquipmentType type = EquipmentType.values()[rset.getInt("type")];
+        String name = rset.getString("name");
+        boolean hasPatient = rset.getBoolean("hasPatient");
+        boolean isClean = rset.getBoolean("isClean");
+
+        // save the tuple that resulted from the query
+        result = new Equipment(nodeID, locationNode, type, name, hasPatient, isClean);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return result;
+  }
+
   @Override
   public LinkedList<Equipment> getAll() {
     String getQuery = "SELECT * FROM EQUIPMENT";
@@ -172,11 +199,9 @@ public class EquipmentManager implements IManager<Equipment> {
 
   @Override
   public void readCSV(String csvFile) throws IOException {
-    csvFile =
-        System.getProperty("user.dir")
-            + "\\src\\main\\resources\\edu\\wpi\\teame\\csv\\EquipmentE.csv";
+    String path = System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + csvFile;
 
-    File file = new File(csvFile);
+    File file = new File(path);
     FileReader fr = new FileReader(file);
     BufferedReader br = new BufferedReader(fr);
     String line = " ";
