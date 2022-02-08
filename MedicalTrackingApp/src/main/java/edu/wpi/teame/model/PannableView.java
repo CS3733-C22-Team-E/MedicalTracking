@@ -57,6 +57,10 @@ public class PannableView {
   private ContextMenu EquipmentMenu;
   private ContextMenu PaneMenu;
   private ContextMenu AddMenu;
+  // placedEquipment is needed so that we don't add redundant equipment from DB on opening the map
+  // Keeps track of NodeIDs from equipment so that we we don't add a NodeID that's not already there when call from DB
+  // TODO update when we add or remove equipment to DB
+  private HashMap<String, Equipment> placedEquipment = new HashMap<String, Equipment>();
 
   // Keeping track of Events
   private JFXButton lastPressed;
@@ -73,6 +77,21 @@ public class PannableView {
   public PannableView(FloorType floor) {
     backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());
     currFloor = floor;
+    TypeGraphics.put(
+        EquipmentType.PBED,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.XRAY,
+        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.RECL,
+        new ImageView(
+            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
+    TypeGraphics.put(
+        EquipmentType.PUMP,
+        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
+    System.out.println("Addded Graphics");
   }
 
   // Convert from enum to a background image
@@ -104,21 +123,6 @@ public class PannableView {
   // This is essentially the Main function
   // getMapScene returns the entire map page
   public Parent getMapScene(double height, double width) {
-    TypeGraphics.put(
-        EquipmentType.PBED,
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/HospitalBedIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.XRAY,
-        new ImageView(new Image(App.class.getResource("images/Icons/XRayIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.RECL,
-        new ImageView(
-            new Image(App.class.getResource("images/Icons/ReclinerIcon.png").toString())));
-    TypeGraphics.put(
-        EquipmentType.PUMP,
-        new ImageView(new Image(App.class.getResource("images/Icons/PumpIcon.png").toString())));
-    System.out.println("Addded Graphics");
     EquipmentMenu = new ContextMenu();
     EquipmentMenu.getStyleClass().add("combo-box");
     PaneMenu = new ContextMenu();
@@ -269,11 +273,10 @@ public class PannableView {
   // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
   // make
   private void addMapIcon(double xCoordinate, double yCoordinate, ImageView image, String toolTip) {
-    ImageView iconGraphic = image;
-    iconGraphic.setFitWidth(30);
-    iconGraphic.setFitHeight(30);
+    image.setFitWidth(30);
+    image.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
-    newButton.setGraphic(iconGraphic);
+    newButton.setGraphic(image);
     double x = xCoordinate - MAPIMGWIDTH / 2;
     double y = yCoordinate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
@@ -435,7 +438,10 @@ public class PannableView {
     LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     for (Equipment currEquipment : equipment) {
       if (currEquipment.getLocationNode().getFloor() == currFloor) {
-        convertLocationToMapIcon(currEquipment);
+        if (!placedEquipment.containsKey(currEquipment.getNodeID())) {
+          convertLocationToMapIcon(currEquipment);
+          placedEquipment.put(currEquipment.getNodeID(), currEquipment);
+        }
       }
     }
   }
