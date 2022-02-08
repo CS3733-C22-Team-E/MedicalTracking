@@ -17,13 +17,13 @@ public class Equipment implements ISQLSerializable {
 
   public Equipment(
       int ID,
-      Location locationNodeID,
+      Location location,
       EquipmentType type,
       String name,
       boolean hasPatient,
       boolean isClean) {
     this.id = ID;
-    this.location = locationNodeID;
+    this.location = location;
     this.type = type;
     this.name = name;
     this.hasPatient = hasPatient;

@@ -1,9 +1,10 @@
 package edu.wpi.teame.db;
 
+import edu.wpi.teame.model.Location;
 import java.util.HashMap;
 
 public final class CSVManager {
-  public HashMap<String, Integer> locationIDMap = null;
+  public HashMap<String, Location> locationIDMap = null;
   private static CSVManager instance;
 
   public static synchronized CSVManager getInstance() {
@@ -14,6 +15,6 @@ public final class CSVManager {
   }
 
   private CSVManager() {
-    locationIDMap = new HashMap<String, Integer>();
+    locationIDMap = new HashMap<String, Location>();
   }
 }

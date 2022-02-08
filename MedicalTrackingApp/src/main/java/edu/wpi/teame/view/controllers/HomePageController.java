@@ -25,8 +25,8 @@ public class HomePageController {
     }
 
     DBManager.getInstance().getLocationManager().readCSV("csv/TowerLocationsE.csv");
+    DBManager.getInstance().getEquipmentManager().readCSV("csv/EquipmentE.csv");
     DBManager.getInstance().getEmployeeManager().readCSV("csv/EmployeesE.csv");
-    // DBManager.getInstance().getEquipmentManager().readCSV("csv/EquipmentE.csv");
     // hasLoaded = true;
   }
 }

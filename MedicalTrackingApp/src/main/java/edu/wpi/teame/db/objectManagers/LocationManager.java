@@ -52,10 +52,8 @@ public final class LocationManager extends ObjectManager<Location> {
       newLocation = DBManager.getInstance().getLocationManager().insert(newLocation);
 
       // Add the locationID to the HashMap
-      CSVManager.getInstance().locationIDMap.put(nodeId, newLocation.getId());
+      CSVManager.getInstance().locationIDMap.put(nodeId, newLocation);
     }
-
-    System.out.println(CSVManager.getInstance().locationIDMap.size());
   }
 
   @Override
