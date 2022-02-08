@@ -46,6 +46,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
         FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
     requestState.setItems(
         FXCollections.observableArrayList("Open", "Waiting For Equipment", "Cancelled", "Done"));
+    requestAssignee.setItems(
+        FXCollections.observableArrayList("Test Name", "Test Name", "Test Name", "Test Name"));
   }
 
   // todo either make the submit button disabled until everything is filled or add error handling
