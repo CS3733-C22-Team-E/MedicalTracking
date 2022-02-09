@@ -6,6 +6,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
@@ -126,6 +127,8 @@ public class Main {
       System.out.println(emp);
     }
 
+    System.out.println();
+
     long d = System.currentTimeMillis();
     Date date = new Date(d);
     DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
@@ -152,7 +155,9 @@ public class Main {
       System.out.println(sec);
     }
 
-    // secReqManager.update();
+    secReqManager.update(
+        new SecurityServiceRequest(ServiceRequestStatus.CLOSED, emp1, loc1, date, date, 1));
+    System.out.println(secReqManager.get(1));
     System.out.println();
 
     SanitationServiceRequest sanReq1 =
@@ -171,6 +176,9 @@ public class Main {
     for (SanitationServiceRequest san : sanReqlist) {
       System.out.println(san);
     }
+
+    sanReqManager.update(
+        new SanitationServiceRequest(ServiceRequestStatus.CLOSED, emp1, loc1, date, date, 1));
 
     System.out.println();
     MedicineDeliveryServiceRequest medReq1 =
@@ -194,6 +202,88 @@ public class Main {
       System.out.println(san);
     }
 
-    // App.launch(App.class, args);
+    medReqManager.update(
+        new MedicineDeliveryServiceRequest(
+            ServiceRequestStatus.CLOSED, emp1, loc1, date, date, 1, date));
+
+    System.out.println(medReqManager.get(1));
+    System.out.println();
+
+    /**
+     * ServiceRequestStatus requestStatus, Employee assignee, Location location, Date closeDate,
+     * Date openDate, int id, Equipment equipment, String patient
+     */
+    MedicalEquipmentSRManager medEqpManager = new MedicalEquipmentSRManager();
+    MedicalEquipmentServiceRequest sr1 =
+        new MedicalEquipmentServiceRequest(
+            ServiceRequestStatus.OPEN, emp1, loc1, date, date, 1, equipment1, "Jose Morales");
+    MedicalEquipmentServiceRequest sr2 =
+        new MedicalEquipmentServiceRequest(
+            ServiceRequestStatus.CLOSED, emp2, loc2, date, date, 2, equipment2, "Josie Morales");
+    MedicalEquipmentServiceRequest sr3 =
+        new MedicalEquipmentServiceRequest(
+            ServiceRequestStatus.PENDING, emp3, loc3, date, date, 3, equipment3, "Jose Lopez");
+
+    medEqpManager.insert(sr1);
+    medEqpManager.insert(sr2);
+    medEqpManager.insert(sr3);
+
+    List<MedicalEquipmentServiceRequest> medEqpList = medEqpManager.getAll();
+    for (MedicalEquipmentServiceRequest test : medEqpList) {
+      System.out.println(test);
+    }
+
+    //    System.out.println();
+    //    System.out.println();
+    //    System.out.println(emp1);
+    //    employeeManager.update(new Employee(1, DepartmentType.PLASTICSURGERY, "Jose Morales",
+    // false))
+    //    System.out.println(employeeManager.get(1));
+
+    medEqpManager.remove(3);
+    medEqpList = medEqpManager.getAll();
+    for (MedicalEquipmentServiceRequest san : medEqpList) {
+      System.out.println(san);
+    }
+
+    equipmentManager.remove(3);
+    equipmentLinkedList = equipmentManager.getAll();
+    for (Equipment san : equipmentLinkedList) {
+      System.out.println(san);
+    }
+
+    medReqManager.remove(3);
+    medReqlist = medReqManager.getAll();
+    for (MedicineDeliveryServiceRequest san : medReqlist) {
+      System.out.println(san);
+    }
+
+    sanReqManager.remove(3);
+    sanReqlist = sanReqManager.getAll();
+    for (SanitationServiceRequest san : sanReqlist) {
+      System.out.println(san);
+    }
+
+    secReqManager.remove(3);
+    securitylist = secReqManager.getAll();
+    for (SecurityServiceRequest san : securitylist) {
+      System.out.println(san);
+    }
+
+    employeeManager.remove(3);
+    employeeList = employeeManager.getAll();
+
+    for (Employee emp : employeeList) {
+      System.out.println(emp);
+    }
+
+    location.remove(3);
+    result = (LinkedList<Location>) location.getAll();
+
+    for (Location emp : result) {
+      System.out.println(emp);
+    }
+
+    App.launch(App.class, args);
   }
 }

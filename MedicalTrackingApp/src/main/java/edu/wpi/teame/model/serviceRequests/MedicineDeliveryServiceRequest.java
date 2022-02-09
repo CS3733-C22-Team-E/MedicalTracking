@@ -44,8 +44,17 @@ public class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String toSQLUpdateString() {
-    return super.toSQLUpdateString()
-        + ", deliveryDate = '"
+    return "locationID = "
+        + location.getId()
+        + ", status = "
+        + status.ordinal()
+        + ", employeeID = "
+        + employee.getId()
+        + ", closeDate = '"
+        + closeDate.toString()
+        + "', openDate = '"
+        + openDate.toString()
+        + "', deliveryDate = '"
         + deliveryDate
         + "'"
         + " WHERE id = "

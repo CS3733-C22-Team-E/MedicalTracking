@@ -99,11 +99,11 @@ public abstract class ServiceRequest implements ISQLSerializable {
         + status.ordinal()
         + ", employeeID = "
         + employee.getId()
-        + ", closeDate = "
+        + ", closeDate = '"
         + closeDate.toString()
-        + ", openDate = "
+        + "', openDate = '"
         + openDate.toString()
-        + " WHERE id = "
+        + "' WHERE id = "
         + id;
   }
 

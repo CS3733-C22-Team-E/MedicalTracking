@@ -41,13 +41,14 @@ public class SanitationServiceRequest extends ServiceRequest {
     return "locationID = "
         + location.getId()
         + ", status = "
-        + status.toString()
+        + status.ordinal()
         + ", employeeID = "
         + employee.getId()
-        + ", closeDate = "
+        + ", closeDate = '"
         + closeDate.toString()
-        + ", openDate = "
-        + openDate.toString();
+        + "', openDate = '"
+        + openDate.toString()
+        + "'";
   }
 
   @Override
