@@ -3,10 +3,10 @@ package edu.wpi.teame.view;
 import static javafx.application.Application.launch;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
@@ -23,7 +23,9 @@ public class ServiceRequestBacklog {
   private double SCENEHEIGHT;
   private final double VGAP = 2;
 
-  public ServiceRequestBacklog(double width, double height) {
+  private List<ServiceRequest> allServiceRequests = new LinkedList<ServiceRequest>();
+
+  public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
   }
@@ -32,11 +34,35 @@ public class ServiceRequestBacklog {
     launch(args);
   }
 
-  public Parent getBacklogScene() {
+  private void getSecurityRequests() throws SQLException {
+    System.out.println("Fetching SR from DB");
+    allServiceRequests.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+  }
+
+  public Parent getBacklogScene() throws SQLException {
+    getSecurityRequests();
+    System.out.println("getBacklogScene");
     requestHolder.setVgap(VGAP);
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
-
+    for (ServiceRequest sr : allServiceRequests) {
+      System.out.println("Adding card...");
+      ServiceRequestCard card =
+          new ServiceRequestCard(
+              this,
+              sr.getDBType(),
+              sr.getLocation().getLongName(),
+              sr.getDBType().name(),
+              0,
+              SCENEWIDTH / 2,
+              SCENEHEIGHT,
+              sr.getId());
+      card.setPatientName("John Doe");
+      card.setFloor(sr.getLocation().getFloor().name());
+      card.setRoomNumber(sr.getLocation().getShortName());
+      card.setStatus(sr.getStatus().toString());
+      addServiceRequestCard(card);
+    }
     return scrollWrapper;
   }
 

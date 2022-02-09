@@ -41,6 +41,10 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     setUpTab();
   }
 
+  public void setTabPage(Parent p) {
+    tabPage = p;
+  }
+
   private void setUpTab() throws IOException {
     Label label = new Label(tabName);
     label.setTextAlignment(TextAlignment.CENTER);

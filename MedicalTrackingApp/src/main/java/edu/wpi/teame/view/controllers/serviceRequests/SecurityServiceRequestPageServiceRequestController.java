@@ -31,7 +31,12 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
 
     SecurityServiceRequest serviceRequest =
         new SecurityServiceRequest(
-            ServiceRequestStatus.OPEN, employee, location, new Date(new java.util.Date().getTime()), new Date(0), 0);
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(new java.util.Date().getTime()),
+            new Date(0),
+            0);
     serviceRequest = DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
 
     System.out.println();

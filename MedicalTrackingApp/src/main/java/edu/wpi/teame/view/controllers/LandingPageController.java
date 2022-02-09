@@ -72,7 +72,11 @@ public class LandingPageController implements Initializable {
         new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
     backlogTab.setOnSelectionChanged(
         (event) -> {
-          // TODO something on click
+          try {
+            backlogTab.setTabPage(backlogView.getBacklogScene());
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         });
     tabs.add(backlogTab);
 
