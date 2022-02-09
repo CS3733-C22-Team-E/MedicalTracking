@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PannableView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model</a> &gt; <span class="el_source">PannableView.java</span></div><h1>PannableView.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model;
+
+import static javafx.application.Application.launch;
+
+import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.Equipment;
+import edu.wpi.teame.db.EquipmentType;
+import edu.wpi.teame.db.FloorType;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
+
+/** Constructs a scene with a pannable Map background. */
+public class PannableView {
+
+  // Init constants
+  private final Image backgroundImage;
+<span class="nc" id="L24">  private final int WIDTH = 1280;</span>
+<span class="nc" id="L25">  private final int HEIGHT = 720;</span>
+<span class="nc" id="L26">  private final int ICONSIZE = 60;</span>
+<span class="nc" id="L27">  private final double ZOOMINMAX = 1.5;</span>
+<span class="nc" id="L28">  private final double ZOOMOUTMAX = .2;</span>
+<span class="nc" id="L29">  private final double MAPIMGWIDTH = 5000;</span>
+<span class="nc" id="L30">  private final double MAPIMGHEIGHT = 3400;</span>
+<span class="nc" id="L31">  private final double ZOOMAMPLIFIER = .1;</span>
+
+  // Init booleans
+<span class="nc" id="L34">  private boolean hamburgerDeployed = false;</span>
+<span class="nc" id="L35">  private boolean addMode = false;</span>
+
+  // Init data structures
+<span class="nc" id="L38">  private ArrayList&lt;ImageView&gt; hamburgerDeployments = new ArrayList&lt;ImageView&gt;();</span>
+<span class="nc" id="L39">  private ArrayList&lt;MapIcon&gt; mapIcons = new ArrayList&lt;MapIcon&gt;();</span>
+<span class="nc" id="L40">  private HashMap&lt;EquipmentType, ImageView&gt; TypeGraphics = new HashMap&lt;EquipmentType, ImageView&gt;();</span>
+
+  // Init panes
+<span class="nc" id="L43">  private StackPane layout = new StackPane();</span>
+
+  // Init everything else
+  private FloorType currFloor;
+
+  // Constructor sets the background image and currentFloor enum
+<span class="nc" id="L49">  public PannableView(FloorType floor) {</span>
+<span class="nc" id="L50">    backgroundImage = new Image(App.class.getResource(getMapImg(floor)).toString());</span>
+<span class="nc" id="L51">    currFloor = floor;</span>
+<span class="nc" id="L52">  }</span>
+
+  // Convert from enum to a background image
+  private String getMapImg(FloorType f) {
+<span class="nc bnc" id="L56" title="All 7 branches missed.">    switch (f) {</span>
+      case GroundFloor:
+<span class="nc" id="L58">        return &quot;images/map/00_thegroundfloor.png&quot;;</span>
+      case LowerLevel1:
+<span class="nc" id="L60">        return &quot;images/map/00_thelowerlevel1.png&quot;;</span>
+      case LowerLevel2:
+<span class="nc" id="L62">        return &quot;images/map/00_thelowerlevel2.png&quot;;</span>
+      case FirstFloor:
+<span class="nc" id="L64">        return &quot;images/map/01_thefirstfloor.png&quot;;</span>
+      case SecondFloor:
+<span class="nc" id="L66">        return &quot;images/map/02_thesecondfloor.png&quot;;</span>
+      case ThirdFloor:
+<span class="nc" id="L68">        return &quot;images/map/03_thethirdfloor.png&quot;;</span>
+      default:
+<span class="nc" id="L70">        return &quot;&quot;;</span>
+    }
+  }
+
+  // This is essentially the Main function
+  // getMapScene returns the entire map page
+  public Parent getMapScene(double height, double width) {
+<span class="nc" id="L77">    layout.setOnMouseClicked(</span>
+        (e -&gt; {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">          if (addMode) {</span>
+<span class="nc" id="L80">            addMapIcon(e.getX(), e.getY(), &quot;AppIcon.png&quot;);</span>
+          }
+<span class="nc" id="L82">        }));</span>
+<span class="nc" id="L83">    updateLayoutChildren();</span>
+<span class="nc" id="L84">    layout.setScaleX(.5);</span>
+<span class="nc" id="L85">    layout.setScaleY(.5);</span>
+<span class="nc" id="L86">    layout.setOnScroll(</span>
+        (event) -&gt; {
+<span class="nc" id="L88">          double scrollVal = event.getDeltaY();</span>
+          // Zoom amplifier is accounted for inside handleScrollZoom
+<span class="nc" id="L90">          handleScrollZoom(scrollVal);</span>
+<span class="nc" id="L91">        });</span>
+<span class="nc" id="L92">    ScrollPane scroll = createScrollPane(layout);</span>
+
+<span class="nc" id="L94">    StackPane staticWrapper = new StackPane();</span>
+<span class="nc" id="L95">    staticWrapper</span>
+<span class="nc" id="L96">        .getChildren()</span>
+<span class="nc" id="L97">        .setAll(scroll, createHamburgerButton(), createZoomInButton(), createZoomOutButton());</span>
+<span class="nc" id="L98">    addHamburgerDeployments();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">    for (ImageView imageView : hamburgerDeployments) {</span>
+<span class="nc" id="L100">      staticWrapper.getChildren().add(imageView);</span>
+<span class="nc" id="L101">    }</span>
+
+<span class="nc" id="L103">    scroll.setPrefSize(width, height);</span>
+<span class="nc" id="L104">    scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);</span>
+<span class="nc" id="L105">    scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);</span>
+
+<span class="nc" id="L107">    return staticWrapper;</span>
+  }
+
+  // Must be called whenever an icon is added to the map
+  private void updateLayoutChildren() {
+<span class="nc" id="L112">    layout.getChildren().setAll(new ImageView(backgroundImage));</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">    for (MapIcon icon : mapIcons) {</span>
+<span class="nc" id="L114">      layout.getChildren().add(icon.getButton());</span>
+<span class="nc" id="L115">    }</span>
+<span class="nc" id="L116">  }</span>
+
+  // Adds icon on click
+  // TODO make this meaningful. Right now it just makes a button with whatever icon you tell it to
+  // make
+  private void addMapIcon(double xCoordinate, double yCoordinate, String type) {
+<span class="nc" id="L122">    Image iconImage = new Image(App.class.getResource(&quot;images/Icons/&quot; + type).toString());</span>
+<span class="nc" id="L123">    ImageView iconGraphic = new ImageView(iconImage);</span>
+<span class="nc" id="L124">    iconGraphic.setFitWidth(30);</span>
+<span class="nc" id="L125">    iconGraphic.setFitHeight(30);</span>
+<span class="nc" id="L126">    final JFXButton newButton = new JFXButton();</span>
+<span class="nc" id="L127">    newButton.setGraphic(iconGraphic);</span>
+<span class="nc" id="L128">    double x = xCoordinate - MAPIMGWIDTH / 2;</span>
+<span class="nc" id="L129">    double y = yCoordinate - MAPIMGHEIGHT / 2;</span>
+<span class="nc" id="L130">    newButton.setTranslateX(x);</span>
+<span class="nc" id="L131">    newButton.setTranslateY(y);</span>
+<span class="nc" id="L132">    newButton.setOnAction(</span>
+        (event) -&gt; {
+          // TODO Implement click functionality.
+          // Click currently removes added nodes. Does not yet work on equipment nodes.
+          // For click functionality on equipment nodes, add an onclick in the equipment translator
+<span class="nc" id="L137">          newButton.setVisible(false);</span>
+<span class="nc" id="L138">        });</span>
+<span class="nc" id="L139">    Tooltip tooltip = new Tooltip(type);</span>
+<span class="nc" id="L140">    Tooltip.install(newButton, tooltip);</span>
+<span class="nc" id="L141">    MapIcon newIcon = new MapIcon(newButton, type);</span>
+<span class="nc" id="L142">    mapIcons.add(newIcon);</span>
+<span class="nc" id="L143">    updateLayoutChildren();</span>
+<span class="nc" id="L144">  }</span>
+
+  // Init zoomInButton
+  private JFXButton createZoomInButton() {
+<span class="nc" id="L148">    Image zoomIcon = new Image(App.class.getResource(&quot;images/Icons/ZoomIn.png&quot;).toString());</span>
+<span class="nc" id="L149">    ImageView icon = new ImageView(zoomIcon);</span>
+<span class="nc" id="L150">    icon.setFitWidth(30);</span>
+<span class="nc" id="L151">    icon.setFitHeight(30);</span>
+<span class="nc" id="L152">    final JFXButton zoomInButton = new JFXButton(&quot;&quot;, icon);</span>
+<span class="nc" id="L153">    zoomInButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));</span>
+<span class="nc" id="L154">    zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));</span>
+<span class="nc" id="L155">    zoomInButton.setOnAction(</span>
+        (event) -&gt; {
+          // double value zoomAmplifier is 1 for buttons
+<span class="nc" id="L158">          zoomIn(1);</span>
+<span class="nc" id="L159">        });</span>
+<span class="nc" id="L160">    return zoomInButton;</span>
+  }
+
+  // init zoomOutButton
+  private JFXButton createZoomOutButton() {
+<span class="nc" id="L165">    Image zoomIcon = new Image(App.class.getResource(&quot;images/Icons/ZoomOut.png&quot;).toString());</span>
+<span class="nc" id="L166">    ImageView icon = new ImageView(zoomIcon);</span>
+<span class="nc" id="L167">    icon.setFitWidth(30);</span>
+<span class="nc" id="L168">    icon.setFitHeight(30);</span>
+<span class="nc" id="L169">    final JFXButton zoomOutButton = new JFXButton(&quot;&quot;, icon);</span>
+<span class="nc" id="L170">    zoomOutButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));</span>
+<span class="nc" id="L171">    zoomOutButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 90)));</span>
+<span class="nc" id="L172">    zoomOutButton.setOnAction(</span>
+        (event) -&gt; {
+          // double value zoomAmplifier is 1 for buttons
+<span class="nc" id="L175">          zoomOut(1);</span>
+<span class="nc" id="L176">        });</span>
+<span class="nc" id="L177">    return zoomOutButton;</span>
+  }
+
+  // Init currently unused hamburger button
+  private JFXButton createHamburgerButton() {
+<span class="nc" id="L182">    Image hamburgerIcon =</span>
+<span class="nc" id="L183">        new Image(App.class.getResource(&quot;images/Icons/HamburgerMenu.png&quot;).toString());</span>
+<span class="nc" id="L184">    ImageView icon = new ImageView(hamburgerIcon);</span>
+<span class="nc" id="L185">    icon.setFitHeight(30);</span>
+<span class="nc" id="L186">    icon.setFitWidth(30);</span>
+<span class="nc" id="L187">    final JFXButton hamburgerButton = new JFXButton(&quot;&quot;, icon);</span>
+<span class="nc" id="L188">    hamburgerButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));</span>
+<span class="nc" id="L189">    hamburgerButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 10)));</span>
+<span class="nc" id="L190">    hamburgerButton.setOnAction(</span>
+        (event) -&gt; {
+<span class="nc bnc" id="L192" title="All 2 branches missed.">          hamburgerDeployed = !hamburgerDeployed;</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">          addMode = !addMode;</span>
+          // deployHamburger();
+<span class="nc" id="L195">        });</span>
+<span class="nc" id="L196">    return hamburgerButton;</span>
+  }
+
+  // Adds icons to the hamburger menu
+  // TODO styling— probably a complete redesign
+  private void addHamburgerDeployments() {
+<span class="nc" id="L202">    String[] allIcons = {&quot;EquipmentStorageIcon.png&quot;, &quot;HospitalBedIcon.png&quot;};</span>
+<span class="nc" id="L203">    int iconNum = 0;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">    for (String icon : allIcons) {</span>
+<span class="nc" id="L205">      Image imageIcon = new Image(App.class.getResource(&quot;images/Icons/&quot; + icon).toString());</span>
+<span class="nc" id="L206">      ImageView imageVew = new ImageView(imageIcon);</span>
+<span class="nc" id="L207">      imageVew.setFitWidth(ICONSIZE);</span>
+<span class="nc" id="L208">      imageVew.setFitHeight(ICONSIZE);</span>
+<span class="nc" id="L209">      imageVew.setTranslateX(WIDTH / 2 - 10 - ICONSIZE);</span>
+<span class="nc" id="L210">      imageVew.setTranslateY(-(HEIGHT / 2) + 100 + iconNum * (ICONSIZE) + iconNum * 10);</span>
+<span class="nc" id="L211">      imageVew.setVisible(false);</span>
+<span class="nc" id="L212">      hamburgerDeployments.add(imageVew);</span>
+<span class="nc" id="L213">      iconNum++;</span>
+    }
+<span class="nc" id="L215">  }</span>
+
+  // Displays the hamburger menu by just setting all hamburgerDeployments to visible
+  private void deployHamburger() {
+    // Hamburger currently unused
+<span class="nc bnc" id="L220" title="All 2 branches missed.">    for (ImageView imageView : hamburgerDeployments) {</span>
+<span class="nc" id="L221">      imageView.setVisible(hamburgerDeployed);</span>
+<span class="nc" id="L222">    }</span>
+<span class="nc" id="L223">  }</span>
+
+  // Init ScrollPane that holds the StackPane containing map and all icons
+  private ScrollPane createScrollPane(Pane layout) {
+<span class="nc" id="L227">    ScrollPane scroll = new ScrollPane();</span>
+<span class="nc" id="L228">    scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</span>
+<span class="nc" id="L229">    scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</span>
+<span class="nc" id="L230">    scroll.setPannable(true);</span>
+<span class="nc" id="L231">    scroll.setPrefSize(WIDTH, HEIGHT);</span>
+<span class="nc" id="L232">    scroll.setContent(layout);</span>
+<span class="nc" id="L233">    return scroll;</span>
+  }
+
+  private ImageView getImageViewFromEquipmentType(EquipmentType t) {
+<span class="nc" id="L237">    ImageView equipmentIcon = new ImageView();</span>
+<span class="nc" id="L238">    equipmentIcon.setFitHeight(30);</span>
+<span class="nc" id="L239">    equipmentIcon.setFitWidth(30);</span>
+<span class="nc" id="L240">    String png = &quot;&quot;;</span>
+<span class="nc bnc" id="L241" title="All 5 branches missed.">    switch (t) {</span>
+      case PBED:
+<span class="nc" id="L243">        png = &quot;HospitalBedIcon.png&quot;;</span>
+<span class="nc" id="L244">        break;</span>
+      case PUMP:
+<span class="nc" id="L246">        png = &quot;PumpIcon.png&quot;;</span>
+<span class="nc" id="L247">        break;</span>
+      case RECL:
+<span class="nc" id="L249">        png = &quot;ReclinerIcon.png&quot;;</span>
+<span class="nc" id="L250">        break;</span>
+      case XRAY:
+<span class="nc" id="L252">        png = &quot;XRayIcon.png&quot;;</span>
+<span class="nc" id="L253">        break;</span>
+      default:
+<span class="nc" id="L255">        png = &quot;&quot;;</span>
+        break;
+    }
+<span class="nc" id="L258">    Image i = new Image(App.class.getResource(&quot;images/Icons/&quot; + png).toString());</span>
+<span class="nc" id="L259">    equipmentIcon.setImage(i);</span>
+<span class="nc" id="L260">    return equipmentIcon;</span>
+  }
+
+  public MapIcon convertLocationToMapIcon(Equipment equip) {
+<span class="nc" id="L264">    MapIcon retval =</span>
+        new MapIcon(
+<span class="nc" id="L266">            (double) equip.getLocationNode().getX(),</span>
+<span class="nc" id="L267">            (double) equip.getLocationNode().getY(),</span>
+<span class="nc" id="L268">            equip.getName(),</span>
+<span class="nc" id="L269">            getImageViewFromEquipmentType(equip.getType()));</span>
+<span class="nc" id="L270">    mapIcons.add(retval);</span>
+<span class="nc" id="L271">    updateLayoutChildren();</span>
+<span class="nc" id="L272">    return retval;</span>
+  }
+
+  public void getFromDB() {
+<span class="nc" id="L276">    LinkedList&lt;Equipment&gt; equipment = DBManager.getInstance().getEquipmentManager().getAll();</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">    for (Equipment currEquipment : equipment) {</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">      if (currEquipment.getLocationNode().getFloor() == currFloor) {</span>
+<span class="nc" id="L279">        convertLocationToMapIcon(currEquipment);</span>
+      }
+<span class="nc" id="L281">    }</span>
+<span class="nc" id="L282">  }</span>
+
+  public static void main(String[] args) {
+<span class="nc" id="L285">    launch(args);</span>
+<span class="nc" id="L286">  }</span>
+
+  // This zoomBar is totally broken. I'm not quite sure how to fix it.
+  // TODO make this zoomBar work and display properly so that it may be used like a setting
+  private Slider createZoomBar() {
+<span class="nc" id="L291">    Slider zoomBar = new Slider();</span>
+<span class="nc" id="L292">    zoomBar.setMax(ZOOMINMAX);</span>
+<span class="nc" id="L293">    zoomBar.setMin(ZOOMOUTMAX);</span>
+<span class="nc" id="L294">    zoomBar.setOnMouseMoved(</span>
+        (event) -&gt; {
+<span class="nc" id="L296">          zoomBarScrolled(zoomBar.getValue());</span>
+<span class="nc" id="L297">        });</span>
+<span class="nc" id="L298">    zoomBar.setTranslateX(WIDTH / 2 - (zoomBar.getWidth() + 10));</span>
+<span class="nc" id="L299">    zoomBar.setTranslateY(-(HEIGHT / 2 - (zoomBar.getHeight() + 50)));</span>
+<span class="nc" id="L300">    return zoomBar;</span>
+  }
+
+  // Currently unused because zoomBar is busted
+  private void zoomBarScrolled(double value) {
+<span class="nc bnc" id="L305" title="All 4 branches missed.">    if (layout.getScaleX() &lt; ZOOMINMAX &amp;&amp; layout.getScaleX() &gt; ZOOMOUTMAX) {</span>
+<span class="nc" id="L306">      layout.setScaleX(value);</span>
+<span class="nc" id="L307">      layout.setScaleY(value);</span>
+    }
+<span class="nc" id="L309">  }</span>
+
+  // Called when user scrolls in or out on the layout ScrollPane (map)
+  private void handleScrollZoom(double scrollVal) {
+    // positive scroll values are up and negative scroll values are down
+    // TODO add a setting to invert scrolling (this makes sense to me— I usually reverse mine)
+<span class="nc bnc" id="L315" title="All 2 branches missed.">    if (scrollVal &gt; 0) {</span>
+<span class="nc" id="L316">      zoomIn(ZOOMAMPLIFIER);</span>
+    } else {
+<span class="nc" id="L318">      zoomOut(ZOOMAMPLIFIER);</span>
+    }
+<span class="nc" id="L320">  }</span>
+
+  // Catch-all zoomIn method
+  private void zoomIn(double amp) {
+<span class="nc" id="L324">    amp /= 10; // amp must be low so that the image does not scale too far</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">    if (layout.getScaleX() &lt; ZOOMINMAX) {</span>
+<span class="nc" id="L326">      layout.setScaleX(layout.getScaleX() * (1 + amp));</span>
+<span class="nc" id="L327">      layout.setScaleY(layout.getScaleY() * (1 + amp));</span>
+    }
+<span class="nc" id="L329">  }</span>
+
+  // Catch-all zoomOut method
+  private void zoomOut(double amp) {
+<span class="nc" id="L333">    amp /= 10; // amp must be low so that the image does not scale too far</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">    if (layout.getScaleX() &gt; ZOOMOUTMAX) {</span>
+<span class="nc" id="L335">      layout.setScaleX(layout.getScaleX() * 1 / (1 + amp));</span>
+<span class="nc" id="L336">      layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));</span>
+    }
+<span class="nc" id="L338">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
