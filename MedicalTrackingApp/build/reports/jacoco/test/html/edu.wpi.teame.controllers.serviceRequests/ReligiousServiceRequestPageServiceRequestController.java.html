@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReligiousServiceRequestPageServiceRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.controllers.serviceRequests</a> &gt; <span class="el_source">ReligiousServiceRequestPageServiceRequestController.java</span></div><h1>ReligiousServiceRequestPageServiceRequestController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.controllers.serviceRequests;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+
+<span class="nc" id="L14">public class ReligiousServiceRequestPageServiceRequestController extends ServiceRequestController {</span>
+
+  @FXML public JFXButton sendButton;
+  @FXML private TextField patientName;
+  @FXML private TextField roomNumber;
+  @FXML private TextField floorNumber;
+  @FXML private DatePicker datePicker;
+
+  @FXML private TextField startTime;
+  @FXML private TextField finishTime;
+
+  @FXML private JFXCheckBox christianityBox;
+  @FXML private JFXComboBox&lt;String&gt; christianityChoices;
+
+  @FXML private JFXCheckBox islamBox;
+  @FXML private JFXComboBox&lt;String&gt; islamChoices;
+
+  @FXML private JFXCheckBox judaismBox;
+  @FXML private JFXComboBox&lt;String&gt; judaismChoices;
+
+  @FXML private JFXComboBox&lt;String&gt; hinduismChoices;
+  @FXML private JFXCheckBox hinduismBox;
+
+  @FXML private JFXCheckBox otherBox;
+  @FXML private Text otherText;
+  @FXML private TextField otherServiceChoices;
+
+  @FXML
+  public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L43">    christianityChoices.setItems(</span>
+<span class="nc" id="L44">        FXCollections.observableArrayList(&quot;Blessing&quot;, &quot;Last Rites&quot;, &quot;Communion&quot;));</span>
+<span class="nc" id="L45">    judaismChoices.setItems(</span>
+<span class="nc" id="L46">        FXCollections.observableArrayList(&quot;Chaplain&quot;, &quot;Shabbat&quot;, &quot;Request Kosher Food&quot;));</span>
+<span class="nc" id="L47">    islamChoices.setItems(</span>
+<span class="nc" id="L48">        FXCollections.observableArrayList(&quot;Mosque Trip&quot;, &quot;Jumuah&quot;, &quot;Prayer Time&quot;));</span>
+<span class="nc" id="L49">    hinduismChoices.setItems(FXCollections.observableArrayList(&quot;Chaplain&quot;, &quot;Prayer Time&quot;));</span>
+<span class="nc" id="L50">  }</span>
+
+  @FXML
+  private void ChristianityOptionsCallBack() {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">    christianityChoices.setVisible(!christianityChoices.isVisible());</span>
+<span class="nc" id="L55">  }</span>
+
+  @FXML
+  private void JudaismOptionsCallBack() {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    judaismChoices.setVisible(!judaismChoices.isVisible());</span>
+<span class="nc" id="L60">  }</span>
+
+  @FXML
+  private void IslamOptionsCallBack() {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">    islamChoices.setVisible(!islamChoices.isVisible());</span>
+<span class="nc" id="L65">  }</span>
+
+  @FXML
+  private void HinduismOptionsCallBack() {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">    hinduismChoices.setVisible(!hinduismChoices.isVisible());</span>
+<span class="nc" id="L70">  }</span>
+
+  @FXML
+  private void OtherOptionsCallBack() {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">    otherText.setVisible(!otherText.isVisible());</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    otherServiceChoices.setVisible(!otherServiceChoices.isVisible());</span>
+<span class="nc" id="L76">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

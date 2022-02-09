@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LandingPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.controllers</a> &gt; <span class="el_source">LandingPageController.java</span></div><h1>LandingPageController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.controllers;
+
+import edu.wpi.teame.db.FloorType;
+import edu.wpi.teame.model.PannableView;
+import edu.wpi.teame.model.StyledTab;
+import edu.wpi.teame.model.enums.SortOrder;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.*;
+import javafx.stage.Screen;
+import lombok.SneakyThrows;
+
+<span class="nc" id="L20">public class LandingPageController implements Initializable {</span>
+  @FXML private AnchorPane mainAnchorPane;
+  @FXML private TabPane mainTabPane;
+
+  @Override
+<span class="nc" id="L25">  @SneakyThrows</span>
+  public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L27">    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());</span>
+<span class="nc" id="L28">    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());</span>
+<span class="nc" id="L29">    mainAnchorPane.autosize();</span>
+
+    // Get the tab content size using our init tab
+<span class="nc" id="L32">    double tabContentHeight =</span>
+<span class="nc" id="L33">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();</span>
+<span class="nc" id="L34">    double tabContentWidth =</span>
+<span class="nc" id="L35">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getWidth();</span>
+<span class="nc" id="L36">    mainTabPane.getTabs().clear();</span>
+
+<span class="nc" id="L38">    mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
+<span class="nc" id="L39">    mainTabPane.setMaxWidth(StyledTab.Width);</span>
+<span class="nc" id="L40">    mainTabPane.setRotateGraphic(true);</span>
+
+<span class="nc" id="L42">    List&lt;StyledTab&gt; tabs = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L43">    tabs.add(new StyledTab(&quot;Home&quot;, SortOrder.First, &quot;views/HomePage.fxml&quot;));</span>
+
+<span class="nc" id="L45">    PannableView mapView = new PannableView(FloorType.ThirdFloor);</span>
+<span class="nc" id="L46">    StyledTab mapTab =</span>
+        new StyledTab(
+            &quot;Hospital Map&quot;,
+            SortOrder.ByName,
+<span class="nc" id="L50">            mapView.getMapScene(tabContentHeight, tabContentWidth));</span>
+<span class="nc" id="L51">    mapTab.setOnSelectionChanged(</span>
+<span class="nc" id="L52">        new EventHandler&lt;Event&gt;() {</span>
+          @Override
+          public void handle(Event event) {
+<span class="nc" id="L55">            mapView.getFromDB();</span>
+<span class="nc" id="L56">          }</span>
+        });
+<span class="nc" id="L58">    tabs.add(mapTab);</span>
+
+<span class="nc" id="L60">    tabs.add(</span>
+        new StyledTab(
+            &quot;Medical Equipment Delivery&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L66">    tabs.add(</span>
+        new StyledTab(
+            &quot;Food Delivery&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/FoodDeliveryServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L72">    tabs.add(</span>
+        new StyledTab(
+            &quot;Medicine Delivery&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/MedicineDeliveryServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L78">    tabs.add(</span>
+        new StyledTab(
+            &quot;Gift And Floral Delivery&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/GiftAndFloralServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L84">    tabs.add(</span>
+        new StyledTab(
+            &quot;Language Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/LanguageInterpreterServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L90">    tabs.add(</span>
+        new StyledTab(
+            &quot;Sanitation Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/SanitationServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L96">    tabs.add(</span>
+        new StyledTab(
+            &quot;Laundry Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/LaundryServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L102">    tabs.add(</span>
+        new StyledTab(
+            &quot;Religious Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/ReligiousServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L108">    tabs.add(</span>
+        new StyledTab(
+            &quot;Internal Patient Transportation&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L114">    tabs.add(</span>
+        new StyledTab(
+            &quot;External Patient Transportation&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L120">    tabs.add(</span>
+        new StyledTab(
+            &quot;Audio/Video Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/AudioVisualServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L126">    tabs.add(</span>
+        new StyledTab(
+            &quot;Computer Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/ComputerServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L132">    tabs.add(</span>
+        new StyledTab(
+            &quot;Security Services&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/SecurityServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L138">    tabs.add(</span>
+        new StyledTab(
+            &quot;Facilities Maintenance&quot;,
+            SortOrder.ByName,
+            &quot;views/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml&quot;));
+
+<span class="nc" id="L144">    tabs.sort(StyledTab::compareTo);</span>
+<span class="nc" id="L145">    mainTabPane.getTabs().setAll(tabs);</span>
+<span class="nc" id="L146">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

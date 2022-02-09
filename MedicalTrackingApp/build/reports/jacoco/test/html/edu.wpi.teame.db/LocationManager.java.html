@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocationManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db</a> &gt; <span class="el_source">LocationManager.java</span></div><h1>LocationManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db;
+
+import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+
+public class LocationManager implements IManager&lt;Location&gt; {
+  private static Connection connection;
+  private static Statement stmt;
+
+<span class="nc" id="L14">  public LocationManager() {</span>
+<span class="nc" id="L15">    connection = DBManager.getInstance().getConnection();</span>
+
+    try {
+<span class="nc" id="L18">      stmt = connection.createStatement();</span>
+<span class="nc" id="L19">    } catch (SQLException e) {</span>
+<span class="nc" id="L20">      e.printStackTrace();</span>
+<span class="nc" id="L21">    }</span>
+<span class="nc" id="L22">  }</span>
+
+  @Override
+  public Location get(String id) {
+<span class="nc" id="L26">    Location result = null;</span>
+<span class="nc" id="L27">    String getQuery = &quot;SELECT * FROM LOCATIONS WHERE id='&quot; + id + &quot;'&quot;;</span>
+    try {
+<span class="nc" id="L29">      ResultSet rset = stmt.executeQuery(getQuery);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">      while (rset.next()) {</span>
+<span class="nc" id="L31">        int x = rset.getInt(&quot;x&quot;);</span>
+<span class="nc" id="L32">        int y = rset.getInt(&quot;y&quot;);</span>
+<span class="nc" id="L33">        String longName = rset.getString(&quot;longName&quot;);</span>
+<span class="nc" id="L34">        FloorType floor = FloorType.values()[rset.getInt(&quot;floor&quot;)];</span>
+<span class="nc" id="L35">        BuildingType building = BuildingType.values()[rset.getInt(&quot;building&quot;)];</span>
+<span class="nc" id="L36">        LocationType locationType = LocationType.values()[rset.getInt(&quot;locationType&quot;)];</span>
+<span class="nc" id="L37">        String shortName = rset.getString(&quot;shortName&quot;);</span>
+
+        // convert strings to proper type
+<span class="nc" id="L40">        result = new Location(id, longName, x, y, floor, building, locationType, shortName);</span>
+<span class="nc" id="L41">      }</span>
+<span class="nc" id="L42">    } catch (SQLException e) {</span>
+<span class="nc" id="L43">      e.printStackTrace();</span>
+<span class="nc" id="L44">    }</span>
+<span class="nc" id="L45">    return result;</span>
+  }
+
+  @Override
+  public LinkedList&lt;Location&gt; getAll() {
+<span class="nc" id="L50">    String getAllQuery = &quot;SELECT * FROM LOCATIONS&quot;;</span>
+<span class="nc" id="L51">    LinkedList&lt;Location&gt; result = new LinkedList&lt;&gt;();</span>
+
+    try {
+<span class="nc" id="L54">      ResultSet rset = stmt.executeQuery(getAllQuery);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">      while (rset.next()) {</span>
+<span class="nc" id="L56">        int x = rset.getInt(&quot;x&quot;);</span>
+<span class="nc" id="L57">        int y = rset.getInt(&quot;y&quot;);</span>
+<span class="nc" id="L58">        String id = rset.getString(&quot;id&quot;);</span>
+<span class="nc" id="L59">        String name = rset.getString(&quot;longName&quot;);</span>
+<span class="nc" id="L60">        FloorType floor = FloorType.values()[rset.getInt(&quot;floor&quot;)];</span>
+<span class="nc" id="L61">        BuildingType building = BuildingType.values()[rset.getInt(&quot;building&quot;)];</span>
+<span class="nc" id="L62">        LocationType locationType = LocationType.values()[rset.getInt(&quot;locationType&quot;)];</span>
+<span class="nc" id="L63">        String shortName = rset.getString(&quot;shortName&quot;);</span>
+
+        // convert strings to proper type
+<span class="nc" id="L66">        result.add(new Location(id, name, x, y, floor, building, locationType, shortName));</span>
+<span class="nc" id="L67">      }</span>
+<span class="nc" id="L68">    } catch (SQLException e) {</span>
+<span class="nc" id="L69">      System.out.println(&quot;Could not retrieve all of the locations from the table&quot;);</span>
+<span class="nc" id="L70">      e.printStackTrace();</span>
+<span class="nc" id="L71">    }</span>
+<span class="nc" id="L72">    return result;</span>
+  }
+
+  @Override
+  public void insert(Location newObject) {
+<span class="nc" id="L77">    String insertQuery =</span>
+        &quot;INSERT INTO LOCATIONS VALUES('&quot;
+<span class="nc" id="L79">            + newObject.getId()</span>
+            + &quot;',&quot;
+<span class="nc" id="L81">            + newObject.getX()</span>
+            + &quot;,&quot;
+<span class="nc" id="L83">            + newObject.getY()</span>
+            + &quot;,&quot;
+<span class="nc" id="L85">            + newObject.getFloor().ordinal()</span>
+            + &quot;,&quot;
+<span class="nc" id="L87">            + newObject.getBuilding().ordinal()</span>
+            + &quot;,&quot;
+<span class="nc" id="L89">            + newObject.getType().ordinal()</span>
+            + &quot;,'&quot;
+<span class="nc" id="L91">            + newObject.getLongName()</span>
+            + &quot;','&quot;
+<span class="nc" id="L93">            + newObject.getShortName()</span>
+            + &quot;')&quot;;
+    try {
+<span class="nc" id="L96">      stmt.executeUpdate(insertQuery);</span>
+<span class="nc" id="L97">    } catch (SQLException e) {</span>
+<span class="nc" id="L98">      System.out.println(&quot;Could not insert into Locations&quot;);</span>
+<span class="nc" id="L99">      e.printStackTrace();</span>
+<span class="nc" id="L100">    }</span>
+<span class="nc" id="L101">  }</span>
+
+  @Override
+  public void remove(String id) {
+<span class="nc" id="L105">    String removeQuery = &quot;DELETE FROM LOCATIONS WHERE id='&quot; + id + &quot;'&quot;;</span>
+    try {
+<span class="nc" id="L107">      stmt.executeUpdate(removeQuery);</span>
+<span class="nc" id="L108">    } catch (SQLException e) {</span>
+<span class="nc" id="L109">      System.out.println(&quot;Case 4: Could not drop nodeID&quot;);</span>
+<span class="nc" id="L110">      e.printStackTrace();</span>
+<span class="nc" id="L111">    }</span>
+<span class="nc" id="L112">  }</span>
+
+  // floor,building,nodeType,longName,shortName
+  @Override
+  public void update(Location updatedObject) {
+<span class="nc" id="L117">    String updateQuery =</span>
+        &quot;UPDATE LOCATIONS SET x = &quot;
+<span class="nc" id="L119">            + updatedObject.getY()</span>
+            + &quot;, y = &quot;
+<span class="nc" id="L121">            + updatedObject.getX()</span>
+            + &quot;, floor = &quot;
+<span class="nc" id="L123">            + updatedObject.getFloor().ordinal()</span>
+            + &quot;, building = &quot;
+<span class="nc" id="L125">            + updatedObject.getBuilding().ordinal()</span>
+            + &quot;, locationType = &quot;
+<span class="nc" id="L127">            + updatedObject.getType().ordinal()</span>
+            + &quot;, longName = '&quot;
+<span class="nc" id="L129">            + updatedObject.getLongName()</span>
+            + &quot;', shortName = '&quot;
+<span class="nc" id="L131">            + updatedObject.getShortName()</span>
+            + &quot;' WHERE id = '&quot;
+<span class="nc" id="L133">            + updatedObject.getId()</span>
+            + &quot;'&quot;;
+    try {
+<span class="nc" id="L136">      stmt.executeUpdate(updateQuery);</span>
+<span class="nc" id="L137">      System.out.println(&quot;Location updated successfully&quot;);</span>
+<span class="nc" id="L138">    } catch (SQLException e) {</span>
+<span class="nc" id="L139">      System.out.println(&quot;Case2: Could not update Locations table&quot;);</span>
+<span class="nc" id="L140">      e.printStackTrace();</span>
+<span class="nc" id="L141">    }</span>
+<span class="nc" id="L142">  }</span>
+
+  @Override
+  public void readCSV(String csvFile) throws IOException {
+<span class="nc" id="L146">    csvFile =</span>
+<span class="nc" id="L147">        System.getProperty(&quot;user.dir&quot;)</span>
+            + &quot;\\src\\main\\resources\\edu\\wpi\\teame\\csv\\TowerLocationsE.csv&quot;;
+
+<span class="nc" id="L150">    File file = new File(csvFile);</span>
+<span class="nc" id="L151">    FileReader fr = new FileReader(file);</span>
+<span class="nc" id="L152">    BufferedReader br = new BufferedReader(fr);</span>
+<span class="nc" id="L153">    String line = &quot; &quot;;</span>
+    String[] tempArr;
+
+<span class="nc" id="L156">    boolean firstLine = true;</span>
+<span class="nc" id="L157">    String delimiter = &quot;,&quot;;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">    while ((line = br.readLine()) != null) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">      if (!firstLine) {</span>
+<span class="nc" id="L160">        tempArr = line.split(delimiter);</span>
+<span class="nc" id="L161">        Location tempLocation =</span>
+            new Location(
+                tempArr[0],
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                6 &gt;= tempArr.length ? &quot;&quot; : tempArr[6],</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                1 &gt;= tempArr.length ? -1 : Integer.parseInt(tempArr[1]),</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                2 &gt;= tempArr.length ? -1 : Integer.parseInt(tempArr[2]),</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                3 &gt;= tempArr.length ? null : csvValToFloorType(tempArr[3]),</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                4 &gt;= tempArr.length ? null : BuildingType.valueOf(tempArr[4]),</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                5 &gt;= tempArr.length ? null : LocationType.valueOf(tempArr[5]),</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                7 &gt;= tempArr.length ? &quot;&quot; : tempArr[7]);</span>
+
+<span class="nc" id="L172">        insert(tempLocation);</span>
+<span class="nc" id="L173">      } else {</span>
+<span class="nc" id="L174">        firstLine = false;</span>
+      }
+    }
+<span class="nc" id="L177">    br.close();</span>
+<span class="nc" id="L178">  }</span>
+
+  @Override
+  public void writeToCSV(String outputFilePath) {
+<span class="nc" id="L182">    String csvSeparator = &quot;,&quot;;</span>
+    try {
+      try {
+<span class="nc" id="L185">        File myObj = new File(outputFilePath + &quot;.csv&quot;);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (myObj.createNewFile()) {</span>
+<span class="nc" id="L187">          System.out.println(&quot;File created: &quot; + myObj.getName());</span>
+        } else {
+<span class="nc" id="L189">          System.out.println(&quot;File already exists.&quot;);</span>
+        }
+<span class="nc" id="L191">      } catch (IOException e) {</span>
+<span class="nc" id="L192">        System.out.println(&quot;An error occurred.&quot;);</span>
+<span class="nc" id="L193">        e.printStackTrace();</span>
+<span class="nc" id="L194">      }</span>
+
+<span class="nc" id="L196">      BufferedWriter bw =</span>
+          new BufferedWriter(
+              new OutputStreamWriter(new FileOutputStream(outputFilePath + &quot;.csv&quot;), &quot;UTF-8&quot;));
+
+      // Create a title for the CSV as the list of Locations doesn't have one
+      // Put the title at the start of the locations list
+<span class="nc" id="L202">      StringBuffer title =</span>
+          new StringBuffer(&quot;nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName&quot;);
+      // Add buffer string to buffered writer
+<span class="nc" id="L205">      bw.write(title.toString());</span>
+      // Drops down to next row
+<span class="nc" id="L207">      bw.newLine();</span>
+
+<span class="nc" id="L209">      LinkedList&lt;Location&gt; locationList = getAll();</span>
+
+      // Go through each Location in the list
+<span class="nc bnc" id="L212" title="All 2 branches missed.">      for (Location location : locationList) {</span>
+<span class="nc" id="L213">        String xcoord = String.valueOf(location.getX());</span>
+<span class="nc" id="L214">        String ycoord = String.valueOf(location.getY());</span>
+<span class="nc" id="L215">        String locationType = location.getType().toString();</span>
+<span class="nc" id="L216">        String buildingType = location.getBuilding().toString();</span>
+<span class="nc" id="L217">        String floorType = location.getFloor().toString();</span>
+
+        // Create a single temporary string buffer
+<span class="nc" id="L220">        StringBuffer oneLine = new StringBuffer();</span>
+        // Add nodeID to buffer
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        oneLine.append(location.getId().trim().length() == 0 ? &quot;&quot; : location.getId());</span>
+        // Add comma separator
+<span class="nc" id="L224">        oneLine.append(csvSeparator);</span>
+        // Add xcoord to buffer
+<span class="nc bnc" id="L226" title="All 4 branches missed.">        oneLine.append(xcoord == null || (xcoord.trim().length() == 0) ? &quot;&quot; : xcoord);</span>
+        // Add comma separator
+<span class="nc" id="L228">        oneLine.append(csvSeparator);</span>
+        // Add ycoord to buffer
+<span class="nc bnc" id="L230" title="All 4 branches missed.">        oneLine.append(ycoord == null || (ycoord.trim().length() == 0) ? &quot;&quot; : ycoord);</span>
+        // Add comma separator
+<span class="nc" id="L232">        oneLine.append(csvSeparator);</span>
+        // Add floor to buffer
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        oneLine.append(floorType == null || (floorType.trim().length() == 0) ? &quot;&quot; : floorType);</span>
+        // Add comma separator
+<span class="nc" id="L236">        oneLine.append(csvSeparator);</span>
+        // Add building to buffer
+<span class="nc" id="L238">        oneLine.append(</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">            buildingType == null || (buildingType.trim().length() == 0) ? &quot;&quot; : buildingType);</span>
+        // Add comma separator
+<span class="nc" id="L241">        oneLine.append(csvSeparator);</span>
+        // Add nodeType to buffer
+<span class="nc" id="L243">        oneLine.append(</span>
+<span class="nc bnc" id="L244" title="All 4 branches missed.">            locationType == null || (locationType.trim().length() == 0) ? &quot;&quot; : locationType);</span>
+        // Add comma separator
+<span class="nc" id="L246">        oneLine.append(csvSeparator);</span>
+        // Add longName to buffer
+<span class="nc" id="L248">        oneLine.append(</span>
+<span class="nc bnc" id="L249" title="All 4 branches missed.">            location.getLongName() == null || (location.getLongName().trim().length() == 0)</span>
+<span class="nc" id="L250">                ? &quot;&quot;</span>
+<span class="nc" id="L251">                : location.getLongName());</span>
+        // Add comma separator
+<span class="nc" id="L253">        oneLine.append(csvSeparator);</span>
+        // Add shortName to buffer
+<span class="nc" id="L255">        oneLine.append(</span>
+<span class="nc bnc" id="L256" title="All 4 branches missed.">            location.getShortName() == null || (location.getShortName().trim().length() == 0)</span>
+<span class="nc" id="L257">                ? &quot;&quot;</span>
+<span class="nc" id="L258">                : location.getShortName());</span>
+
+        // Add buffer string to buffered writer
+<span class="nc" id="L261">        bw.write(oneLine.toString());</span>
+        // Drops down to next row
+<span class="nc" id="L263">        bw.newLine();</span>
+<span class="nc" id="L264">      }</span>
+      // Applies buffer to file
+<span class="nc" id="L266">      bw.flush();</span>
+<span class="nc" id="L267">      bw.close();</span>
+<span class="nc" id="L268">    } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L269">      e.printStackTrace();</span>
+<span class="nc" id="L270">    } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L271">      e.printStackTrace();</span>
+
+<span class="nc" id="L273">    } catch (IOException e) {</span>
+<span class="nc" id="L274">      e.printStackTrace();</span>
+<span class="nc" id="L275">    }</span>
+<span class="nc" id="L276">  }</span>
+
+  private FloorType csvValToFloorType(String csvVal) {
+<span class="nc bnc" id="L279" title="All 6 branches missed.">    switch (csvVal) {</span>
+      case &quot;1&quot;:
+<span class="nc" id="L281">        return FloorType.FirstFloor;</span>
+      case &quot;2&quot;:
+<span class="nc" id="L283">        return FloorType.SecondFloor;</span>
+      case &quot;3&quot;:
+<span class="nc" id="L285">        return FloorType.ThirdFloor;</span>
+      case &quot;L1&quot;:
+<span class="nc" id="L287">        return FloorType.LowerLevel1;</span>
+      case &quot;L2&quot;:
+<span class="nc" id="L289">        return FloorType.LowerLevel2;</span>
+
+      default:
+<span class="nc" id="L292">        return null;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
