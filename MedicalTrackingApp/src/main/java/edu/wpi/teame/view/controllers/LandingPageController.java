@@ -79,87 +79,123 @@ public class LandingPageController implements Initializable {
         new StyledTab(
             "Medical Equipment Delivery",
             SortOrder.ByName,
-            "view/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.MedicalEquipmentDelivery)));
 
     tabs.add(
         new StyledTab(
-            "Food Delivery",
-            SortOrder.ByName,
-            "view/serviceRequests/FoodDeliveryServiceRequestPage.fxml"));
+            "Food Delivery", SortOrder.ByName, getPageUrl(ServiceRequestTypes.FoodDelivery)));
 
     tabs.add(
         new StyledTab(
             "Medicine Delivery",
             SortOrder.ByName,
-            "view/serviceRequests/MedicineDeliveryServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.MedicineDelivery)));
 
     tabs.add(
         new StyledTab(
             "Gift And Floral Delivery",
             SortOrder.ByName,
-            "view/serviceRequests/GiftAndFloralServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.GiftAndFloral)));
 
     tabs.add(
         new StyledTab(
             "Language Services",
             SortOrder.ByName,
-            "view/serviceRequests/LanguageInterpreterServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.LanguageInterpreter)));
 
     tabs.add(
         new StyledTab(
-            "Sanitation Services",
-            SortOrder.ByName,
-            "view/serviceRequests/SanitationServiceRequestPage.fxml"));
+            "Sanitation Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Sanitation)));
 
     tabs.add(
         new StyledTab(
-            "Laundry Services",
-            SortOrder.ByName,
-            "view/serviceRequests/LaundryServiceRequestPage.fxml"));
+            "Laundry Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Laundry)));
 
     tabs.add(
         new StyledTab(
-            "Religious Services",
-            SortOrder.ByName,
-            "view/serviceRequests/ReligiousServiceRequestPage.fxml"));
+            "Religious Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Religious)));
 
     tabs.add(
         new StyledTab(
             "Internal Patient Transportation",
             SortOrder.ByName,
-            "view/serviceRequests/InternalPatientTransportationServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.InternalPatientTransportation)));
 
     tabs.add(
         new StyledTab(
             "External Patient Transportation",
             SortOrder.ByName,
-            "view/serviceRequests/ExternalPatientTransportationServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.ExternalPatientTransportation)));
 
     tabs.add(
         new StyledTab(
-            "Audio/Video Services",
-            SortOrder.ByName,
-            "view/serviceRequests/AudioVisualServiceRequestPage.fxml"));
+            "Audio/Video Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.AudioVisual)));
 
     tabs.add(
         new StyledTab(
-            "Computer Services",
-            SortOrder.ByName,
-            "view/serviceRequests/ComputerServiceRequestPage.fxml"));
+            "Computer Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Computer)));
 
     tabs.add(
         new StyledTab(
-            "Security Services",
-            SortOrder.ByName,
-            "view/serviceRequests/SecurityServiceRequestPage.fxml"));
+            "Security Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Security)));
 
     tabs.add(
         new StyledTab(
             "Facilities Maintenance",
             SortOrder.ByName,
-            "view/serviceRequests/FacilitiesMaintenanceServiceRequestPage.fxml"));
+            getPageUrl(ServiceRequestTypes.FacilitiesMaintenance)));
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
+  }
+
+  private String getPageUrl(ServiceRequestTypes t) {
+    String url = "views/serviceRequests/";
+    switch (t) {
+      case Laundry:
+        url += "Laundry";
+        break;
+      case Computer:
+        url += "Computer";
+        break;
+      case Security:
+        url += "Security";
+        break;
+      case Religious:
+        url += "Religious";
+        break;
+      case AudioVisual:
+        url += "AudioVisual";
+        break;
+      case FoodDelivery:
+        url += "FoodDelivery";
+        break;
+      case GiftAndFloral:
+        url += "GiftAndFloral";
+        break;
+      case MedicalEquipmentDelivery:
+        url += "MedicalEquipmentDelivery";
+        break;
+      case MedicineDelivery:
+        url += "MedicineDelivery";
+        break;
+      case LanguageInterpreter:
+        url += "LanguageInterpreter";
+        break;
+      case FacilitiesMaintenance:
+        url += "FacilitiesMaintenance";
+        break;
+      case InternalPatientTransportation:
+        url += "InternalPatientTransportation";
+        break;
+      case ExternalPatientTransportation:
+        url += "ExternalPatientTransportation";
+        break;
+      case Sanitation:
+        url += "Sanitation";
+        break;
+    }
+    url += "ServiceRequestPage.fxml";
+    return url;
   }
 }

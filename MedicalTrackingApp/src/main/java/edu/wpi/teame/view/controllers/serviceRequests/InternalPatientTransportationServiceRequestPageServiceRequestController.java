@@ -46,6 +46,18 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   }
 
   @FXML
+  private void clearText() {
+    roomTextBox.setText("");
+    patientNameTextBox.setText("");
+    floorTextBox.setText("");
+    deliveryTimeTextbox.setText("");
+    deliveryDateDatebox.setValue(null);
+    deliveryDateDatebox.getEditor().clear();
+    transferFromPicker.valueProperty().set(null);
+    transferToPicker.valueProperty().set(null);
+  }
+
+  @FXML
   private void fromPickerCallback() {
     // This throws a bunch of exceptions that are non-fatal. I'll look into it later.
     String fromLocation = transferFromPicker.getValue();

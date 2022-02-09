@@ -28,15 +28,19 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox requestState;
 
   @FXML private TextField patientName;
-  @FXML private JFXComboBox roomNumber;
   @FXML private TextField startTime;
   @FXML private TextField endTime;
   @FXML private TextField nameAssigned;
+  @FXML private TextField floor;
 
   @FXML private DatePicker datePicker;
 
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
+
+  @FXML private JFXComboBox equipmentNeeded;
+  @FXML private JFXComboBox requestState;
+  @FXML private JFXComboBox roomNumber;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -132,5 +136,19 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
       default:
         return null;
     }
+  }
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    nameAssigned.setText("");
+    startTime.setText("");
+    endTime.setText("");
+    floor.setText("");
+    datePicker.setValue(null);
+    datePicker.getEditor().clear();
+    equipmentNeeded.valueProperty().set(null);
+    roomNumber.valueProperty().set(null);
+    requestState.valueProperty().set(null);
   }
 }

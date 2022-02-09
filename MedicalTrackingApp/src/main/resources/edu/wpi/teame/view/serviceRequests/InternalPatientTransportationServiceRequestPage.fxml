@@ -34,7 +34,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+              <JFXButton fx:id="sendButton" alignment="BOTTOM_RIGHT" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
@@ -231,6 +231,11 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="9">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
          </children>
       </GridPane>
     </children>

@@ -5,10 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 public class FoodDeliveryServiceRequestPageServiceRequestController
@@ -38,6 +35,8 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
   @FXML private TextField breakfastTimeTextField;
   @FXML private TextField lunchTimeTextField;
   @FXML private TextField dinnerTimeTextField;
+  @FXML private DatePicker startDate;
+  @FXML private DatePicker endDate;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -79,5 +78,23 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
   private void DietaryRestrictionsCallBack() {
     dietaryRestrictionsDescribe.setVisible(!dietaryRestrictionsDescribe.isVisible());
     dietaryRestrictionsDescribeText.setVisible(!dietaryRestrictionsDescribeText.isVisible());
+  }
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    roomNumber.setText("");
+    floor.setText("");
+    breakfastTimeTextField.setText("");
+    lunchTimeTextField.setText("");
+    dinnerTimeTextField.setText("");
+    startDate.setValue(null);
+    startDate.getEditor().clear();
+    endDate.setValue(null);
+    endDate.getEditor().clear();
+    breakfastMealDropdown.valueProperty().set(null);
+    lunchMealDropdown.valueProperty().set(null);
+    dinnerMealDropdown.valueProperty().set(null);
+    dietaryRestrictions.setSelected(false);
   }
 }

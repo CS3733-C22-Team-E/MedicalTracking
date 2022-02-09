@@ -35,4 +35,16 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     chooseTransportation.setItems(
         FXCollections.observableArrayList("Ambulance", "Helicopter", "Car", "Other"));
   }
+
+  @FXML
+  private void clearText() {
+    patientName.setText("");
+    floorNum.setText("");
+    roomNum.setText("");
+    pickupTime.setText("");
+    dropoffAddress.setText("");
+    datePickup.setValue(null);
+    datePickup.getEditor().clear();
+    chooseTransportation.valueProperty().set(null);
+  }
 }

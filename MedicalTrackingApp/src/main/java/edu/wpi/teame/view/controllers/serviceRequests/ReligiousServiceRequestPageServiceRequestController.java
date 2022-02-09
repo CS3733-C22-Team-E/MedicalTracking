@@ -20,7 +20,6 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private DatePicker datePicker;
 
   @FXML private TextField startTime;
-  @FXML private TextField finishTime;
 
   @FXML private JFXCheckBox christianityBox;
   @FXML private JFXComboBox<String> christianityChoices;
@@ -73,5 +72,20 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   private void OtherOptionsCallBack() {
     otherText.setVisible(!otherText.isVisible());
     otherServiceChoices.setVisible(!otherServiceChoices.isVisible());
+  }
+
+  @FXML
+  private void clearText() {
+    datePicker.setValue(null);
+    datePicker.getEditor().clear();
+    patientName.setText("");
+    roomNumber.setText("");
+    floorNumber.setText("");
+    startTime.setText("");
+    otherServiceChoices.setText("");
+    hinduismChoices.valueProperty().set(null);
+    christianityChoices.valueProperty().set(null);
+    judaismChoices.valueProperty().set(null);
+    islamChoices.valueProperty().set(null);
   }
 }

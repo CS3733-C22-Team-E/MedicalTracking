@@ -39,7 +39,11 @@
                   <Font size="24.0" />
                </font>
             </Text>
+<<<<<<< HEAD:MedicalTrackingApp/src/main/resources/edu/wpi/teame/view/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml
             <JFXButton fx:id="submitButton" buttonType="RAISED" onMouseClicked="#sendToMEDB" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+=======
+            <JFXButton fx:id="submitButton" buttonType="RAISED" onMouseClicked="#sendToMEDB" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+>>>>>>> master:MedicalTrackingApp/build/resources/main/edu/wpi/teame/views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml
                <font>
                   <Font size="16.0" />
                </font>
@@ -87,11 +91,30 @@
                </GridPane.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+<<<<<<< HEAD:MedicalTrackingApp/src/main/resources/edu/wpi/teame/view/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml
             <JFXComboBox fx:id="roomNumber" promptText="Room" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
+=======
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="floor" promptText="Enter patient floor..." GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="10">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXComboBox fx:id="roomNumber" prefHeight="26.0" prefWidth="220.0" promptText="Choose. equipment.." styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+>>>>>>> master:MedicalTrackingApp/build/resources/main/edu/wpi/teame/views/serviceRequests/MedicalEquipmentDeliveryServiceRequestPage.fxml
          </children>
       </GridPane>
    </children>

@@ -40,7 +40,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <DatePicker prefHeight="25.0" prefWidth="245.0" promptText="Choose start date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <DatePicker fx:id="startDate" prefHeight="25.0" prefWidth="245.0" promptText="Choose start date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -48,7 +48,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-                  <DatePicker prefHeight="25.0" prefWidth="244.0" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <DatePicker fx:id="endDate" prefHeight="25.0" prefWidth="244.0" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -71,7 +71,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <TextField fx:id="breakfastTimeTextField" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="timeNeeded" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -100,7 +100,12 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+            <JFXButton fx:id="sendButton" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font size="16.0" />
                </font>
