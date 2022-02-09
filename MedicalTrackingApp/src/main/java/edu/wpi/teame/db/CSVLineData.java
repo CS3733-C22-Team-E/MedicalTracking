@@ -20,6 +20,10 @@ public class CSVLineData {
     return parsedData[headers.indexOf(columnName)];
   }
 
+  public boolean getColumnBoolean(String columnName) {
+    return Boolean.parseBoolean(parsedData[headers.indexOf(columnName)]);
+  }
+
   public int getColumnInt(String columnName) {
     return Integer.parseInt(parsedData[headers.indexOf(columnName)]);
   }
