@@ -21,7 +21,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
   }
 
   public Employee getByAssignee(String assignee) throws SQLException {
-    return super.getBy("WHERE name = " + assignee).get(0);
+    return super.getBy("WHERE name = '" + assignee + "'").get(0);
   }
 
   @Override

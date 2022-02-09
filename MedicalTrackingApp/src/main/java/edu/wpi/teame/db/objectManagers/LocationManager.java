@@ -26,8 +26,8 @@ public final class LocationManager extends ObjectManager<Location> {
     super(DataBaseObjectType.Location);
   }
 
-  public Location getByName(String locationName) throws SQLException {
-    return super.getBy("WHERE locationName = " + locationName).get(0);
+  public Location getByName(String longName) throws SQLException {
+    return super.getBy("WHERE longName = '" + longName + "'").get(0);
   }
 
   @Override

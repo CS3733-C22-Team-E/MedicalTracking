@@ -7,7 +7,6 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import java.net.URL;
 import java.sql.Date;
@@ -72,22 +71,22 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-            DBManager.getInstance()
-                    .getEmployeeManager()
-                    .getByAssignee(serviceAssignee.getValue().toString());
+        DBManager.getInstance()
+            .getEmployeeManager()
+            .getByAssignee(serviceAssignee.getValue().toString());
     Location location =
-            DBManager.getInstance()
-                    .getLocationManager()
-                    .getByName(serviceLocation.getValue().toString());
+        DBManager.getInstance()
+            .getLocationManager()
+            .getByName(serviceLocation.getValue().toString());
 
     SecurityServiceRequest serviceRequest =
-            new SecurityServiceRequest(
-                    ServiceRequestStatus.OPEN,
-                    employee,
-                    location,
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    0);
+        new SecurityServiceRequest(
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            0);
     DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
