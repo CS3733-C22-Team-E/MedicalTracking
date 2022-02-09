@@ -97,7 +97,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <ComboBox fx:id="medicineTime" prefWidth="150.0" promptText="Enter time..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <ComboBox fx:id="medicineTime" prefWidth="150.0" promptText="Select time..." GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>
