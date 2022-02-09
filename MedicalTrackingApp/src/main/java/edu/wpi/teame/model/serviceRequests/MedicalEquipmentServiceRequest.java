@@ -1,5 +1,8 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -28,13 +31,13 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
   public MedicalEquipmentServiceRequest(ResultSet resultSet) throws SQLException {
     // TODO: actually call employee, location, equipment in constructor
     super(
-        ServiceRequestStatus.values()[resultSet.getInt("requestStatus")],
-        null,
-        null,
+        ServiceRequestStatus.values()[resultSet.getInt("status")],
+        new EmployeeManager().get(resultSet.getInt("employeeID")),
+        new LocationManager().get(resultSet.getInt("locationID")),
         resultSet.getDate("closeDate"),
         resultSet.getDate("openDate"),
         resultSet.getInt("id"));
-    this.equipment = null;
+    this.equipment = new EquipmentManager().get(resultSet.getInt("equipmentID"));
     this.patient = resultSet.getString("patient");
   }
 
@@ -50,7 +53,7 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
         + ", endTime: "
         + closeDate
         + ", employee: "
-        + employee
+        + employee.getId()
         + ", equipment: "
         + equipment.getId()
         + ", status: "
@@ -80,7 +83,7 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   @Override
   public String toSQLInsertString() {
-    return super.toSQLInsertString() + ", " + equipment.getId() + ", " + patient.toString();
+    return super.toSQLInsertString() + ", " + equipment.getId() + ", '" + patient.toString() + "'";
   }
 
   @Override
@@ -88,8 +91,11 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
     return super.toSQLInsertString()
         + ", equipment = "
         + equipment.getId()
-        + ", patient = "
-        + patient.toString();
+        + ", patient = '"
+        + patient.toString()
+        + "'"
+        + "WHERE id = "
+        + id;
   }
 
   @Override

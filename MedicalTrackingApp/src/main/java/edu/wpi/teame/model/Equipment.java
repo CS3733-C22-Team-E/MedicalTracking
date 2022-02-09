@@ -131,6 +131,8 @@ public class Equipment implements ISQLSerializable {
 
   @Override
   public String toSQLUpdateString() {
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
     return "locationID = "
         + location.getId()
         + ", name = '"
@@ -138,9 +140,11 @@ public class Equipment implements ISQLSerializable {
         + "', type = "
         + type.ordinal()
         + ", isClean = "
-        + isClean
+        + isCleanInt
         + ", hasPatient = "
-        + hasPatient;
+        + hasPatientInt
+        + " WHERE id = "
+        + id;
   }
 
   @Override

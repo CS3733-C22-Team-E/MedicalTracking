@@ -79,17 +79,16 @@ public abstract class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String toSQLInsertString() {
-    return id
+    return location.getId()
         + ", "
-        + location.getId()
+        + status.ordinal()
         + ", "
-        + status.toString()
-        + ", "
-        + employee
-        + ", "
-        + closeDate.toString()
-        + ", "
-        + openDate.toString();
+        + employee.getId()
+        + ", '"
+        + closeDate
+        + "', '"
+        + openDate
+        + "'";
   }
 
   @Override
@@ -97,17 +96,32 @@ public abstract class ServiceRequest implements ISQLSerializable {
     return "locationID = "
         + location.getId()
         + ", status = "
-        + status.toString()
+        + status.ordinal()
         + ", employeeID = "
         + employee.getId()
-        + ", closeDate = "
+        + ", closeDate = '"
         + closeDate.toString()
-        + ", openDate = "
-        + openDate.toString();
+        + "', openDate = '"
+        + openDate.toString()
+        + "' WHERE id = "
+        + id;
   }
 
   @Override
   public String getTableColumns() {
-    return "(locationID, status, employeeID, closeDate, endTime, openDate, ";
+
+    return "(locationID, status, employeeID, closeDate, openDate, ";
+  }
+
+  public String toString() {
+    StringBuilder ServiceRequestString = new StringBuilder();
+    ServiceRequestString.append("id: ").append(this.id).append(" ");
+    ServiceRequestString.append("locationID: ").append(this.location.getId()).append(" ");
+    ServiceRequestString.append("status: ").append(this.status).append(" ");
+    ServiceRequestString.append(" employeeID: ").append(this.employee.getId());
+    ServiceRequestString.append(" closeDate: ").append(this.closeDate.toString());
+    ServiceRequestString.append(" openDate: ").append(this.openDate.toString());
+
+    return ServiceRequestString.toString();
   }
 }

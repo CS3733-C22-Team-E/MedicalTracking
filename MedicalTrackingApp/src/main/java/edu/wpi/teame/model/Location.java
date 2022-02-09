@@ -153,7 +153,7 @@ public class Location implements ISQLSerializable {
 
   @Override
   public String toSQLUpdateString() {
-    return "type = "
+    return "locationType = "
         + type.ordinal()
         + ", shortName = '"
         + shortName
