@@ -20,7 +20,7 @@ public interface IManager<T extends ISQLSerializable> {
   public void update(T updatedObject) throws SQLException;
 
   public void readCSV(String inputFileName)
-          throws IOException, SQLException, CsvValidationException, ParseException;
+      throws IOException, SQLException, CsvValidationException, ParseException;
 
   public void writeToCSV(String outputFileName) throws IOException, SQLException;
 }
