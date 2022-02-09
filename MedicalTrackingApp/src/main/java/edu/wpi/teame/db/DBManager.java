@@ -139,32 +139,33 @@ public final class DBManager {
         stmt.execute(createSecuritySRTable);
         System.out.println("MedicalEquipmentSR Table created");
     }
+  }
 
-    public MedicalEquipmentSRManager getMedicalEquipmentSRManager() {
-        return new MedicalEquipmentSRManager();
-    }
+  public MedicalEquipmentSRManager getMedicalEquipmentSRManager() {
+    return new MedicalEquipmentSRManager();
+  }
 
-    public EquipmentManager getEquipmentManager() {
-        return new EquipmentManager();
-    }
+  public EquipmentManager getEquipmentManager() {
+    return new EquipmentManager();
+  }
 
-    public LocationManager getLocationManager() {
-        return new LocationManager();
-    }
+  public LocationManager getLocationManager() {
+    return new LocationManager();
+  }
 
-    public EmployeeManager getEmployeeManager() {
-        return new EmployeeManager();
-    }
+  public EmployeeManager getEmployeeManager() {
+    return new EmployeeManager();
+  }
 
-    public MedicineDeliveryServiceRequestManager getMedicineDeliverySRManager() {
-        return new MedicineDeliveryServiceRequestManager();
-    }
+  public MedicineDeliveryServiceRequestManager getMedicineDeliverySRManager() {
+    return new MedicineDeliveryServiceRequestManager();
+  }
 
-    public SanitationServiceRequestManager getSanitationSRManager() {
-        return new SanitationServiceRequestManager();
-    }
+  public SanitationServiceRequestManager getSanitationSRManager() {
+    return new SanitationServiceRequestManager();
+  }
 
-    public SecurityServiceRequestManager getSecuritySRManager() {
-        return new SecurityServiceRequestManager();
-    }
+  public SecurityServiceRequestManager getSecuritySRManager() {
+    return new SecurityServiceRequestManager();
+  }
 }

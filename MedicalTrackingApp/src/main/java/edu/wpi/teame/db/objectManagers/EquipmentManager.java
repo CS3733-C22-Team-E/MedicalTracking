@@ -1,7 +1,9 @@
 package edu.wpi.teame.db.objectManagers;
 
 // import com.opencsv.exceptions.CsvValidationException;
+
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.CSVManager;
@@ -10,8 +12,11 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class EquipmentManager extends ObjectManager<Equipment> {
   public EquipmentManager() {
@@ -52,5 +57,37 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
   }
 
   @Override
-  public void writeToCSV(String outputFileName) throws IOException {}
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+    String filePath =
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
+
+    FileWriter outputFile = new FileWriter(filePath);
+    CSVWriter writer =
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+    List<Equipment> listOfEquipment = this.getAll();
+
+    List<String[]> data = new ArrayList<String[]>();
+    data.add(
+        new String[] {"nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"});
+
+    for (Equipment equipment : listOfEquipment) {
+      data.add(
+          new String[] {
+            Integer.toString(equipment.getId()),
+            Integer.toString(equipment.getLocation().getId()),
+            equipment.getType().toString(),
+            equipment.getName(),
+            equipment.isHasPatient() ? "1" : "0",
+            equipment.isClean() ? "1" : "0"
+          });
+    }
+    writer.writeAll(data);
+    writer.close();
+  }
 }
