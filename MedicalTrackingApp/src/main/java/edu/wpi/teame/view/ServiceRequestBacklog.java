@@ -2,12 +2,7 @@ package edu.wpi.teame.view;
 
 import static javafx.application.Application.launch;
 
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
