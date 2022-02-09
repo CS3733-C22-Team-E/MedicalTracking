@@ -1,10 +1,11 @@
-package edu.wpi.teame.view.controllers.serviceRequests;
+package edu.wpi.teame.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.view.controllers.serviceRequests.ServiceRequestController;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,29 +16,26 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 
-public class MedicineDeliveryServiceRequestPageServiceRequestController
-    extends ServiceRequestController {
+public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
+  @FXML private TextField startTime;
+  @FXML private TextField endTime;
 
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
+  @FXML private JFXButton clearButton;
+  @FXML private JFXButton sendButton;
 
-  @FXML private TextField patientName;
-  @FXML private TextField medicineRequested;
-  @FXML private TextField timeNeeded;
+  @FXML private JFXComboBox serviceLocation;
+  @FXML private JFXComboBox serviceAssignee;
 
   @FXML private DatePicker datePicker;
 
-  @FXML public JFXCheckBox completed;
+  @FXML private JFXCheckBox completed;
 
-  @FXML public JFXComboBox serviceLocation;
-  @FXML public JFXComboBox serviceAssignee;
-
-  @Override
+  @FXML
   @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    LinkedList<String> locationName = new LinkedList<String>();
+    List<String> locationName = new LinkedList<String>();
     for (Location loc : locations) {
       locationName.add(loc.getLongName());
     }
@@ -49,14 +47,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   }
 
   @FXML
-  private void clearText() {
-    patientName.setText("");
-    medicineRequested.setText("");
-    timeNeeded.setText("");
-    datePicker.setValue(null);
-    datePicker.getEditor().clear();
+  void clearText() {
+    startTime.setText("");
+    endTime.setText("");
     serviceLocation.valueProperty().set(null);
     serviceAssignee.valueProperty().set(null);
+    datePicker.setValue(null);
+    datePicker.getEditor().clear();
     completed.setSelected(false);
   }
 }
