@@ -9,10 +9,14 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.*;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.BuildingType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.LocationType;
 import java.sql.SQLException;
 import java.util.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -32,6 +36,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Pair;
+import lombok.SneakyThrows;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
@@ -122,7 +127,7 @@ public class PannableView {
 
   // This is essentially the Main function
   // getMapScene returns the entire map page
-  public Parent getMapScene(double height, double width) {
+  public Parent getMapScene(double height, double width) throws SQLException {
     TypeGraphics.put(
         EquipmentType.PBED,
         new ImageView(new Image(getImageResource("images/Icons/HospitalBedIcon.png"))));
@@ -145,16 +150,42 @@ public class PannableView {
     for (EquipmentType currEquipment : EquipmentType.values()) {
       MenuItem currItem = new MenuItem(currEquipment.toString());
       currItem.setOnAction(
-          event ->
+          new EventHandler<ActionEvent>() {
+            @SneakyThrows
+            @Override
+            public void handle(ActionEvent event) {
+              // addMapIcon(
+              //                  PressX,
+              //                  PressY,
+              //                  getImageViewFromEquipmentType(currEquipment),
+              //                  currEquipment.toString());
+              Location insertLocation =
+                  new Location(
+                      0,
+                      "",
+                      (int) PressX,
+                      (int) PressY,
+                      currFloor,
+                      BuildingType.Tower,
+                      LocationType.NONE,
+                      "");
+              insertLocation = DBManager.getInstance().getLocationManager().insert(insertLocation);
+
+              Equipment insertEquipment =
+                  new Equipment(
+                      0, insertLocation, currEquipment, currEquipment.toString(), false, true);
               addMapIcon(
                   PressX,
                   PressY,
                   getImageViewFromEquipmentType(currEquipment),
-                  currEquipment.toString()));
+                  currEquipment.toString(),
+                  currFloor,
+                  insertEquipment);
+            }
+          });
       PaneMenu.getItems().add(currItem);
-      PaneMenu.getStyleClass().add("combo-box");
     }
-
+    PaneMenu.getStyleClass().add("combo-box");
     MenuItem equipmentItem1 = new MenuItem("Delete");
     equipmentItem1.setOnAction(
         event -> {
@@ -255,6 +286,7 @@ public class PannableView {
     layout.setOnMouseReleased(
         event -> {
           if (event.getButton() == MouseButton.SECONDARY) {
+            System.out.println("Hi");
             PressX = event.getX();
             PressY = event.getY();
             scroll.setContextMenu(PaneMenu);
@@ -276,8 +308,8 @@ public class PannableView {
   }
 
   private void addMapIcon(
-      double xCoordinate,
-      double yCoordinate,
+      double xCoordinateinTranslate,
+      double yCoordinateinTranslate,
       ImageView image,
       String toolTip,
       FloorType floor,
@@ -286,8 +318,8 @@ public class PannableView {
     image.setFitHeight(30);
     final JFXButton newButton = new JFXButton();
     newButton.setGraphic(image);
-    double x = xCoordinate - MAPIMGWIDTH / 2;
-    double y = yCoordinate - MAPIMGHEIGHT / 2;
+    double x = xCoordinateinTranslate - MAPIMGWIDTH / 2;
+    double y = yCoordinateinTranslate - MAPIMGHEIGHT / 2;
     newButton.setTranslateX(x);
     newButton.setTranslateY(y);
     newButton.setOpacity(1);
@@ -592,7 +624,6 @@ public class PannableView {
               dot.getImageView().setVisible(false);
             }
           }
-
           updateLayoutChildren();
         });
 

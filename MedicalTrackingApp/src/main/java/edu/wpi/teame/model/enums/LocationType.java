@@ -14,5 +14,6 @@ public enum LocationType {
   STOR,
   BATH,
   DIRT,
-  PATI;
+  PATI,
+  NONE;
 }
