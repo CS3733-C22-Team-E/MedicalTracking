@@ -2,8 +2,10 @@ package edu.wpi.teame.controllers.serviceRequests;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -20,10 +22,29 @@ public class ComputerServiceRequestPageServiceRequestController extends ServiceR
   @FXML private TextField roomNumber;
   @FXML private TextField floorNumber;
   @FXML private TextField date;
-  @FXML private TextField startTime;
-  @FXML private TextField endTime;
   @FXML private TextField remarks;
 
+  @FXML ComboBox<String> selectStartTime;
+  @FXML ComboBox<String> selectEndTime;
+
   @Override
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    selectTime(selectStartTime, selectEndTime);
+  }
+
+  static void selectTime(ComboBox<String> selectStartTime, ComboBox<String> selectEndTime) {
+    selectStartTime.setItems(
+        FXCollections.observableArrayList(
+            "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00",
+            "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+            "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00",
+            "21:30", "22:00"));
+
+    selectEndTime.setItems(
+        FXCollections.observableArrayList(
+            "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+            "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
+            "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30",
+            "22:00", "22:30"));
+  }
 }

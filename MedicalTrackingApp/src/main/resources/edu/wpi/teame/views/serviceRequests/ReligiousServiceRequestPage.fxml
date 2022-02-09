@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -48,11 +49,6 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="startTime" prefHeight="27.0" prefWidth="98.0" promptText="Enter service time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
             <DatePicker fx:id="datePicker" promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -129,6 +125,7 @@
                   </GridPane>
                </children>
             </AnchorPane>
+            <ComboBox fx:id="selectTime" prefHeight="26.0" prefWidth="250.0" promptText="Select time..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

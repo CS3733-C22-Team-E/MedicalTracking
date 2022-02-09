@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -95,11 +96,6 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </DatePicker>
-            <TextField prefHeight="26.0" prefWidth="168.0" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets right="10.0" />
@@ -110,11 +106,8 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField prefHeight="26.0" prefWidth="56.0" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
+            <ComboBox fx:id="selectStartTime" prefHeight="26.0" prefWidth="245.0" promptText="Select start time..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <ComboBox fx:id="selectEndTime" prefHeight="26.0" prefWidth="245.0" promptText="Select end time..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

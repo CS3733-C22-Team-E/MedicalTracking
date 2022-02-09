@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
 
 /** Constructs a scene with a pannable Map background. */
 public class PannableView {
@@ -150,8 +151,10 @@ public class PannableView {
     icon.setFitWidth(30);
     icon.setFitHeight(30);
     final JFXButton zoomInButton = new JFXButton("", icon);
-    zoomInButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
-    zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));
+    // zoomInButton.setTranslateX(WIDTH / 2 - (icon.getFitWidth() + 10));
+    // zoomInButton.setTranslateY(-(HEIGHT / 2 - (icon.getFitHeight() + 50)));
+    zoomInButton.setTranslateX(Screen.getPrimary().getBounds().getWidth());
+    zoomInButton.setTranslateY(Screen.getPrimary().getBounds().getHeight());
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons

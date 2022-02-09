@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -77,14 +78,6 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <TextField fx:id="breakfastTimeTextField" promptText="Enter service time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
                   <TextField fx:id="floor" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <opaqueInsets>
                   <Insets />
@@ -119,6 +112,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
+            <ComboBox fx:id="laundryTime" prefHeight="26.0" prefWidth="246.0" promptText="Select laundry time..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       </children>

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -18,9 +19,6 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private TextField roomNumber;
   @FXML private TextField floorNumber;
   @FXML private DatePicker datePicker;
-
-  @FXML private TextField startTime;
-  @FXML private TextField finishTime;
 
   @FXML private JFXCheckBox christianityBox;
   @FXML private JFXComboBox<String> christianityChoices;
@@ -38,6 +36,8 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private Text otherText;
   @FXML private TextField otherServiceChoices;
 
+  @FXML ComboBox<String> selectTime;
+
   @FXML
   public void initialize(URL location, ResourceBundle resources) {
     christianityChoices.setItems(
@@ -47,6 +47,8 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     islamChoices.setItems(
         FXCollections.observableArrayList("Mosque Trip", "Jumuah", "Prayer Time"));
     hinduismChoices.setItems(FXCollections.observableArrayList("Chaplain", "Prayer Time"));
+    ExternalPatientTransportationServiceRequestPageServiceRequestController.selectGeneralTime(
+        selectTime);
   }
 
   @FXML

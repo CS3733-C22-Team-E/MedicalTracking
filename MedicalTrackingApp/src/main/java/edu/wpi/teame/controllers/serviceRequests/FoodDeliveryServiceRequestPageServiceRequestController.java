@@ -5,10 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 public class FoodDeliveryServiceRequestPageServiceRequestController
@@ -35,9 +32,9 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox<String> breakfastMealDropdown;
   @FXML private JFXComboBox<String> lunchMealDropdown;
   @FXML private JFXComboBox<String> dinnerMealDropdown;
-  @FXML private TextField breakfastTimeTextField;
-  @FXML private TextField lunchTimeTextField;
-  @FXML private TextField dinnerTimeTextField;
+  @FXML private ComboBox<String> selectBreakfastTime;
+  @FXML private ComboBox<String> selectLunchTime;
+  @FXML private ComboBox<String> selectDinnerTime;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -46,6 +43,13 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
         FXCollections.observableArrayList("Ham Sandwich", "Turkey Sandwich", "Chicken Bake"));
     dinnerMealDropdown.setItems(
         FXCollections.observableArrayList("Steak", "Thanksgiving Dinner", "Chicken Tacos"));
+    selectBreakfastTime.setItems(
+        FXCollections.observableArrayList("8:00", "8:30", "9:00", "9:30", "10:00"));
+    selectLunchTime.setItems(
+        FXCollections.observableArrayList("11:00", "11:30", "12:00", "12:30", "13:00"));
+    selectDinnerTime.setItems(
+        FXCollections.observableArrayList(
+            "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"));
   }
 
   @FXML
@@ -54,7 +58,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     MealTextB.setVisible(!MealTextB.isVisible());
     TimeTextB.setVisible(!TimeTextB.isVisible());
     breakfastMealDropdown.setVisible(!breakfastMealDropdown.isVisible());
-    breakfastTimeTextField.setVisible(!breakfastTimeTextField.isVisible());
+    selectBreakfastTime.setVisible(!selectBreakfastTime.isVisible());
   }
 
   @FXML
@@ -63,7 +67,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     MealTextL.setVisible(!MealTextL.isVisible());
     TimeTextL.setVisible(!TimeTextL.isVisible());
     lunchMealDropdown.setVisible(!lunchMealDropdown.isVisible());
-    lunchTimeTextField.setVisible(!lunchTimeTextField.isVisible());
+    selectLunchTime.setVisible(!selectLunchTime.isVisible());
   }
 
   @FXML
@@ -72,7 +76,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     MealTextD.setVisible(!MealTextD.isVisible());
     TimeTextD.setVisible(!TimeTextD.isVisible());
     dinnerMealDropdown.setVisible(!dinnerMealDropdown.isVisible());
-    dinnerTimeTextField.setVisible(!dinnerTimeTextField.isVisible());
+    selectDinnerTime.setVisible(!selectDinnerTime.isVisible());
   }
 
   @FXML

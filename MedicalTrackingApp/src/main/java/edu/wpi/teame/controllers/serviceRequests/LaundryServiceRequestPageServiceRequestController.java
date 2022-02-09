@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class LaundryServiceRequestPageServiceRequestController extends ServiceRequestController {
@@ -12,5 +13,10 @@ public class LaundryServiceRequestPageServiceRequestController extends ServiceRe
   @FXML private TextField roomNumber;
   @FXML private TextField floor;
 
-  public void initialize(URL location, ResourceBundle resources) {}
+  @FXML private ComboBox<String> laundryTime;
+
+  public void initialize(URL location, ResourceBundle resources) {
+    ExternalPatientTransportationServiceRequestPageServiceRequestController.selectGeneralTime(
+        laundryTime);
+  }
 }

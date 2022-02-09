@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -130,13 +131,13 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <TextField fx:id="breakfastTimeTextField" prefWidth="193.0" promptText="Enter time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text fx:id="MealTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Text>
                   <JFXComboBox fx:id="breakfastMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="selectBreakfastTime" prefWidth="150.0" promptText="Select time..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane prefHeight="120.0" prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
@@ -168,13 +169,13 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <TextField fx:id="lunchTimeTextField" promptText="Enter time...." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text fx:id="MealTextL" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Text>
                   <JFXComboBox fx:id="lunchMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="selectLunchTime" prefWidth="150.0" promptText="Select time..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="2" GridPane.rowIndex="6">
@@ -195,13 +196,13 @@
                         <Insets />
                      </GridPane.margin>
                   </Text>
-                  <TextField fx:id="dinnerTimeTextField" promptText="Enter time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Text fx:id="MealTextD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Text>
                   <JFXComboBox fx:id="dinnerMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="selectDinnerTime" prefWidth="150.0" promptText="Select time..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <CheckBox fx:id="dietaryRestrictions" mnemonicParsing="false" onAction="#DietaryRestrictionsCallBack" text="Dietary Restrictions (Y/N)" GridPane.columnIndex="1" GridPane.rowIndex="4">

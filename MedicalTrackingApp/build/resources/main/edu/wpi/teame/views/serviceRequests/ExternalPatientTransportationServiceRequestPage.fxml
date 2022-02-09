@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -44,11 +45,6 @@
                </font>
             </JFXButton>
             <TextField fx:id="dropoffAddress" promptText="Enter dropoff address..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="7">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="pickupTime" promptText="Enter pickup time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -113,6 +109,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
+            <ComboBox fx:id="pickupTime" prefHeight="26.0" prefWidth="248.0" promptText="Select pickup time..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

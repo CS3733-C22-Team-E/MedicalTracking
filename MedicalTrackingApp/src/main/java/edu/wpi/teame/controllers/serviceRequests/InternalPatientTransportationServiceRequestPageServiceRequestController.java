@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -16,7 +17,6 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML private TextField floorTextBox;
   @FXML private TextField patientNameTextBox;
   @FXML private GridPane transferTimeGridPlane;
-  @FXML private TextField deliveryTimeTextbox;
   @FXML private DatePicker deliveryDateDatebox;
   @FXML private JFXComboBox<String> transferToPicker;
   @FXML private GridPane toOtherRoomGridPlane;
@@ -37,12 +37,16 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML private GridPane fromOtherLocationGridPlane;
   @FXML private TextField fromOtherLocationTextbox;
 
+  @FXML private ComboBox<String> deliveryTimeTextbox;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     transferFromPicker.setItems(
         FXCollections.observableArrayList("Their Room", "Other Room", "Other Location"));
     transferToPicker.setItems(
         FXCollections.observableArrayList("Their Room", "Other Room", "Other Location"));
+    ExternalPatientTransportationServiceRequestPageServiceRequestController.selectGeneralTime(
+        deliveryTimeTextbox);
   }
 
   @FXML
