@@ -271,6 +271,14 @@ public class DefaultTest {
   //   System.out.println(emp);
   // }
 
+//  location.writeToCSV("loc.csv");
+//    equipmentManager.writeToCSV("equ.csv");
+//    employeeManager.writeToCSV("emp.csv");
+//    medEqpManager.writeToCSV("medEqp.csv");
+//    medReqManager.writeToCSV("medDel.csv");
+//    sanReqManager.writeToCSV("sanReq.csv");
+//    secReqManager.writeToCSV("secReq.csv");
+
   @Test
   public void test() {}
 }

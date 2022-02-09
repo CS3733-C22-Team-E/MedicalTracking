@@ -2,14 +2,18 @@ package edu.wpi.teame.db.objectManagers;
 
 // import com.opencsv.exceptions.CsvValidationException;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.*;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class EmployeeManager extends ObjectManager<Employee> {
   public EmployeeManager() {
@@ -44,5 +48,34 @@ public final class EmployeeManager extends ObjectManager<Employee> {
   }
 
   @Override
-  public void writeToCSV(String outputFileName) throws IOException {}
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+    String filePath =
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
+
+    FileWriter outputFile = new FileWriter(filePath);
+    CSVWriter writer =
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+    List<Employee> listOfEmployees = this.getAll();
+
+    List<String[]> data = new ArrayList<String[]>();
+    data.add(new String[] {"employeeID", "department", "name", "isDoctor"});
+
+    for (Employee employee : listOfEmployees) {
+      data.add(
+          new String[] {
+            Integer.toString(employee.getId()),
+            employee.getDepartment().toString(),
+            employee.getName(),
+            employee.isDoctor() ? "1" : "0"
+          });
+    }
+    writer.writeAll(data);
+    writer.close();
+  }
 }
