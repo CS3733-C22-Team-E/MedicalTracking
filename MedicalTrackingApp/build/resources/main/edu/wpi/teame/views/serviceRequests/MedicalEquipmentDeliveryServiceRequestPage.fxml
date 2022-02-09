@@ -64,20 +64,20 @@
                </GridPane.margin>
             </DatePicker>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-            <TextField fx:id="endTime" promptText="Enter end time..." GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <TextField fx:id="endTime" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-            <TextField fx:id="startTime" promptText="Enter start time..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="startTime" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <TextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="patientName" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
