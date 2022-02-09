@@ -37,40 +37,12 @@ public class ServiceRequestBacklog {
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
 
-    testAddSR(20);
-
     return scrollWrapper;
-  }
-
-  public void getFromDB() throws SQLException { // TODO Implement DB
-    List<MedicalEquipmentServiceRequest> medicalEquipmentServiceRequests =
-        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {
     HBox card = c.getCard(SCENEWIDTH, 100);
     requestHolder.add(card, 0, cardCursor);
-  }
-
-  private void testAddSR(int num) {
-    ServiceRequestCard testCard =
-        new ServiceRequestCard(
-            this,
-            DataBaseObjectType.MedicalEquipmentSR,
-            "Test Card",
-            "Test",
-            0,
-            SCENEWIDTH,
-            SCENEHEIGHT,
-            cardCursor);
-    testCard.setPatientName("Joe Dobbelaar");
-    testCard.setRoomNumber(cardCursor);
-    testCard.setFloor(2);
-    testCard.setOtherInfo("Super cool and very cool");
-    for (int i = 0; i < num; i++) {
-      addServiceRequestCard(testCard);
-      cardCursor++;
-    }
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet
