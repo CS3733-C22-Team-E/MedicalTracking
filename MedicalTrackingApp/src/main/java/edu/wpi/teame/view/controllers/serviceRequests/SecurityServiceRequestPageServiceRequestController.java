@@ -37,9 +37,7 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
             new Date(new java.util.Date().getTime()),
             new Date(0),
             0);
-    serviceRequest = DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
-
-    System.out.println();
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
   @FXML
