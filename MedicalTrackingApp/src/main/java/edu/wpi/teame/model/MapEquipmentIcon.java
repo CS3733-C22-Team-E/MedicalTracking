@@ -21,6 +21,10 @@ public class MapEquipmentIcon {
     Descriptor = descriptor;
   }
 
+  public Equipment getEquipment() {
+    return this.equipment;
+  }
+
   public MapEquipmentIcon(Double x, Double y, String descriptor, Node graphic) {
     Button = new JFXButton();
     Button.setGraphic(graphic);
