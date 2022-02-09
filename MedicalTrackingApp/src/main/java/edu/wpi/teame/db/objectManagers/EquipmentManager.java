@@ -26,7 +26,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
   public Equipment getByAvailability(EquipmentType equipmentType, boolean hasPatient)
       throws SQLException {
     return super.getBy(
-            "WHERE hasPatient = " + hasPatient + " AND type = " + equipmentType.ordinal())
+            "WHERE hasPatient = " + (hasPatient ? 1 : 0) + " AND type = " + equipmentType.ordinal())
         .get(0);
   }
 

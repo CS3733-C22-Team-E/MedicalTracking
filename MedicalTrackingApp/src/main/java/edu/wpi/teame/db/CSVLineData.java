@@ -24,7 +24,9 @@ public class CSVLineData {
   }
 
   public Date getColumnDate(String columnName) throws ParseException {
-    return (Date) new SimpleDateFormat("yyyy-MM-dd").parse(parsedData[headers.indexOf(columnName)]);
+    long time =
+        new SimpleDateFormat("yyyy-MM-dd").parse(parsedData[headers.indexOf(columnName)]).getTime();
+    return new Date(time);
   }
 
   public boolean getColumnBoolean(String columnName) {

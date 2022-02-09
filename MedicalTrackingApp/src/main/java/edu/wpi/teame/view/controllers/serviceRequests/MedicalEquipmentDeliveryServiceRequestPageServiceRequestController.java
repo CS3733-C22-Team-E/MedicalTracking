@@ -4,13 +4,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.*;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -18,7 +20,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import lombok.SneakyThrows;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
@@ -39,80 +40,69 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox requestLocation;
 
   @FXML private JFXCheckBox completed;
+  private boolean hasRun = false;
 
-  @Override
+  @FXML
   @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
-    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<String> locationName = new LinkedList<String>();
-    for (Location loc : locations) {
-      locationName.add(loc.getLongName());
-    }
-
-    // Set the comboBox items
-    requestLocation.setItems(FXCollections.observableArrayList(locationName));
-    equipmentNeeded.setItems(
-        FXCollections.observableArrayList("Bed", "X-Ray", "Infusion Pump", "Recliner"));
-    requestState.setItems(
-        FXCollections.observableArrayList("Open", "Waiting For Equipment", "Cancelled", "Done"));
-    requestAssignee.setItems(
-        FXCollections.observableArrayList("Test Name", "Test Name", "Test Name", "Test Name"));
+    requestState.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+    equipmentNeeded.setItems(FXCollections.observableArrayList(EquipmentType.values()));
   }
 
-  // todo either make the submit button disabled until everything is filled or add error handling
-  @SneakyThrows
-  public void sendToMEDB(MouseEvent mouseEvent) {
-    // store all the values from the fields
+  @FXML
+  public void updateFromDB() throws SQLException {
+    if (hasRun) {
+      return;
+    }
+    hasRun = true;
+
+    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
+    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+
+    List<String> locationNames = new LinkedList<String>();
+    for (Location loc : locations) {
+      locationNames.add(loc.getLongName());
+    }
+
+    List<String> employeeNames = new LinkedList<String>();
+    for (Employee emp : employees) {
+      employeeNames.add(emp.getName());
+    }
+
+    requestLocation.setItems(FXCollections.observableArrayList(locationNames));
+    requestAssignee.setItems(FXCollections.observableArrayList(employeeNames));
+  }
+
+  @FXML
+  public void sendToDB() throws SQLException {
     String pName = patientName.getText();
-    String startingTime = startTime.getText();
-    String endingTime = endTime.getText();
-    LocalDate srDate = datePicker.getValue();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
-    String serviceRequestDate = srDate.format(formatter);
-    String MRSRStatus = (String) requestState.getValue();
-    String equipNeeded = (String) equipmentNeeded.getValue();
     String roomNum = (String) requestLocation.getValue();
     String assignee = (String) requestAssignee.getValue();
-
-    // DBManager.getInstance().getMedicalEquipmentSRManager().insert(serReq);
+    EquipmentType equipNeeded = EquipmentType.getValue(equipmentNeeded.getValue().toString());
 
     List<MedicalEquipmentServiceRequest> allSerReq =
         DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }
-  }
 
-  private EquipmentType comboBoxValToType(String val) {
-    switch (val) {
-      case "Bed":
-        return EquipmentType.PBED;
-      case "X-Ray":
-        return EquipmentType.XRAY;
-      case "Infusion Pump":
-        return EquipmentType.PUMP;
-      case "Recliner":
-        return EquipmentType.RECL;
-      default:
-        return null;
-    }
-  }
+    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
+    Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+    Equipment equipment =
+        DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
 
-  // "Open", "Waiting For Equipment", "Cancelled", "Done"
-  private ServiceRequestStatus comboBoxValToStatus(String val) {
-    switch (val) {
-      case "Open":
-        return ServiceRequestStatus.OPEN;
-      case "Waiting For Equipment":
-        return ServiceRequestStatus.PENDING;
-      case "Cancelled":
-        return ServiceRequestStatus.CANCELLED;
-      case "Done":
-        return ServiceRequestStatus.CLOSED;
-      default:
-        return null;
-    }
+    MedicalEquipmentServiceRequest serviceRequest =
+        new MedicalEquipmentServiceRequest(
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            0,
+            equipment,
+            pName);
+    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
   }
 
   @FXML

@@ -18,7 +18,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
 
 public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private TextField floorTextBox;
@@ -36,11 +35,9 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
 
   @FXML public JFXComboBox serviceLocation;
   @FXML public JFXComboBox serviceAssignee;
-
   private boolean hasRun = false;
 
   @FXML
-  @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {}
 
   @FXML
