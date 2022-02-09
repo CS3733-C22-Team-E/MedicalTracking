@@ -48,9 +48,9 @@ public class ServiceRequestCard {
 
   // Details
   private String patientName;
-  private int roomNumber;
-  private int floor;
-  private String otherInfo;
+  private String roomNumber;
+  private String floor;
+  private String status;
 
   public ServiceRequestCard(
       ServiceRequestBacklog backlog,
@@ -101,7 +101,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 2, 3);
     detailsGrid.add(generateDetailText("Floor: "), 2, 4);
     detailsGrid.add(getSeparatorH(), 2, 5);
-    detailsGrid.add(generateDetailText("Other Info: "), 2, 6);
+    detailsGrid.add(generateDetailText("Status: "), 2, 6);
     detailsGrid.add(getSeparatorH(), 2, 7);
 
     detailsGrid.add(generateDetailText(patientName), 3, 0);
@@ -110,7 +110,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 3);
     detailsGrid.add(generateDetailText(String.valueOf(floor)), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
-    detailsGrid.add(generateDetailText(otherInfo), 3, 6);
+    detailsGrid.add(generateDetailText(status), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
 
     card.getChildren().add(detailsGrid);
@@ -175,16 +175,16 @@ public class ServiceRequestCard {
     this.patientName = patientName;
   }
 
-  public void setRoomNumber(int roomNumber) {
+  public void setRoomNumber(String roomNumber) {
     this.roomNumber = roomNumber;
   }
 
-  public void setFloor(int floor) {
+  public void setFloor(String floor) {
     this.floor = floor;
   }
 
-  public void setOtherInfo(String otherInfo) {
-    this.otherInfo = otherInfo;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   private void setHoverStyling(HBox c) {
