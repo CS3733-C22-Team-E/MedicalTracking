@@ -126,7 +126,7 @@ WHALL001L2,1745,1524,L2,Tower,HALL,Hallway Connector 1 Floor L2,Hallway W01L2
 eSTOR00101,1512,929,1,Tower,STOR,West Plaza,
 eSTOR00103,1525,1085,3,Tower,STOR,In-Patient Storage Unit 1 Floor 3,
 eSTOR00203,1525,776,3,Tower,STOR,In-Patient Storage Unit 2 Floor 3,
-eSTOR00203,1681,810,3,Tower,STOR,Bed Park 1 Floor 3,
+eSTOR00204,1681,810,3,Tower,STOR,Bed Park 1 Floor 3,
 eSTOR00303,1681,1042,3,Tower,STOR,Bed Park 2 Floor 3,
 eSTOR00403,1504,1064,3,Tower,STOR,Clean Infusion Pumps 1 Floor 3,
 eSTOR00503,1513,785,3,Tower,STOR,Clean Infusion Pumps 2 Floor 3,
