@@ -3,12 +3,11 @@ package edu.wpi.teame.controllers.serviceRequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.Location;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.Location;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -40,7 +39,7 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
     // Set the comboBox items
     serviceLocation.setItems(FXCollections.observableArrayList(locationName));
     serviceAssignee.setItems(
-            FXCollections.observableArrayList("Test Name", "Test Name", "Test Name", "Test Name"));
+        FXCollections.observableArrayList("Test Name", "Test Name", "Test Name", "Test Name"));
   }
 
   @FXML

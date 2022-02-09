@@ -42,7 +42,7 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <TextField fx:id="startTime" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="startTime" prefHeight="26.0" prefWidth="299.0" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -67,17 +67,17 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="endTime" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="endTime" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <JFXComboBox fx:id="serviceLocation" prefHeight="26.0" prefWidth="444.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <JFXComboBox fx:id="serviceLocation" prefHeight="26.0" prefWidth="392.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="serviceAssignee" prefHeight="26.0" prefWidth="361.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <JFXComboBox fx:id="serviceAssignee" prefHeight="26.0" prefWidth="316.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
