@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.ISQLSerializable;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 public interface IManager<T extends ISQLSerializable> {
@@ -19,7 +20,7 @@ public interface IManager<T extends ISQLSerializable> {
   public void update(T updatedObject) throws SQLException;
 
   public void readCSV(String inputFileName)
-      throws IOException, SQLException, CsvValidationException;
+          throws IOException, SQLException, CsvValidationException, ParseException;
 
   public void writeToCSV(String outputFileName) throws IOException;
 }
