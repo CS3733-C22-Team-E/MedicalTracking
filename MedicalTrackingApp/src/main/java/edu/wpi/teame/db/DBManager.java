@@ -91,12 +91,13 @@ public final class DBManager {
             + "locationID int, "
             + "status int, "
             + "employeeID int, "
-            + "closeDate Date, "
-            + "openDate VARCHAR(100), "
+            + "closeDate DATE, "
+            + "openDate DATE, "
             + "equipmentID int, "
             + "patient VARCHAR(100), "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id))";
+            + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
+            + "FOREIGN KEY (employeeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createEquipmentServiceRequestTable);
     System.out.println("MedicalEquipmentSR Table created");
 
@@ -105,11 +106,11 @@ public final class DBManager {
             + "locationID int, "
             + "status int, "
             + "employeeID int, "
-            + "closeDate Date, "
-            + "endTime VARCHAR(50), "
-            + "openDate VARCHAR(100), "
-            + "deliveryDate Date, "
-            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+            + "closeDate DATE, "
+            + "openDate DATE, "
+            + "deliveryDate DATE, "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
+            + "FOREIGN KEY (employeeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createMedicineDeliverySRTable);
     System.out.println("MedicineDeliverySR Table created");
 
@@ -118,10 +119,10 @@ public final class DBManager {
             + "locationID int, "
             + "status int, "
             + "employeeID int, "
-            + "closeDate Date, "
-            + "endTime VARCHAR(50), "
-            + "openDate VARCHAR(100), "
-            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+            + "closeDate DATE, "
+            + "openDate DATE, "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
+            + "FOREIGN KEY (employeeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSanitationSRTable);
     System.out.println("SanitationSR Table created");
 
@@ -130,9 +131,10 @@ public final class DBManager {
             + "locationID int, "
             + "status int, "
             + "employeeID int, "
-            + "closeDate Date, "
-            + "openDate Date, "
-            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
+            + "closeDate DATE, "
+            + "openDate DATE, "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
+            + "FOREIGN KEY (employeeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSecuritySRTable);
     System.out.println("MedicalEquipmentSR Table created");
   }

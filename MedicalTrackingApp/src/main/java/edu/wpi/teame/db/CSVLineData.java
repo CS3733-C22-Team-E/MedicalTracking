@@ -3,6 +3,9 @@ package edu.wpi.teame.db;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +21,10 @@ public class CSVLineData {
 
   public String getColumnString(String columnName) {
     return parsedData[headers.indexOf(columnName)];
+  }
+
+  public Date getColumnDate(String columnName) throws ParseException {
+    return (Date) new SimpleDateFormat("yyyy-MM-dd").parse(parsedData[headers.indexOf(columnName)]);
   }
 
   public boolean getColumnBoolean(String columnName) {
