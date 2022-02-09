@@ -35,8 +35,10 @@ public class ServiceRequestBacklog {
   }
 
   private void getSecurityRequests() throws SQLException {
-    System.out.println("Fetching SR from DB");
+    allServiceRequests.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
     allServiceRequests.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    allServiceRequests.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    allServiceRequests.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -69,6 +71,7 @@ public class ServiceRequestBacklog {
   public void addServiceRequestCard(ServiceRequestCard c) {
     HBox card = c.getCard(SCENEWIDTH, 100);
     requestHolder.add(card, 0, cardCursor);
+    cardCursor++;
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet
