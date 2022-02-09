@@ -21,5 +21,5 @@ public interface IManager<T extends ISQLSerializable> {
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException;
 
-  public void writeToCSV(String outputFileName) throws IOException;
+  public void writeToCSV(String outputFileName) throws IOException, SQLException;
 }

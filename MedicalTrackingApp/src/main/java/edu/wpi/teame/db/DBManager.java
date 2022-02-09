@@ -92,7 +92,6 @@ public final class DBManager {
             + "status int, "
             + "employeeID int, "
             + "closeDate Date, "
-            + "endTime VARCHAR(50), "
             + "openDate VARCHAR(100), "
             + "equipmentID int, "
             + "patient VARCHAR(100), "
