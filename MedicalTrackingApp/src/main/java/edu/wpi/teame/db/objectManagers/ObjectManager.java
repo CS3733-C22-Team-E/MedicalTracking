@@ -1,7 +1,5 @@
 package edu.wpi.teame.db.objectManagers;
 
-import static edu.wpi.teame.model.enums.DataBaseObjectType.SecuritySR;
-
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
@@ -83,20 +81,18 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public void remove(int id) throws SQLException {
-    StringBuilder insertQuery = new StringBuilder("DELETE FROM ");
-    insertQuery.append(getTableName()).append(" WHERE id = ");
-    insertQuery.append(id).append("");
-    System.out.println(insertQuery.toString());
-    statement.executeUpdate(insertQuery.toString());
+    StringBuilder removeQuery = new StringBuilder("DELETE FROM ");
+    removeQuery.append(getTableName()).append(" WHERE id = ");
+    removeQuery.append(id).append("");
+    statement.executeUpdate(removeQuery.toString());
   }
 
   @Override
   public void update(T updatedObject) throws SQLException {
-    StringBuilder insertQuery = new StringBuilder("UPDATE ");
-    insertQuery.append(getTableName()).append(" SET ");
-    insertQuery.append(updatedObject.toSQLUpdateString());
-    System.out.println(insertQuery.toString());
-    statement.executeUpdate(insertQuery.toString());
+    StringBuilder updateQuery = new StringBuilder("UPDATE ");
+    updateQuery.append(getTableName()).append(" SET ");
+    updateQuery.append(updatedObject.toSQLUpdateString());
+    statement.executeUpdate(updateQuery.toString());
   }
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
