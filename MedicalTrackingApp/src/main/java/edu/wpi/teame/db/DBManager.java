@@ -153,4 +153,16 @@ public final class DBManager {
   public EmployeeManager getEmployeeManager() {
     return new EmployeeManager();
   }
+
+  public MedicineDeliveryServiceRequestManager getMedicineDeliverySRManager() {
+    return new MedicineDeliveryServiceRequestManager();
+  }
+
+  public SanitationServiceRequestManager getSanitationSRManager() {
+    return new SanitationServiceRequestManager();
+  }
+
+  public SecurityServiceRequestManager getSecuritySRManager() {
+    return new SecurityServiceRequestManager();
+  }
 }
