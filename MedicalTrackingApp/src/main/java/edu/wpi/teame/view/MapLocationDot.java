@@ -1,6 +1,6 @@
-package edu.wpi.teame.model;
+package edu.wpi.teame.view;
 
-import edu.wpi.teame.db.Location;
+import edu.wpi.teame.model.Location;
 import javafx.scene.image.ImageView;
 
 public class MapLocationDot {

@@ -1,5 +1,6 @@
 package edu.wpi.teame.view.controllers;
 
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.PannableView;
@@ -79,121 +80,125 @@ public class LandingPageController implements Initializable {
         new StyledTab(
             "Medical Equipment Delivery",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.MedicalEquipmentDelivery)));
+            getPageUrl(DataBaseObjectType.MedicalEquipmentSR)));
 
     tabs.add(
         new StyledTab(
-            "Food Delivery", SortOrder.ByName, getPageUrl(ServiceRequestTypes.FoodDelivery)));
+            "Food Delivery", SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR)));
 
     tabs.add(
         new StyledTab(
             "Medicine Delivery",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.MedicineDelivery)));
+            getPageUrl(DataBaseObjectType.MedicineDeliverySR)));
 
     tabs.add(
         new StyledTab(
             "Gift And Floral Delivery",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.GiftAndFloral)));
+            getPageUrl(DataBaseObjectType.GiftAndFloralSR)));
 
     tabs.add(
         new StyledTab(
             "Language Services",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.LanguageInterpreter)));
+            getPageUrl(DataBaseObjectType.LanguageInterpreterSR)));
 
     tabs.add(
         new StyledTab(
-            "Sanitation Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Sanitation)));
+            "Sanitation Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SanitationSR)));
 
     tabs.add(
         new StyledTab(
-            "Laundry Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Laundry)));
+            "Laundry Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR)));
 
     tabs.add(
         new StyledTab(
-            "Religious Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Religious)));
+            "Religious Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ReligiousSR)));
 
     tabs.add(
         new StyledTab(
             "Internal Patient Transportation",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.InternalPatientTransportation)));
+            getPageUrl(DataBaseObjectType.InternalPatientTransferSR)));
 
     tabs.add(
         new StyledTab(
             "External Patient Transportation",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.ExternalPatientTransportation)));
+            getPageUrl(DataBaseObjectType.ExternalPatientTransportation)));
 
     tabs.add(
         new StyledTab(
-            "Audio/Video Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.AudioVisual)));
+            "Audio/Video Services",
+            SortOrder.ByName,
+            getPageUrl(DataBaseObjectType.AudioVisualSR)));
 
     tabs.add(
         new StyledTab(
-            "Computer Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Computer)));
+            "Computer Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR)));
 
     tabs.add(
         new StyledTab(
-            "Security Services", SortOrder.ByName, getPageUrl(ServiceRequestTypes.Security)));
+            "Security Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR)));
 
     tabs.add(
         new StyledTab(
             "Facilities Maintenance",
             SortOrder.ByName,
-            getPageUrl(ServiceRequestTypes.FacilitiesMaintenance)));
+            getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
   }
 
-  private String getPageUrl(ServiceRequestTypes t) {
-    String url = "views/serviceRequests/";
+  private String getPageUrl(DataBaseObjectType t) {
+    String url = "view/tabs/";
     switch (t) {
-      case Laundry:
+      case LaundrySR:
         url += "Laundry";
         break;
-      case Computer:
+      case ComputerSR:
         url += "Computer";
         break;
-      case Security:
+      case SecuritySR:
         url += "Security";
         break;
-      case Religious:
+      case ReligiousSR:
         url += "Religious";
         break;
-      case AudioVisual:
+      case AudioVisualSR:
         url += "AudioVisual";
         break;
-      case FoodDelivery:
+      case FoodDeliverySR:
         url += "FoodDelivery";
         break;
-      case GiftAndFloral:
+      case GiftAndFloralSR:
         url += "GiftAndFloral";
         break;
-      case MedicalEquipmentDelivery:
+      case MedicalEquipmentSR:
         url += "MedicalEquipmentDelivery";
         break;
-      case MedicineDelivery:
+      case MedicineDeliverySR:
         url += "MedicineDelivery";
         break;
-      case LanguageInterpreter:
+      case LanguageInterpreterSR:
         url += "LanguageInterpreter";
         break;
-      case FacilitiesMaintenance:
+      case FacilitiesMaintenanceSR:
         url += "FacilitiesMaintenance";
         break;
-      case InternalPatientTransportation:
+      case InternalPatientTransferSR:
         url += "InternalPatientTransportation";
         break;
       case ExternalPatientTransportation:
         url += "ExternalPatientTransportation";
         break;
-      case Sanitation:
+      case SanitationSR:
         url += "Sanitation";
         break;
+      default:
+        return null;
     }
     url += "ServiceRequestPage.fxml";
     return url;

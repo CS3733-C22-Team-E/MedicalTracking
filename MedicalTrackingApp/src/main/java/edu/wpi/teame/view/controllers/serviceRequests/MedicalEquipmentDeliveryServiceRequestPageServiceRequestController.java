@@ -24,9 +24,6 @@ import javafx.scene.input.MouseEvent;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML private JFXComboBox equipmentNeeded;
-  @FXML private JFXComboBox requestState;
-
   @FXML private TextField patientName;
   @FXML private TextField startTime;
   @FXML private TextField endTime;
@@ -51,6 +48,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
     LinkedList<String> locationName = new LinkedList<String>();
     for (Location loc : locations) {
       locationName.add(loc.getLongName());

@@ -7,10 +7,12 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.EquipmentType;
+import edu.wpi.teame.model.enums.FloorType;
+import java.sql.SQLException;
+import java.util.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -70,6 +72,7 @@ public class PannableView {
 
   // Constructor sets the background image and currentFloor enum
   public PannableView(FloorType floor) {
+    currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
@@ -417,7 +420,7 @@ public class PannableView {
     comboBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 2);
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
-    comboBox.setOnAction(event -> switchFloors(currFloor.getFloorFromString(comboBox.getValue())));
+    comboBox.setOnAction(event -> switchFloors(FloorType.valueOf(comboBox.getValue())));
     return comboBox;
   }
 
@@ -461,22 +464,23 @@ public class PannableView {
 
   public void convertEquipmentToMapIcon(Equipment equip) {
     addMapIcon(
-        equip.getLocationNode().getX(),
-        equip.getLocationNode().getY(),
+        equip.getLocation().getX(),
+        equip.getLocation().getY(),
         getImageViewFromEquipmentType(equip.getType()),
         equip.getName(),
-        equip.getLocationNode().getFloor(),
+        equip.getLocation().getFloor(),
         equip);
   }
 
-  public void getFromDB() {
-    LinkedList<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+  public void getFromDB() throws SQLException {
+    List<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
     mapIconsByFloor.get(currFloor).clear();
     locationsByFloor.get(currFloor).clear();
     for (Equipment currEquipment : equipment) {
       convertEquipmentToMapIcon(currEquipment);
     }
-    LinkedList<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+
+    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
@@ -576,7 +580,7 @@ public class PannableView {
             System.out.println("Snapping to nearest node.");
             node.setTranslateX(nearestLocation.getX() - MAPIMGWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPIMGHEIGHT / 2);
-            i.getEquipment().setLocationNode(nearestLocation);
+            i.getEquipment().setLocation(nearestLocation);
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");

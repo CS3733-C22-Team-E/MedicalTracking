@@ -1,4 +1,4 @@
-package edu.wpi.teame.model;
+package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.Parent;

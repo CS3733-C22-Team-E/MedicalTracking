@@ -1,7 +1,7 @@
 package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.teame.db.Equipment;
+import edu.wpi.teame.model.Equipment;
 import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 

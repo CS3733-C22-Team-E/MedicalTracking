@@ -6,6 +6,7 @@ public enum DataBaseObjectType {
   FoodDeliverySR,
   GiftAndFloralSR,
   InternalPatientTransferSR,
+  ExternalPatientTransportation,
   LanguageInterpreterSR,
   LaundrySR,
   ReligiousSR,
