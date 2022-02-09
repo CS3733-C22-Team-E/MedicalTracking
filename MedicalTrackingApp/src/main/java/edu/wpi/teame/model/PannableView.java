@@ -46,6 +46,7 @@ public class PannableView {
 
   // Init booleans
   private boolean invertZoomScroll = false;
+  private boolean showLocationNodes = false;
 
   // Init data structures
   private ArrayList<ImageView> hamburgerDeployments = new ArrayList<ImageView>();
@@ -358,12 +359,13 @@ public class PannableView {
 
     JFXCheckBox locationsCheckBox = new JFXCheckBox("Location Dots");
     locationsCheckBox.getStyleClass().add("combo-box");
-    locationsCheckBox.setSelected(true);
+    locationsCheckBox.setSelected(false);
     locationsCheckBox.setOnAction(
         event -> {
           for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
             dot.getImageView().setVisible(!dot.getImageView().isVisible());
           }
+          showLocationNodes = !showLocationNodes;
         });
     locationsCheckBox.setTranslateY(
         -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
@@ -548,6 +550,9 @@ public class PannableView {
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
             System.out.println("Started");
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getImageView().setVisible(true);
+            }
             node.setCursor(Cursor.MOVE);
             // When a press event occurs, the location coordinates of the event are cached
             startingPosition.x = node.getTranslateX();
@@ -576,6 +581,14 @@ public class PannableView {
           }
           System.out.println("Done");
           node.setCursor(Cursor.DEFAULT);
+
+          if (!showLocationNodes) {
+            System.out.println("Hiding location nodes.");
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getImageView().setVisible(false);
+            }
+          }
+
           updateLayoutChildren();
         });
 
@@ -612,6 +625,7 @@ public class PannableView {
     double y = location.getY() - MAPIMGHEIGHT / 2;
     locationDot.setTranslateX(x);
     locationDot.setTranslateY(y);
+    locationDot.setVisible(false);
     MapLocationDot newDot = new MapLocationDot(locationDot, location);
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
