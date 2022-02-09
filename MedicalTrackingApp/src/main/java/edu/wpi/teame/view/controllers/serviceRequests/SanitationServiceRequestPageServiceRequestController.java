@@ -1,6 +1,8 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -9,6 +11,8 @@ import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -29,28 +33,45 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
   @FXML public JFXComboBox serviceAssignee;
 
   @FXML public JFXCheckBox completed;
+  boolean hasRun = false;
 
   @SneakyThrows
-  public void initialize(URL location, ResourceBundle resources) {
+  public void initialize(URL location, ResourceBundle resources) {}
+
+  public void updateFromDB() throws SQLException {
+    if (hasRun) {
+      return;
+    }
+    hasRun = true;
+
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<String> locationName = new LinkedList<String>();
+    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+
+    List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
-      locationName.add(loc.getLongName());
+      locationNames.add(loc.getLongName());
     }
 
-    // Set the comboBox items
-    serviceLocation.setItems(FXCollections.observableArrayList(locationName));
-    serviceAssignee.setItems(
-        FXCollections.observableArrayList("Test Name", "Test Name", "Test Name", "Test Name"));
+    List<String> employeeNames = new LinkedList<String>();
+    for (Employee emp : employees) {
+      employeeNames.add(emp.getName());
+    }
+
+    serviceLocation.setItems(FXCollections.observableArrayList(locationNames));
+    serviceAssignee.setItems(FXCollections.observableArrayList(employeeNames));
   }
 
   @FXML
   private void sendToDB() throws SQLException {
-    Employee employee = DBManager.getInstance().getEmployeeManager().getAll().get(0);
-
-    int roomID = Integer.parseInt(roomNumber.getText());
-    Location location = DBManager.getInstance().getLocationManager().get(roomID);
+    Employee employee =
+        DBManager.getInstance()
+            .getEmployeeManager()
+            .getByAssignee(serviceAssignee.getValue().toString());
+    Location location =
+        DBManager.getInstance()
+            .getLocationManager()
+            .getByName(serviceLocation.getValue().toString());
 
     SanitationServiceRequest serviceRequest =
         new SanitationServiceRequest(
