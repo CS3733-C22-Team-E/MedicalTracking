@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -36,7 +37,11 @@ public class AutoCompleteTextField extends TextField {
                   entriesPopup.hide();
                 } else {
                   LinkedList<String> searchResult = new LinkedList<>();
-                  searchResult.addAll(entries.subSet(getText(), getText() + Character.MAX_VALUE));
+                  final List<String> filteredEntries =
+                      entries.stream()
+                          .filter(e -> e.toLowerCase().contains(getText().toLowerCase()))
+                          .collect(Collectors.toList());
+                  searchResult.addAll(filteredEntries);
                   if (entries.size() > 0) {
                     populatePopup(searchResult);
                     if (!entriesPopup.isShowing()) {
