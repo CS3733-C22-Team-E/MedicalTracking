@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Feb 09 01:26:34 EST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-dd29-8969-00000bf8a2d0 
+on database directory memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\build\libs\ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Loaded from file:/C:/Users/aberf/Documents/GitHub/MedicalTracking/MedicalTrackingApp/build/libs/MedicalTrackingApp.jar
+java.vendor=Microsoft
+java.runtime.version=11.0.13+8-LTS
+user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\build\libs
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
