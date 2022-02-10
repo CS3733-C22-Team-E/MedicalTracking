@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.FoodDeliveryServiceRequestPageServiceRequestController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FoodDeliveryServiceRequestPageServiceRequestController">
    <children>
       <GridPane alignment="CENTER" layoutX="2.0" layoutY="-2.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -40,13 +40,13 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <JFXButton fx:id="sendButton" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <DatePicker fx:id="startDate" promptText="Choose start date..." styleClass="calendar-picker" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-            <DatePicker fx:id="endDate" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+            <DatePicker promptText="Choose start date..." styleClass="calendar-picker" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+            <DatePicker promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Date: " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Date:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
             <GridPane GridPane.columnIndex="2" GridPane.rowIndex="5">
@@ -239,11 +239,6 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="9">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
          </children>
       </GridPane>
    </children>
