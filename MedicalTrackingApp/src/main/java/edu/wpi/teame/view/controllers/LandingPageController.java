@@ -3,7 +3,7 @@ package edu.wpi.teame.view.controllers;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.PannableView;
+import edu.wpi.teame.view.Map;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
 import java.net.URL;
@@ -45,7 +45,7 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
 
-    PannableView mapView = new PannableView(FloorType.ThirdFloor);
+    Map mapView = new Map(FloorType.ThirdFloor);
     StyledTab mapTab =
         new StyledTab(
             "Hospital Map",
