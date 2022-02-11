@@ -7,18 +7,11 @@ import javafx.scene.control.Tooltip;
 
 public class MapEquipmentIcon {
   JFXButton Button;
-  String Descriptor;
   Equipment equipment;
 
-  public MapEquipmentIcon(JFXButton button, String descriptor, Equipment equip) {
+  public MapEquipmentIcon(JFXButton button, Equipment equip) {
     equipment = equip;
     Button = button;
-    Descriptor = descriptor;
-  }
-
-  public MapEquipmentIcon(JFXButton button, String descriptor) {
-    Button = button;
-    Descriptor = descriptor;
   }
 
   public Equipment getEquipment() {
@@ -37,13 +30,5 @@ public class MapEquipmentIcon {
 
   public JFXButton getButton() {
     return Button;
-  }
-
-  public String getDescriptor() {
-    return Descriptor;
-  }
-
-  public void setDescriptor(String descriptor) {
-    Descriptor = descriptor;
   }
 }

@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.AudioVisualServiceRequestPageServiceRequestController">
    <children>
       <GridPane prefHeight="580.0" prefWidth="800.0">
@@ -92,21 +93,21 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="roomNumber" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <AutoCompleteTextField fx:id="roomNumber" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
-            </TextField>
+            </AutoCompleteTextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room Number:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="patientName" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <AutoCompleteTextField fx:id="patientName" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
-            </TextField>
+            </AutoCompleteTextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
