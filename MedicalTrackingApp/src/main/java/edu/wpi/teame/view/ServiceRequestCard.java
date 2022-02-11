@@ -2,6 +2,7 @@ package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -51,21 +52,19 @@ public class ServiceRequestCard {
   private String roomNumber;
   private String floor;
   private String status;
+  private ServiceRequest serviceRequest;
 
   public ServiceRequestCard(
-      ServiceRequestBacklog backlog,
-      DataBaseObjectType SRType,
-      String SRDescription,
-      String SRTitle,
+          ServiceRequest serviceRequest,
       int SRColor,
       double cardWidth,
       double cardHeight,
       int ID) {
-    backlog = backlog;
+    this.serviceRequest = serviceRequest;
     hexColor = SRColor;
-    title = SRTitle;
-    description = SRDescription;
-    type = SRType;
+    title = serviceRequest.getDBType().toString();
+    description = serviceRequest.getLocation().getLongName(); //TODO This will be SR Description field in future
+    type = serviceRequest.getDBType();
     WIDTH = cardWidth;
     HEIGHT = cardHeight;
     backlogID = ID;
@@ -204,5 +203,9 @@ public class ServiceRequestCard {
               new Background(
                   new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
         });
+  }
+
+  public ServiceRequest getServiceRequest() {
+    return this.serviceRequest;
   }
 }

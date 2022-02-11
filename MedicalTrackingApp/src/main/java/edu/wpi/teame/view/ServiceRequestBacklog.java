@@ -69,10 +69,7 @@ public class ServiceRequestBacklog {
       System.out.println("Adding card...");
       ServiceRequestCard card =
           new ServiceRequestCard(
-              this,
-              sr.getDBType(),
-              sr.getLocation().getLongName(),
-              sr.getDBType().name(),
+                  sr,
               0,
               SCENEWIDTH / 2,
               SCENEHEIGHT,
