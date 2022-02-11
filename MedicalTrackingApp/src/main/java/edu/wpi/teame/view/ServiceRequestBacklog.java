@@ -37,27 +37,9 @@ public class ServiceRequestBacklog {
 
   private void getSecurityRequests() throws SQLException {
     serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
-    System.out.println(
-        "Added "
-            + DBManager.getInstance().getSanitationSRManager().getAll().size()
-            + " from Sanitation.");
     serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
-    System.out.println(
-        "Added "
-            + DBManager.getInstance().getSecuritySRManager().getAll().size()
-            + " from Security.");
     serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
-    System.out.println(
-        "Added "
-            + DBManager.getInstance().getMedicineDeliverySRManager().getAll().size()
-            + " from Medicine Delivery.");
     serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
-    System.out.println(
-        "Added "
-            + DBManager.getInstance().getMedicalEquipmentSRManager().getAll().size()
-            + " from Medical Equipment Delivery.");
-    System.out.println(
-        "There are now " + serviceRequestsFromDB.size() + " service requests in the linked list.");
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -67,7 +49,6 @@ public class ServiceRequestBacklog {
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
     for (ServiceRequest sr : serviceRequestsFromDB) {
-      System.out.println("Adding card...");
       if (!cardsDisplayedById.containsKey(sr.getId())) {
         System.out.println("srId " + sr.getId() + " is new.");
         ServiceRequestCard card = new ServiceRequestCard(sr, 0, 1000, SCENEHEIGHT, sr.getId());
