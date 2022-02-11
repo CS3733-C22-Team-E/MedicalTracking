@@ -51,7 +51,7 @@ public class ServiceRequestBacklog {
     for (ServiceRequest sr : serviceRequestsFromDB) {
       if (!cardsDisplayedById.containsKey(sr.getId())) {
         System.out.println("srId " + sr.getId() + " is new.");
-        ServiceRequestCard card = new ServiceRequestCard(sr, 0, 1000, SCENEHEIGHT, this);
+        ServiceRequestCard card = new ServiceRequestCard(sr, 0, this);
         card.setPatientName(
             "John Doe"); // TODO make name a field in SR and have it set in card automatically
         addServiceRequestCard(card);
@@ -61,7 +61,7 @@ public class ServiceRequestBacklog {
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {
-    HBox card = c.getCard(SCENEWIDTH, 100);
+    HBox card = c.getCard(1000, 100);
     requestHolder.add(card, 0, cardsDisplayedById.size());
     cardsDisplayedById.put(c.getServiceRequest().getId(), c);
   }

@@ -2,7 +2,6 @@ package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
@@ -21,8 +20,6 @@ import javafx.scene.text.TextAlignment;
 public class ServiceRequestCard {
 
   private int hexColor;
-  private double WIDTH;
-  private double HEIGHT;
 
   // Styling
   private Color BORDERCOLOR = Color.GREEN;
@@ -51,12 +48,9 @@ public class ServiceRequestCard {
   private Location location;
   private final ServiceRequest sr;
 
-  public ServiceRequestCard(
-      ServiceRequest serviceRequest, int SRColor, double cardWidth, double cardHeight, ServiceRequestBacklog b) {
+  public ServiceRequestCard(ServiceRequest serviceRequest, int SRColor, ServiceRequestBacklog b) {
     sr = serviceRequest;
     hexColor = SRColor;
-    WIDTH = cardWidth;
-    HEIGHT = cardHeight;
     backlog = b;
 
     location = sr.getLocation();
