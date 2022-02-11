@@ -23,7 +23,8 @@ public class ServiceRequestBacklog {
   private final double VGAP = 2;
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
-  private HashMap<Integer, HBox> cardsDisplayedById = new HashMap<Integer, HBox>();
+  private HashMap<Integer, ServiceRequestCard> cardsDisplayedById =
+      new HashMap<Integer, ServiceRequestCard>();
 
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
@@ -67,26 +68,21 @@ public class ServiceRequestBacklog {
     scrollWrapper.setContent(requestHolder);
     for (ServiceRequest sr : serviceRequestsFromDB) {
       System.out.println("Adding card...");
-      ServiceRequestCard card =
-          new ServiceRequestCard(
-                  sr,
-              0,
-              SCENEWIDTH / 2,
-              SCENEHEIGHT,
-              sr.getId());
-      card.setPatientName("John Doe");
-      card.setFloor(sr.getLocation().getFloor().name());
-      card.setRoomNumber(sr.getLocation().getShortName());
-      card.setStatus(sr.getStatus().toString());
-      addServiceRequestCard(card);
+      if (!cardsDisplayedById.containsKey(sr.getId())) {
+        System.out.println("srId " + sr.getId() + " is new.");
+        ServiceRequestCard card = new ServiceRequestCard(sr, 0, 1000, SCENEHEIGHT, sr.getId());
+        card.setPatientName(
+            "John Doe"); // TODO make name a field in SR and have it set in card automatically
+        addServiceRequestCard(card);
+      }
     }
     return scrollWrapper;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {
     HBox card = c.getCard(SCENEWIDTH, 100);
-    requestHolder.add(card, 0, cardCursor);
-    cardCursor++;
+    requestHolder.add(card, 0, cardsDisplayedById.size());
+    cardsDisplayedById.put(c.getServiceRequest().getId(), c);
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet

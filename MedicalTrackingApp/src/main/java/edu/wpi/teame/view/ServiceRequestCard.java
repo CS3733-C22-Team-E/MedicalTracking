@@ -1,7 +1,10 @@
 package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXCheckBox;
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -49,25 +52,28 @@ public class ServiceRequestCard {
 
   // Details
   private String patientName;
-  private String roomNumber;
+  private Location location;
   private String floor;
   private String status;
-  private ServiceRequest serviceRequest;
+  private final ServiceRequest sr;
 
   public ServiceRequestCard(
-          ServiceRequest serviceRequest,
-      int SRColor,
-      double cardWidth,
-      double cardHeight,
-      int ID) {
-    this.serviceRequest = serviceRequest;
+      ServiceRequest serviceRequest, int SRColor, double cardWidth, double cardHeight, int ID) {
+    sr = serviceRequest;
     hexColor = SRColor;
     title = serviceRequest.getDBType().toString();
-    description = serviceRequest.getLocation().getLongName(); //TODO This will be SR Description field in future
+    description =
+        serviceRequest
+            .getLocation()
+            .getLongName(); // TODO This will be SR Description field in future
     type = serviceRequest.getDBType();
     WIDTH = cardWidth;
     HEIGHT = cardHeight;
     backlogID = ID;
+
+    floor = sr.getLocation().getFloor().name();
+    location = sr.getLocation();
+    status = sr.getStatus().toString();
   }
 
   // TODO Cards are displayed with wrong width
@@ -79,7 +85,7 @@ public class ServiceRequestCard {
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-    card.setPrefSize(1000, height);
+    card.setPrefSize(width, height);
     setHoverStyling(card);
 
     card.getChildren().add(getDoneCheckbox());
@@ -96,7 +102,7 @@ public class ServiceRequestCard {
     detailsGrid.setHgap(20);
     detailsGrid.add(generateDetailText("Patient Name: "), 2, 0);
     detailsGrid.add(getSeparatorH(), 2, 1);
-    detailsGrid.add(generateDetailText("Room Number: "), 2, 2);
+    detailsGrid.add(generateDetailText("Location: "), 2, 2);
     detailsGrid.add(getSeparatorH(), 2, 3);
     detailsGrid.add(generateDetailText("Floor: "), 2, 4);
     detailsGrid.add(getSeparatorH(), 2, 5);
@@ -105,9 +111,9 @@ public class ServiceRequestCard {
 
     detailsGrid.add(generateDetailText(patientName), 3, 0);
     detailsGrid.add(getSeparatorH(), 3, 1);
-    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 3, 2);
+    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
     detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(String.valueOf(floor)), 3, 4);
+    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
     detailsGrid.add(generateDetailText(status), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
@@ -172,18 +178,18 @@ public class ServiceRequestCard {
 
   public void setPatientName(String patientName) {
     this.patientName = patientName;
+  } // TODO change this to SR patient field
+
+  public void setLocation(Location location) {
+    this.location = location;
   }
 
-  public void setRoomNumber(String roomNumber) {
-    this.roomNumber = roomNumber;
+  public void setFloor(FloorType floor) {
+    this.location.setFloor(floor);
   }
 
-  public void setFloor(String floor) {
-    this.floor = floor;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
+  public void setStatus(ServiceRequestStatus status) {
+    this.sr.setStatus(status);
   }
 
   private void setHoverStyling(HBox c) {
@@ -206,6 +212,6 @@ public class ServiceRequestCard {
   }
 
   public ServiceRequest getServiceRequest() {
-    return this.serviceRequest;
+    return this.sr;
   }
 }
