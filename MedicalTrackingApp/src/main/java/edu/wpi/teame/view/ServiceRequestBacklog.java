@@ -17,13 +17,13 @@ public class ServiceRequestBacklog {
 
   GridPane requestHolder = new GridPane();
   ScrollPane scrollWrapper = new ScrollPane();
-  private HashMap<Integer, HBox> cardHashMap = new HashMap<Integer, HBox>();
   int cardCursor = 0;
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
   private final double VGAP = 2;
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
+  private HashMap<Integer, HBox> cardsDisplayedById = new HashMap<Integer, HBox>();
 
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
