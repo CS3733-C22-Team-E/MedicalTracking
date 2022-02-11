@@ -23,7 +23,7 @@ public class ServiceRequestBacklog {
   private double SCENEHEIGHT;
   private final double VGAP = 2;
 
-  private List<ServiceRequest> allServiceRequests = new LinkedList<ServiceRequest>();
+  private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
 
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
@@ -35,10 +35,10 @@ public class ServiceRequestBacklog {
   }
 
   private void getSecurityRequests() throws SQLException {
-    allServiceRequests.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -47,7 +47,7 @@ public class ServiceRequestBacklog {
     requestHolder.setVgap(VGAP);
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
-    for (ServiceRequest sr : allServiceRequests) {
+    for (ServiceRequest sr : serviceRequestsFromDB) {
       System.out.println("Adding card...");
       ServiceRequestCard card =
           new ServiceRequestCard(
