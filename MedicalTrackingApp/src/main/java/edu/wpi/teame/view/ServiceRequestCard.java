@@ -21,13 +21,8 @@ import javafx.scene.text.TextAlignment;
 public class ServiceRequestCard {
 
   private int hexColor;
-  private String title;
-  private String description;
-  private DataBaseObjectType type;
   private double WIDTH;
   private double HEIGHT;
-  private ServiceRequestBacklog backlog;
-  private int backlogID;
 
   // Styling
   private Color BORDERCOLOR = Color.GREEN;
@@ -51,29 +46,20 @@ public class ServiceRequestCard {
               new BorderWidths(BORDERWIDTH)));
 
   // Details
+  private ServiceRequestBacklog backlog;
   private String patientName;
   private Location location;
-  private String floor;
-  private String status;
   private final ServiceRequest sr;
 
   public ServiceRequestCard(
-      ServiceRequest serviceRequest, int SRColor, double cardWidth, double cardHeight, int ID) {
+      ServiceRequest serviceRequest, int SRColor, double cardWidth, double cardHeight, ServiceRequestBacklog b) {
     sr = serviceRequest;
     hexColor = SRColor;
-    title = serviceRequest.getDBType().toString();
-    description =
-        serviceRequest
-            .getLocation()
-            .getLongName(); // TODO This will be SR Description field in future
-    type = serviceRequest.getDBType();
     WIDTH = cardWidth;
     HEIGHT = cardHeight;
-    backlogID = ID;
+    backlog = b;
 
-    floor = sr.getLocation().getFloor().name();
     location = sr.getLocation();
-    status = sr.getStatus().toString();
   }
 
   // TODO Cards are displayed with wrong width
@@ -115,7 +101,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 3);
     detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
-    detailsGrid.add(generateDetailText(status), 3, 6);
+    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
 
     card.getChildren().add(detailsGrid);
@@ -132,7 +118,7 @@ public class ServiceRequestCard {
   }
 
   private Text getTitleText() {
-    Text titleText = new Text(title);
+    Text titleText = new Text(sr.getDBType().name());
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
     titleText.setTextAlignment(TextAlignment.CENTER);
     return titleText;
@@ -157,7 +143,8 @@ public class ServiceRequestCard {
   }
 
   private Text getDescriptionText() {
-    Text descriptionText = new Text(description);
+    Text descriptionText = new Text(sr.getLocation().getLongName());
+    // TODO This will be SR Description field in future ^
     descriptionText.setFont(Font.font("Arial", 12));
     descriptionText.setFill(Color.DARKGRAY);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
