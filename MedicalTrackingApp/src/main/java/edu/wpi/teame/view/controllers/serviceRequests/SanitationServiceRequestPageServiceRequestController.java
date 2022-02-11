@@ -6,10 +6,7 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,15 +70,15 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
             .getLocationManager()
             .getByName(serviceLocation.getValue().toString());
 
-    SanitationServiceRequest serviceRequest =
-        new SanitationServiceRequest(
-            ServiceRequestStatus.OPEN,
-            employee,
-            location,
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            0);
-    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
+    //    SanitationServiceRequest serviceRequest =
+    //        new SanitationServiceRequest(
+    //            ServiceRequestStatus.OPEN,
+    //            employee,
+    //            location,
+    //            new Date(0),
+    //            new Date(new java.util.Date().getTime()),
+    //            0);
+    //    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
   }
 
   @FXML

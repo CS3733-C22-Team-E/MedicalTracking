@@ -5,7 +5,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
@@ -48,7 +47,7 @@ public class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentSer
       int equipmentID = lineData.getColumnInt("equipmentID");
       String patient = lineData.getColumnString("patient");
 
-      // select employee where id = employeeID
+      // select assignee where id = employeeID
       EmployeeManager employeeManager = new EmployeeManager();
       Employee newEmployee = employeeManager.get(employeeID);
       // select location where id = locationID
@@ -58,10 +57,11 @@ public class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentSer
       EquipmentManager equipmentManager = new EquipmentManager();
       Equipment newEquipment = equipmentManager.get(equipmentID);
 
-      MedicalEquipmentServiceRequest newEquipmentRequest =
-          new MedicalEquipmentServiceRequest(
-              status, newEmployee, newLocation, closeDate, openDate, id, newEquipment, patient);
-      DBManager.getInstance().getMedicalEquipmentSRManager().insert(newEquipmentRequest);
+      //      MedicalEquipmentServiceRequest newEquipmentRequest =
+      //          new MedicalEquipmentServiceRequest(
+      //              status, newEmployee, newLocation, closeDate, openDate, id, newEquipment,
+      // patient);
+      //      DBManager.getInstance().getMedicalEquipmentSRManager().insert(newEquipmentRequest);
     }
   }
 
@@ -84,14 +84,7 @@ public class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentSer
     List<String[]> data = new ArrayList<String[]>();
     data.add(
         new String[] {
-          "id",
-          "locationID",
-          "status",
-          "employeeID",
-          "closeDate",
-          "openDate",
-          "equipmentID",
-          "patient"
+          "id", "locationID", "status", "employeeID", "closeDate", "openDate", "equipmentID"
         });
 
     for (MedicalEquipmentServiceRequest serReq : listOfSerReq) {
@@ -100,11 +93,10 @@ public class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentSer
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
             serReq.getStatus().toString(),
-            Integer.toString(serReq.getEmployee().getId()),
+            Integer.toString(serReq.getAssignee().getId()),
             serReq.getCloseDate().toString(),
             serReq.getOpenDate().toString(),
-            Integer.toString(serReq.getEquipment().getId()),
-            serReq.getPatient()
+            Integer.toString(serReq.getEquipment().getId())
           });
     }
     writer.writeAll(data);

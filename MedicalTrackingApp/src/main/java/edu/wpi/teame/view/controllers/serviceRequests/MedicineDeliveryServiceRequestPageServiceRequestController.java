@@ -6,11 +6,8 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,16 +86,16 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
 
-    MedicineDeliveryServiceRequest serviceRequest =
-        new MedicineDeliveryServiceRequest(
-            ServiceRequestStatus.OPEN,
-            employee,
-            location,
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            0,
-            new Date(time));
-    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
+    //    MedicineDeliveryServiceRequest serviceRequest =
+    //        new MedicineDeliveryServiceRequest(
+    //            ServiceRequestStatus.OPEN,
+    //            employee,
+    //            location,
+    //            new Date(0),
+    //            new Date(new java.util.Date().getTime()),
+    //            0,
+    //            new Date(time));
+    //    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
   }
 
   @FXML

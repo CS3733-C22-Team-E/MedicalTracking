@@ -115,7 +115,7 @@ public class Equipment implements ISQLSerializable {
   }
 
   @Override
-  public String toSQLInsertString() {
+  public String getSQLInsertString() {
     int isCleanInt = isClean ? 1 : 0;
     int hasPatientInt = hasPatient ? 1 : 0;
     return location.getId()
@@ -130,7 +130,7 @@ public class Equipment implements ISQLSerializable {
   }
 
   @Override
-  public String toSQLUpdateString() {
+  public String getSQLUpdateString() {
     int isCleanInt = isClean ? 1 : 0;
     int hasPatientInt = hasPatient ? 1 : 0;
     return "locationID = "

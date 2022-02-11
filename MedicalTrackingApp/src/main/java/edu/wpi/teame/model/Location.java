@@ -135,7 +135,7 @@ public class Location implements ISQLSerializable {
   }
 
   @Override
-  public String toSQLInsertString() {
+  public String getSQLInsertString() {
     return type.ordinal()
         + ", '"
         + shortName
@@ -152,7 +152,7 @@ public class Location implements ISQLSerializable {
   }
 
   @Override
-  public String toSQLUpdateString() {
+  public String getSQLUpdateString() {
     return "locationType = "
         + type.ordinal()
         + ", shortName = '"

@@ -5,11 +5,11 @@ import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
-import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
-import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +67,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
     insertQuery.append(getTableName()).append(newObject.getTableColumns());
     insertQuery.append(" VALUES(");
-    insertQuery.append(newObject.toSQLInsertString()).append(")");
+    insertQuery.append(newObject.getSQLInsertString()).append(")");
 
     PreparedStatement insertStatement =
         connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
@@ -91,7 +91,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   public void update(T updatedObject) throws SQLException {
     StringBuilder updateQuery = new StringBuilder("UPDATE ");
     updateQuery.append(getTableName()).append(" SET ");
-    updateQuery.append(updatedObject.toSQLUpdateString());
+    updateQuery.append(updatedObject.getSQLUpdateString());
     statement.executeUpdate(updateQuery.toString());
   }
 
@@ -101,18 +101,22 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
-      case SanitationSR:
-        return (T) new SanitationServiceRequest(resultSet);
+      case LaundrySR:
       case SecuritySR:
-        return (T) new SecurityServiceRequest(resultSet);
+      case ComputerSR:
+      case SanitationSR:
+      case AudioVisualSR:
+      case FacilitiesMaintenanceSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+
       case Location:
         return (T) new Location(resultSet);
       case Equipment:
         return (T) new Equipment(resultSet);
       case Employee:
         return (T) new Employee(resultSet);
-      default:
-        break;
+      case Patient:
+        return (T) new Patient(resultSet);
     }
     return null;
   }

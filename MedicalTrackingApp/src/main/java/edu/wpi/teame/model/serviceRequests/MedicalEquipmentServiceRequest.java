@@ -1,63 +1,62 @@
 package edu.wpi.teame.model.serviceRequests;
 
-import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.EquipmentManager;
-import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MedicalEquipmentServiceRequest extends ServiceRequest {
+public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   private Equipment equipment;
-  private String patient;
 
-  public MedicalEquipmentServiceRequest(
-      ServiceRequestStatus requestStatus,
+  private MedicalEquipmentServiceRequest(
+      ServiceRequestPriority priority,
+      ServiceRequestStatus status,
+      String additionalInfo,
       Employee assignee,
       Location location,
+      Date requestDate,
       Date closeDate,
       Date openDate,
+      String title,
       int id,
-      Equipment equipment,
-      String patient) {
-    super(requestStatus, assignee, location, closeDate, openDate, id);
+      Equipment equipment) {
+    super(
+        DataBaseObjectType.MedicalEquipmentSR,
+        priority,
+        status,
+        additionalInfo,
+        assignee,
+        location,
+        requestDate,
+        closeDate,
+        openDate,
+        title,
+        id);
     this.equipment = equipment;
-    this.patient = patient;
   }
 
   public MedicalEquipmentServiceRequest(ResultSet resultSet) throws SQLException {
-    // TODO: actually call employee, location, equipment in constructor
-    super(
-        ServiceRequestStatus.values()[resultSet.getInt("status")],
-        new EmployeeManager().get(resultSet.getInt("employeeID")),
-        new LocationManager().get(resultSet.getInt("locationID")),
-        resultSet.getDate("closeDate"),
-        resultSet.getDate("openDate"),
-        resultSet.getInt("id"));
+    super(resultSet, DataBaseObjectType.MedicalEquipmentSR);
     this.equipment = new EquipmentManager().get(resultSet.getInt("equipmentID"));
-    this.patient = resultSet.getString("patient");
   }
 
-  public String toString() {
-    return "ID: "
-        + id
-        + ", Patient: "
-        + patient
-        + ", location: "
-        + location.getId()
-        + ", openDate: "
-        + openDate
-        + ", endTime: "
-        + closeDate
-        + ", employee: "
-        + employee.getId()
-        + ", equipment: "
-        + equipment.getId()
-        + ", status: "
-        + status;
+  @Override
+  public String getSQLInsertString() {
+    return super.getSQLInsertString() + ", " + equipment.getId();
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+    return super.getSQLInsertString() + ", equipment = " + equipment.getId() + "WHERE id = " + id;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return super.getTableColumns() + "equipmentID, patient)";
   }
 
   public Equipment getEquipment() {
@@ -66,40 +65,5 @@ public class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   public void setEquipment(Equipment equipment) {
     this.equipment = equipment;
-  }
-
-  public String getPatient() {
-    return patient;
-  }
-
-  public void setPatient(String patient) {
-    this.patient = patient;
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.MedicalEquipmentSR;
-  }
-
-  @Override
-  public String toSQLInsertString() {
-    return super.toSQLInsertString() + ", " + equipment.getId() + ", '" + patient.toString() + "'";
-  }
-
-  @Override
-  public String toSQLUpdateString() {
-    return super.toSQLInsertString()
-        + ", equipment = "
-        + equipment.getId()
-        + ", patient = '"
-        + patient.toString()
-        + "'"
-        + "WHERE id = "
-        + id;
-  }
-
-  @Override
-  public String getTableColumns() {
-    return super.getTableColumns() + "equipmentID, patient)";
   }
 }

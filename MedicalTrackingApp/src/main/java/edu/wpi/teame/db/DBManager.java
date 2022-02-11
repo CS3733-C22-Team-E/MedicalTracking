@@ -1,6 +1,7 @@
 package edu.wpi.teame.db;
 
 import edu.wpi.teame.db.objectManagers.*;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -155,15 +156,35 @@ public final class DBManager {
     return new EmployeeManager();
   }
 
+  public PatientManager getPatientManager() {
+    return new PatientManager();
+  }
+
   public MedicineDeliveryServiceRequestManager getMedicineDeliverySRManager() {
     return new MedicineDeliveryServiceRequestManager();
   }
 
-  public SanitationServiceRequestManager getSanitationSRManager() {
-    return new SanitationServiceRequestManager();
+  public StandardServiceRequestManager getFacilitiesMainteneceSRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.FacilitiesMaintenanceSR);
   }
 
-  public SecurityServiceRequestManager getSecuritySRManager() {
-    return new SecurityServiceRequestManager();
+  public StandardServiceRequestManager getAudioVisualSRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.AudioVisualSR);
+  }
+
+  public StandardServiceRequestManager getSanitationSRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.SanitationSR);
+  }
+
+  public StandardServiceRequestManager getSecuritySRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.SecuritySR);
+  }
+
+  public StandardServiceRequestManager getComputerSRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.ComputerSR);
+  }
+
+  public StandardServiceRequestManager getLaundrySRManager() {
+    return new StandardServiceRequestManager(DataBaseObjectType.LaundrySR);
   }
 }

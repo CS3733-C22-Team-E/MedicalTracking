@@ -4,12 +4,11 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,9 +18,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanitationServiceRequestManager extends ObjectManager<SanitationServiceRequest> {
-  public SanitationServiceRequestManager() {
-    super(DataBaseObjectType.SanitationSR);
+public class StandardServiceRequestManager extends ObjectManager<ServiceRequest> {
+  public StandardServiceRequestManager(DataBaseObjectType dbType) {
+    super(dbType);
   }
 
   @Override
@@ -44,16 +43,17 @@ public class SanitationServiceRequestManager extends ObjectManager<SanitationSer
       Date openDate = lineData.getColumnDate("openDate");
       int id = lineData.getColumnInt("id");
 
-      // select employee where id = employeeID
+      // select assignee where id = employeeID
       EmployeeManager employeeManager = new EmployeeManager();
       Employee newEmployee = employeeManager.get(employeeID);
       // select location where id = locationID
       LocationManager locationManager = new LocationManager();
       Location newLocation = locationManager.get(locationID);
 
-      SanitationServiceRequest newSanitationSR =
-          new SanitationServiceRequest(status, newEmployee, newLocation, closeDate, openDate, id);
-      DBManager.getInstance().getSanitationSRManager().insert(newSanitationSR);
+      //      SanitationServiceRequest newSanitationSR =
+      //          new SanitationServiceRequest(status, newEmployee, newLocation, closeDate,
+      // openDate, id);
+      //      DBManager.getInstance().getSanitationSRManager().insert(newSanitationSR);
     }
   }
 
@@ -71,18 +71,18 @@ public class SanitationServiceRequestManager extends ObjectManager<SanitationSer
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-    List<SanitationServiceRequest> listOfSerReq = this.getAll();
+    List<ServiceRequest> listOfSerReq = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
     data.add(new String[] {"id", "locationID", "status", "employeeID", "closeDate", "openDate"});
 
-    for (SanitationServiceRequest serReq : listOfSerReq) {
+    for (ServiceRequest serReq : listOfSerReq) {
       data.add(
           new String[] {
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
             serReq.getStatus().toString(),
-            Integer.toString(serReq.getEmployee().getId()),
+            Integer.toString(serReq.getAssignee().getId()),
             serReq.getCloseDate().toString(),
             serReq.getOpenDate().toString()
           });

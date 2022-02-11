@@ -2,6 +2,7 @@ package edu.wpi.teame.model.serviceRequests;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -11,12 +12,12 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class MedicineDeliveryServiceRequest extends ServiceRequest {
-  private String medicineQuantity;
-  private String medicineName;
+public final class InternalPatientTransporationServiceRequest extends ServiceRequest {
+  private Location destination;
+  private Equipment equipment;
   private Patient patient;
 
-  private MedicineDeliveryServiceRequest(
+  public InternalPatientTransporationServiceRequest(
       ServiceRequestPriority priority,
       ServiceRequestStatus status,
       String additionalInfo,
@@ -27,11 +28,11 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
       Date openDate,
       String title,
       int id,
-      String medicineName,
-      String medicineQuantity,
+      Location destination,
+      Equipment equipment,
       Patient patient) {
     super(
-        DataBaseObjectType.MedicineDeliverySR,
+        DataBaseObjectType.InternalPatientTransferSR,
         priority,
         status,
         additionalInfo,
@@ -42,16 +43,18 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         openDate,
         title,
         id);
-    this.medicineQuantity = medicineQuantity;
-    this.medicineName = medicineName;
+    this.destination = destination;
+    this.equipment = equipment;
     this.patient = patient;
   }
 
-  public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
-    super(resultSet, DataBaseObjectType.MedicineDeliverySR);
+  public InternalPatientTransporationServiceRequest(ResultSet resultSet) throws SQLException {
+    super(resultSet, DataBaseObjectType.InternalPatientTransferSR);
+    this.destination =
+        DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
+    this.equipment =
+        DBManager.getInstance().getEquipmentManager().get(resultSet.getInt("equipmentID"));
     this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
-    this.medicineQuantity = resultSet.getString("medicineQuantity");
-    this.medicineName = resultSet.getString("medicineName");
   }
 
   @Override
@@ -75,20 +78,20 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     // return super.getTableColumns();
   }
 
-  public String getMedicineQuantity() {
-    return medicineQuantity;
+  public Location getDestination() {
+    return destination;
   }
 
-  public void setMedicineQuantity(String medicineQuantity) {
-    this.medicineQuantity = medicineQuantity;
+  public void setDestination(Location destination) {
+    this.destination = destination;
   }
 
-  public String getMedicineName() {
-    return medicineName;
+  public Equipment getEquipment() {
+    return equipment;
   }
 
-  public void setMedicineName(String medicineName) {
-    this.medicineName = medicineName;
+  public void setEquipment(Equipment equipment) {
+    this.equipment = equipment;
   }
 
   public Patient getPatient() {

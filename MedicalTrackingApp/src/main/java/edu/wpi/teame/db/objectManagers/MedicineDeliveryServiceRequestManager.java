@@ -4,7 +4,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -46,17 +45,17 @@ public class MedicineDeliveryServiceRequestManager
       int id = lineData.getColumnInt("id");
       Date deliveryDate = lineData.getColumnDate("deliveryDate");
 
-      // select employee where id = employeeID
+      // select assignee where id = employeeID
       EmployeeManager employeeManager = new EmployeeManager();
       Employee newEmployee = employeeManager.get(employeeID);
       // select location where id = locationID
       LocationManager locationManager = new LocationManager();
       Location newLocation = locationManager.get(locationID);
 
-      MedicineDeliveryServiceRequest newMedDeliverySR =
-          new MedicineDeliveryServiceRequest(
-              status, newEmployee, newLocation, closeDate, openDate, id, deliveryDate);
-      DBManager.getInstance().getMedicineDeliverySRManager().insert(newMedDeliverySR);
+      //      MedicineDeliveryServiceRequest newMedDeliverySR =
+      //          new MedicineDeliveryServiceRequest(
+      //              status, newEmployee, newLocation, closeDate, openDate, id, deliveryDate);
+      //      DBManager.getInstance().getMedicineDeliverySRManager().insert(newMedDeliverySR);
     }
   }
 
@@ -88,10 +87,9 @@ public class MedicineDeliveryServiceRequestManager
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
             serReq.getStatus().toString(),
-            Integer.toString(serReq.getEmployee().getId()),
+            Integer.toString(serReq.getAssignee().getId()),
             serReq.getCloseDate().toString(),
-            serReq.getOpenDate().toString(),
-            serReq.getDeliveryDate().toString()
+            serReq.getOpenDate().toString()
           });
     }
     writer.writeAll(data);

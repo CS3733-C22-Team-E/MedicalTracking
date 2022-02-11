@@ -45,21 +45,16 @@ public class HomePageController {
 
   @FXML
   public void writeToCSVFiles(MouseEvent mouseEvent) throws SQLException, IOException {
-    LocationManager locationManager = new LocationManager();
-    EquipmentManager equipmentManager = new EquipmentManager();
-    EmployeeManager employeeManager = new EmployeeManager();
-    MedicalEquipmentSRManager medEqpManager = new MedicalEquipmentSRManager();
-    MedicineDeliveryServiceRequestManager medReqManager =
-        new MedicineDeliveryServiceRequestManager();
-    SanitationServiceRequestManager sanReqManager = new SanitationServiceRequestManager();
-    SecurityServiceRequestManager secReqManager = new SecurityServiceRequestManager();
-
-    locationManager.writeToCSV("TowerLocationsESave.csv");
-    equipmentManager.writeToCSV("EquipmentESave.csv");
-    employeeManager.writeToCSV("EmployeesESave.csv");
-    medEqpManager.writeToCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
-    medReqManager.writeToCSV("MedicineDeliveryServiceRequestSave.csv");
-    sanReqManager.writeToCSV("SanitationServiceRequest.csv");
-    secReqManager.writeToCSV("SecurityServiceRequest.csv");
+    DBManager.getInstance().getLocationManager().writeToCSV("TowerLocationsESave.csv");
+    DBManager.getInstance().getEquipmentManager().writeToCSV("EquipmentESave.csv");
+    DBManager.getInstance().getEmployeeManager().writeToCSV("EmployeesESave.csv");
+    DBManager.getInstance()
+        .getMedicalEquipmentSRManager()
+        .writeToCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
+    DBManager.getInstance()
+        .getMedicineDeliverySRManager()
+        .writeToCSV("MedicineDeliveryServiceRequestSave.csv");
+    DBManager.getInstance().getSanitationSRManager().writeToCSV("SanitationServiceRequest.csv");
+    DBManager.getInstance().getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
   }
 }

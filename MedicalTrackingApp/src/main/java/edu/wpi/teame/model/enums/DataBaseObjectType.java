@@ -18,5 +18,6 @@ public enum DataBaseObjectType {
 
   Location,
   Equipment,
-  Employee
+  Employee,
+  Patient
 }
