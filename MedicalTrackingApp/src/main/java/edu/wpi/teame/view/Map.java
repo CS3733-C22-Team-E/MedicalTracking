@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.sql.SQLException;
 import java.util.*;
 import javafx.event.ActionEvent;
@@ -61,8 +62,36 @@ public class Map {
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
     }
+
     System.out.println("Loaded Maps");
     switchFloors(floor);
+  }
+
+  public void refreshServiceRequest() {}
+
+  private void addServiceRequestToMap() {
+    FillProgressIndicator indicator = new FillProgressIndicator();
+    indicator.setTranslateX(0);
+    indicator.setTranslateY(0);
+    indicator.setProgress(0);
+    Timer newTimer = new Timer();
+    layout.getChildren().add(indicator);
+    newTimer.scheduleAtFixedRate(
+        new TimerTask() {
+          @Override
+          public void run() {
+            int progress = indicator.getProgress();
+            if (progress == 100) {
+              indicator.setVisible(false);
+              newTimer.cancel();
+              updateLayoutChildren();
+              return;
+            }
+            indicator.setProgress(progress + 5);
+          }
+        },
+        0,
+        500);
   }
 
   private String getMapImg(FloorType f) {
@@ -370,7 +399,7 @@ public class Map {
             PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
           }
         });
-
+    addServiceRequestToMap();
     return staticWrapper;
   }
 
