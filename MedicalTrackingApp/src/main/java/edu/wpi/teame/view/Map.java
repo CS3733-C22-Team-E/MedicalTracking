@@ -46,6 +46,7 @@ public class Map {
   private boolean showLocationNodes = false;
   private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
+  private HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor = new HashMap<>();
   private HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
   private ContextMenu EquipmentClicked = new ContextMenu();
   private ContextMenu PaneMenu = new ContextMenu();
@@ -60,6 +61,7 @@ public class Map {
       Images.put(currFloor, new Image(App.class.getResource(getMapImg(currFloor)).toString()));
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
+      radialMenusByFloor.put(currFloor, new ArrayList<>());
     }
     System.out.println("Loaded Maps");
     switchFloors(floor);
@@ -186,6 +188,10 @@ public class Map {
     }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getImageView());
+    }
+    createRadialMenus();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      layout.getChildren().add(rm.getButton());
     }
   }
   // Init ScrollPane that holds the StackPane containing map and all icons
@@ -432,7 +438,7 @@ public class Map {
         MouseEvent.MOUSE_PRESSED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-            System.out.println("Started");
+            System.out.println("Started drag");
             for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
               dot.getImageView().setVisible(true);
             }
@@ -496,20 +502,14 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       Location l = dot.getLocation();
       double d = dot.getDistanceToLocation(x, y);
-      System.out.println("Testing location: " + dot.getLocation().getShortName());
       if (d < closestDistance) {
-        System.out.println("Found new closest location.");
         closestDistance = d;
         closestLocation = l;
       }
     }
     if (closestDistance > 50) {
-      System.out.println("Not close enough to snap.");
       return null;
     }
-    System.out.println("Closest Location:");
-    System.out.println(closestLocation.getLongName());
-    System.out.println(closestDistance);
     return closestLocation;
   }
 
@@ -542,5 +542,41 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+  }
+
+  private void createRadialMenus() {
+    System.out.println("Creating radial menus...");
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      List<MapEquipmentIcon> mapEquipmentIconsAtLocation = new LinkedList<>();
+      for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+        Equipment e = i.getEquipment();
+        if (e.getLocation().getLongName().equals(dot.getLocation().getLongName())) {
+          mapEquipmentIconsAtLocation.add(i);
+        }
+      }
+
+      // If there's more than 1 equipment per location, create a radial menu.
+      if (mapEquipmentIconsAtLocation.size() > 1) {
+        System.out.println("Equipment sharing location!");
+        RadialEquipmentMenu r = new RadialEquipmentMenu(mapEquipmentIconsAtLocation);
+        // Make sure we don't already have this radial menu:
+        boolean found = false;
+        for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+          if (r.toString().equals(rm.toString())) {
+            found = true;
+          }
+        }
+        if (!found) {
+          System.out.println("New radial menu detected— adding to HashMap...");
+          radialMenusByFloor.get(currFloor).add(r);
+        }
+      }
+    }
+
+    // Put on map
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.hideIndividualIcons();
+      rm.place(MAPWIDTH, MAPHEIGHT);
+    }
   }
 }
