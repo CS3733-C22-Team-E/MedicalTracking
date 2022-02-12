@@ -44,19 +44,22 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
     this.equipment = new EquipmentManager().get(resultSet.getInt("equipmentID"));
   }
 
+  //Todo: Figure this out when we finalize what we're storing and it's names
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + equipment.getId();
   }
 
+  //Todo: Figure this out when we finalize what we're storing and it's names
   @Override
   public String getSQLUpdateString() {
     return super.getSQLInsertString() + ", equipment = " + equipment.getId() + "WHERE id = " + id;
   }
 
+  //Todo: Figure this out when we finalize what we're storing and it's names
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + "equipmentID, patient)";
+    return super.getTableColumns() + "equipmentID)";
   }
 
   public Equipment getEquipment() {

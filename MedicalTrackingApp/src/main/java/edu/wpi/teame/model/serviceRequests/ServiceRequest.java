@@ -66,31 +66,31 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated
+    // TODO: Needs to be updated. Done
     return location.getId() + ", "
-            + assignee.getId() + ", "
-            + openDate.toString() + ", "
-            + closeDate.toString() + ", "
-            + status.ordinal() + ", "
-            + title + ", "
-            + additionalInfo + ", "
+            + assignee.getId() + ", '"
+            + openDate.toString() + "', '"
+            + closeDate.toString() + "', "
+            + status.ordinal() + ", '"
+            + title + "', '"
+            + additionalInfo + "', "
             + priority.ordinal() + ", "
-            + id + ", "
-            + requestDate.toString();
+            + id + ", '"
+            + requestDate.toString() + "'";
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated
+    // TODO: Needs to be updated. Done
     return "location = " + location.getId() + ", "
             + "assignee = " + assignee.getId() + ", "
-            + "openDate = " + openDate.toString() + ", "
-            + "closeDate = " + closeDate.toString() + ", "
+            + "openDate = '" + openDate.toString() + "', "
+            + "closeDate = '" + closeDate.toString() + "', "
             + "status = " + status.ordinal() + ", "
-            + "title = " + title + ", "
-            + "additionalInfo = " + additionalInfo + ", "
+            + "title = '" + title + "', "
+            + "additionalInfo = '" + additionalInfo + "', "
             + "priority = " + priority.ordinal() + ", "
-            + "requestDate = " + requestDate.toString() + " ";
+            + "requestDate = '" + requestDate.toString() + "'";
 
     //    return "locationID = "
     //        + location.getId()
@@ -108,8 +108,8 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated
-    return null;
+    // TODO: Needs to be updated. Done
+    return "(location, assignee, openDate, closeDate, status, title, additionalInfo, priority, requestDate";
 
     // return "(locationID, status, employeeID, closeDate, openDate, ";
   }
