@@ -3,6 +3,7 @@ package edu.wpi.teame.view;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import edu.wpi.teame.model.Location;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import javafx.scene.image.Image;
@@ -10,9 +11,19 @@ import javafx.scene.image.ImageView;
 
 public class RadialEquipmentMenu {
 
+  private static class Position {
+    double x;
+    double y;
+  }
+
   private final List<MapEquipmentIcon> icons;
   private final Location location;
   private final JFXButton button;
+  private final double radius = 50;
+  private HashMap<MapEquipmentIcon, Position> originalPositions =
+      new HashMap<MapEquipmentIcon, Position>();
+  private double MAPWIDTH;
+  private double MAPHEIGHT;
 
   public RadialEquipmentMenu(List<MapEquipmentIcon> iconList) {
     icons = iconList;
@@ -45,12 +56,33 @@ public class RadialEquipmentMenu {
 
   public void display() {
     // TODO implement this method
-    System.out.println("Displaying radial menu.");
+    // oh fuck I'm gonna have to do some trig here :(
+    int N = icons.size();
+    double angle = (Math.PI * 2 / N);
+    originalPositions.clear();
+    int numDisplayed = 0;
+    for (MapEquipmentIcon i : icons) {
+      Position op = new Position();
+      op.x = i.getButton().getTranslateX();
+      op.y = i.getButton().getTranslateY();
+      originalPositions.put(i, op);
+      double newX = op.x + Math.sin(angle * numDisplayed) * radius;
+      double newY = op.y - Math.cos(angle * numDisplayed) * radius;
+      i.getButton().setTranslateX(newX);
+      i.getButton().setTranslateY(newY);
+      i.getButton().setVisible(true);
+      numDisplayed++;
+    }
   }
 
   public void hide() {
     // TODO implement this method
-    System.out.println("Hiding radial menu.");
+    for (MapEquipmentIcon i : icons) {
+      i.getButton().setVisible(false);
+      Position op = originalPositions.get(i);
+      i.getButton().setTranslateX(op.x);
+      i.getButton().setTranslateY(op.y);
+    }
   }
 
   public void addEquipmentIcon(MapEquipmentIcon i) {
@@ -86,7 +118,9 @@ public class RadialEquipmentMenu {
   }
 
   public void place(double mapW, double mapH) {
-    button.setTranslateX(location.getX() - mapW / 2);
-    button.setTranslateY(location.getY() - mapH / 2);
+    MAPWIDTH = mapW;
+    MAPHEIGHT = mapH;
+    button.setTranslateX(location.getX() - MAPWIDTH / 2);
+    button.setTranslateY(location.getY() - MAPHEIGHT / 2);
   }
 }
