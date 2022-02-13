@@ -15,6 +15,9 @@ import javafx.scene.control.ComboBox;
 
 public class SettingsPageController implements Initializable {
   @FXML public Button logoutButton;
+  @FXML public ComboBox languageComboBox;
+  @FXML public ComboBox colorComboBox;
+  @FXML public ComboBox accessibilityComboBox;
   @FXML private ComboBox dbSwitchComboBox;
 
   private Properties properties;
@@ -32,6 +35,8 @@ public class SettingsPageController implements Initializable {
           FXCollections.observableArrayList(
               new String[] {"Embedded Database", "Client/Server Database"}));
 
+      
+
       if (properties.getProperty("dbConnection").equals("Embedded Database")) {
         dbSwitchComboBox.setValue("Embedded Database");
       } else {
@@ -43,9 +48,10 @@ public class SettingsPageController implements Initializable {
           .addListener(
               listen -> {
                 try {
-                  properties.setProperty("dbConnection", "Client/Server Database");
+                  properties.setProperty("dbConnection", dbSwitchComboBox.getValue().toString());
                   FileWriter writer = new FileWriter(settingsPath);
                   properties.store(writer, "App Settings");
+                  writer.close();
                 } catch (IOException e) {
                   e.printStackTrace();
                   System.out.println("Could not write to settings.properties");
