@@ -189,10 +189,12 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getImageView());
     }
-    createRadialMenus();
+    updateRadialMenus();
+    createNewRadialMenus();
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
       layout.getChildren().add(rm.getButton());
     }
+    showEquipmentRemovedFromRadialMenus();
   }
   // Init ScrollPane that holds the StackPane containing map and all icons
   private ScrollPane createScrollPane(Pane layout) {
@@ -376,6 +378,7 @@ public class Map {
             PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
           }
         });
+    layout.setOnMouseMoved(this::closeRadialMenus);
 
     return staticWrapper;
   }
@@ -544,13 +547,13 @@ public class Map {
     updateLayoutChildren();
   }
 
-  private void createRadialMenus() {
+  private void createNewRadialMenus() {
     System.out.println("Creating radial menus...");
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       List<MapEquipmentIcon> mapEquipmentIconsAtLocation = new LinkedList<>();
       for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
         Equipment e = i.getEquipment();
-        if (e.getLocation().getLongName().equals(dot.getLocation().getLongName())) {
+        if (e.getLocation().equalsByName(dot.getLocation())) {
           mapEquipmentIconsAtLocation.add(i);
         }
       }
@@ -577,6 +580,49 @@ public class Map {
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
       rm.hideIndividualIcons();
       rm.place(MAPWIDTH, MAPHEIGHT);
+    }
+  }
+
+  private void closeRadialMenus(MouseEvent e) {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+      double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());
+      System.out.println(rm.getLocation().getLongName());
+      System.out.println(distance);
+      if (distance > rm.getRadius()) {
+        rm.hide();
+      }
+    }
+  }
+
+  private void updateRadialMenus() {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      for (MapEquipmentIcon i : rm.getIcons()) {
+        if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {
+          rm.removeEquipmentIcon(i);
+        }
+      }
+
+      if (rm.getIcons().size() < 2) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          i.getButton().setVisible(true);
+        }
+        radialMenusByFloor.get(currFloor).remove(rm);
+        rm.kill();
+      }
+    }
+  }
+
+  // This is the longest method name I will tolerate. Do not do this.
+  private void showEquipmentRemovedFromRadialMenus() {
+    LinkedList<MapEquipmentIcon> iconsInMenus = new LinkedList<>();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      iconsInMenus.addAll(rm.getIcons());
+    }
+    for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+      if (!i.getButton().isVisible() && !iconsInMenus.contains(i)) {
+        i.getButton().setVisible(true);
+      }
     }
   }
 }

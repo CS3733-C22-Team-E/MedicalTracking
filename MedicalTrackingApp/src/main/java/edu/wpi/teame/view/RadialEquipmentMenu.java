@@ -17,6 +17,8 @@ public class RadialEquipmentMenu {
     double y;
   }
 
+  private boolean deployed = false;
+
   private final List<MapEquipmentIcon> icons;
   private final Location location;
   private final JFXButton button;
@@ -43,14 +45,20 @@ public class RadialEquipmentMenu {
     button.setGraphic(hamburgerIcon);
     button.setOnMouseEntered(
         e -> {
-          display();
-        });
-    button.setOnMouseExited(
-        e -> {
-          if (isMouseOutsideRadius(e)) {
-            hide();
+          if (!deployed) {
+            display();
           }
         });
+  }
+
+  public double getDistanceToCoordinate(double xCoordinate, double yCoordinate) {
+    return Math.sqrt(
+        Math.pow((xCoordinate - this.location.getX()), 2)
+            + Math.pow((yCoordinate - this.location.getY()), 2));
+  }
+
+  public double getRadius() {
+    return radius;
   }
 
   public JFXButton getButton() {
@@ -58,7 +66,6 @@ public class RadialEquipmentMenu {
   }
 
   public void display() {
-    // TODO implement this method
     // oh fuck I'm gonna have to do some trig here :(
     int N = icons.size();
     double angle = (Math.PI * 2 / N);
@@ -76,16 +83,19 @@ public class RadialEquipmentMenu {
       i.getButton().setVisible(true);
       numDisplayed++;
     }
+    deployed = true;
   }
 
   public void hide() {
-    // TODO implement this method
     for (MapEquipmentIcon i : icons) {
       i.getButton().setVisible(false);
-      Position op = originalPositions.get(i);
-      i.getButton().setTranslateX(op.x);
-      i.getButton().setTranslateY(op.y);
+      if (!originalPositions.isEmpty()) {
+        Position op = originalPositions.get(i);
+        i.getButton().setTranslateX(op.x);
+        i.getButton().setTranslateY(op.y);
+      }
     }
+    deployed = false;
   }
 
   public void addEquipmentIcon(MapEquipmentIcon i) {
@@ -114,6 +124,22 @@ public class RadialEquipmentMenu {
     return s.toString();
   }
 
+  public void kill() {
+    for (MapEquipmentIcon i : icons) {
+      i.getButton().setVisible(true);
+      if (!originalPositions.isEmpty()) {
+        Position op = originalPositions.get(i);
+        i.getButton().setTranslateX(op.x);
+        i.getButton().setTranslateY(op.y);
+      }
+    }
+    this.button.setVisible(false);
+  }
+
+  public List<MapEquipmentIcon> getIcons() {
+    return icons;
+  }
+
   public void hideIndividualIcons() {
     for (MapEquipmentIcon i : icons) {
       i.getButton().setVisible(false);
@@ -131,13 +157,12 @@ public class RadialEquipmentMenu {
     System.out.println(this.location.getX());
     System.out.println(this.location.getY());
     System.out.println(e.getSceneX());
-    double x = e.getSceneX() + MAPWIDTH/2;
-    double y = e.getSceneY() + MAPHEIGHT/2;
+    double x = e.getSceneX() + MAPWIDTH / 2;
+    double y = e.getSceneY() + MAPHEIGHT / 2;
     System.out.println(e.getSceneY());
     double distance =
         Math.sqrt(
-            Math.pow((x - this.location.getX()), 2)
-                + Math.pow((y - this.location.getY()), 2));
+            Math.pow((x - this.location.getX()), 2) + Math.pow((y - this.location.getY()), 2));
     System.out.println(distance);
     return distance > radius;
   }
