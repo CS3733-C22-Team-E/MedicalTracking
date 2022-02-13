@@ -162,7 +162,7 @@ public class LandingPageController implements Initializable {
     String url = "view/tabs/";
     switch (t) {
       case LaundrySR:
-        url += "Laundry";
+        url += "NewLaundry";
         break;
       case ComputerSR:
         url += "Computer";

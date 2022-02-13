@@ -36,7 +36,7 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     tabPageUrl = pageUrl;
     tabOrder = order;
     tabName = name;
-
+    System.out.println(tabPageUrl);
     tabPage = new FXMLLoader(App.class.getResource(tabPageUrl)).load();
     setUpTab();
   }
