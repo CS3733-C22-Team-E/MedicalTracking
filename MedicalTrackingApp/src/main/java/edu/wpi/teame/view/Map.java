@@ -481,6 +481,10 @@ public class Map {
             }
           }
           updateLayoutChildren();
+
+          for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+            rm.hide();
+          }
         });
 
     // Realize drag and drop function
@@ -587,8 +591,6 @@ public class Map {
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
       Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
       double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());
-      System.out.println(rm.getLocation().getLongName());
-      System.out.println(distance);
       if (distance > rm.getRadius()) {
         rm.hide();
       }
@@ -597,9 +599,11 @@ public class Map {
 
   private void updateRadialMenus() {
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
-      for (MapEquipmentIcon i : rm.getIcons()) {
-        if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {
-          rm.removeEquipmentIcon(i);
+      if (!rm.getIcons().isEmpty()) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {
+            rm.removeEquipmentIcon(i);
+          }
         }
       }
 
@@ -617,6 +621,7 @@ public class Map {
   private void showEquipmentRemovedFromRadialMenus() {
     LinkedList<MapEquipmentIcon> iconsInMenus = new LinkedList<>();
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.getButton().setVisible(true);
       iconsInMenus.addAll(rm.getIcons());
     }
     for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {

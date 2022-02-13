@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class RadialEquipmentMenu {
 
@@ -125,6 +124,7 @@ public class RadialEquipmentMenu {
   }
 
   public void kill() {
+    System.out.println("Kill!");
     for (MapEquipmentIcon i : icons) {
       i.getButton().setVisible(true);
       if (!originalPositions.isEmpty()) {
@@ -151,19 +151,5 @@ public class RadialEquipmentMenu {
     MAPHEIGHT = mapH;
     button.setTranslateX(location.getX() - MAPWIDTH / 2);
     button.setTranslateY(location.getY() - MAPHEIGHT / 2);
-  }
-
-  private boolean isMouseOutsideRadius(MouseEvent e) {
-    System.out.println(this.location.getX());
-    System.out.println(this.location.getY());
-    System.out.println(e.getSceneX());
-    double x = e.getSceneX() + MAPWIDTH / 2;
-    double y = e.getSceneY() + MAPHEIGHT / 2;
-    System.out.println(e.getSceneY());
-    double distance =
-        Math.sqrt(
-            Math.pow((x - this.location.getX()), 2) + Math.pow((y - this.location.getY()), 2));
-    System.out.println(distance);
-    return distance > radius;
   }
 }
