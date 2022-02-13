@@ -1,7 +1,10 @@
 package edu.wpi.teame.view;
 
 import com.jfoenix.controls.JFXCheckBox;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,13 +20,6 @@ import javafx.scene.text.TextAlignment;
 public class ServiceRequestCard {
 
   private int hexColor;
-  private String title;
-  private String description;
-  private DataBaseObjectType type;
-  private double WIDTH;
-  private double HEIGHT;
-  private ServiceRequestBacklog backlog;
-  private int backlogID;
 
   // Styling
   private Color BORDERCOLOR = Color.GREEN;
@@ -47,28 +43,17 @@ public class ServiceRequestCard {
               new BorderWidths(BORDERWIDTH)));
 
   // Details
+  private ServiceRequestBacklog backlog;
   private String patientName;
-  private String roomNumber;
-  private String floor;
-  private String status;
+  private Location location;
+  private final ServiceRequest sr;
 
-  public ServiceRequestCard(
-      ServiceRequestBacklog backlog,
-      DataBaseObjectType SRType,
-      String SRDescription,
-      String SRTitle,
-      int SRColor,
-      double cardWidth,
-      double cardHeight,
-      int ID) {
-    backlog = backlog;
+  public ServiceRequestCard(ServiceRequest serviceRequest, int SRColor, ServiceRequestBacklog b) {
+    sr = serviceRequest;
     hexColor = SRColor;
-    title = SRTitle;
-    description = SRDescription;
-    type = SRType;
-    WIDTH = cardWidth;
-    HEIGHT = cardHeight;
-    backlogID = ID;
+    backlog = b;
+
+    location = sr.getLocation();
   }
 
   // TODO Cards are displayed with wrong width
@@ -80,7 +65,7 @@ public class ServiceRequestCard {
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-    card.setPrefSize(1000, height);
+    card.setPrefSize(width, height);
     setHoverStyling(card);
 
     card.getChildren().add(getDoneCheckbox());
@@ -97,7 +82,7 @@ public class ServiceRequestCard {
     detailsGrid.setHgap(20);
     detailsGrid.add(generateDetailText("Patient Name: "), 2, 0);
     detailsGrid.add(getSeparatorH(), 2, 1);
-    detailsGrid.add(generateDetailText("Room Number: "), 2, 2);
+    detailsGrid.add(generateDetailText("Location: "), 2, 2);
     detailsGrid.add(getSeparatorH(), 2, 3);
     detailsGrid.add(generateDetailText("Floor: "), 2, 4);
     detailsGrid.add(getSeparatorH(), 2, 5);
@@ -106,11 +91,11 @@ public class ServiceRequestCard {
 
     detailsGrid.add(generateDetailText(patientName), 3, 0);
     detailsGrid.add(getSeparatorH(), 3, 1);
-    detailsGrid.add(generateDetailText(String.valueOf(roomNumber)), 3, 2);
+    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
     detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(String.valueOf(floor)), 3, 4);
+    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
-    detailsGrid.add(generateDetailText(status), 3, 6);
+    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
 
     card.getChildren().add(detailsGrid);
@@ -127,7 +112,7 @@ public class ServiceRequestCard {
   }
 
   private Text getTitleText() {
-    Text titleText = new Text(title);
+    Text titleText = new Text(sr.getDBType().name());
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
     titleText.setTextAlignment(TextAlignment.CENTER);
     return titleText;
@@ -152,7 +137,8 @@ public class ServiceRequestCard {
   }
 
   private Text getDescriptionText() {
-    Text descriptionText = new Text(description);
+    Text descriptionText = new Text(sr.getLocation().getLongName());
+    // TODO This will be SR Description field in future ^
     descriptionText.setFont(Font.font("Arial", 12));
     descriptionText.setFill(Color.DARKGRAY);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
@@ -173,18 +159,18 @@ public class ServiceRequestCard {
 
   public void setPatientName(String patientName) {
     this.patientName = patientName;
+  } // TODO change this to SR patient field
+
+  public void setLocation(Location location) {
+    this.location = location;
   }
 
-  public void setRoomNumber(String roomNumber) {
-    this.roomNumber = roomNumber;
+  public void setFloor(FloorType floor) {
+    this.location.setFloor(floor);
   }
 
-  public void setFloor(String floor) {
-    this.floor = floor;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
+  public void setStatus(ServiceRequestStatus status) {
+    this.sr.setStatus(status);
   }
 
   private void setHoverStyling(HBox c) {
@@ -204,5 +190,9 @@ public class ServiceRequestCard {
               new Background(
                   new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
         });
+  }
+
+  public ServiceRequest getServiceRequest() {
+    return this.sr;
   }
 }
