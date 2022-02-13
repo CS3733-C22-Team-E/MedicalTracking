@@ -1,6 +1,7 @@
 package edu.wpi.teame.view;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.util.HashMap;
@@ -133,6 +134,20 @@ public class MapServiceRequestIcon {
     Icon.setFitWidth(35);
     progressIndicator.setTranslateX(X);
     progressIndicator.setTranslateY(Y);
+    pane.getChildren().addAll(progressIndicator, Icon);
+    onPane = pane;
+  }
+  public MapServiceRequestIcon(Pane pane, Location location, DataBaseObjectType SRType){
+    this.timer = new Timer();
+    progressIndicator = new FillProgressIndicator();
+    progressIndicator.setProgress(0);
+    Icon = Graphics.get(SRType);
+    Icon.setTranslateX(location.getX());
+    Icon.setTranslateY(location.getY());
+    Icon.setFitHeight(35);
+    Icon.setFitWidth(35);
+    progressIndicator.setTranslateX(location.getX());
+    progressIndicator.setTranslateY(location.getY());
     pane.getChildren().addAll(progressIndicator, Icon);
     onPane = pane;
   }
