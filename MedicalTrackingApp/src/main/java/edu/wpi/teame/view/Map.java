@@ -73,41 +73,7 @@ public class Map {
 
   public void refreshServiceRequest() {}
 
-  private void addServiceRequestToMap() {
-    //    ImageView newImage =
-    //        new ImageView(new
-    // Image(App.class.getResource("images/Icons/AudioVisual.png").toString()));
-    //    newImage.setFitWidth(40);
-    //    newImage.setFitHeight(40);
-    //    layout.setTranslateX(0);
-    //    layout.setTranslateY(0);
-    //    FillProgressIndicator indicator = new FillProgressIndicator();
-    //    indicator.setTranslateX(0);
-    //    indicator.setTranslateY(0);
-    //    indicator.setProgress(0);
-    //    Timer newTimer = new Timer();
-    //    layout.getChildren().add(indicator);
-    //    layout.getChildren().add(newImage);
-    //    newTimer.scheduleAtFixedRate(
-    //        new TimerTask() {
-    //          @Override
-    //          public void run() {
-    //            int progress = indicator.getProgress();
-    //            if (progress == 100) {
-    //              indicator.setVisible(false);
-    //              newImage.setVisible(false);
-    //              newTimer.cancel();
-    //              updateLayoutChildren();
-    //              return;
-    //            }
-    //            indicator.setProgress(progress + 1);
-    //          }
-    //        },
-    //        0,
-    //        500);
-    new MapServiceRequestIcon(layout, 0, 0, DataBaseObjectType.AudioVisualSR).startTimer(20);
-    new MapServiceRequestIcon(layout, 100, 0, DataBaseObjectType.ComputerSR).startTimer(15);
-  }
+  private void addServiceRequestToMap(Location location, DataBaseObjectType SRType) {}
 
   private String getMapImg(FloorType f) {
     switch (f) {
@@ -233,15 +199,16 @@ public class Map {
     }
   }
   // Init ScrollPane that holds the StackPane containing map and all icons
-  private ScrollPane createScrollPane(Pane layout) {
-    ScrollPane scroll = new ScrollPane();
+  private ZoomableScrollPane createScrollPane(Pane layout) {
+    ZoomableScrollPane scroll = new ZoomableScrollPane(layout);
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setPannable(true);
     scroll.setPrefSize(WIDTH, HEIGHT);
-    scroll.setContent(layout);
+    //    scroll.setContent(layout);
     return scroll;
   }
+
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
@@ -388,14 +355,18 @@ public class Map {
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     // TODO
+    ZoomableScrollPane scroll = createScrollPane(layout);
     layout.setOnScroll(
         new EventHandler<ScrollEvent>() {
           @Override
           public void handle(ScrollEvent event) {
-            double scrollVal = event.getDeltaY();
+            // Consume the scroll event so that it doesn't get passed to other listeners
+            // fire the scroll event to the zoomNode of the scrollable pane
+            scroll.zoomNode.fireEvent(event);
+            event.consume();
           }
         });
-    ScrollPane scroll = createScrollPane(layout);
+
     StackPane staticWrapper = new StackPane();
     staticWrapper
         .getChildren()
@@ -414,7 +385,6 @@ public class Map {
             PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
           }
         });
-    addServiceRequestToMap();
     return staticWrapper;
   }
 

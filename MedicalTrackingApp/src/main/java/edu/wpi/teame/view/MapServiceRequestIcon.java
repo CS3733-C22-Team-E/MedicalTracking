@@ -7,6 +7,7 @@ import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -137,7 +138,8 @@ public class MapServiceRequestIcon {
     pane.getChildren().addAll(progressIndicator, Icon);
     onPane = pane;
   }
-  public MapServiceRequestIcon(Pane pane, Location location, DataBaseObjectType SRType){
+
+  public MapServiceRequestIcon(Pane pane, Location location, DataBaseObjectType SRType) {
     this.timer = new Timer();
     progressIndicator = new FillProgressIndicator();
     progressIndicator.setProgress(0);
@@ -146,6 +148,7 @@ public class MapServiceRequestIcon {
     Icon.setTranslateY(location.getY());
     Icon.setFitHeight(35);
     Icon.setFitWidth(35);
+    Tooltip.install(Icon, new Tooltip(location.getShortName()));
     progressIndicator.setTranslateX(location.getX());
     progressIndicator.setTranslateY(location.getY());
     pane.getChildren().addAll(progressIndicator, Icon);
