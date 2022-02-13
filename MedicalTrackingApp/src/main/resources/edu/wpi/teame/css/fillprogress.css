@@ -4,8 +4,8 @@
 .fillindicator-border-circle {
 	-fx-opacity: 0.6;
 	-fx-stroke:  circleindicator-color; 
-	-fx-stroke-width: 3.0px;
-	-fx-fill: -fx-background;
+	-fx-stroke-width: 0px;
+	-fx-fill: rgba(0, 0, 0, 0);
 }
 .fillindicator-filler-circle {
 	-fx-opacity: 0.75;

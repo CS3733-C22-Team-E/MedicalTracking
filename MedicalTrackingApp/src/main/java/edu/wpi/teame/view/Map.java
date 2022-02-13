@@ -7,9 +7,9 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.*;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
-import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.sql.SQLException;
 import java.util.*;
 import javafx.event.ActionEvent;
@@ -37,6 +37,7 @@ import javafx.util.Pair;
 
 public class Map {
   private HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
+  private HashMap<DataBaseObjectType, Image> SRIcons = new HashMap<DataBaseObjectType, Image>();
   private Image backgroundImage;
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -62,6 +63,9 @@ public class Map {
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
     }
+    for (DataBaseObjectType currSR : DataBaseObjectType.values()) {
+      // TODO add graphics
+    }
 
     System.out.println("Loaded Maps");
     switchFloors(floor);
@@ -70,28 +74,39 @@ public class Map {
   public void refreshServiceRequest() {}
 
   private void addServiceRequestToMap() {
-    FillProgressIndicator indicator = new FillProgressIndicator();
-    indicator.setTranslateX(0);
-    indicator.setTranslateY(0);
-    indicator.setProgress(0);
-    Timer newTimer = new Timer();
-    layout.getChildren().add(indicator);
-    newTimer.scheduleAtFixedRate(
-        new TimerTask() {
-          @Override
-          public void run() {
-            int progress = indicator.getProgress();
-            if (progress == 100) {
-              indicator.setVisible(false);
-              newTimer.cancel();
-              updateLayoutChildren();
-              return;
-            }
-            indicator.setProgress(progress + 5);
-          }
-        },
-        0,
-        500);
+    //    ImageView newImage =
+    //        new ImageView(new
+    // Image(App.class.getResource("images/Icons/AudioVisual.png").toString()));
+    //    newImage.setFitWidth(40);
+    //    newImage.setFitHeight(40);
+    //    layout.setTranslateX(0);
+    //    layout.setTranslateY(0);
+    //    FillProgressIndicator indicator = new FillProgressIndicator();
+    //    indicator.setTranslateX(0);
+    //    indicator.setTranslateY(0);
+    //    indicator.setProgress(0);
+    //    Timer newTimer = new Timer();
+    //    layout.getChildren().add(indicator);
+    //    layout.getChildren().add(newImage);
+    //    newTimer.scheduleAtFixedRate(
+    //        new TimerTask() {
+    //          @Override
+    //          public void run() {
+    //            int progress = indicator.getProgress();
+    //            if (progress == 100) {
+    //              indicator.setVisible(false);
+    //              newImage.setVisible(false);
+    //              newTimer.cancel();
+    //              updateLayoutChildren();
+    //              return;
+    //            }
+    //            indicator.setProgress(progress + 1);
+    //          }
+    //        },
+    //        0,
+    //        500);
+    new MapServiceRequestIcon(layout, 0, 0, DataBaseObjectType.AudioVisualSR).startTimer(20);
+    new MapServiceRequestIcon(layout, 100, 0, DataBaseObjectType.ComputerSR).startTimer(15);
   }
 
   private String getMapImg(FloorType f) {

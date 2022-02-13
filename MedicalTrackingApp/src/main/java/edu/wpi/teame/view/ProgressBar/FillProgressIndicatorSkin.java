@@ -19,7 +19,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.Skin;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
@@ -36,7 +35,7 @@ import javafx.util.Duration;
 public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
   private final FillProgressIndicator indicator;
   private final StackPane container = new StackPane();
-  private final Label percentLabel = new Label();
+  // private final Label percentLabel = new Label();
   private final Rectangle cover = new Rectangle();
   private final Circle borderCircle = new Circle();
   private final Circle fillerCircle = new Circle();
@@ -95,7 +94,7 @@ public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
               }
             });
 
-    this.container.getChildren().addAll(fillerCircle, coverPane, borderCircle, percentLabel);
+    this.container.getChildren().addAll(fillerCircle, coverPane, borderCircle);
     initTransition();
     initIndeterminate(indicator.isIndeterminate());
   }
@@ -126,17 +125,17 @@ public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
 
   private void initLabel(int value) {
     setProgressLabel(value);
-    percentLabel.getStyleClass().add("circleindicator-label");
+    // percentLabel.getStyleClass().add("circleindicator-label");
   }
 
   private void setProgressLabel(int value) {
     if (value >= 0) {
-      percentLabel.setText(String.format("%d%%", value));
+      // percentLabel.setText(String.format("%d%%", value));
     }
   }
 
   private void initIndeterminate(boolean newVal) {
-    percentLabel.setVisible(!newVal);
+    // percentLabel.setVisible(!newVal);
     if (newVal && indicator.isVisible()) {
       transition.play();
     } else {
