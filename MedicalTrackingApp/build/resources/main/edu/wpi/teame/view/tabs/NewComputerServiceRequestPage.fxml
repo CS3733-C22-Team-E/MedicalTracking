@@ -56,12 +56,18 @@
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </JFXComboBox>
             <Text fill="#e1abab" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Priority: " GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
             <JFXComboBox fx:id="priorityComboBox" prefHeight="26.0" prefWidth="478.0" promptText="Choose priority..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </JFXComboBox>
             <Text fill="#f7bfbf" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                <GridPane.margin>
@@ -72,6 +78,9 @@
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </JFXComboBox>
             <Button fx:id="clearButton" mnemonicParsing="false" onMouseClicked="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                <font>
@@ -87,6 +96,9 @@
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </JFXComboBox>
             <TextArea fx:id="additionalInfoTextArea" prefHeight="200.0" prefWidth="200.0" promptText="Add any additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <GridPane.margin>
