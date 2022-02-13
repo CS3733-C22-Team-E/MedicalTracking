@@ -64,6 +64,20 @@
   -fx-text-fill: -fx-text-color;
 }
 
+.text-area {
+  -fx-background-color: transparent, transparent, transparent, transparent;
+}
+
+.text-area .content {
+  -fx-background-color: -fx-text-box-background-color;
+  -fx-background-radius: 5 5 5 5;
+}
+
+.text-area .scroll-pane .viewport{
+  -fx-background-color: transparent;
+}
+
+
 .check-box {
   -fx-text-fill: -fx-button-text-color;
   -fx-background-radius: 5;

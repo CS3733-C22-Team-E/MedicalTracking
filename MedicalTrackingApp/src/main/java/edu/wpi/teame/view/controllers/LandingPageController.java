@@ -163,7 +163,7 @@ public class LandingPageController implements Initializable {
         url += "Laundry";
         break;
       case ComputerSR:
-        url += "Computer";
+        url += "NewComputer";
         break;
       case SecuritySR:
         url += "Security";
