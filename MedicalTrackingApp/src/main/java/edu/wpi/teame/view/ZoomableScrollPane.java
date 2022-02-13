@@ -55,7 +55,7 @@ public class ZoomableScrollPane extends ScrollPane {
 
     Bounds innerBounds = zoomNode.getLayoutBounds();
     Bounds viewportBounds = getViewportBounds();
-    //TODO figure this out
+    // TODO figure this out
     if (innerBounds.getHeight() < MaxPixels && wheelDelta < 0) {
       return;
     } else if (innerBounds.getHeight() > MinPixels && wheelDelta > 0) {

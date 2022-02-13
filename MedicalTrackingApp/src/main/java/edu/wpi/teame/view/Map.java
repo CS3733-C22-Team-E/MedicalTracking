@@ -10,7 +10,10 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -51,22 +54,21 @@ public class Map {
   private HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
   private ContextMenu EquipmentClicked = new ContextMenu();
   private ContextMenu PaneMenu = new ContextMenu();
+  private ContextMenu AutoFillSR = new ContextMenu();
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
   private StackPane layout = new StackPane();
   private FloorType currFloor;
+  private LandingPageController appController;
 
-  public Map(FloorType floor) {
+  public Map(FloorType floor, LandingPageController landingPageController) {
     currFloor = floor;
+    appController = landingPageController;
     for (FloorType currFloor : FloorType.values()) {
       Images.put(currFloor, new Image(App.class.getResource(getMapImg(currFloor)).toString()));
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
     }
-    for (DataBaseObjectType currSR : DataBaseObjectType.values()) {
-      // TODO add graphics
-    }
-
     System.out.println("Loaded Maps");
     switchFloors(floor);
   }
@@ -474,6 +476,11 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
+            appController.mainTabPane.getSelectionModel().select(11);
+            appController.test.requestLocation.setText(nearestLocation.getLongName());
+            appController.test.equipmentNeeded.setValue(i.equipment.getType());
+            appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
+            appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
