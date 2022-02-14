@@ -56,7 +56,6 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLInsertString()
         + ", '"
         + medicineName
@@ -65,18 +64,16 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + ", '"
         + medicineQuantity
         + "', ";
-    // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLUpdateString()
         + ", "
         + "medicineName = '"
         + medicineName
         + "',"
-        + "patient = "
+        + "patientID = "
         + patient.getId()
         + ", "
         + "medicineQuantity = '"
@@ -84,14 +81,11 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + "'"
         + "WHERE id = "
         + id;
-    // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
-    return super.getTableColumns() + ", medicineName, patient, medicineQuantity)";
-    // return super.getTableColumns();
+    return super.getTableColumns() + ", medicineName, patientID, medicineQuantity)";
   }
 
   public String getMedicineQuantity() {

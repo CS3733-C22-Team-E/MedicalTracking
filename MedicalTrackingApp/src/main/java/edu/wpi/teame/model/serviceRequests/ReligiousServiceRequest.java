@@ -52,18 +52,14 @@ public final class ReligiousServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
-
     return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "')";
-    // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLUpdateString()
         + ", "
-        + "patient = "
+        + "patientID = "
         + patient.getId()
         + ", "
         + "religion = '"
@@ -71,14 +67,11 @@ public final class ReligiousServiceRequest extends ServiceRequest {
         + "'"
         + "WHERE id = "
         + id;
-    // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
-    return super.getTableColumns() + ", patient, religion)";
-    // return super.getTableColumns();
+    return super.getTableColumns() + ", patientID, religion)";
   }
 
   public Patient getPatient() {

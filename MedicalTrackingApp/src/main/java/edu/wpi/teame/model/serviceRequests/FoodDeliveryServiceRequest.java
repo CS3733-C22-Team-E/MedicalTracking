@@ -52,31 +52,25 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLInsertString() + ", " + patient.getId() + ", " + food;
-    // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLUpdateString()
         + ", "
-        + "patient = "
+        + "patientID = "
         + patient.getId()
         + ", "
         + "food = "
         + food
         + "WHERE id = "
         + id;
-    // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
-    return super.getTableColumns() + ", patient, food)";
-    // return super.getTableColumns();
+    return super.getTableColumns() + ", patientID, food)";
   }
 
   public Patient getPatient() {

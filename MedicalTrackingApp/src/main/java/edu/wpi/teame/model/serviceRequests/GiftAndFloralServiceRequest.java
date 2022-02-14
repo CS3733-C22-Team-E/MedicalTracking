@@ -48,22 +48,19 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLInsertString() + ", " + patient.getId();
     // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", " + "patient = " + patient.getId() + "WHERE id = " + id;
+    return super.getSQLUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;
     // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
-    return super.getTableColumns() + ", patient";
+    return super.getTableColumns() + ", patientID";
     // return super.getTableColumns();
   }
 

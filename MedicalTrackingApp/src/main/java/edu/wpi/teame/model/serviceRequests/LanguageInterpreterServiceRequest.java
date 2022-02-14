@@ -53,31 +53,26 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
     // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
     return super.getSQLUpdateString()
         + ", "
         + "language = "
         + language.ordinal()
         + ", "
-        + "patient = "
+        + "patientID = "
         + patient.getId()
         + "WHERE id = "
         + id;
-    // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
-    return super.getTableColumns() + ", language, patient)";
-    // return super.getTableColumns();
+    return super.getTableColumns() + ", language, patientID)";
   }
 
   public LanguageType getLanguage() {
