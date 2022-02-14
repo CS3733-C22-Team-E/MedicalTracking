@@ -97,11 +97,17 @@ public class ServiceRequestCard {
     return detailText;
   }
 
-  private Text getTitleText() {
-    Text titleText = new Text(sr.getDBType().toString());
+  private HBox getTitleText() {
+    HBox textBox = new HBox();
+    Text titleText = new Text(sr.getDBType().shortName());
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-    titleText.setTextAlignment(TextAlignment.CENTER);
-    return titleText;
+    textBox.getChildren().add(titleText);
+    Text srText = new Text(" Service Request");
+    srText.setFont(Font.font("Arial", 12));
+    srText.setFill(Color.LIGHTGRAY);
+    textBox.getChildren().add(srText);
+    textBox.setAlignment(Pos.BASELINE_CENTER);
+    return textBox;
   }
 
   // Commit

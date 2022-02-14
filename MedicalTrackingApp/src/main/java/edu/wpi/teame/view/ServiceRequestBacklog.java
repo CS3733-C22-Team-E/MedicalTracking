@@ -61,7 +61,7 @@ public class ServiceRequestBacklog {
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {
-    HBox card = c.getCard(SCENEWIDTH / 2, 100);
+    HBox card = c.getCard(SCENEWIDTH / 1.5, 100);
     requestHolder.add(card, 0, cardsDisplayedById.size());
     cardsDisplayedById.put(c.getServiceRequest().getId(), c);
   }

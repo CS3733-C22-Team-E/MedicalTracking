@@ -100,4 +100,44 @@ public enum DataBaseObjectType {
     }
     return null;
   }
+
+  public String shortName() {
+    switch (this) {
+      case AudioVisualSR:
+        return "Audio/Visual";
+      case ComputerSR:
+        return "Computer";
+      case FoodDeliverySR:
+        return "Food Delivery";
+      case GiftAndFloralSR:
+        return "Gift/Floral Delivery";
+      case ExternalPatientTransportation:
+        return "External Patient Transportation";
+      case LanguageInterpreterSR:
+        return "Language Interpreter";
+      case InternalPatientTransferSR:
+        return "Internal Patient Transportation";
+      case LaundrySR:
+        return "Laundry";
+      case SecuritySR:
+        return "Security";
+      case ReligiousSR:
+        return "Religious";
+      case SanitationSR:
+        return "Sanitation";
+      case MedicalEquipmentSR:
+        return "Medical Equipment Delivery";
+      case MedicineDeliverySR:
+        return "Medicine Delivery";
+      case FacilitiesMaintenanceSR:
+        return "Facilities Maintenance";
+      case Employee:
+        return "Employee";
+      case Location:
+        return "Location";
+      case Equipment:
+        return "Equipment";
+    }
+    return null;
+  }
 }
