@@ -10,73 +10,72 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GiftAndFloralDeliveryServiceRequest extends ServiceRequest{
-    private Date deliveryDate;
+public class GiftAndFloralDeliveryServiceRequest extends ServiceRequest {
+  private Date deliveryDate;
 
-    public GiftAndFloralDeliveryServiceRequest(
-            ServiceRequestStatus requestStatus,
-            Employee assignee,
-            Location location,
-            Date closeDate,
-            Date openDate,
-            int id,
-            Date deliveryDate) {
-        super(requestStatus, assignee, location, closeDate, openDate, id);
-        this.deliveryDate = deliveryDate;
-    }
+  public GiftAndFloralDeliveryServiceRequest(
+      ServiceRequestStatus requestStatus,
+      Employee assignee,
+      Location location,
+      Date closeDate,
+      Date openDate,
+      int id,
+      Date deliveryDate) {
+    super(requestStatus, assignee, location, closeDate, openDate, id);
+    this.deliveryDate = deliveryDate;
+  }
 
-    public GiftAndFloralDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
-        // TODO: actually call employee, location, equipment in constructor
-        super(
-                ServiceRequestStatus.values()[resultSet.getInt("status")],
-                new EmployeeManager().get(resultSet.getInt("employeeID")),
-                new LocationManager().get(resultSet.getInt("locationID")),
-                resultSet.getDate("closeDate"),
-                resultSet.getDate("openDate"),
-                resultSet.getInt("id"));
-        this.deliveryDate = resultSet.getDate("deliveryDate");
-    }
+  public GiftAndFloralDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
+    // TODO: actually call employee, location, equipment in constructor
+    super(
+        ServiceRequestStatus.values()[resultSet.getInt("status")],
+        new EmployeeManager().get(resultSet.getInt("employeeID")),
+        new LocationManager().get(resultSet.getInt("locationID")),
+        resultSet.getDate("closeDate"),
+        resultSet.getDate("openDate"),
+        resultSet.getInt("id"));
+    this.deliveryDate = resultSet.getDate("deliveryDate");
+  }
 
-    @Override
-    public String toSQLInsertString() {
-        return  super.toSQLInsertString() + ", '" + deliveryDate + "'";
-    }
+  @Override
+  public String toSQLInsertString() {
+    return super.toSQLInsertString() + ", '" + deliveryDate + "'";
+  }
 
-    @Override
-    public String toSQLUpdateString() {
-        return "locationID = "
-                + location.getId()
-                + ", status = "
-                + status.ordinal()
-                + ", employeeID = "
-                + employee.getId()
-                + ", closeDate = '"
-                + closeDate.toString()
-                + "', openDate = '"
-                + openDate.toString()
-                + "', deliveryDate = '"
-                + deliveryDate
-                + "'"
-                + " WHERE id = "
-                + id;
-    }
+  @Override
+  public String toSQLUpdateString() {
+    return "locationID = "
+        + location.getId()
+        + ", status = "
+        + status.ordinal()
+        + ", employeeID = "
+        + employee.getId()
+        + ", closeDate = '"
+        + closeDate.toString()
+        + "', openDate = '"
+        + openDate.toString()
+        + "', deliveryDate = '"
+        + deliveryDate
+        + "'"
+        + " WHERE id = "
+        + id;
+  }
 
-    @Override
-    public DataBaseObjectType getDBType() {
-        return DataBaseObjectType.GiftAndFloralSR;
-    }
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.GiftAndFloralSR;
+  }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
+  public Date getDeliveryDate() {
+    return deliveryDate;
+  }
 
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
+  public void setDeliveryDate(Date deliveryDate) {
+    this.deliveryDate = deliveryDate;
+  }
 
-    @Override
-    public String getTableColumns() {
-        return super.getTableColumns() + "deliveryDate)";
-    }
-
+  @Override
+  public String getTableColumns() {
+    return super.getTableColumns() + "deliveryDate)";
+  }
 }
