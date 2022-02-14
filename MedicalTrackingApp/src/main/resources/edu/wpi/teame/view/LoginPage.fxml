@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane styleClass="anchor-pane" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.LoginPageController">
+<AnchorPane styleClass="anchor-pane" stylesheets="@../css/loginStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.LoginPageController">
     <children>
         <GridPane layoutY="7.0" prefHeight="800.0" prefWidth="1000.0" style="-fx-opacity: 75%;" styleClass="title-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -31,17 +31,17 @@
          <children>
             <VBox alignment="CENTER" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
                      <image>
                         <Image url="@../images/Icons/AppIconMinimal.png" />
                      </image>
                   </ImageView>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="LOG IN">
+                  <Text fill="WHITE" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="LOG IN">
                      <font>
-                        <Font name="Arial Black" size="36.0" />
+                        <Font name="Arial" size="36.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="30.0" />
                      </VBox.margin>
                   </Text>
                   <StackPane alignment="CENTER_LEFT" onMouseEntered="#usernameMouseEnter" onMouseExited="#usernameMouseExit">
@@ -91,8 +91,8 @@
                   </StackPane>
                   <StackPane>
                      <children>
-                        <Line endX="100.0" opacity="0.25" startX="-260.0" stroke="WHITE" strokeWidth="3.0" />
-                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-260.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </StackPane>
                   <StackPane alignment="CENTER_LEFT" onMouseEntered="#passwordMouseEnter" onMouseExited="#passwordMouseExit">
@@ -142,8 +142,8 @@
                   </StackPane>
                   <StackPane>
                      <children>
-                        <Line endX="100.0" opacity="0.25" startX="-260.0" stroke="WHITE" strokeWidth="3.0" />
-                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-260.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </StackPane>
                   <JFXButton fx:id="loginButton" buttonType="RAISED" disable="true" onAction="#loginButtonPressed" prefHeight="40.0" prefWidth="100.0" ripplerFill="WHITE" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;" text="Login" textAlignment="CENTER">

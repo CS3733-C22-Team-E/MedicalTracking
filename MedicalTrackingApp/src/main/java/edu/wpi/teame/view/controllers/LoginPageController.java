@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import java.io.IOException;
 import java.util.Objects;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class LoginPageController {
 
@@ -51,12 +55,12 @@ public class LoginPageController {
 
   @FXML
   private void usernameMouseEnter() {
-    displayTextLine(usernameFillLine, true);
+    // displayTextLine(usernameFillLine, true);
   }
 
   @FXML
   private void usernameMouseExit() {
-    displayTextLine(usernameFillLine, false);
+    // displayTextLine(usernameFillLine, false);
   }
 
   @FXML
@@ -75,28 +79,49 @@ public class LoginPageController {
 
   @FXML
   private void passwordMouseEnter() {
-    displayTextLine(passwordFillLine, true);
+    // displayTextLine(passwordFillLine, true);
   }
 
   @FXML
   private void passwordMouseExit() {
-    displayTextLine(passwordFillLine, false);
+    // displayTextLine(passwordFillLine, false);
   }
 
   private void displayTextLine(Line l, boolean display) {
+    ScaleTransition t = new ScaleTransition(new Duration(300), l);
+    t.setInterpolator(Interpolator.EASE_OUT);
     if (display) {
-      l.setScaleX(1);
+      if (l.getScaleX() > 0) {
+        return;
+      }
+      t.setFromX(0);
+      t.setToX(1);
     } else {
-      l.setScaleX(0);
+      if (l.getScaleX() < 1) {
+        return;
+      }
+      t.setFromX(1);
+      t.setToX(0);
     }
+    t.play();
   }
 
   private void moveTextImage(ImageView i, boolean dislocate) {
+    TranslateTransition t = new TranslateTransition(new Duration(200), i);
     if (dislocate) {
-      i.setTranslateY(-35);
+      if (i.getTranslateY() < -5) {
+        return;
+      }
+      t.setFromY(-5);
+      t.setToY(-35);
     } else {
-      i.setTranslateY(-5);
+      if (i.getTranslateY() > -35) {
+        return;
+      }
+      t.setFromY(-35);
+      t.setToY(-5);
     }
+    t.play();
   }
 
   private void moveText(Text t, boolean dislocate) {
