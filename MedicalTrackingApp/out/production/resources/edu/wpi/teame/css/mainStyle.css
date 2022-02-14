@@ -51,7 +51,7 @@
 .combo-box {
   -fx-background-color: -fx-button-background-color;
   -fx-text-fill: -fx-button-text-color;
-  -fx-background-radius: 5;
+  -fx-background-radius: 10;
 }
 
 .combo-box .list-cell{
@@ -62,6 +62,11 @@
 .text-box {
   -fx-background-color: -fx-text-box-background-color;
   -fx-text-fill: -fx-text-color;
+}
+
+.check-box {
+  -fx-text-fill: -fx-button-text-color;
+  -fx-background-radius: 5;
 }
 
 .calendar-picker {

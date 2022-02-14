@@ -1,0 +1,154 @@
+nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
+1,1617,825,FirstFloor,Tower,DEPT,Center for International Medicine,CIM
+2,1610,1120,FirstFloor,Tower,DEPT,Bretholtz Center for Patients and Families,Bretholtz WR
+3,1721,931,FirstFloor,Tower,DEPT,Multifaith Chapel,Chapel
+4,1794,1146,FirstFloor,Tower,DEPT,Sharf Admitting Center,Sharf Center
+5,2128,1300,FirstFloor,Tower,DEPT,Emergency Department,Emergency
+6,1780,1029,FirstFloor,Tower,DEPT,International Patient Center,IPC
+7,2017,799,FirstFloor,Tower,EXIT,Shattuck Street Lobby Exit,Shattuck St. Exit
+8,1748,1321,FirstFloor,Tower,EXIT,75 Francis Valet Drop-off,75 Francis Exit
+9,2099,1357,FirstFloor,Tower,EXIT,Emergency Department Entrance,Emergency Entrance
+10,2055,910,FirstFloor,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101
+11,2026,910,FirstFloor,Tower,HALL,Lobby Shattuck Street,Hallway F00201
+12,2017,910,FirstFloor,Tower,HALL,Shattuck Street Lobby 1,Hallway F00301
+13,1973,910,FirstFloor,Tower,HALL,Shattuck Street Lobby 2,Hallway F00401
+14,1950,910,FirstFloor,Tower,HALL,Shattuck Street Lobby 3,Hallway F00501
+15,1869,930,FirstFloor,Tower,HALL,Tower Lobby Entrance 1,Tower Entrance
+16,1758,930,FirstFloor,Tower,HALL,Tower Elevator Entrance,Hallway F00701
+17,1758,850,FirstFloor,Tower,HALL,Tower Hallway 1,Hallway F00801
+18,1627,850,FirstFloor,Tower,HALL,Tower Hallway 2,Hallway F00901
+19,1627,802,FirstFloor,Tower,HALL,Tower Hallway 3,Hallway F01001
+20,1627,930,FirstFloor,Tower,HALL,Tower Hallway 4,Hallway F01101
+21,1548,930,FirstFloor,Tower,HALL,Tower Staff Entrance,Hallway F01201
+22,1627,825,FirstFloor,Tower,HALL,Tower Hallway 5,Hallway F01301
+23,1627,1029,FirstFloor,Tower,HALL,Tower Hallway 6,Hallway F01401
+24,1627,1060,FirstFloor,Tower,HALL,Tower Hallway 7,Hallway F01501
+25,1758,1060,FirstFloor,Tower,HALL,Tower Hallway 8,Hallway F01601
+26,1721,956,FirstFloor,Tower,HALL,Tower Hallway 9,Hallway F01701
+27,1758,956,FirstFloor,Tower,HALL,Tower Hallway 10,Hallway F01801
+28,1758,1120,FirstFloor,Tower,HALL,Tower Hallway 11,Hallway F01901
+29,1700,1120,FirstFloor,Tower,HALL,Tower Hallway 12,Hallway F02001
+30,1769,1146,FirstFloor,Tower,HALL,Tower Hallway Entrance,Tower Entrance 2
+31,1769,1280,FirstFloor,Tower,HALL,Hallway Lobby Entrance,Entrance Hallway
+32,1845,1280,FirstFloor,Tower,HALL,Lobby Hallway 1,Hallway F02301
+33,1965,1280,FirstFloor,Tower,HALL,Lobby Hallway 2,Hallway F02401
+34,1965,1239,FirstFloor,Tower,HALL,Lobby Hallway 3,Hallway F02501
+35,2026,1239,FirstFloor,Tower,HALL,Lobby Hallway 4,Hallway F02601
+36,2066,1239,FirstFloor,Tower,HALL,Lobby Hallway 7,Hallway F02701
+37,1748,1280,FirstFloor,Tower,HALL,Lobby Entrance Hallway,HallwayF02801
+38,1700,1280,FirstFloor,Tower,HALL,75 Lobby,75 Lobby
+39,1645,1246,FirstFloor,Tower,HALL,Lobby Hallway 5,Hallway F02701
+40,2026,976,FirstFloor,Tower,HALL,Lobby Hallway 6,Hallway F02801
+41,1758,1029,FirstFloor,Tower,HALL,Tower Hallway 13,Hallway F03201
+42,2066,1282,FirstFloor,Tower,HALL,Emergency Hallway,Hallway F03301
+43,1700,1226,FirstFloor,Tower,INFO,75 Lobby Information Desk,Lobby Info Desk
+44,1845,1250,FirstFloor,Tower,LABS,Obstetrics Admitting,Obs Admitting
+45,2091,976,FirstFloor,Tower,REST,Bathroom 75 Lobby,Bathroom Lobby
+46,1973,844,FirstFloor,Tower,RETL,Lobby Vending Machine,VM Lobby
+47,1609,1246,FirstFloor,Tower,RETL,Au Bon Pain,ABP
+48,1950,871,FirstFloor,Tower,SERV,Shattuck Street Lobby ATM,Lobby ATM
+49,1605,1029,FirstFloor,Tower,SERV,Tower Medical Cashier,Tower Cashier
+50,1700,1158,FirstFloor,Tower,SERV,Kessler Library,Kessler Library
+51,1721,970,FirstFloor,Tower,DEPT,Spiritual Care Office,SCO
+52,1645,1280,FirstFloor,Tower,SERV,75 Lobby Valet Cashier,Valet Cashier
+53,2026,892,FirstFloor,Tower,STAI,Lobby Shattuck Street Stairs,Stairway F00101
+54,1673,802,FirstFloor,Tower,STAI,Tower Stairway 1,Tower Stairs 1
+55,1947,1239,FirstFloor,Tower,STAI,Lobby Escalator,Lobby Escalator
+56,1810,930,FirstFloor,Tower,ELEV,Elevator L Floor 1,Elevator L1
+57,1810,1280,FirstFloor,Tower,ELEV,Elevator M Floor 1,Elevator M1
+58,1605,1008,SecondFloor,Tower,BATH,Bathroom 1 Tower Floor 2,Bathroom 0102
+59,2055,1330,SecondFloor,Tower,DEPT,Endoscopy,Endoscopy
+60,1875,925,SecondFloor,Tower,HALL,Hallway Connector 1 Floor 2,Hallway H00102
+61,1955,900,SecondFloor,Tower,HALL,Hallway Connector 2 Floor 2,Hallway H00202
+62,2035,900,SecondFloor,Tower,HALL,Hallway Connector 3 Floor 2,Hallway H00302
+63,1875,1025,SecondFloor,Tower,HALL,Hallway Connector 4 Floor 2,Hallway H00402
+64,1825,1025,SecondFloor,Tower,HALL,Hallway Connector 5 Floor 2,Hallway H00502
+65,1775,1080,SecondFloor,Tower,HALL,Hallway Connector 6 Floor 2,Hallway H00602
+66,1740,1165,SecondFloor,Tower,HALL,Hallway Connector 7 Floor 2,Hallway H00702
+67,1740,1230,SecondFloor,Tower,HALL,Hallway Connector 8 Floor 2,Hallway H00802
+68,1740,1280,SecondFloor,Tower,HALL,Hallway Connector 9 Floor 2,Hallway H00902
+69,2055,1280,SecondFloor,Tower,HALL,Hallway Connector 10 Floor 2,Hallway H01002
+70,1935,860,SecondFloor,Tower,RETL,Garden Cafe,Garden Cafe
+71,1615,1025,SecondFloor,Tower,RETL,Vending Machine Floor 2?,Vending Machine
+72,1825,1080,SecondFloor,Tower,RETL,Gift Shop Tower Floor 2,Gift Shop
+73,2060,880,SecondFloor,Tower,STAI,Stairwell 1 Floor 2,Stairwell 0102
+74,1695,1165,SecondFloor,Tower,STAI,Stairwell 2 Tower Floor 2,Stairwell 0202
+75,1790,1230,SecondFloor,Tower,STAI,Escalator 1 Floor 2,Escalator 1 Floor 2
+76,1805,925,SecondFloor,Tower,ELEV,Elevator L Floor 2,Elevator L2
+77,1825,1280,SecondFloor,Tower,ELEV,Elevator M Floor 2,Elevator M2
+78,1740,1500,SecondFloor,Tower,HALL,Hallway Connector 7 Floor 2,Hallway W0702
+79,1785,830,ThirdFloor,Tower,BATH,Bathroom 1 Tower Floor 3,Bathroom 0103
+80,1750,985,ThirdFloor,Tower,BATH,Bathroom 2 Tower Floor 3,Bathroom 0203
+81,1725,900,ThirdFloor,Tower,DEPT,Dialysis Waiting Room,Dialysis WR
+82,1690,830,ThirdFloor,Tower,DEPT,MICU 3BC Waiting Room,MICU 3BC WR
+83,1325,655,ThirdFloor,Tower,HALL,Hallway Connector 1 Floor 3,Hallway H00103
+84,1235,985,ThirdFloor,Tower,HALL,Hallway Connector 2 Floor 3,Hallway H00203
+85,1325,985,ThirdFloor,Tower,HALL,Hallway Connector 3 Floor 3,Hallway H00303
+86,1325,1290,ThirdFloor,Tower,HALL,Hallway Connector 4 Floor 3,Hallway H00403
+87,1680,1290,ThirdFloor,Tower,HALL,Hallway Connector 5 Floor 3,Hallway H00502
+88,1735,925,ThirdFloor,Tower,HALL,Hallway Connector 6 Floor 3,Hallway H00603
+89,1735,900,ThirdFloor,Tower,HALL,Hallway Connector 7 Floor 3,Hallway H00703
+90,1735,865,ThirdFloor,Tower,HALL,Hallway Connector 8 Floor 3,Hallway H00803
+91,1735,820,ThirdFloor,Tower,HALL,Hallway Connector 9 Floor 3,Hallway H00903
+92,1785,820,ThirdFloor,Tower,HALL,Hallway Connector 10 Floor 3,Hallway H01003
+93,1690,820,ThirdFloor,Tower,HALL,Hallway Connector 11 Floor 3,Hallway H01103
+94,1600,820,ThirdFloor,Tower,HALL,Hallway Connector 12 Floor 3,Hallway H01203
+95,1600,1030,ThirdFloor,Tower,HALL,Hallway Connector 13 Floor 3,Hallway H01303
+96,1735,1030,ThirdFloor,Tower,HALL,Hallway Connector 14 Floor 3,Hallway H01403
+97,1735,985,ThirdFloor,Tower,HALL,Hallway Connector 15 Floor 3,Hallway H01503
+98,1235,865,ThirdFloor,Tower,LABS,Reproductive Endocrine Labs,Reproductive Endocrine Labs
+99,1750,865,ThirdFloor,Tower,SERV,Nursing Room,Nursing Room
+100,1680,1275,ThirdFloor,Tower,STAI,Stairwell 1 Floor 3,Stairwell
+101,1790,925,ThirdFloor,Tower,ELEV,Elevator L Floor 3,Elevator L3
+102,1815,1290,ThirdFloor,Tower,ELEV,Elevator M Floor 3,Elevator M3
+103,1980,844,LowerLevel1,Tower,DEPT,Day Surgery Family Waiting Floor L1,Department C002L1
+104,1845,844,LowerLevel1,Tower,DEPT,Day Surgery Family Waiting Exit Floor L1,Department C003L1
+105,1732,924,LowerLevel1,Tower,HALL,Hallway 1 Floor L1,Hallway C001L1
+106,1750,1284,LowerLevel1,Tower,HALL,Hallway 5 Floor L1,Hallway C005L1
+107,2130,1284,LowerLevel1,Tower,HALL,Hallway 6 Floor L1,Hallway C006L1
+108,2130,1045,LowerLevel1,Tower,HALL,Hallway 7 Floor L1,Hallway C007L1
+109,1845,924,LowerLevel1,Tower,HALL,Hallway 14 Floor L1,Hallway C014L1
+110,1965,1284,LowerLevel1,Tower,LABS,Outpatient Fluoroscopy Floor L1,Lab C001L1
+111,1750,1090,LowerLevel1,Tower,LABS,Pre-Op PACU Floor L1,Lab C002L1
+112,1732,1019,LowerLevel1,Tower,REST,Restroom L Elevator Floor L1,Restroom C001L1
+113,2065,1284,LowerLevel1,Tower,REST,Restroom M Elevator Floor L1,Restroom C002L1
+114,1785,924,LowerLevel1,Tower,ELEV,Elevator L Floor L1,Elevator LL1
+115,1820,1284,LowerLevel1,Tower,ELEV,Elevator M Floor L1,Elevator ML1
+116,1745,1280,LowerLevel2,Tower,HALL,Hallway 5 Floor L2,Hallway C005L2
+117,1745,1009,LowerLevel2,Tower,HALL,Hallway 6 Floor L2,Hallway C006L2
+118,1730,1009,LowerLevel2,Tower,HALL,Hallway 7 Floor L2,Hallway C007L2
+119,1730,924,LowerLevel2,Tower,HALL,Hallway 8 Floor L2,Hallway C008L2
+120,1730,849,LowerLevel2,Tower,HALL,Hallway 9 Floor L2,Hallway C009L2
+121,2130,849,LowerLevel2,Tower,HALL,Hallway 10 Floor L2,Hallway C010L2
+122,1785,924,LowerLevel2,Tower,ELEV,Elevator L Floor L2,Elevator LL2
+123,1820,1280,LowerLevel2,Tower,ELEV,Elevator M Floor L2,Elevator ML2
+124,1745,1524,LowerLevel2,Tower,HALL,Hallway Connector 1 Floor L2,Hallway W01L2
+125,1512,929,FirstFloor,Tower,STOR,West Plaza,
+126,1525,1085,ThirdFloor,Tower,STOR,In-Patient Storage Unit 1 Floor 3,
+127,1525,776,ThirdFloor,Tower,STOR,In-Patient Storage Unit 2 Floor 3,
+128,1681,810,ThirdFloor,Tower,STOR,Bed Park 1 Floor 3,
+129,1681,1042,ThirdFloor,Tower,STOR,Bed Park 2 Floor 3,
+130,1504,1064,ThirdFloor,Tower,STOR,Clean Infusion Pumps 1 Floor 3,
+131,1513,785,ThirdFloor,Tower,STOR,Clean Infusion Pumps 2 Floor 3,
+132,1533,928,ThirdFloor,Tower,DIRT,Dirty Infusion Pumps Floor 3,
+133,1634,756,ThirdFloor,Tower,PATI,Patient Room 1 Floor 3,
+134,1606,703,ThirdFloor,Tower,PATI,Patient Room 2 Floor 3,
+135,1565,679,ThirdFloor,Tower,PATI,Patient Room 3 Floor 3,
+136,1512,678,ThirdFloor,Tower,PATI,Patient Room 4 Floor 3,
+137,1480,691,ThirdFloor,Tower,PATI,Patient Room 5 Floor 3,
+138,1443,726,ThirdFloor,Tower,PATI,Patient Room 6 Floor 3,
+139,1432,756,ThirdFloor,Tower,PATI,Patient Room 7 Floor 3,
+140,1437,809,ThirdFloor,Tower,PATI,Patient Room 8 Floor 3,
+141,1456,843,ThirdFloor,Tower,PATI,Patient Room 9 Floor 3,
+142,1510,872,ThirdFloor,Tower,PATI,Patient Room 10 Floor 3,
+143,1511,983,ThirdFloor,Tower,PATI,Patient Room 11 Floor 3,
+144,1464,1014,ThirdFloor,Tower,PATI,Patient Room 12 Floor 3,
+145,1439,1045,ThirdFloor,Tower,PATI,Patient Room 13 Floor 3,
+146,1434,1097,ThirdFloor,Tower,PATI,Patient Room 14 Floor 3,
+147,1443,1125,ThirdFloor,Tower,PATI,Patient Room 15 Floor 3,
+148,1479,1165,ThirdFloor,Tower,PATI,Patient Room 16 Floor 3,
+149,1505,1176,ThirdFloor,Tower,PATI,Patient Room 17 Floor 3,
+150,1562,1170,ThirdFloor,Tower,PATI,Patient Room 18 Floor 3,
+151,1598,1149,ThirdFloor,Tower,PATI,Patient Room 19 Floor 3,
+152,1630,1100,ThirdFloor,Tower,PATI,Patient Room 20 Floor 3,
+153,1670,849,LowerLevel1,Tower,STOR,OR Bed Park,

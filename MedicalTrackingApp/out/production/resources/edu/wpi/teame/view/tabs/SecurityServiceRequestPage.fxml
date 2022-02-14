@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane onMouseEntered="#updateFromDB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.SecurityServiceRequestPageServiceRequestController">
+   <children>
+      <GridPane alignment="CENTER" prefHeight="580.0" prefWidth="746.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Security Service Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <JFXButton fx:id="sendButton" onAction="#sendToDB" buttonType="RAISED" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <TextField fx:id="startTime" prefHeight="26.0" prefWidth="299.0" promptText="Enter start time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <TextField fx:id="endTime" promptText="Enter end time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <JFXComboBox fx:id="serviceLocation" prefHeight="26.0" prefWidth="392.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXComboBox>
+            <JFXComboBox fx:id="serviceAssignee" prefHeight="26.0" prefWidth="316.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </JFXComboBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Assigned To:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="420.0" promptText="Choose date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </DatePicker>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <JFXCheckBox fx:id="completed" text="Completed?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

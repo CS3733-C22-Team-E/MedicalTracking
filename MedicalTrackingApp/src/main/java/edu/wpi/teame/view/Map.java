@@ -7,13 +7,9 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.*;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,7 +36,6 @@ import javafx.util.Pair;
 
 public class Map {
   private HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
-  private HashMap<DataBaseObjectType, Image> SRIcons = new HashMap<DataBaseObjectType, Image>();
   private Image backgroundImage;
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -51,31 +46,26 @@ public class Map {
   private boolean showLocationNodes = false;
   private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
+  private HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor = new HashMap<>();
   private HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
   private ContextMenu EquipmentClicked = new ContextMenu();
   private ContextMenu PaneMenu = new ContextMenu();
-  private ContextMenu AutoFillSR = new ContextMenu();
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
   private StackPane layout = new StackPane();
   private FloorType currFloor;
-  private LandingPageController appController;
 
-  public Map(FloorType floor, LandingPageController landingPageController) {
+  public Map(FloorType floor) {
     currFloor = floor;
-    appController = landingPageController;
     for (FloorType currFloor : FloorType.values()) {
-      Images.put(currFloor, new Image(App.class.getResource(getMapImg(currFloor)).toString()));
+      Images.put(currFloor, new Image(getImageResource(getMapImg(currFloor))));
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
+      radialMenusByFloor.put(currFloor, new ArrayList<>());
     }
     System.out.println("Loaded Maps");
     switchFloors(floor);
   }
-
-  public void refreshServiceRequest() {}
-
-  private void addServiceRequestToMap(Location location, DataBaseObjectType SRType) {}
 
   private String getMapImg(FloorType f) {
     switch (f) {
@@ -199,18 +189,23 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getImageView());
     }
+    updateRadialMenus();
+    createNewRadialMenus();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      layout.getChildren().add(rm.getButton());
+    }
+    showEquipmentRemovedFromRadialMenus();
   }
   // Init ScrollPane that holds the StackPane containing map and all icons
-  private ZoomableScrollPane createScrollPane(Pane layout) {
-    ZoomableScrollPane scroll = new ZoomableScrollPane(layout);
+  private ScrollPane createScrollPane(Pane layout) {
+    ScrollPane scroll = new ScrollPane();
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setPannable(true);
     scroll.setPrefSize(WIDTH, HEIGHT);
-    //    scroll.setContent(layout);
+    scroll.setContent(layout);
     return scroll;
   }
-
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
@@ -357,18 +352,14 @@ public class Map {
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     // TODO
-    ZoomableScrollPane scroll = createScrollPane(layout);
     layout.setOnScroll(
         new EventHandler<ScrollEvent>() {
           @Override
           public void handle(ScrollEvent event) {
-            // Consume the scroll event so that it doesn't get passed to other listeners
-            // fire the scroll event to the zoomNode of the scrollable pane
-            scroll.zoomNode.fireEvent(event);
-            event.consume();
+            double scrollVal = event.getDeltaY();
           }
         });
-
+    ScrollPane scroll = createScrollPane(layout);
     StackPane staticWrapper = new StackPane();
     staticWrapper
         .getChildren()
@@ -387,6 +378,8 @@ public class Map {
             PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
           }
         });
+    layout.setOnMouseMoved(this::closeRadialMenus);
+
     return staticWrapper;
   }
 
@@ -448,7 +441,7 @@ public class Map {
         MouseEvent.MOUSE_PRESSED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-            System.out.println("Started");
+            System.out.println("Started drag");
             for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
               dot.getImageView().setVisible(true);
             }
@@ -476,11 +469,6 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
-            appController.mainTabPane.getSelectionModel().select(11);
-            appController.test.requestLocation.setText(nearestLocation.getLongName());
-            appController.test.equipmentNeeded.setValue(i.equipment.getType());
-            appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-            appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
@@ -493,6 +481,10 @@ public class Map {
             }
           }
           updateLayoutChildren();
+
+          for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+            rm.hide();
+          }
         });
 
     // Realize drag and drop function
@@ -517,20 +509,14 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       Location l = dot.getLocation();
       double d = dot.getDistanceToLocation(x, y);
-      System.out.println("Testing location: " + dot.getLocation().getShortName());
       if (d < closestDistance) {
-        System.out.println("Found new closest location.");
         closestDistance = d;
         closestLocation = l;
       }
     }
     if (closestDistance > 50) {
-      System.out.println("Not close enough to snap.");
       return null;
     }
-    System.out.println("Closest Location:");
-    System.out.println(closestLocation.getLongName());
-    System.out.println(closestDistance);
     return closestLocation;
   }
 
@@ -563,5 +549,85 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+  }
+
+  private void createNewRadialMenus() {
+    System.out.println("Creating radial menus...");
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      List<MapEquipmentIcon> mapEquipmentIconsAtLocation = new LinkedList<>();
+      for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+        Equipment e = i.getEquipment();
+        if (e.getLocation().equalsByName(dot.getLocation())) {
+          mapEquipmentIconsAtLocation.add(i);
+        }
+      }
+
+      // If there's more than 1 equipment per location, create a radial menu.
+      if (mapEquipmentIconsAtLocation.size() > 1) {
+        System.out.println("Equipment sharing location!");
+        RadialEquipmentMenu r = new RadialEquipmentMenu(mapEquipmentIconsAtLocation);
+        // Make sure we don't already have this radial menu:
+        boolean found = false;
+        for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+          if (r.toString().equals(rm.toString())) {
+            found = true;
+          }
+        }
+        if (!found) {
+          System.out.println("New radial menu detected— adding to HashMap...");
+          radialMenusByFloor.get(currFloor).add(r);
+        }
+      }
+    }
+
+    // Put on map
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.hideIndividualIcons();
+      rm.place(MAPWIDTH, MAPHEIGHT);
+    }
+  }
+
+  private void closeRadialMenus(MouseEvent e) {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+      double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());
+      if (distance > rm.getRadius()) {
+        rm.hide();
+      }
+    }
+  }
+
+  private void updateRadialMenus() {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      if (!rm.getIcons().isEmpty()) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {
+            rm.removeEquipmentIcon(i);
+          }
+        }
+      }
+
+      if (rm.getIcons().size() < 2) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          i.getButton().setVisible(true);
+        }
+        radialMenusByFloor.get(currFloor).remove(rm);
+        rm.kill();
+      }
+    }
+  }
+
+  // This is the longest method name I will tolerate. Do not do this.
+  private void showEquipmentRemovedFromRadialMenus() {
+    LinkedList<MapEquipmentIcon> iconsInMenus = new LinkedList<>();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.getButton().setVisible(true);
+      iconsInMenus.addAll(rm.getIcons());
+    }
+    for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+      if (!i.getButton().isVisible() && !iconsInMenus.contains(i)) {
+        i.getButton().setVisible(true);
+      }
+    }
   }
 }
