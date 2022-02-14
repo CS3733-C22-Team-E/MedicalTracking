@@ -112,6 +112,7 @@ public class GiftAndFloralServiceRequestPageBetterController
             this.clearText();
         } catch (Exception e) {
             // TODO Yell at user that all fields aren't complete
+            System.out.println("Error with Gift and Floral, send() failed");
         }
     }
 
