@@ -5,7 +5,6 @@ import static javafx.application.Application.launch;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.scene.Parent;
@@ -15,7 +14,6 @@ import javafx.scene.layout.HBox;
 
 public class ServiceRequestBacklog {
 
-  GridPane requestHolder = new GridPane();
   ScrollPane scrollWrapper = new ScrollPane();
   int cardCursor = 0;
   private double SCENEWIDTH;
@@ -23,8 +21,7 @@ public class ServiceRequestBacklog {
   private final double VGAP = 3;
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
-  private HashMap<Integer, ServiceRequestCard> cardsDisplayedById =
-      new HashMap<Integer, ServiceRequestCard>();
+  private List<ServiceRequestCard> cardsDisplayed = new LinkedList<ServiceRequestCard>();
 
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
@@ -43,27 +40,27 @@ public class ServiceRequestBacklog {
   }
 
   public Parent getBacklogScene() throws SQLException {
+    serviceRequestsFromDB.clear();
     getSecurityRequests();
     System.out.println("getBacklogScene");
+    GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
+    cardsDisplayed.clear();
     for (ServiceRequest sr : serviceRequestsFromDB) {
-      if (!cardsDisplayedById.containsKey(sr.getId())) {
-        System.out.println("srId " + sr.getId() + " is new.");
-        ServiceRequestCard card = new ServiceRequestCard(sr, this);
-        card.setPatientName(
-            "John Doe"); // TODO make name a field in SR and have it set in card automatically
-        addServiceRequestCard(card);
-      }
+      ServiceRequestCard card = new ServiceRequestCard(sr, this);
+      card.setPatientName(
+          "John Doe"); // TODO make name a field in SR and have it set in card automatically
+      addServiceRequestCard(card, requestHolder);
     }
     return scrollWrapper;
   }
 
-  public void addServiceRequestCard(ServiceRequestCard c) {
+  public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
     HBox card = c.getCard(SCENEWIDTH / 1.5, 100);
-    requestHolder.add(card, 0, cardsDisplayedById.size());
-    cardsDisplayedById.put(c.getServiceRequest().getId(), c);
+    g.add(card, 0, cardsDisplayed.size());
+    cardsDisplayed.add(c);
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet
