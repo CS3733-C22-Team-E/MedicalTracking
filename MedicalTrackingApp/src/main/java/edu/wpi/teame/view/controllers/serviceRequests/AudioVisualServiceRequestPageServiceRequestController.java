@@ -1,7 +1,9 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -11,8 +13,8 @@ public class AudioVisualServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private JFXButton clearButton;
   @FXML private JFXButton sendButton;
-  @FXML private TextField patientName;
-  @FXML private TextField roomNumber;
+  @FXML private AutoCompleteTextField patientName;
+  @FXML private AutoCompleteTextField roomNumber;
   @FXML private TextField floor;
   @FXML DatePicker startDate;
   @FXML DatePicker endDate;
@@ -20,7 +22,9 @@ public class AudioVisualServiceRequestPageServiceRequestController
   @FXML TextField endTime;
 
   @Override
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    patientName.getEntries().addAll(Arrays.asList("Madison", "Kalina", "Samay"));
+  }
 
   @FXML
   private void clearText() {

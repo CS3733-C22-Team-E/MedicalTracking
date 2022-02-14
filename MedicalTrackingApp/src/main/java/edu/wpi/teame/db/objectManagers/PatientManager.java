@@ -11,7 +11,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientManager extends ObjectManager<Patient> {
+public final class PatientManager extends ObjectManager<Patient> {
   public PatientManager() {
     super(DataBaseObjectType.Patient);
   }

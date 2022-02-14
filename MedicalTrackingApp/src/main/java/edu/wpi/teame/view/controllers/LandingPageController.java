@@ -3,9 +3,10 @@ package edu.wpi.teame.view.controllers;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.PannableView;
+import edu.wpi.teame.view.Map;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
 public class LandingPageController implements Initializable {
-  @FXML private AnchorPane mainAnchorPane;
-  @FXML private TabPane mainTabPane;
+  @FXML public AnchorPane mainAnchorPane;
+  @FXML public TabPane mainTabPane;
+  public MedicalEquipmentDeliveryServiceRequestPageServiceRequestController test;
 
   @Override
   @SneakyThrows
@@ -30,7 +32,6 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
-
     // Get the tab content size using our init tab
     double tabContentHeight =
         mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();
@@ -45,7 +46,7 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
 
-    PannableView mapView = new PannableView(FloorType.ThirdFloor);
+    Map mapView = new Map(FloorType.ThirdFloor);
     StyledTab mapTab =
         new StyledTab(
             "Hospital Map",
@@ -72,10 +73,12 @@ public class LandingPageController implements Initializable {
         new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
     backlogTab.setOnSelectionChanged(
         (event) -> {
-          try {
-            backlogTab.setTabPage(backlogView.getBacklogScene());
-          } catch (SQLException e) {
-            e.printStackTrace();
+          if (backlogTab.isSelected()) {
+            try {
+              backlogTab.setTabPage(backlogView.getBacklogScene());
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     tabs.add(backlogTab);
@@ -152,8 +155,13 @@ public class LandingPageController implements Initializable {
             SortOrder.ByName,
             getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));
 
+    tabs.add(new StyledTab("Settings", SortOrder.ByName, "view/tabs/SettingsPage.fxml"));
+
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
+    test =
+        (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
+            tabs.get(11).controller;
   }
 
   private String getPageUrl(DataBaseObjectType t) {

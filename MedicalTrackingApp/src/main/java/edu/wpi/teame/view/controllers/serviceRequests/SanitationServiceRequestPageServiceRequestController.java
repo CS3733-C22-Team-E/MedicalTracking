@@ -2,38 +2,38 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 
 public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
 
-  @FXML private TextField timeNeeded;
+  @FXML private AutoCompleteTextField timeNeeded;
 
   @FXML private DatePicker startDate;
   @FXML private DatePicker endDate;
 
-  @FXML public JFXComboBox serviceLocation;
-  @FXML public JFXComboBox serviceAssignee;
+  @FXML public AutoCompleteTextField serviceLocation;
+  @FXML public AutoCompleteTextField serviceAssignee;
 
   @FXML public JFXCheckBox completed;
   boolean hasRun = false;
 
   @SneakyThrows
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    timeNeeded.getEntries().addAll(createTime());
+  }
 
   public void updateFromDB() throws SQLException {
     if (hasRun) {
@@ -54,21 +54,16 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     for (Employee emp : employees) {
       employeeNames.add(emp.getName());
     }
-
-    serviceLocation.setItems(FXCollections.observableArrayList(locationNames));
-    serviceAssignee.setItems(FXCollections.observableArrayList(employeeNames));
+    serviceLocation.getEntries().addAll(locationNames);
+    serviceAssignee.getEntries().addAll(employeeNames);
   }
 
   @FXML
   private void sendToDB() throws SQLException {
     Employee employee =
-        DBManager.getInstance()
-            .getEmployeeManager()
-            .getByAssignee(serviceAssignee.getValue().toString());
+        DBManager.getInstance().getEmployeeManager().getByAssignee(serviceAssignee.getText());
     Location location =
-        DBManager.getInstance()
-            .getLocationManager()
-            .getByName(serviceLocation.getValue().toString());
+        DBManager.getInstance().getLocationManager().getByName(serviceLocation.getText());
 
     //    SanitationServiceRequest serviceRequest =
     //        new SanitationServiceRequest(
@@ -88,8 +83,8 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     startDate.getEditor().clear();
     endDate.setValue(null);
     endDate.getEditor().clear();
-    serviceLocation.valueProperty().set(null);
-    serviceAssignee.valueProperty().set(null);
+    serviceLocation.clear();
+    serviceAssignee.clear();
     completed.setSelected(false);
   }
 }

@@ -173,4 +173,8 @@ public class Location implements ISQLSerializable {
   public String getTableColumns() {
     return " (locationType, shortName, longName, building, floor, x, y)";
   }
+
+  public boolean equalsByName(Location l) {
+    return this.getLongName().equals(l.getLongName());
+  }
 }

@@ -13,6 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
 <AnchorPane onMouseEntered="#updateFromDB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.SanitationServiceRequestPageServiceRequestController">
       <children>
       <GridPane alignment="CENTER" layoutX="2.0" layoutY="4.0" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -68,14 +69,14 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-                  <TextField fx:id="timeNeeded" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <AutoCompleteTextField fx:id="timeNeeded" promptText="Enter sanitation time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
-            </TextField>
+            </AutoCompleteTextField>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="10.0" />
@@ -91,9 +92,9 @@
                   <Font size="16.0" />
                </font>
             </JFXButton>
-            <JFXComboBox fx:id="serviceLocation" prefHeight="26.0" prefWidth="248.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <AutoCompleteTextField fx:id="serviceLocation" prefHeight="26.0" prefWidth="248.0" promptText="Choose location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <JFXCheckBox fx:id="completed" text="Completed?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <JFXComboBox fx:id="serviceAssignee" prefHeight="26.0" prefWidth="248.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <AutoCompleteTextField fx:id="serviceAssignee" prefHeight="26.0" prefWidth="248.0" promptText="Choose assignee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Assigned To:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />

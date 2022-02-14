@@ -20,6 +20,20 @@ public enum EquipmentType {
     return null;
   }
 
+  public String getResource() {
+    switch (this) {
+      case PBED:
+        return "images/Icons/HospitalBedIcon.png";
+      case PUMP:
+        return "images/Icons/PumpIcon.png";
+      case XRAY:
+        return "images/Icons/XRayIcon.png";
+      case RECL:
+        return "images/Icons/ReclinerIcon.png";
+    }
+    return null;
+  }
+
   @Override
   public String toString() {
     switch (this) {
