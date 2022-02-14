@@ -61,7 +61,8 @@ public class MapServiceRequestIcon {
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
+                    .getResource(
+                        "images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LanguageInterpreterSR,
@@ -74,9 +75,7 @@ public class MapServiceRequestIcon {
         DataBaseObjectType.LaundrySR,
         new ImageView(
             new Image(
-                App.class
-                    .getResource("images/Icons/ServiceRequestIcons/Laundry.png")
-                    .toString())));
+                App.class.getResource("images/Icons/ServiceRequestIcons/Laundry.png").toString())));
     Graphics.put(
         DataBaseObjectType.ReligiousSR,
         new ImageView(

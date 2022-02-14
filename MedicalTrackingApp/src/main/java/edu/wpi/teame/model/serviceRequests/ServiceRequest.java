@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class ServiceRequest implements ISQLSerializable {
+public class ServiceRequest implements ISQLSerializable {
   protected ServiceRequestPriority priority;
   protected ServiceRequestStatus status;
   protected DataBaseObjectType dbType;

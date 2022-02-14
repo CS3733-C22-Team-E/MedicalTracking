@@ -18,7 +18,7 @@ public enum DataBaseObjectType {
 
   Location,
   Equipment,
-  Patient
+  Patient,
   Employee;
 
   @Override
