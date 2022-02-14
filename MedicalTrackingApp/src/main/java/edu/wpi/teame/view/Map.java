@@ -58,7 +58,7 @@ public class Map {
   public Map(FloorType floor) {
     currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
-      Images.put(currFloor, new Image(App.class.getResource(getMapImg(currFloor)).toString()));
+      Images.put(currFloor, new Image(getImageResource(getMapImg(currFloor))));
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
       radialMenusByFloor.put(currFloor, new ArrayList<>());

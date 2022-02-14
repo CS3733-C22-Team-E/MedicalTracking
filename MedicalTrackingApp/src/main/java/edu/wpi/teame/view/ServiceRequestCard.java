@@ -112,7 +112,7 @@ public class ServiceRequestCard {
   }
 
   private Text getTitleText() {
-    Text titleText = new Text(sr.getDBType().name());
+    Text titleText = new Text(sr.getDBType().toString());
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
     titleText.setTextAlignment(TextAlignment.CENTER);
     return titleText;
