@@ -44,42 +44,31 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </Text>
-                  <StackPane alignment="CENTER_LEFT" onMouseEntered="#usernameMouseEnter" onMouseExited="#usernameMouseExit">
+                  <StackPane alignment="CENTER_LEFT" onMouseClicked="#usernameTextSelected" onMouseEntered="#usernameMouseEnter" onMouseExited="#usernameMouseExit">
                      <children>
-                        <Text fx:id="usernamePromptText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+                        <Text fx:id="usernameText" fill="WHITE" layoutX="90.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="CENTER">
                            <font>
                               <Font name="Arial" size="18.0" />
                            </font>
                            <StackPane.margin>
-                              <Insets left="80.0" right="40.0" />
+                              <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text fx:id="usernameText" fill="WHITE" layoutX="90.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                           <StackPane.margin>
-                              <Insets left="80.0" right="40.0" />
-                           </StackPane.margin>
-                        </Text>
-                        <ImageView fx:id="usernameImage" fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-5.0">
+                        <ImageView fx:id="usernameImage" fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-5.0" StackPane.alignment="CENTER">
                            <image>
                               <Image url="@../images/Icons/LoginUser.png" />
                            </image>
                            <StackPane.margin>
-                              <Insets left="40.0" />
+                              <Insets bottom="5.0" />
                            </StackPane.margin>
                         </ImageView>
-                        <TextField fx:id="usernameTextInput" onKeyTyped="#updateUsernameText" onMouseClicked="#usernameTextSelected" opacity="0.0" prefHeight="30.0">
+                        <TextField fx:id="usernameTextInput" onAction="#usernameAction" onKeyTyped="#updateUsernameText" opacity="0.0" prefHeight="30.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                            <StackPane.margin>
-                              <Insets left="40.0" right="40.0" />
+                              <Insets />
                            </StackPane.margin>
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
                         </TextField>
                      </children>
                      <opaqueInsets>
@@ -95,42 +84,31 @@
                         <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </StackPane>
-                  <StackPane alignment="CENTER_LEFT" onMouseEntered="#passwordMouseEnter" onMouseExited="#passwordMouseExit">
+                  <StackPane alignment="CENTER_LEFT" onMouseClicked="#passwordTextSelected" onMouseEntered="#passwordMouseEnter" onMouseExited="#passwordMouseExit">
                      <children>
-                        <Text fx:id="passwordPromptText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+                        <Text fx:id="passwordText" fill="WHITE" layoutX="90.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" StackPane.alignment="CENTER">
                            <font>
                               <Font name="Arial" size="18.0" />
                            </font>
                            <StackPane.margin>
-                              <Insets left="80.0" right="40.0" />
+                              <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text fx:id="passwordText" fill="WHITE" layoutX="90.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                           <StackPane.margin>
-                              <Insets left="80.0" right="40.0" />
-                           </StackPane.margin>
-                        </Text>
-                        <ImageView fx:id="passwordImage" fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-5.0">
+                        <ImageView fx:id="passwordImage" fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" translateY="-5.0" StackPane.alignment="CENTER">
                            <image>
                               <Image url="@../images/Icons/LoginPassword.png" />
                            </image>
                            <StackPane.margin>
-                              <Insets left="40.0" />
+                              <Insets bottom="5.0" />
                            </StackPane.margin>
                         </ImageView>
-                        <TextField fx:id="passwordTextInput" onKeyTyped="#updatePasswordText" onMouseClicked="#passwordTextSelected" opacity="0.0" prefHeight="30.0">
+                        <TextField fx:id="passwordTextInput" onAction="#passwordAction" onKeyTyped="#updatePasswordText" opacity="0.0" prefHeight="30.0">
                            <font>
                               <Font size="18.0" />
                            </font>
                            <StackPane.margin>
-                              <Insets left="40.0" right="40.0" />
+                              <Insets />
                            </StackPane.margin>
-                           <padding>
-                              <Insets left="40.0" />
-                           </padding>
                         </TextField>
                      </children>
                      <opaqueInsets>

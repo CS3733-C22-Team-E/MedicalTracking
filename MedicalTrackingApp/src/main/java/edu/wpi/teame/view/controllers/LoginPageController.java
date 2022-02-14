@@ -3,12 +3,15 @@ package edu.wpi.teame.view.controllers;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import java.io.IOException;
-import java.util.Objects;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -16,75 +19,93 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class LoginPageController {
+public class LoginPageController implements Initializable {
 
   @FXML private JFXButton loginButton;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
   @FXML private Text usernameText;
   @FXML private Text passwordText;
-  @FXML private Text usernamePromptText;
-  @FXML private Text passwordPromptText;
   @FXML private Line usernameFillLine;
   @FXML private Line passwordFillLine;
   @FXML private ImageView usernameImage;
   @FXML private ImageView passwordImage;
+  private Parent logInPage = null;
 
   @FXML
-  private void loginButtonPressed() throws IOException {
-    Scene landingPage =
-        new Scene(
-            FXMLLoader.load(
-                Objects.requireNonNull(getClass().getResource("view/LandingPage.fxml"))));
+  private void loginButtonPressed() {
+    Scene landingPage = new Scene(logInPage);
     App.getAppPrimaryStage().setScene(landingPage);
+    App.getAppPrimaryStage().show();
+    App.getAppPrimaryStage().setFullScreen(true);
   }
 
   @FXML
   private void updateUsernameText() {
     usernameText.setText(usernameTextInput.getText());
-    boolean hasText = usernameText.getText().equals("");
-    usernamePromptText.setVisible(hasText);
-    displayTextLine(usernameFillLine, !hasText);
-    moveTextImage(usernameImage, !hasText);
-    moveText(usernameText, !hasText);
     enableLoginButton();
+    checkFocus();
+  }
+
+  private void animateUsername(boolean activate) {
+    displayTextLine(usernameFillLine, activate);
+    moveTextImage(usernameImage, activate);
   }
 
   @FXML
-  private void usernameTextSelected() {}
+  private void usernameAction() {}
+
+  @FXML
+  private void usernameTextSelected() {
+    checkFocus();
+  }
 
   @FXML
   private void usernameMouseEnter() {
-    // displayTextLine(usernameFillLine, true);
+    checkFocus();
   }
 
   @FXML
   private void usernameMouseExit() {
-    // displayTextLine(usernameFillLine, false);
+    if (usernameText.getText().isEmpty()) {
+      animateUsername(false);
+    }
+    checkFocus();
   }
 
   @FXML
   private void updatePasswordText() {
     passwordText.setText(passwordTextInput.getText());
-    boolean hasText = passwordText.getText().equals("");
-    passwordPromptText.setVisible(hasText);
-    displayTextLine(passwordFillLine, !hasText);
-    moveTextImage(passwordImage, !hasText);
-    moveText(passwordText, !hasText);
     enableLoginButton();
+    checkFocus();
+  }
+
+  private void animatePassword(boolean activate) {
+    displayTextLine(passwordFillLine, activate);
+    moveTextImage(passwordImage, activate);
   }
 
   @FXML
-  private void passwordTextSelected() {}
+  private void passwordAction() {
+    displayTextLine(passwordFillLine, true);
+  }
+
+  @FXML
+  private void passwordTextSelected() {
+    checkFocus();
+  }
 
   @FXML
   private void passwordMouseEnter() {
-    // displayTextLine(passwordFillLine, true);
+    checkFocus();
   }
 
   @FXML
   private void passwordMouseExit() {
-    // displayTextLine(passwordFillLine, false);
+    if (passwordText.getText().isEmpty()) {
+      animatePassword(false);
+    }
+    checkFocus();
   }
 
   private void displayTextLine(Line l, boolean display) {
@@ -134,5 +155,28 @@ public class LoginPageController {
 
   private void enableLoginButton() {
     loginButton.setDisable(usernameText.getText().equals("") || passwordText.getText().equals(""));
+  }
+
+  @FXML
+  private void checkFocus() {
+    if (!usernameTextInput.focusedProperty().getValue()) {
+      animateUsername(!usernameText.getText().isEmpty());
+    } else {
+      animateUsername(true);
+    }
+    if (!passwordTextInput.focusedProperty().getValue()) {
+      animatePassword(!passwordText.getText().isEmpty());
+    } else {
+      animatePassword(true);
+    }
+  }
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    try {
+      logInPage = FXMLLoader.load(App.class.getResource("view/LandingPage.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
