@@ -15,6 +15,8 @@
   -fx-header-color: #5579C5;
   -fx-text-color: #e0eef4;
 
+  -fx-text-fill-color: #b8b8b8;
+
   -fx-highlight-color: #5579C5;
   -fx-secondary-color: #90b4ce;
   -fx-tertiary-color: #ef4565;
@@ -59,9 +61,13 @@
   -fx-text-fill: -fx-button-text-color;
 }
 
+.jfx-combo-box {
+  -fx-prompt-text-fill: #b8b8b8;
+}
+
 .text-box {
   -fx-background-color: -fx-text-box-background-color;
-  -fx-text-fill: -fx-text-color;
+  -fx-text-fill: -fx-text-fill-color  ;
 }
 
 .text-area {
@@ -76,7 +82,6 @@
 .text-area .scroll-pane .viewport{
   -fx-background-color: transparent;
 }
-
 
 .check-box {
   -fx-text-fill: -fx-button-text-color;
