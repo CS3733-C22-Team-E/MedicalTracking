@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,25 +23,7 @@ public class ServiceRequestCard {
   private int hexColor;
 
   // Styling
-  private Color BORDERCOLOR = Color.GREEN;
   private int BORDERRADIUS = 10;
-  private int BORDERWIDTH = 5;
-  private Border BORDER =
-      new Border(
-          new BorderStroke(
-              BORDERCOLOR,
-              BorderStrokeStyle.SOLID,
-              new CornerRadii(BORDERRADIUS),
-              new BorderWidths(BORDERWIDTH)));
-
-  private Color BORDERHOVERCOLOR = Color.BLUE;
-  private Border HOVERBOARDER =
-      new Border(
-          new BorderStroke(
-              BORDERHOVERCOLOR,
-              BorderStrokeStyle.SOLID,
-              new CornerRadii(BORDERRADIUS),
-              new BorderWidths(BORDERWIDTH)));
 
   // Details
   private ServiceRequestBacklog backlog;
@@ -48,9 +31,8 @@ public class ServiceRequestCard {
   private Location location;
   private final ServiceRequest sr;
 
-  public ServiceRequestCard(ServiceRequest serviceRequest, int SRColor, ServiceRequestBacklog b) {
+  public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
     sr = serviceRequest;
-    hexColor = SRColor;
     backlog = b;
 
     location = sr.getLocation();
@@ -61,7 +43,7 @@ public class ServiceRequestCard {
   public HBox getCard(double width, double height) {
     // Setup grid
     HBox card = new HBox();
-    card.setBorder(BORDER);
+    card.setEffect(new DropShadow(5, Color.BLACK));
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
@@ -176,7 +158,6 @@ public class ServiceRequestCard {
   private void setHoverStyling(HBox c) {
     c.setOnMouseEntered(
         e -> {
-          c.setBorder(HOVERBOARDER);
           c.setBackground(
               new Background(
                   new BackgroundFill(
@@ -185,7 +166,6 @@ public class ServiceRequestCard {
 
     c.setOnMouseExited(
         e -> {
-          c.setBorder(BORDER);
           c.setBackground(
               new Background(
                   new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
