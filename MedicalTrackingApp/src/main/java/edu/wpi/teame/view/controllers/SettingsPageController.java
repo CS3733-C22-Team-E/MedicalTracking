@@ -1,5 +1,8 @@
 package edu.wpi.teame.view.controllers;
 
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,16 +12,11 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
-import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.objectManagers.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.input.MouseEvent;
 
 public class SettingsPageController implements Initializable {
   @FXML public Button logoutButton;
@@ -225,37 +223,12 @@ public class SettingsPageController implements Initializable {
 
   @FXML
   private void loadFromCSV()
-          throws IOException, CsvValidationException, SQLException, ParseException {
-    DBManager.getInstance().getLocationManager().readCSV("csv/TowerLocationsE.csv");
-    DBManager.getInstance().getEquipmentManager().readCSV("csv/EquipmentE.csv");
-    DBManager.getInstance().getEmployeeManager().readCSV("csv/EmployeesE.csv");
-    DBManager.getInstance()
-            .getMedicalEquipmentSRManager()
-            .readCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
-    DBManager.getInstance()
-            .getMedicineDeliverySRManager()
-            .readCSV("MedicineDeliveryServiceRequestSave.csv");
-    DBManager.getInstance().getSanitationSRManager().readCSV("SanitationServiceRequest.csv");
-    DBManager.getInstance().getSecuritySRManager().readCSV("SecurityServiceRequest.csv");
+      throws IOException, CsvValidationException, SQLException, ParseException {
+    DBManager.getInstance().loadDBFromCSV();
   }
 
   @FXML
-  public void writeToCSV(MouseEvent mouseEvent) throws SQLException, IOException {
-    LocationManager locationManager = new LocationManager();
-    EquipmentManager equipmentManager = new EquipmentManager();
-    EmployeeManager employeeManager = new EmployeeManager();
-    MedicalEquipmentSRManager medEqpManager = new MedicalEquipmentSRManager();
-    MedicineDeliveryServiceRequestManager medReqManager =
-            new MedicineDeliveryServiceRequestManager();
-    SanitationServiceRequestManager sanReqManager = new SanitationServiceRequestManager();
-    SecurityServiceRequestManager secReqManager = new SecurityServiceRequestManager();
-
-    locationManager.writeToCSV("TowerLocationsESave.csv");
-    equipmentManager.writeToCSV("EquipmentESave.csv");
-    employeeManager.writeToCSV("EmployeesESave.csv");
-    medEqpManager.writeToCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
-    medReqManager.writeToCSV("MedicineDeliveryServiceRequestSave.csv");
-    sanReqManager.writeToCSV("SanitationServiceRequest.csv");
-    secReqManager.writeToCSV("SecurityServiceRequest.csv");
+  public void writeToCSV() throws SQLException, IOException {
+    DBManager.getInstance().writeDBToCSV();
   }
 }
