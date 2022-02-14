@@ -3,16 +3,19 @@ package edu.wpi.teame.model;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
+  private Date dateOfBirth;
   private String name;
   private int id;
 
-  public Patient(Location currentLocation, String name, int id) {
+  public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {
     this.currentLocation = currentLocation;
+    this.dateOfBirth = dateOfBirth;
     this.name = name;
     this.id = id;
   }
@@ -20,6 +23,7 @@ public class Patient implements ISQLSerializable {
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
+    this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
   }
@@ -31,20 +35,24 @@ public class Patient implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated
-    return null;
+    return "'" + name + "', '" + dateOfBirth.toString() + "', " + currentLocation.getId();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated
-    return null;
+    return "name = '"
+        + name
+        + "', dateOfBirth = '"
+        + dateOfBirth.toString()
+        + "', currentLocationID = "
+        + currentLocation.getId()
+        + " WHERE id = "
+        + id;
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated
-    return null;
+    return "(name, dateOfBirth, currentLocationID)";
   }
 
   public Location getCurrentLocation() {
@@ -53,6 +61,14 @@ public class Patient implements ISQLSerializable {
 
   public void setCurrentLocation(Location currentLocation) {
     this.currentLocation = currentLocation;
+  }
+
+  public Date getDateOfBirth() {
+    return dateOfBirth;
+  }
+
+  public void setDateOfBirth(Date dateOfBirth) {
+    this.dateOfBirth = dateOfBirth;
   }
 
   public String getName() {

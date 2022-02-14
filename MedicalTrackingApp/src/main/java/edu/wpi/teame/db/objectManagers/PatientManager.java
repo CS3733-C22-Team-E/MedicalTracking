@@ -24,7 +24,6 @@ public final class PatientManager extends ObjectManager<Patient> {
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
-    // TODO: Needs to be implemented. Almost done. Check TODO below
     String filePath =
         System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
 
@@ -40,18 +39,17 @@ public final class PatientManager extends ObjectManager<Patient> {
     List<Patient> listOfPatients = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
-    // todo: Figure out if we're doing DOB and medications or not
-    data.add(new String[] {"name", "currentLocation", "id"});
+    data.add(new String[] {"name", "dateOfBirth", "currentLocation", "id"});
 
     for (Patient patient : listOfPatients) {
       data.add(
           new String[] {
             patient.getName(),
+            patient.getDateOfBirth().toString(),
             Integer.toString(patient.getCurrentLocation().getId()),
             Integer.toString(patient.getId())
           });
     }
-
     writer.writeAll(data);
     writer.close();
   }
