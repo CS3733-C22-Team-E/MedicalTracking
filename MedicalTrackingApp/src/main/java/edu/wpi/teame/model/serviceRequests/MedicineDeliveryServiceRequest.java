@@ -57,21 +57,33 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     // TODO: Needs to be updated. Done
-    return super.getSQLInsertString() + ", '"
-            + medicineName + "', "
-            + patient.getId() + ", '"
-            + medicineQuantity + "', ";
+    return super.getSQLInsertString()
+        + ", '"
+        + medicineName
+        + "', "
+        + patient.getId()
+        + ", '"
+        + medicineQuantity
+        + "', ";
     // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
     // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", "
-            + "medicineName = '" + medicineName + "',"
-            + "patient = " + patient.getId() + ", "
-            + "medicineQuantity = '" + medicineQuantity + "'"
-            + "WHERE id = " + id;
+    return super.getSQLUpdateString()
+        + ", "
+        + "medicineName = '"
+        + medicineName
+        + "',"
+        + "patient = "
+        + patient.getId()
+        + ", "
+        + "medicineQuantity = '"
+        + medicineQuantity
+        + "'"
+        + "WHERE id = "
+        + id;
     // return super.getSQLUpdateString()
   }
 

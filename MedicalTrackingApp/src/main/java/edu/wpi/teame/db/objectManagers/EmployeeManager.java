@@ -38,11 +38,11 @@ public final class EmployeeManager extends ObjectManager<Employee> {
 
       String name = lineData.getColumnString("name");
       String nodeId = lineData.getColumnString("id");
-      boolean isDoctor = lineData.getColumnBoolean("isDoctor");
+      EmployeeType type = EmployeeType.valueOf(lineData.getColumnString("type"));
       DepartmentType departmentType =
           DepartmentType.valueOf(lineData.getColumnString("department"));
 
-      Employee newEmployee = new Employee(0, departmentType, name, isDoctor);
+      Employee newEmployee = new Employee(0, departmentType, name, type);
       DBManager.getInstance().getEmployeeManager().insert(newEmployee);
     }
   }
@@ -72,7 +72,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
             Integer.toString(employee.getId()),
             employee.getDepartment().toString(),
             employee.getName(),
-            employee.isDoctor() ? "1" : "0"
+            employee.getType().toString()
           });
     }
     writer.writeAll(data);

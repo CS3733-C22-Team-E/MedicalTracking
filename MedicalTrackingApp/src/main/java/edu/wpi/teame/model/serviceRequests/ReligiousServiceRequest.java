@@ -54,19 +54,23 @@ public class ReligiousServiceRequest extends ServiceRequest {
   public String getSQLInsertString() {
     // TODO: Needs to be updated. Done
 
-    return super.getSQLInsertString() + ", "
-            + patient.getId() + ", '"
-            + religion + "')";
+    return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "')";
     // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
     // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", "
-            + "patient = " + patient.getId() + ", "
-            + "religion = '" + religion + "'"
-            + "WHERE id = " + id;
+    return super.getSQLUpdateString()
+        + ", "
+        + "patient = "
+        + patient.getId()
+        + ", "
+        + "religion = '"
+        + religion
+        + "'"
+        + "WHERE id = "
+        + id;
     // return super.getSQLUpdateString()
   }
 

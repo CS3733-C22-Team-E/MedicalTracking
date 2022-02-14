@@ -3,24 +3,25 @@ package edu.wpi.teame.model;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
+import edu.wpi.teame.model.enums.EmployeeType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Employee implements ISQLSerializable {
   private DepartmentType department;
-  private boolean isDoctor;
+  private EmployeeType type;
   private String name;
   private int id;
 
-  public Employee(int id, DepartmentType dept, String name, boolean isDoctor) {
-    this.isDoctor = isDoctor;
+  public Employee(int id, DepartmentType dept, String name, EmployeeType type) {
     this.department = dept;
+    this.type = type;
     this.name = name;
     this.id = id;
   }
 
   public Employee(ResultSet resultSet) throws SQLException {
-    this.isDoctor = resultSet.getBoolean("isDoctor");
+    this.type = EmployeeType.values()[resultSet.getInt("type")];
     this.department = DepartmentType.values()[resultSet.getInt("department")];
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
@@ -31,8 +32,7 @@ public class Employee implements ISQLSerializable {
     employeeString.append("id: ").append(this.id).append(" ");
     employeeString.append("department: ").append(this.department).append(" ");
     employeeString.append("name: ").append(this.name).append(" ");
-    employeeString.append("isDoctor: ").append(this.isDoctor);
-
+    employeeString.append("type: ").append(this.type);
     return employeeString.toString();
   }
 
@@ -61,12 +61,12 @@ public class Employee implements ISQLSerializable {
     this.name = name;
   }
 
-  public boolean isDoctor() {
-    return isDoctor;
+  public EmployeeType getType() {
+    return type;
   }
 
-  public void setDoctor(boolean doctor) {
-    isDoctor = doctor;
+  public void setType(EmployeeType type) {
+    this.type = type;
   }
 
   @Override
@@ -76,30 +76,23 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
-    int isDoctorInt = isDoctor ? 1 : 0;
-    return department.ordinal() + ", '" + name + "', " + isDoctorInt;
+    return department.ordinal() + ", '" + name + "', " + type.ordinal();
   }
 
   @Override
   public String getSQLUpdateString() {
-    int isDoctorInt = isDoctor ? 1 : 0;
     return "department = "
         + department.ordinal()
         + ", name = '"
         + name
-        + "', isDoctor = "
-        + isDoctorInt
+        + "', type = "
+        + type.ordinal()
         + " WHERE id = "
         + id;
   }
 
-  /**
-   * + "department int, " + "name VARCHAR(100), " + "isDoctor int)
-   *
-   * @return
-   */
   @Override
   public String getTableColumns() {
-    return "(department, name, isDoctor)";
+    return "(department, name, type)";
   }
 }

@@ -61,10 +61,15 @@ public class LanguageInterpreterServiceRequest extends ServiceRequest {
   @Override
   public String getSQLUpdateString() {
     // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", "
-            + "language = " + language.ordinal() + ", "
-            + "patient = " + patient.getId()
-            + "WHERE id = " + id;
+    return super.getSQLUpdateString()
+        + ", "
+        + "language = "
+        + language.ordinal()
+        + ", "
+        + "patient = "
+        + patient.getId()
+        + "WHERE id = "
+        + id;
     // return super.getSQLUpdateString()
   }
 
