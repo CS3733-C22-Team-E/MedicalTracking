@@ -9,8 +9,13 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -54,8 +59,10 @@ public class Map {
   private Point2D lastPressedPoint = new Point2D(0, 0);
   private StackPane layout = new StackPane();
   private FloorType currFloor;
+  private LandingPageController appController;
 
-  public Map(FloorType floor) {
+  public Map(FloorType floor, LandingPageController app) {
+    appController = app;
     currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
       Images.put(currFloor, new Image(getImageResource(getMapImg(currFloor))));
@@ -197,13 +204,12 @@ public class Map {
     showEquipmentRemovedFromRadialMenus();
   }
   // Init ScrollPane that holds the StackPane containing map and all icons
-  private ScrollPane createScrollPane(Pane layout) {
-    ScrollPane scroll = new ScrollPane();
+  private ZoomableScrollPane createScrollPane(Pane layout) {
+    ZoomableScrollPane scroll = new ZoomableScrollPane(layout);
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setPannable(true);
     scroll.setPrefSize(WIDTH, HEIGHT);
-    scroll.setContent(layout);
     return scroll;
   }
   // init ComboBox
@@ -315,6 +321,28 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
+    Timer refreshTimer = new Timer();
+    refreshTimer.scheduleAtFixedRate(
+        new TimerTask() {
+          @Override
+          public void run() {
+            Platform.runLater(
+                () -> {
+                  System.out.println("Refreshing DB");
+                  try {
+                    for (ServiceRequest sr : refreshDB()) {
+                      new MapServiceRequestIcon(layout, sr.getLocation(), sr.getDBType())
+                          .startTimer(60);
+                      System.out.println("Created");
+                    }
+                  } catch (SQLException e) {
+                    e.printStackTrace();
+                  }
+                });
+          }
+        },
+        0,
+        5000);
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -352,15 +380,15 @@ public class Map {
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     // TODO
+    ZoomableScrollPane scroll = createScrollPane(layout);
+    StackPane staticWrapper = new StackPane();
     layout.setOnScroll(
         new EventHandler<ScrollEvent>() {
           @Override
           public void handle(ScrollEvent event) {
-            double scrollVal = event.getDeltaY();
+            scroll.zoomNode.fireEvent(event);
           }
         });
-    ScrollPane scroll = createScrollPane(layout);
-    StackPane staticWrapper = new StackPane();
     staticWrapper
         .getChildren()
         .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
@@ -381,6 +409,15 @@ public class Map {
     layout.setOnMouseMoved(this::closeRadialMenus);
 
     return staticWrapper;
+  }
+
+  private ArrayList<ServiceRequest> refreshDB() throws SQLException {
+    ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    return serviceRequestsFromDB;
   }
 
   private MapEquipmentIcon addEquipmentToMap(Equipment equipment) {
@@ -469,6 +506,11 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
+            appController.mainTabPane.getSelectionModel().select(11);
+            appController.test.requestLocation.setText(nearestLocation.getLongName());
+            appController.test.equipmentNeeded.setValue(i.equipment.getType());
+            appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
+            appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");

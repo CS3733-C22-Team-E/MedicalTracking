@@ -7,6 +7,7 @@ import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -61,7 +62,8 @@ public class MapServiceRequestIcon {
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
+                    .getResource(
+                        "images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LanguageInterpreterSR,
@@ -74,9 +76,7 @@ public class MapServiceRequestIcon {
         DataBaseObjectType.LaundrySR,
         new ImageView(
             new Image(
-                App.class
-                    .getResource("images/Icons/ServiceRequestIcons/Laundry.png")
-                    .toString())));
+                App.class.getResource("images/Icons/ServiceRequestIcons/Laundry.png").toString())));
     Graphics.put(
         DataBaseObjectType.ReligiousSR,
         new ImageView(
@@ -121,9 +121,6 @@ public class MapServiceRequestIcon {
                     .toString())));
   }
 
-  double PixelX;
-  double PixelY;
-
   public MapServiceRequestIcon(Pane pane, double X, double Y, DataBaseObjectType SRType) {
     this.timer = new Timer();
     progressIndicator = new FillProgressIndicator();
@@ -160,12 +157,15 @@ public class MapServiceRequestIcon {
         new TimerTask() {
           @Override
           public void run() {
-            progressIndicator.setProgress(progressIndicator.getProgress() + 1);
-            if (progressIndicator.getProgress() >= 100) {
-              progressIndicator.setVisible(false);
-              Icon.setVisible(false);
-              onPane.getChildren().removeAll(progressIndicator, Icon);
-            }
+            Platform.runLater(
+                () -> {
+                  progressIndicator.setProgress(progressIndicator.getProgress() + 1);
+                  if (progressIndicator.getProgress() >= 100) {
+                    progressIndicator.setVisible(false);
+                    Icon.setVisible(false);
+                    onPane.getChildren().removeAll(progressIndicator, Icon);
+                  }
+                });
           }
         },
         0,

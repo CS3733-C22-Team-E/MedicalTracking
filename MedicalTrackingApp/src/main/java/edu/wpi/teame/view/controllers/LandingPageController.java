@@ -46,7 +46,7 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
 
-    Map mapView = new Map(FloorType.ThirdFloor);
+    Map mapView = new Map(FloorType.ThirdFloor, this);
     StyledTab mapTab =
         new StyledTab(
             "Hospital Map",
