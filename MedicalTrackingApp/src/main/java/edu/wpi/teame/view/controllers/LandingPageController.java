@@ -177,7 +177,7 @@ public class LandingPageController implements Initializable {
         url += "NewAudioVisual";
         break;
       case FoodDeliverySR:
-        url += "FoodDelivery";
+        url += "NewFoodDelivery";
         break;
       case GiftAndFloralSR:
         url += "GiftAndFloral";

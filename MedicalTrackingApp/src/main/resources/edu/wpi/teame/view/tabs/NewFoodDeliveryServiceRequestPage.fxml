@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,238 +13,118 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.FoodDeliveryServiceRequestPageServiceRequestController">
-   <children>
-      <GridPane alignment="CENTER" layoutX="2.0" layoutY="-2.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.NewFoodDeliveryServiceRequestPageServiceRequestController">   <children>
+    <GridPane layoutX="6.0" layoutY="6.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="87.0" minHeight="10.0" prefHeight="87.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="48.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="106.0" minHeight="10.0" prefHeight="106.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="114.79999999999995" minHeight="10.0" prefHeight="92.60001220703123" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="52.60001220703123" minHeight="0.0" prefHeight="22.199987792968727" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Food Delivery Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
+        <children>
+            <Text fill="#17ccec" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Food Delivery Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                <font>
+                    <Font size="24.0" />
+                </font>
             </Text>
-            <JFXButton fx:id="sendButton" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-            <DatePicker fx:id="startDate" promptText="Choose start date..." styleClass="calendar-picker" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-            <DatePicker fx:id="endDate" promptText="Choose end date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="End Date: " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Start Date:" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="5">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Dinner:" GridPane.halignment="RIGHT">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <CheckBox fx:id="dinnerCheck" mnemonicParsing="false" onAction="#DinnerOptionsCallBack" selected="true" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </CheckBox>
-               </children>
-            </GridPane>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Lunch:" GridPane.halignment="RIGHT">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Text>
-                  <CheckBox fx:id="lunchCheck" mnemonicParsing="false" onAction="#LunchOptionsCallBack" selected="true" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </CheckBox>
-               </children>
-            </GridPane>
-            <GridPane GridPane.rowIndex="5">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <CheckBox fx:id="breakfastCheck" mnemonicParsing="false" onAction="#BreakfastOptionsCallBack" selected="true" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </CheckBox>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Breakfast:" GridPane.halignment="RIGHT">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Text>
-               </children>
-            </GridPane>
-            <GridPane GridPane.rowIndex="6">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Text fx:id="breakfastText" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Breakfast:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="TimeTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <TextField fx:id="breakfastTimeTextField" prefWidth="193.0" promptText="Enter time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text fx:id="MealTextB" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <JFXComboBox fx:id="breakfastMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
-            <GridPane prefHeight="120.0" prefWidth="400.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Text fx:id="lunchText" strokeType="OUTSIDE" strokeWidth="0.0" text="Lunch:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="TimeTextL" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <TextField fx:id="lunchTimeTextField" promptText="Enter time...." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text fx:id="MealTextL" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <JFXComboBox fx:id="lunchMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
-            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="6">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Text fx:id="dinnerText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Dinner:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Text fx:id="TimeTextD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Time:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <TextField fx:id="dinnerTimeTextField" promptText="Enter time..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Text fx:id="MealTextD" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Meal:" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Text>
-                  <JFXComboBox fx:id="dinnerMealDropdown" prefHeight="25.0" prefWidth="100.0" promptText="Choose..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
-            <CheckBox fx:id="dietaryRestrictions" mnemonicParsing="false" onAction="#DietaryRestrictionsCallBack" text="Dietary Restrictions (Y/N)" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Text fill="#efdddd" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Title:" textAlignment="JUSTIFY" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <TextField fx:id="titleTextField" maxWidth="1.7976931348623157E308" onKeyReleased="#validateSubmitButton" promptText="Enter title..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </TextField>
+            <Text fill="#fcd8d8" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Request Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Text fill="#e7c7c7" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Additional Info:" GridPane.halignment="RIGHT" GridPane.rowIndex="8" GridPane.valignment="TOP">
+                <GridPane.margin>
+                    <Insets top="10.0" />
+                </GridPane.margin>
+            </Text>
+            <Text fill="#dccdcd" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Text fill="#e1a9a9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Assignee:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <JFXComboBox fx:id="assigneeComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="505.0" promptText="Choose assignee..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+            </JFXComboBox>
+            <Text fill="#e1abab" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Priority: " GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <JFXComboBox fx:id="priorityComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="478.0" promptText="Choose priority..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+            </JFXComboBox>
+            <Text fill="#f7bfbf" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                <GridPane.margin>
+                    <Insets />
+                </GridPane.margin>
+            </Text>
+            <JFXComboBox fx:id="statusComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="448.0" promptText="Choose statuts..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+            </JFXComboBox>
+            <Button fx:id="clearButton" mnemonicParsing="false" onMouseClicked="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="9">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Button>
+            <Button fx:id="submitButton" disable="true" mnemonicParsing="false" text="Submit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="9">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Button>
+            <JFXComboBox fx:id="locationComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="448.0" promptText="Choose Location..." GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+                <padding>
+                    <Insets left="10.0" />
+                </padding>
+            </JFXComboBox>
+            <TextArea fx:id="additionalInfoTextArea" maxWidth="1.7976931348623157E308" onKeyReleased="#validateSubmitButton" prefHeight="200.0" prefWidth="200.0" promptText="Add food and additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </TextArea>
+            <DatePicker fx:id="serviceDatePicker" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="527.0" promptText="Choose service date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </DatePicker>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Patient:" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
                <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <JFXComboBox fx:id="patientComboBox" maxWidth="1.7976931348623157E308" promptText="Choose patient..." GridPane.columnIndex="1" GridPane.rowIndex="7">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+               <padding>
                   <Insets left="10.0" />
-               </GridPane.margin>
-            </CheckBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room Number:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="floor" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <TextField fx:id="roomNumber" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name: " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Text>
-            <TextField fx:id="patientName" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="9">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </GridPane>
-   </children>
+               </padding>
+            </JFXComboBox>
+        </children>
+    </GridPane>
+</children>
 </AnchorPane>
