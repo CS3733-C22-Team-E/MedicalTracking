@@ -12,12 +12,12 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class ExternalPatientTransporationServiceRequest extends ServiceRequest {
+public final class ExternalPatientTransportationServiceRequest extends ServiceRequest {
   private Location destination;
   private Equipment equipment;
   private Patient patient;
 
-  public ExternalPatientTransporationServiceRequest(
+  public ExternalPatientTransportationServiceRequest(
       ServiceRequestPriority priority,
       ServiceRequestStatus status,
       String additionalInfo,
@@ -48,7 +48,7 @@ public final class ExternalPatientTransporationServiceRequest extends ServiceReq
     this.patient = patient;
   }
 
-  public ExternalPatientTransporationServiceRequest(ResultSet resultSet) throws SQLException {
+  public ExternalPatientTransportationServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.ExternalPatientTransportation);
     this.destination =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
@@ -59,22 +59,26 @@ public final class ExternalPatientTransporationServiceRequest extends ServiceReq
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated
-    return null;
+    // TODO: Needs to be updated. Done
+    return super.getSQLInsertString() + ", " + destination.getId() + ", " + equipment.getId() + ", " + patient.getId();
     // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated
-    return null;
+    // TODO: Needs to be updated. Done
+    return super.getSQLUpdateString() + ", "
+            + "destination = " + destination.getId() + ", "
+            + "equipment = " + equipment.getId() + ", "
+            + "patient = " + patient.getId()
+            + "WHERE id = " + id;
     // return super.getSQLUpdateString()
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated
-    return null;
+    // TODO: Needs to be updated. Done
+    return super.getTableColumns() + ", destination, equipment, patient)";
     // return super.getTableColumns();
   }
 
