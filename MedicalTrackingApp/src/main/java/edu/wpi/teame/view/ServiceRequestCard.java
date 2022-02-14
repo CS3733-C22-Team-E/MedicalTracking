@@ -47,9 +47,10 @@ public class ServiceRequestCard {
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-    setHoverStyling(card);
 
+    createSpacer(card);
     card.getChildren().add(getDoneCheckbox());
+    createSpacer(card);
 
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
@@ -57,6 +58,7 @@ public class ServiceRequestCard {
     titleAndDescription.add(getSeparatorH(), 0, 1);
     titleAndDescription.add(getDescriptionText(), 0, 2);
     card.getChildren().add(titleAndDescription);
+    createSpacer(card);
 
     GridPane detailsGrid = new GridPane();
     detailsGrid.setAlignment(Pos.CENTER);
@@ -78,11 +80,13 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 5);
     detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
-
     card.getChildren().add(detailsGrid);
-    card.setPrefSize(width, height);
-    card.setFillHeight(true);
+    createSpacer(card);
 
+    card.setAlignment(Pos.CENTER_RIGHT);
+    card.setPrefSize(width, height);
+    card.setFillHeight(false);
+    setHoverStyling(card);
     return card;
   }
 
@@ -106,10 +110,8 @@ public class ServiceRequestCard {
     JFXCheckBox doneBox = new JFXCheckBox();
     doneBox.setCheckedColor(Color.LIGHTBLUE);
     doneBox.setCheckedColor(Color.LIGHTGRAY);
-    doneBox.setAlignment(Pos.CENTER_LEFT);
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
-    doneBox.setPadding(new Insets(40, 40, 40, 40));
     doneBox.setOnMouseClicked(
         (event -> {
           deleteRequest(backlog);
@@ -175,5 +177,12 @@ public class ServiceRequestCard {
 
   public ServiceRequest getServiceRequest() {
     return this.sr;
+  }
+
+  private void createSpacer(HBox c) {
+    final Region spacer = new Region();
+    // Make it always grow or shrink according to the available space
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    c.getChildren().add(spacer);
   }
 }

@@ -47,7 +47,7 @@ public class LoginPageController implements Initializable {
   @FXML
   private void loginButtonPressed() {
     MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
-    mediaPlayer.setVolume(1.0);
+    mediaPlayer.setVolume(0.3);
 
     TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
     t2.setFromY(-50);
