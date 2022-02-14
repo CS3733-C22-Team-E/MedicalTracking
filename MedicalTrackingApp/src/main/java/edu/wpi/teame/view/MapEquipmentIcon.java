@@ -7,7 +7,7 @@ import javafx.scene.control.Tooltip;
 
 public class MapEquipmentIcon {
   JFXButton Button;
-  Equipment equipment;
+  public Equipment equipment;
 
   public MapEquipmentIcon(JFXButton button, Equipment equip) {
     equipment = equip;

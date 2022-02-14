@@ -10,6 +10,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -29,15 +30,15 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private TextField startTime;
   @FXML private TextField endTime;
 
-  @FXML private DatePicker datePicker;
+  @FXML public DatePicker datePicker;
 
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
 
-  @FXML private JFXComboBox equipmentNeeded;
-  @FXML private JFXComboBox requestState;
+  @FXML public JFXComboBox equipmentNeeded;
+  @FXML public JFXComboBox requestState;
   @FXML private JFXComboBox requestAssignee;
-  @FXML private JFXComboBox requestLocation;
+  @FXML public AutoCompleteTextField requestLocation;
 
   @FXML private JFXCheckBox completed;
   private boolean hasRun = false;
@@ -70,14 +71,14 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
       employeeNames.add(emp.getName());
     }
 
-    requestLocation.setItems(FXCollections.observableArrayList(locationNames));
+    requestLocation.getEntries().addAll(locationNames);
     requestAssignee.setItems(FXCollections.observableArrayList(employeeNames));
   }
 
   @FXML
   public void sendToDB() throws SQLException {
     String pName = patientName.getText();
-    String roomNum = (String) requestLocation.getValue();
+    String roomNum = (String) requestLocation.getText();
     String assignee = (String) requestAssignee.getValue();
     EquipmentType equipNeeded = EquipmentType.getValue(equipmentNeeded.getValue().toString());
 
@@ -114,7 +115,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     datePicker.getEditor().clear();
     equipmentNeeded.valueProperty().set(null);
     requestAssignee.valueProperty().set(null);
-    requestLocation.valueProperty().set(null);
+    requestLocation.setText("");
     requestState.valueProperty().set(null);
     completed.setSelected(false);
   }

@@ -143,6 +143,14 @@
                   </JFXButton>
                </children>
             </VBox>
+            <ImageView fitHeight="50.0" fitWidth="50.0" onMouseClicked="#closeApp" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+               <image>
+                  <Image url="@../images/Icons/QuitIcon.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </ImageView>
          </children>
         </GridPane>
     </children>
