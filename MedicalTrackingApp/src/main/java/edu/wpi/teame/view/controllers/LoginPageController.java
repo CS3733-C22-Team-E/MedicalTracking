@@ -13,9 +13,12 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -37,7 +40,7 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView icon;
   @FXML private ImageView iconHole;
   @FXML private Text title;
-  private Parent logInPage = null;
+  private Scene landingPage = null;
 
   @FXML
   private void loginButtonPressed() {
@@ -74,7 +77,6 @@ public class LoginPageController implements Initializable {
   }
 
   private void switchToLandingPage() {
-    Scene landingPage = new Scene(logInPage);
     App.getAppPrimaryStage().setScene(landingPage);
     App.getAppPrimaryStage().show();
     App.getAppPrimaryStage().setFullScreen(true);
@@ -204,7 +206,7 @@ public class LoginPageController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     try {
-      logInPage = FXMLLoader.load(App.class.getResource("view/LandingPage.fxml"));
+      landingPage = new Scene(FXMLLoader.load(App.class.getResource("view/LandingPage.fxml")));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -213,5 +215,26 @@ public class LoginPageController implements Initializable {
 
     usernameTextInput.setOnMousePressed(e -> checkFocus());
     passwordTextInput.setOnMousePressed(e -> checkFocus());
+  }
+
+  @FXML
+  public void closeApp() {
+    Dialog dialog = new Dialog();
+    dialog.setTitle("Are you sure you want to quit?");
+    ImageView newIcon =
+        new ImageView(new Image(App.class.getResource("images/icons/ExitIcon.png").toString()));
+    newIcon.setFitHeight(30);
+    newIcon.setFitWidth(30);
+    dialog.getDialogPane().setGraphic(newIcon);
+    ButtonType OK = new ButtonType("Exit", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);
+    dialog.setResultConverter(
+        dialogButton -> {
+          if (dialogButton == OK) {
+            App.getAppPrimaryStage().close();
+          }
+          return null;
+        });
+    dialog.showAndWait();
   }
 }
