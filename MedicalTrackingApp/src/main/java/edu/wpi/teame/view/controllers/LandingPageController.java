@@ -155,6 +155,8 @@ public class LandingPageController implements Initializable {
             SortOrder.ByName,
             getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));
 
+    tabs.add(new StyledTab("Settings", SortOrder.ByName, "view/tabs/SettingsPage.fxml"));
+
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
     test =

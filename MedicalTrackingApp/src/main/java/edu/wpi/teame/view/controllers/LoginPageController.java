@@ -40,13 +40,13 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView icon;
   @FXML private ImageView iconHole;
   @FXML private Text title;
+
   private Scene landingPage = null;
+  private Media loginSound = null;
 
   @FXML
   private void loginButtonPressed() {
-
-    Media sound = new Media(App.class.getResource("audio/Shoop.m4a").toString());
-    MediaPlayer mediaPlayer = new MediaPlayer(sound);
+    MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
     mediaPlayer.setVolume(1.0);
 
     TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
@@ -213,6 +213,7 @@ public class LoginPageController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     try {
       landingPage = new Scene(FXMLLoader.load(App.class.getResource("view/LandingPage.fxml")));
+      loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     } catch (IOException e) {
       e.printStackTrace();
     }
