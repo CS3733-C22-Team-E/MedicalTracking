@@ -7,6 +7,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 
 public abstract class ServiceRequest implements ISQLSerializable {
+
   protected ServiceRequestStatus status;
   protected Employee employee;
   protected Location location;
