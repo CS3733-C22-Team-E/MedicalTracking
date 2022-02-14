@@ -195,7 +195,7 @@ public class LandingPageController implements Initializable {
         url += "FacilitiesMaintenance";
         break;
       case InternalPatientTransferSR:
-        url += "InternalPatientTransportation";
+        url += "NewInternalPatientTransportation";
         break;
       case ExternalPatientTransportation:
         url += "NewExternalPatientTransportation";
