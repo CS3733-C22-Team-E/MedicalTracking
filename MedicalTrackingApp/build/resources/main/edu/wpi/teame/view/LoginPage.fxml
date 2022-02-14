@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -111,14 +112,14 @@
                               <Insets bottom="5.0" />
                            </StackPane.margin>
                         </ImageView>
-                        <TextField fx:id="passwordTextInput" onAction="#passwordAction" onKeyTyped="#updatePasswordText" opacity="0.0" prefHeight="30.0">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <StackPane.margin>
-                              <Insets />
-                           </StackPane.margin>
-                        </TextField>
+                        <PasswordField fx:id="passwordTextInput" onAction="#passwordAction" onKeyTyped="#updatePasswordText" opacity="0.0" prefHeight="30.0">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                        <StackPane.margin>
+                           <Insets />
+                        </StackPane.margin>
+                        </PasswordField>
                      </children>
                      <opaqueInsets>
                         <Insets />
