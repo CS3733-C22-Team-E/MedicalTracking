@@ -7,6 +7,7 @@ import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -54,75 +55,71 @@ public class MapServiceRequestIcon {
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/InternalPatientTransfer.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.ExternalPatientTransportation,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource(
+                        "images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LanguageInterpreterSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/LanguageInterpreter.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LaundrySR,
         new ImageView(
             new Image(
-                App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
-                    .toString())));
+                App.class.getResource("images/Icons/ServiceRequestIcons/Laundry.png").toString())));
     Graphics.put(
         DataBaseObjectType.ReligiousSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Religious.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.SecuritySR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Security.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.MedicalEquipmentSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/MedicalEquipment.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.MedicineDeliverySR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/MedicineDelivery.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.FacilitiesMaintenanceSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/FacilitiesMaintenance.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.SanitationSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Sanitation.png")
                     .toString())));
   }
-
-  double PixelX;
-  double PixelY;
 
   public MapServiceRequestIcon(Pane pane, double X, double Y, DataBaseObjectType SRType) {
     this.timer = new Timer();
@@ -160,12 +157,15 @@ public class MapServiceRequestIcon {
         new TimerTask() {
           @Override
           public void run() {
-            progressIndicator.setProgress(progressIndicator.getProgress() + 1);
-            if (progressIndicator.getProgress() >= 100) {
-              progressIndicator.setVisible(false);
-              Icon.setVisible(false);
-              onPane.getChildren().removeAll(progressIndicator, Icon);
-            }
+            Platform.runLater(
+                () -> {
+                  progressIndicator.setProgress(progressIndicator.getProgress() + 1);
+                  if (progressIndicator.getProgress() >= 100) {
+                    progressIndicator.setVisible(false);
+                    Icon.setVisible(false);
+                    onPane.getChildren().removeAll(progressIndicator, Icon);
+                  }
+                });
           }
         },
         0,
