@@ -20,7 +20,7 @@ public class ServiceRequestBacklog {
   int cardCursor = 0;
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
-  private final double VGAP = 2;
+  private final double VGAP = 3;
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
   private HashMap<Integer, ServiceRequestCard> cardsDisplayedById =

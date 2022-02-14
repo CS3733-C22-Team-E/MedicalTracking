@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,12 +21,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+
+  @FXML private GridPane pagePane;
 
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
@@ -99,6 +104,10 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
             0,
             new Date(time));
     DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation(serviceRequest);
+    pagePane.setAlignment(Pos.CENTER);
+    pagePane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   @FXML

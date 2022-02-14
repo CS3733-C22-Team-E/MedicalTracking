@@ -10,6 +10,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -19,12 +20,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+  @FXML private GridPane pagePane;
 
   @FXML private TextField patientName;
   @FXML private TextField startTime;
@@ -104,6 +108,10 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             equipment,
             pName);
     DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation(serviceRequest);
+    pagePane.setAlignment(Pos.CENTER);
+    pagePane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   @FXML

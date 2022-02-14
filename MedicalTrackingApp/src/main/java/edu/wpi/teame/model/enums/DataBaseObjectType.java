@@ -1,5 +1,7 @@
 package edu.wpi.teame.model.enums;
 
+import javafx.scene.paint.Color;
+
 public enum DataBaseObjectType {
   AudioVisualSR,
   ComputerSR,
@@ -56,6 +58,45 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+    }
+    return null;
+  }
+
+  public Color getColor() {
+    switch (this) {
+      case AudioVisualSR:
+        return Color.CYAN;
+      case ComputerSR:
+        return Color.SILVER;
+      case FoodDeliverySR:
+        return Color.SALMON;
+      case GiftAndFloralSR:
+        return Color.MEDIUMAQUAMARINE;
+      case ExternalPatientTransportation:
+        return Color.SEAGREEN;
+      case LanguageInterpreterSR:
+        return Color.CORAL;
+      case InternalPatientTransferSR:
+        return Color.SPRINGGREEN;
+      case LaundrySR:
+        return Color.WHITESMOKE;
+      case SecuritySR:
+        return Color.ROYALBLUE;
+      case ReligiousSR:
+        return Color.GOLD;
+      case SanitationSR:
+        return Color.AQUA;
+      case MedicalEquipmentSR:
+      case Equipment:
+        return Color.LIGHTGRAY;
+      case MedicineDeliverySR:
+        return Color.TOMATO;
+      case FacilitiesMaintenanceSR:
+        return Color.THISTLE;
+      case Employee:
+        return Color.BLUE;
+      case Location:
+        return Color.GREEN;
     }
     return null;
   }

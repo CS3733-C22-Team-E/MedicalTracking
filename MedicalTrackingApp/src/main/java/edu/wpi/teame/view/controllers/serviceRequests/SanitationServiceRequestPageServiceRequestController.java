@@ -7,6 +7,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -15,10 +16,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
 public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
+  @FXML private GridPane pagePane;
+
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;
 
@@ -77,6 +82,10 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
             new Date(new java.util.Date().getTime()),
             0);
     DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation(serviceRequest);
+    pagePane.setAlignment(Pos.CENTER);
+    pagePane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   @FXML

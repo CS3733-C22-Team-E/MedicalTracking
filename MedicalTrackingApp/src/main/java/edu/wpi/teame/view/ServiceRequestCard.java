@@ -30,20 +30,19 @@ public class ServiceRequestCard {
   private String patientName;
   private Location location;
   private final ServiceRequest sr;
+  private final Color color;
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
     sr = serviceRequest;
     backlog = b;
-
+    color = getServiceRequestColor();
     location = sr.getLocation();
   }
 
-  // TODO Cards are displayed with wrong width
-  // TODO Cards are displayed with funky internal spacing (Squished!)
   public HBox getCard(double width, double height) {
     // Setup grid
     HBox card = new HBox();
-    card.setEffect(new DropShadow(5, Color.BLACK));
+    card.setEffect(new DropShadow(5, color));
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
@@ -184,5 +183,9 @@ public class ServiceRequestCard {
     // Make it always grow or shrink according to the available space
     HBox.setHgrow(spacer, Priority.ALWAYS);
     c.getChildren().add(spacer);
+  }
+
+  private Color getServiceRequestColor() {
+    return this.sr.getDBType().getColor();
   }
 }
