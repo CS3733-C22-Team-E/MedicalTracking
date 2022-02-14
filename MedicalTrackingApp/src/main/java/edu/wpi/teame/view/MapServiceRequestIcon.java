@@ -54,70 +54,70 @@ public class MapServiceRequestIcon {
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/InternalPatientTransfer.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.ExternalPatientTransportation,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LanguageInterpreterSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/LanguageInterpreter.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.LaundrySR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Laundry.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.ReligiousSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Religious.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.SecuritySR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Security.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.MedicalEquipmentSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/MedicalEquipment.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.MedicineDeliverySR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/MedicineDelivery.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.FacilitiesMaintenanceSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/FacilitiesMaintenance.png")
                     .toString())));
     Graphics.put(
         DataBaseObjectType.SanitationSR,
         new ImageView(
             new Image(
                 App.class
-                    .getResource("images/Icons/ServiceRequestIcons/AudioVisual.png")
+                    .getResource("images/Icons/ServiceRequestIcons/Sanitation.png")
                     .toString())));
   }
 
