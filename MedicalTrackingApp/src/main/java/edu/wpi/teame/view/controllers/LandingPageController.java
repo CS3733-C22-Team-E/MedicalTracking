@@ -72,10 +72,12 @@ public class LandingPageController implements Initializable {
         new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
     backlogTab.setOnSelectionChanged(
         (event) -> {
-          try {
-            backlogTab.setTabPage(backlogView.getBacklogScene());
-          } catch (SQLException e) {
-            e.printStackTrace();
+          if (backlogTab.isSelected()) {
+            try {
+              backlogTab.setTabPage(backlogView.getBacklogScene());
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     tabs.add(backlogTab);
@@ -160,7 +162,7 @@ public class LandingPageController implements Initializable {
     String url = "view/tabs/";
     switch (t) {
       case LaundrySR:
-        url += "Laundry";
+        url += "NewLaundry";
         break;
       case ComputerSR:
         url += "NewComputer";

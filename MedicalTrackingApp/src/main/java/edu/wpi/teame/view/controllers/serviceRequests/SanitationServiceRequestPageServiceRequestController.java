@@ -38,6 +38,24 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     timeNeeded.getEntries().addAll(createTime());
   }
 
+  @FXML
+  private void sendToDB() throws SQLException {
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(serviceAssignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(serviceLocation.getText());
+
+    SanitationServiceRequest serviceRequest =
+        new SanitationServiceRequest(
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            0);
+    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
+  }
+
   public void updateFromDB() throws SQLException {
     if (hasRun) {
       return;
@@ -59,24 +77,6 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     }
     serviceLocation.getEntries().addAll(locationNames);
     serviceAssignee.getEntries().addAll(employeeNames);
-  }
-
-  @FXML
-  private void sendToDB() throws SQLException {
-    Employee employee =
-        DBManager.getInstance().getEmployeeManager().getByAssignee(serviceAssignee.getText());
-    Location location =
-        DBManager.getInstance().getLocationManager().getByName(serviceLocation.getText());
-
-    SanitationServiceRequest serviceRequest =
-        new SanitationServiceRequest(
-            ServiceRequestStatus.OPEN,
-            employee,
-            location,
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            0);
-    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
   }
 
   @FXML
