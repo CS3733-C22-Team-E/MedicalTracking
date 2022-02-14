@@ -39,7 +39,7 @@
                   <Insets left="10.0" />
                </padding>
             </ComboBox>
-            <Button fx:id="logoutButton" mnemonicParsing="false" onMouseClicked="#logout" text="Logout" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" onMouseClicked="#logout" text="Logout" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                <font>
                   <Font size="16.0" />
                </font>

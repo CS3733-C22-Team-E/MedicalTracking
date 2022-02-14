@@ -1,5 +1,6 @@
 package edu.wpi.teame.view.controllers;
 
+import edu.wpi.teame.App;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -196,20 +197,22 @@ public class SettingsPageController implements Initializable {
     }
   }
 
-  public void logout() {}
-
+  @FXML
   private void changeDBConnection() {
     System.out.println("Technically Switched DBConnection");
   }
 
+  @FXML
   private void changeLanguage() {
     System.out.println("Technically switched language");
   }
 
+  @FXML
   private void changeColor() {
     System.out.println("Technically changed color");
   }
 
+  @FXML
   private void changeAccessibility() {
     System.out.println("Technically changed accessibility");
   }

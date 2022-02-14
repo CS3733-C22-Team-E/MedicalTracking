@@ -3,6 +3,7 @@ package edu.wpi.teame.view.controllers;
 // import com.opencsv.exceptions.CsvValidationException;
 
 import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
 import java.awt.*;
@@ -12,6 +13,9 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
 public class HomePageController {
