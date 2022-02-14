@@ -17,13 +17,14 @@ public class ServiceRequestBacklog {
 
   GridPane requestHolder = new GridPane();
   ScrollPane scrollWrapper = new ScrollPane();
-  private HashMap<Integer, HBox> cardHashMap = new HashMap<Integer, HBox>();
   int cardCursor = 0;
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
   private final double VGAP = 2;
 
-  private List<ServiceRequest> allServiceRequests = new LinkedList<ServiceRequest>();
+  private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
+  private HashMap<Integer, ServiceRequestCard> cardsDisplayedById =
+      new HashMap<Integer, ServiceRequestCard>();
 
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
@@ -35,10 +36,10 @@ public class ServiceRequestBacklog {
   }
 
   private void getSecurityRequests() throws SQLException {
-    allServiceRequests.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
-    allServiceRequests.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -47,31 +48,22 @@ public class ServiceRequestBacklog {
     requestHolder.setVgap(VGAP);
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setContent(requestHolder);
-    for (ServiceRequest sr : allServiceRequests) {
-      System.out.println("Adding card...");
-      ServiceRequestCard card =
-          new ServiceRequestCard(
-              this,
-              sr.getDBType(),
-              sr.getLocation().getLongName(),
-              sr.getDBType().name(),
-              0,
-              SCENEWIDTH / 2,
-              SCENEHEIGHT,
-              sr.getId());
-      card.setPatientName("John Doe");
-      card.setFloor(sr.getLocation().getFloor().name());
-      card.setRoomNumber(sr.getLocation().getShortName());
-      card.setStatus(sr.getStatus().toString());
-      addServiceRequestCard(card);
+    for (ServiceRequest sr : serviceRequestsFromDB) {
+      if (!cardsDisplayedById.containsKey(sr.getId())) {
+        System.out.println("srId " + sr.getId() + " is new.");
+        ServiceRequestCard card = new ServiceRequestCard(sr, 0, this);
+        card.setPatientName(
+            "John Doe"); // TODO make name a field in SR and have it set in card automatically
+        addServiceRequestCard(card);
+      }
     }
     return scrollWrapper;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c) {
-    HBox card = c.getCard(SCENEWIDTH, 100);
-    requestHolder.add(card, 0, cardCursor);
-    cardCursor++;
+    HBox card = c.getCard(1000, 100);
+    requestHolder.add(card, 0, cardsDisplayedById.size());
+    cardsDisplayedById.put(c.getServiceRequest().getId(), c);
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet

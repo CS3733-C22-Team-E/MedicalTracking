@@ -107,4 +107,10 @@ Temporary Items
 MedicalTrackingApp/derby.log
 MedicalTrackingApp/derby.log
 MedicalTrackingApp/build/spotlessJava
-MedicalTrackingApp/build/spotlessJava
+./build/spotlessJava
+build/spotlessJava
+./build
+derby.log
+.derby.log
+.MedicalTrackingApp/build/spotlessJava
+./MedicalTrackingApp/derby.log

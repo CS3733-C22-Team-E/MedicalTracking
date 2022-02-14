@@ -1,11 +1,14 @@
 package edu.wpi.teame.db;
 
+import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 
 public final class DBManager {
   private static DBManager instance;
@@ -186,5 +189,28 @@ public final class DBManager {
 
   public StandardServiceRequestManager getLaundrySRManager() {
     return new StandardServiceRequestManager(DataBaseObjectType.LaundrySR);
+  }
+
+  public void loadDBFromCSV()
+      throws CsvValidationException, SQLException, IOException, ParseException {
+    getLocationManager().readCSV("csv/TowerLocationsE.csv");
+    getEquipmentManager().readCSV("csv/EquipmentE.csv");
+    getEmployeeManager().readCSV("csv/EmployeesE.csv");
+
+    getMedicalEquipmentSRManager().readCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
+    getMedicineDeliverySRManager().readCSV("MedicineDeliveryServiceRequestSave.csv");
+    getSanitationSRManager().readCSV("SanitationServiceRequest.csv");
+    getSecuritySRManager().readCSV("SecurityServiceRequest.csv");
+  }
+
+  public void writeDBToCSV() throws SQLException, IOException {
+    getLocationManager().writeToCSV("TowerLocationsESave.csv");
+    getEquipmentManager().writeToCSV("EquipmentESave.csv");
+    getEmployeeManager().writeToCSV("EmployeesESave.csv");
+
+    getMedicalEquipmentSRManager().writeToCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
+    getMedicineDeliverySRManager().writeToCSV("MedicineDeliveryServiceRequestSave.csv");
+    getSanitationSRManager().writeToCSV("SanitationServiceRequest.csv");
+    getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
   }
 }
