@@ -1,5 +1,6 @@
 package edu.wpi.teame;
 
+import edu.wpi.teame.db.DBManager;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -29,6 +30,9 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
+    // Load the DB on startup
+    DBManager.getInstance();
+
     appPrimaryStage = primaryStage;
     appPrimaryStage.setTitle("Hospital App");
     appPrimaryStage.setFullScreen(true);

@@ -4,8 +4,11 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -45,7 +48,16 @@ public class LoginPageController implements Initializable {
   private Media loginSound = null;
 
   @FXML
-  private void loginButtonPressed() {
+  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException {
+    String username = usernameTextInput.getText();
+    String password = passwordTextInput.getText();
+    boolean loggedIn = DBManager.getInstance().getCredentialManager().logIn(username, password);
+
+    // Check if we were able to log in.
+    if (!loggedIn) {
+      return;
+    }
+
     MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
     mediaPlayer.setVolume(1.0);
 
@@ -216,6 +228,13 @@ public class LoginPageController implements Initializable {
 
     usernameTextInput.setOnMousePressed(e -> checkFocus());
     passwordTextInput.setOnMousePressed(e -> checkFocus());
+
+    // Load the credentials before we show the log in page
+    try {
+      DBManager.getInstance().getCredentialManager().readCSV("Credentials.csv");
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 
   @FXML

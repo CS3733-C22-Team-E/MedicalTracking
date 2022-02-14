@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public final class FoodDeliverySRManager extends ObjectManager<FoodDeliveryServiceRequest> {
-  public FoodDeliverySRManager() {
+  public FoodDeliverySRManager() throws SQLException {
     super(DataBaseObjectType.FoodDeliverySR);
   }
 

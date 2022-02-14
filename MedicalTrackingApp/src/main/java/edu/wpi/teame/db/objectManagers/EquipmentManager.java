@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EquipmentManager extends ObjectManager<Equipment> {
-  public EquipmentManager() {
+  public EquipmentManager() throws SQLException {
     super(DataBaseObjectType.Equipment);
   }
 

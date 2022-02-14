@@ -16,19 +16,14 @@ import java.util.List;
 import java.util.Locale;
 
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
-  private DataBaseObjectType objectType;
+  protected DataBaseObjectType objectType;
   private Connection connection;
   private Statement statement;
 
-  public ObjectManager(DataBaseObjectType objectType) {
+  public ObjectManager(DataBaseObjectType objectType) throws SQLException {
     connection = DBManager.getInstance().getConnection();
+    statement = connection.createStatement();
     this.objectType = objectType;
-
-    try {
-      statement = connection.createStatement();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
   }
 
   protected List<T> getBy(String whereClause) throws SQLException {

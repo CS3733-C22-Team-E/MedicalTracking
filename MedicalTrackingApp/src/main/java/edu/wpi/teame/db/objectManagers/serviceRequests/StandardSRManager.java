@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class StandardSRManager extends ObjectManager<ServiceRequest> {
-  public StandardSRManager(DataBaseObjectType dbType) {
+  public StandardSRManager(DataBaseObjectType dbType) throws SQLException {
     super(dbType);
   }
 

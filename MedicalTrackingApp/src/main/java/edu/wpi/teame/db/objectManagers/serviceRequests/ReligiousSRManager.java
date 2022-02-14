@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public final class ReligiousSRManager extends ObjectManager<ReligiousServiceRequest> {
-  public ReligiousSRManager() {
+  public ReligiousSRManager() throws SQLException {
     super(DataBaseObjectType.ReligiousSR);
   }
 

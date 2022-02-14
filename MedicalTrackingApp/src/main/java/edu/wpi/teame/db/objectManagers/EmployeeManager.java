@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class EmployeeManager extends ObjectManager<Employee> {
-  public EmployeeManager() {
+  public EmployeeManager() throws SQLException {
     super(DataBaseObjectType.Employee);
   }
 

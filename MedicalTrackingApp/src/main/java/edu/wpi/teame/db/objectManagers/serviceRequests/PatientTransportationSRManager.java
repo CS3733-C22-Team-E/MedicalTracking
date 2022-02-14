@@ -10,7 +10,7 @@ import java.text.ParseException;
 
 public final class PatientTransportationSRManager
     extends ObjectManager<PatientTransportationServiceRequest> {
-  public PatientTransportationSRManager(boolean isInternal) {
+  public PatientTransportationSRManager(boolean isInternal) throws SQLException {
     super(
         isInternal
             ? DataBaseObjectType.InternalPatientTransferSR

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MedicineDeliverySRManager extends ObjectManager<MedicineDeliveryServiceRequest> {
-  public MedicineDeliverySRManager() {
+  public MedicineDeliverySRManager() throws SQLException {
     super(DataBaseObjectType.MedicineDeliverySR);
   }
 

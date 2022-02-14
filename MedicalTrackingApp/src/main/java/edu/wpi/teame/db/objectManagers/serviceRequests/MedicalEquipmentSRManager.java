@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentServiceRequest> {
-  public MedicalEquipmentSRManager() {
+  public MedicalEquipmentSRManager() throws SQLException {
     super(DataBaseObjectType.MedicalEquipmentSR);
   }
 

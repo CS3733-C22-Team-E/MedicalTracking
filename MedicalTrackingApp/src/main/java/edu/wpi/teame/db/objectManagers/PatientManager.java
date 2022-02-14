@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class PatientManager extends ObjectManager<Patient> {
-  public PatientManager() {
+  public PatientManager() throws SQLException {
     super(DataBaseObjectType.Patient);
   }
 

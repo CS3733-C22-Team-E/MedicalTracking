@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class LocationManager extends ObjectManager<Location> {
-  public LocationManager() {
+  public LocationManager() throws SQLException {
     super(DataBaseObjectType.Location);
   }
 

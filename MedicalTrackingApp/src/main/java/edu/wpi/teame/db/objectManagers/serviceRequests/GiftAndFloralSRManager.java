@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public final class GiftAndFloralSRManager extends ObjectManager<GiftAndFloralServiceRequest> {
-  public GiftAndFloralSRManager() {
+  public GiftAndFloralSRManager() throws SQLException {
     super(DataBaseObjectType.GiftAndFloralSR);
   }
 
