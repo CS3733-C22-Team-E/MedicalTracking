@@ -35,13 +35,92 @@ public class SettingsPageController implements Initializable {
           FXCollections.observableArrayList(
               new String[] {"Embedded Database", "Client/Server Database"}));
 
-      
+      languageComboBox.setItems(
+          FXCollections.observableArrayList(
+              new String[] {
+                "Afrikanns",
+                "Albanian",
+                "Arabic",
+                "Armenian",
+                "Basque",
+                "Bengali",
+                "Bulgarian",
+                "Catalan",
+                "Cambodian",
+                "Chinese",
+                "Croation",
+                "Czech",
+                "Danish",
+                "Dutch",
+                "English",
+                "Estonian",
+                "Fiji",
+                "Finnish",
+                "French",
+                "Georgian",
+                "German",
+                "Greek",
+                "Gujarati",
+                "Hebrew",
+                "Hindi",
+                "Hungarian",
+                "Icelandic",
+                "Indonesian",
+                "Irish",
+                "Italian",
+                "Japanese",
+                "Javanese",
+                "Korean",
+                "Latin",
+                "Latvian",
+                "Lithuanian",
+                "Macedonian",
+                "Malay",
+                "Malayalam",
+                "Maltese",
+                "Maori",
+                "Marathi",
+                "Mongolian",
+                "Nepali",
+                "Norwegian",
+                "Persian",
+                "Polish",
+                "Portuguese",
+                "Punjabi",
+                "Quechua",
+                "Romanian",
+                "Russian",
+                "Samoan",
+                "Serbian",
+                "Slovak",
+                "Slovenian",
+                "Spanish",
+                "Swahili",
+                "Swedish",
+                "Tamil",
+                "Tatar",
+                "Telugu",
+                "Thai",
+                "Tibetan",
+                "Tonga",
+                "Turkish",
+                "Ukranian",
+                "Urdu",
+                "Uzbek",
+                "Vietnamese",
+                "Welsh",
+                "Xhosa"
+              }));
 
-      if (properties.getProperty("dbConnection").equals("Embedded Database")) {
-        dbSwitchComboBox.setValue("Embedded Database");
-      } else {
-        dbSwitchComboBox.setValue("Client/Server Database");
-      }
+      colorComboBox.setItems(FXCollections.observableArrayList(new String[] {"Default", "Blue"}));
+
+      accessibilityComboBox.setItems(
+          FXCollections.observableArrayList(new String[] {"None", "Color Blind Mode"}));
+
+      dbSwitchComboBox.setValue(properties.getProperty("dbConnection"));
+      languageComboBox.setValue(properties.getProperty("language"));
+      colorComboBox.setValue(properties.getProperty("color"));
+      accessibilityComboBox.setValue(properties.getProperty("accessibility"));
 
       dbSwitchComboBox
           .valueProperty()
@@ -51,6 +130,56 @@ public class SettingsPageController implements Initializable {
                   properties.setProperty("dbConnection", dbSwitchComboBox.getValue().toString());
                   FileWriter writer = new FileWriter(settingsPath);
                   properties.store(writer, "App Settings");
+                  changeDBConnection();
+                  writer.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                  System.out.println("Could not write to settings.properties");
+                }
+              });
+
+      languageComboBox
+          .valueProperty()
+          .addListener(
+              listen -> {
+                try {
+                  properties.setProperty("language", languageComboBox.getValue().toString());
+                  FileWriter writer = new FileWriter(settingsPath);
+                  properties.store(writer, "App Settings");
+                  changeLanguage();
+                  writer.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                  System.out.println("Could not write to settings.properties");
+                }
+              });
+
+      colorComboBox
+          .valueProperty()
+          .addListener(
+              listen -> {
+                try {
+                  properties.setProperty("color", colorComboBox.getValue().toString());
+                  FileWriter writer = new FileWriter(settingsPath);
+                  properties.store(writer, "App Settings");
+                  changeColor();
+                  writer.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                  System.out.println("Could not write to settings.properties");
+                }
+              });
+
+      accessibilityComboBox
+          .valueProperty()
+          .addListener(
+              listen -> {
+                try {
+                  properties.setProperty(
+                      "accessibility", accessibilityComboBox.getValue().toString());
+                  FileWriter writer = new FileWriter(settingsPath);
+                  properties.store(writer, "App Settings");
+                  changeAccessibility();
                   writer.close();
                 } catch (IOException e) {
                   e.printStackTrace();
@@ -68,4 +197,20 @@ public class SettingsPageController implements Initializable {
   }
 
   public void logout() {}
+
+  private void changeDBConnection() {
+    System.out.println("Technically Switched DBConnection");
+  }
+
+  private void changeLanguage() {
+    System.out.println("Technically switched language");
+  }
+
+  private void changeColor() {
+    System.out.println("Technically changed color");
+  }
+
+  private void changeAccessibility() {
+    System.out.println("Technically changed accessibility");
+  }
 }
