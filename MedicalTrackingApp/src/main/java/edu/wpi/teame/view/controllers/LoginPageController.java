@@ -82,7 +82,13 @@ public class LoginPageController implements Initializable {
 
   @FXML
   private void updateUsernameText() {
-    usernameText.setText(usernameTextInput.getText());
+    String t = usernameTextInput.getText();
+    int numChars = usernameTextInput.getText().length();
+    if (numChars > 30) {
+      usernameText.setText(t.substring(0, 30));
+    } else {
+      usernameText.setText(t);
+    }
     enableLoginButton();
     checkFocus();
   }
@@ -112,7 +118,15 @@ public class LoginPageController implements Initializable {
 
   @FXML
   private void updatePasswordText() {
-    passwordText.setText(passwordTextInput.getText());
+    String p = "";
+    int numStars = passwordTextInput.getText().length();
+    if (numStars > 30) {
+      numStars = 30;
+    }
+    for (int i = 0; i < numStars; i++) {
+      p += "*";
+    }
+    passwordText.setText(p);
     enableLoginButton();
     checkFocus();
   }
@@ -179,14 +193,6 @@ public class LoginPageController implements Initializable {
     t.play();
   }
 
-  private void moveText(Text t, boolean dislocate) {
-    if (dislocate) {
-      t.setTranslateX(-35);
-    } else {
-      t.setTranslateX(0);
-    }
-  }
-
   private void enableLoginButton() {
     loginButton.setDisable(usernameText.getText().equals("") || passwordText.getText().equals(""));
   }
@@ -213,5 +219,8 @@ public class LoginPageController implements Initializable {
 
     usernameTextInput.setOnMousePressed(e -> checkFocus());
     passwordTextInput.setOnMousePressed(e -> checkFocus());
+
+    passwordText.setScaleX(1.5);
+    passwordText.setScaleY(1.5);
   }
 }
