@@ -31,12 +31,21 @@
          <children>
             <VBox alignment="CENTER" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
-                     <image>
-                        <Image url="@../images/Icons/AppIconMinimal.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="WHITE" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="LOG IN">
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="iconHole" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                           <image>
+                              <Image url="@../images/Icons/LoginHole.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="icon" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);">
+                           <image>
+                              <Image url="@../images/Icons/AppIconMinimal.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <Text fx:id="title" fill="WHITE" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="LOG IN">
                      <font>
                         <Font name="Arial" size="36.0" />
                      </font>
