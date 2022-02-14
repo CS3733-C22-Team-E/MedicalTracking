@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StandardServiceRequestManager extends ObjectManager<ServiceRequest> {
+public final class StandardServiceRequestManager extends ObjectManager<ServiceRequest> {
   public StandardServiceRequestManager(DataBaseObjectType dbType) {
     super(dbType);
   }

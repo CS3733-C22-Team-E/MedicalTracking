@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-public class PatientManager extends ObjectManager<Patient> {
+public final class PatientManager extends ObjectManager<Patient> {
   public PatientManager() {
     super(DataBaseObjectType.Patient);
   }

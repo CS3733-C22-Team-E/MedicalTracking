@@ -18,7 +18,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicineDeliveryServiceRequestManager
+public final class MedicineDeliveryServiceRequestManager
     extends ObjectManager<MedicineDeliveryServiceRequest> {
   public MedicineDeliveryServiceRequestManager() {
     super(DataBaseObjectType.MedicineDeliverySR);

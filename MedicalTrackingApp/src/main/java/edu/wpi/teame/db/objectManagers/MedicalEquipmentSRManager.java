@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentServiceRequest> {
+public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipmentServiceRequest> {
   public MedicalEquipmentSRManager() {
     super(DataBaseObjectType.MedicalEquipmentSR);
   }
