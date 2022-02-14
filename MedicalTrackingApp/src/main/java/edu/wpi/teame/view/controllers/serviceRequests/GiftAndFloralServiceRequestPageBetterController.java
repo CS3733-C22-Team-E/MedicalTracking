@@ -7,6 +7,7 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.GiftAndFloralDeliveryServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import lombok.SneakyThrows;
@@ -15,6 +16,8 @@ import java.awt.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +69,9 @@ public class GiftAndFloralServiceRequestPageBetterController
         assigneeComboBox.setItems(FXCollections.observableArrayList(employeeNames));
     }
 
+    /*
+    // TODO finish this
+
     @FXML
     public void sendToDB() throws SQLException, ParseException {
         Employee employee =
@@ -73,21 +79,34 @@ public class GiftAndFloralServiceRequestPageBetterController
         Location location =
                 DBManager.getInstance().getLocationManager().getByName(destinationComboBox.getAccessibleText());
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String srDate = requestDateDatePicker.getValue().format(formatter);
+        long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
+        java.sql.Date date = new java.sql.Date(time);
+
+        //ServiceRequestStatus requestStatus = new ServiceRequestStatus();
+
         // TODO Create the class GiftAndFloralServiceRequest
         // TODO Mimic every other ServiceRequest class
         // TODO Include additional info
-        GiftAndFloralServiceRequest serviceRequest =
-                new GiftAndFloralServiceRequest(
-                        statusComboBox,
+        GiftAndFloralDeliveryServiceRequest serviceRequest =
+                new GiftAndFloralDeliveryServiceRequest(
+                        statusComboBox.getValue(),
                         employee,
                         location,
-                        new Date(0),
-                        new Date(new java.util.Date().getTime()),
-                        0); // TODO Change to vary with amount of service requests
+                        new java.sql.Date(0),
+                        new java.sql.Date(new java.util.Date().getTime()),
+                        0,
+                        date); // TODO Change to vary with amount of service requests
+
+
+
 
         // TODO Create method getGiftAndFloralSRManager, mimic others
         DBManager.getInstance().getGiftAndFloralSRManager().insert(serviceRequest);
     }
+
+    */
 
     @FXML
     void clearText() {
@@ -108,7 +127,7 @@ public class GiftAndFloralServiceRequestPageBetterController
     @FXML
     void send() {
         try {
-            this.sendToDB();
+            //this.sendToDB(); TODO uncomment this when sendToDB() works
             this.clearText();
         } catch (Exception e) {
             // TODO Yell at user that all fields aren't complete
