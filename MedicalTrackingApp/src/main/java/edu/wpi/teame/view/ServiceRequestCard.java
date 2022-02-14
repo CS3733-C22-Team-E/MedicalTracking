@@ -26,7 +26,7 @@ public class ServiceRequestCard {
   private int BORDERRADIUS = 10;
 
   // Details
-  private ServiceRequestBacklog backlog;
+  private final ServiceRequestBacklog backlog;
   private String patientName;
   private Location location;
   private final ServiceRequest sr;
@@ -47,7 +47,6 @@ public class ServiceRequestCard {
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-    card.setPrefSize(width, height);
     setHoverStyling(card);
 
     card.getChildren().add(getDoneCheckbox());
@@ -81,6 +80,8 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 7);
 
     card.getChildren().add(detailsGrid);
+    card.setPrefSize(width, height);
+    card.setFillHeight(true);
 
     return card;
   }
