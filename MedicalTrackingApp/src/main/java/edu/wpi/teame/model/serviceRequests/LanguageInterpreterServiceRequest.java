@@ -12,7 +12,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LanguageInterpreterServiceRequest extends ServiceRequest {
+public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   private LanguageType language;
   private Patient patient;
 

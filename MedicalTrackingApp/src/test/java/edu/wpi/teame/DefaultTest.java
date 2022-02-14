@@ -154,7 +154,7 @@ public class DefaultTest {
   // SanitationServiceRequest sanReq3 =
   //     new SanitationServiceRequest(ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3);
 
-  // StandardServiceRequestManager sanReqManager = new StandardServiceRequestManager();
+  // StandardSRManager sanReqManager = new StandardSRManager();
   // sanReqManager.insert(sanReq1);
   // sanReqManager.insert(sanReq2);
   // sanReqManager.insert(sanReq3);
@@ -178,8 +178,8 @@ public class DefaultTest {
   //     new MedicineDeliveryServiceRequest(
   //         ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3, date);
 
-  // MedicineDeliveryServiceRequestManager medReqManager =
-  //     new MedicineDeliveryServiceRequestManager();
+  // MedicineDeliverySRManager medReqManager =
+  //     new MedicineDeliverySRManager();
   // medReqManager.insert(medReq1);
   // medReqManager.insert(medReq2);
   // medReqManager.insert(medReq3);

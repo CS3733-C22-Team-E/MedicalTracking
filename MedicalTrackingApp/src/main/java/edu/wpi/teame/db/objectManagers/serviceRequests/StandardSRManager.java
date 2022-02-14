@@ -1,9 +1,12 @@
-package edu.wpi.teame.db.objectManagers;
+package edu.wpi.teame.db.objectManagers.serviceRequests;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -18,8 +21,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class StandardServiceRequestManager extends ObjectManager<ServiceRequest> {
-  public StandardServiceRequestManager(DataBaseObjectType dbType) {
+public final class StandardSRManager extends ObjectManager<ServiceRequest> {
+  public StandardSRManager(DataBaseObjectType dbType) {
     super(dbType);
   }
 

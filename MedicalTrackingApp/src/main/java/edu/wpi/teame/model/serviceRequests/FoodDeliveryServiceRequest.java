@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class FoodDeliveryServiceRequest extends ServiceRequest {
+public final class FoodDeliveryServiceRequest extends ServiceRequest {
   private Patient patient;
   private String food;
 
@@ -60,10 +60,15 @@ public class FoodDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String getSQLUpdateString() {
     // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", "
-            + "patient = " + patient.getId() + ", "
-            + "food = " + food
-            + "WHERE id = " + id;
+    return super.getSQLUpdateString()
+        + ", "
+        + "patient = "
+        + patient.getId()
+        + ", "
+        + "food = "
+        + food
+        + "WHERE id = "
+        + id;
     // return super.getSQLUpdateString()
   }
 

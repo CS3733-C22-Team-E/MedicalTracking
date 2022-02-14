@@ -12,12 +12,13 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public final class ExternalPatientTransportationServiceRequest extends ServiceRequest {
+public final class PatientTransportationServiceRequest extends ServiceRequest {
   private Location destination;
   private Equipment equipment;
   private Patient patient;
 
-  public ExternalPatientTransportationServiceRequest(
+  public PatientTransportationServiceRequest(
+      boolean isInternal,
       ServiceRequestPriority priority,
       ServiceRequestStatus status,
       String additionalInfo,
@@ -32,7 +33,9 @@ public final class ExternalPatientTransportationServiceRequest extends ServiceRe
       Equipment equipment,
       Patient patient) {
     super(
-        DataBaseObjectType.ExternalPatientTransportation,
+        isInternal
+            ? DataBaseObjectType.InternalPatientTransferSR
+            : DataBaseObjectType.ExternalPatientTransportation,
         priority,
         status,
         additionalInfo,
@@ -48,8 +51,13 @@ public final class ExternalPatientTransportationServiceRequest extends ServiceRe
     this.patient = patient;
   }
 
-  public ExternalPatientTransportationServiceRequest(ResultSet resultSet) throws SQLException {
-    super(resultSet, DataBaseObjectType.ExternalPatientTransportation);
+  public PatientTransportationServiceRequest(boolean isInternal, ResultSet resultSet)
+      throws SQLException {
+    super(
+        resultSet,
+        isInternal
+            ? DataBaseObjectType.InternalPatientTransferSR
+            : DataBaseObjectType.ExternalPatientTransportation);
     this.destination =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
     this.equipment =
@@ -59,27 +67,34 @@ public final class ExternalPatientTransportationServiceRequest extends ServiceRe
 
   @Override
   public String getSQLInsertString() {
-    // TODO: Needs to be updated. Done
-    return super.getSQLInsertString() + ", " + destination.getId() + ", " + equipment.getId() + ", " + patient.getId();
-    // return super.getSQLInsertString();
+    return super.getSQLInsertString()
+        + ", "
+        + destination.getId()
+        + ", "
+        + equipment.getId()
+        + ", "
+        + patient.getId();
   }
 
   @Override
   public String getSQLUpdateString() {
-    // TODO: Needs to be updated. Done
-    return super.getSQLUpdateString() + ", "
-            + "destination = " + destination.getId() + ", "
-            + "equipment = " + equipment.getId() + ", "
-            + "patient = " + patient.getId()
-            + "WHERE id = " + id;
-    // return super.getSQLUpdateString()
+    return super.getSQLUpdateString()
+        + ", "
+        + "destinationID = "
+        + destination.getId()
+        + ", "
+        + "equipment = "
+        + equipment.getId()
+        + ", "
+        + "patient = "
+        + patient.getId()
+        + "WHERE id = "
+        + id;
   }
 
   @Override
   public String getTableColumns() {
-    // TODO: Needs to be updated. Done
     return super.getTableColumns() + ", destination, equipment, patient)";
-    // return super.getTableColumns();
   }
 
   public Location getDestination() {

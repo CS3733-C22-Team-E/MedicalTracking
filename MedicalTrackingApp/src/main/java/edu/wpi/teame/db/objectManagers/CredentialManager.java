@@ -1,11 +1,9 @@
 package edu.wpi.teame.db.objectManagers;
 
 public final class CredentialManager {
-    public CredentialManager() {
-        
-    }
+  public CredentialManager() {}
 
-    public boolean employeeLogIn(String username, String password) {
-
-    }
+  public boolean employeeLogIn(String username, String password) {
+    return false;
+  }
 }

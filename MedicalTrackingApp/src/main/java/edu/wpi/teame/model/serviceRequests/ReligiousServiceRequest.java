@@ -11,7 +11,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ReligiousServiceRequest extends ServiceRequest {
+public final class ReligiousServiceRequest extends ServiceRequest {
   private Patient patient;
   private String religion;
 

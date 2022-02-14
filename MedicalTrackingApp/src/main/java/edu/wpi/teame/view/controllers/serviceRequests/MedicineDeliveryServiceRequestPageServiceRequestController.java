@@ -19,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
@@ -40,7 +39,6 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   private boolean hasRun = false;
 
   @FXML
-  @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {}
 
   @FXML
