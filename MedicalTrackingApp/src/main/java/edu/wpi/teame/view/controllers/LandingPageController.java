@@ -6,6 +6,7 @@ import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.Map;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
 public class LandingPageController implements Initializable {
-  @FXML private AnchorPane mainAnchorPane;
-  @FXML private TabPane mainTabPane;
+  @FXML public AnchorPane mainAnchorPane;
+  @FXML public TabPane mainTabPane;
+  public MedicalEquipmentDeliveryServiceRequestPageServiceRequestController test;
 
   @Override
   @SneakyThrows
@@ -30,7 +32,6 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
-
     // Get the tab content size using our init tab
     double tabContentHeight =
         mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();
@@ -156,6 +157,9 @@ public class LandingPageController implements Initializable {
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
+    test =
+        (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
+            tabs.get(11).controller;
   }
 
   private String getPageUrl(DataBaseObjectType t) {

@@ -15,7 +15,6 @@ public enum DataBaseObjectType {
   MedicineDeliverySR,
   FacilitiesMaintenanceSR,
   SanitationSR,
-
   Location,
   Equipment,
   Employee;
