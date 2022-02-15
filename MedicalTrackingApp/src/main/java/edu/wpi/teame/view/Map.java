@@ -404,7 +404,8 @@ public class Map {
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
-    return staticWrapper;
+    MapSideView SideView = new MapSideView();
+    return SideView.getMapScene();
   }
 
   private MapEquipmentIcon addEquipmentToMap(Equipment equipment) {
