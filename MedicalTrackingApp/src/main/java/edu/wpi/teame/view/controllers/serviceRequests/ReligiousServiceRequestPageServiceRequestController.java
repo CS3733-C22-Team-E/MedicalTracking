@@ -4,9 +4,13 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ReligiousServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -116,15 +120,21 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    // SecurityServiceRequest serviceRequest = //TODO send to db
-    //    new SecurityServiceRequest(
-    //        ServiceRequestStatus.OPEN,
-    //        employee,
-    //        location,
-    //        new Date(0),
-    //        new Date(new java.util.Date().getTime()),
-    //        0);
-    // DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+    ReligiousServiceRequest serviceRequest =
+        new ReligiousServiceRequest(
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0,
+            new Patient(location, new Date(0), patientName.getText(), 0),
+            religion.getText());
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {
