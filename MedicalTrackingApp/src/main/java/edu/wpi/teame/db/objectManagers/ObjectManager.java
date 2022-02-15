@@ -7,9 +7,8 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.*;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,18 +91,32 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
+      case AudioVisualSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+      case ComputerSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+      case ExternalPatientSR:
+        return (T) new PatientTransportationServiceRequest(false, resultSet);
+      case FacilitiesMaintenanceSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+      case FoodDeliverySR:
+        return (T) new FoodDeliveryServiceRequest(resultSet);
+      case GiftAndFloralSR:
+        return (T) new GiftAndFloralServiceRequest(resultSet);
+      case InternalPatientTransferSR:
+        return (T) new PatientTransportationServiceRequest(true, resultSet);
+      case LanguageInterpreterSR:
+        return (T) new LanguageInterpreterServiceRequest(resultSet);
+      case LaundrySR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case MedicalEquipmentSR:
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
-      case LaundrySR:
-      case SecuritySR:
-      case ComputerSR:
       case SanitationSR:
-      case AudioVisualSR:
-      case FacilitiesMaintenanceSR:
         return (T) new ServiceRequest(resultSet, objectType);
-
+      case SecuritySR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case Location:
         return (T) new Location(resultSet);
       case Equipment:
