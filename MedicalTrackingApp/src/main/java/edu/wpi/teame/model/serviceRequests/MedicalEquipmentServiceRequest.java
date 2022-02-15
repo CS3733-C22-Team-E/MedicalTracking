@@ -51,7 +51,11 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLInsertString() + ", equipmentID = " + equipment.getId() + "WHERE id = " + id;
+    return super.getSQLUpdateString()
+        + ", equipmentID = "
+        + equipment.getId()
+        + " WHERE id = "
+        + id;
   }
 
   @Override

@@ -44,15 +44,21 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
           ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
           ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      DataBaseObjectType dbType = DataBaseObjectType.values()[lineData.getColumnInt("dbType")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
-      int assignee = lineData.getColumnInt("assigneeID");
+      Integer assignee =
+          lineData.getColumnString("assigneeID").equals("")
+              ? -1
+              : lineData.getColumnInt("assigneeID");
       int location = lineData.getColumnInt("locationID");
       Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate = lineData.getColumnDate("closeDate");
+      Date closeDate =
+          lineData.getColumnString("closeDate").equals("")
+              ? null
+              : lineData.getColumnDate("closeDate");
       Date openDate = lineData.getColumnDate("openDate");
       String title = lineData.getColumnString("title");
       int id = lineData.getColumnInt("id");
+      DataBaseObjectType dbType = super.objectType;
 
       // select assignee where id = employeeID
       EmployeeManager employeeManager = new EmployeeManager();
@@ -115,10 +121,10 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
           new String[] {
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
-            Integer.toString(serReq.getAssignee().getId()),
+            serReq.getAssignee() == null ? "" : Integer.toString(serReq.getAssignee().getId()),
             serReq.getOpenDate().toString(),
-            serReq.getCloseDate().toString(),
-            serReq.getStatus().toString(),
+            serReq.getCloseDate() == null ? "" : serReq.getCloseDate().toString(),
+            Integer.toString(serReq.getStatus().ordinal()),
             serReq.getTitle(),
             serReq.getAdditionalInfo(),
             Integer.toString(serReq.getPriority().ordinal()),

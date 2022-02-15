@@ -66,13 +66,13 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
         + ", "
         + "patientID = "
         + patient.getId()
-        + "WHERE id = "
+        + " WHERE id = "
         + id;
   }
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + ", language, patientID)";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, language, patientID)";
   }
 
   public LanguageType getLanguage() {

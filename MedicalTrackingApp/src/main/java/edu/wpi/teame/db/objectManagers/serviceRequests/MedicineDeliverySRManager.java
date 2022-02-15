@@ -127,9 +127,9 @@ public final class MedicineDeliverySRManager extends ObjectManager<MedicineDeliv
           new String[] {
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
-            Integer.toString(serReq.getAssignee().getId()),
+            serReq.getAssignee() == null ? "" : Integer.toString(serReq.getAssignee().getId()),
             serReq.getOpenDate().toString(),
-            serReq.getCloseDate().toString(),
+            serReq.getCloseDate() == null ? "" : serReq.getCloseDate().toString(),
             serReq.getStatus().toString(),
             serReq.getTitle(),
             serReq.getAdditionalInfo(),

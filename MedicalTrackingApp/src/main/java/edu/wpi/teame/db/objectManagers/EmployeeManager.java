@@ -37,11 +37,9 @@ public final class EmployeeManager extends ObjectManager<Employee> {
       lineData.setParsedData(record);
 
       String name = lineData.getColumnString("name");
-      String nodeId = lineData.getColumnString("id");
-      EmployeeType type = EmployeeType.valueOf(lineData.getColumnString("type"));
+      EmployeeType type = EmployeeType.values()[(lineData.getColumnInt("type"))];
       DepartmentType departmentType =
-          DepartmentType.valueOf(lineData.getColumnString("department"));
-
+          DepartmentType.values()[(lineData.getColumnInt("department"))];
       Employee newEmployee = new Employee(0, departmentType, name, type);
       DBManager.getInstance().getEmployeeManager().insert(newEmployee);
     }
@@ -64,15 +62,15 @@ public final class EmployeeManager extends ObjectManager<Employee> {
     List<Employee> listOfEmployees = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
-    data.add(new String[] {"employeeID", "department", "name", "isDoctor"});
+    data.add(new String[] {"employeeID", "department", "name", "type"});
 
     for (Employee employee : listOfEmployees) {
       data.add(
           new String[] {
             Integer.toString(employee.getId()),
-            employee.getDepartment().toString(),
+            Integer.toString(employee.getDepartment().ordinal()),
             employee.getName(),
-            employee.getType().toString()
+            Integer.toString(employee.getType().ordinal())
           });
     }
     writer.writeAll(data);

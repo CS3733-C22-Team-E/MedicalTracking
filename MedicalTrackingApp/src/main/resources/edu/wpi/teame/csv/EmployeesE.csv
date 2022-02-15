@@ -1,7 +1,4 @@
-id,department,name,isDoctor
-eSBURNHAM001,FAMILYMEDICINE,Shannon L. Burnham,true
-eMPEARSON002,CLINICALSERVICES,Madelyn Pearson,false
-eJTOLKIEN003,PLASTICSURGERY,John Ronald Reagan Tolkien,true
-eWBI004,NEUROSURGERY,Wenya Linda Bi,true
-eSDOUGAL005,MICU,Sandra Dougal,false
-ABC123,CLINICALSERVICES,Brinda Venkataraman,true
+employeeID,department,name,type
+1,2,Jose L,0
+2,1,Madelyn Pearson,1
+3,2,John Ronald Reagan Tolkien,0

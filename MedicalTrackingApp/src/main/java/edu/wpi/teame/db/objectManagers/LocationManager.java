@@ -88,7 +88,7 @@ public final class LocationManager extends ObjectManager<Location> {
             Integer.toString(location.getId()),
             Integer.toString(location.getX()),
             Integer.toString(location.getY()),
-            location.getFloor().toString(),
+            Integer.toString(location.getFloor().ordinal()),
             location.getBuilding().toString(),
             location.getType().toString(),
             location.getLongName(),

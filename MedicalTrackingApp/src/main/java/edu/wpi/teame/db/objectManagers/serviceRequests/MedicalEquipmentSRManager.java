@@ -39,6 +39,7 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
     CSVLineData lineData = new CSVLineData(csvReader);
 
     String[] record;
+    csvReader.readNext();
     while ((record = csvReader.readNext()) != null) {
       lineData.setParsedData(record);
 
@@ -122,14 +123,15 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
           new String[] {
             Integer.toString(serReq.getId()),
             Integer.toString(serReq.getLocation().getId()),
-            Integer.toString(serReq.getAssignee().getId()),
+            serReq.getAssignee() == null ? "" : Integer.toString(serReq.getAssignee().getId()),
             serReq.getOpenDate().toString(),
-            serReq.getCloseDate().toString(),
-            serReq.getStatus().toString(),
+            serReq.getCloseDate() == null ? "" : serReq.getCloseDate().toString(),
+            Integer.toString(serReq.getStatus().ordinal()),
             serReq.getTitle(),
             serReq.getAdditionalInfo(),
             Integer.toString(serReq.getPriority().ordinal()),
-            serReq.getRequestDate().toString(),
+            serReq.getRequestDate() == null ? "" : serReq.getRequestDate().toString(),
+            //      serReq.getRequestDate().toString(),
             Integer.toString(serReq.getEquipment().getId())
           });
     }

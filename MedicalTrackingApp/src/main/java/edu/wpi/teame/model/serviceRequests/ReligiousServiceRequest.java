@@ -65,7 +65,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
         + "religion = '"
         + religion
         + "'"
-        + "WHERE id = "
+        + " WHERE id = "
         + id;
   }
 

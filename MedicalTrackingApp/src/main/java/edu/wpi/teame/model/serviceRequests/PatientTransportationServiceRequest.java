@@ -88,7 +88,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
         + ", "
         + "patientID = "
         + patient.getId()
-        + "WHERE id = "
+        + " WHERE id = "
         + id;
   }
 

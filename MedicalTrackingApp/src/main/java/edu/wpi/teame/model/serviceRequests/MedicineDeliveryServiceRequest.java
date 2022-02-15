@@ -74,13 +74,13 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + ", "
         + "medicineName = '"
         + medicineName
-        + "',"
+        + "', "
         + "patientID = "
         + patient.getId()
         + ", "
         + "medicineQuantity = '"
         + medicineQuantity
-        + "'"
+        + "' "
         + "WHERE id = "
         + id;
   }

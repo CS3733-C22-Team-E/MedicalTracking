@@ -46,7 +46,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
       String name = lineData.getColumnString("longName");
       boolean isClean = lineData.getColumnBoolean("isClean");
       boolean hasPatient = lineData.getColumnBoolean("hasPatient");
-      EquipmentType equipmentType = EquipmentType.valueOf(lineData.getColumnString("nodeType"));
+      EquipmentType equipmentType = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
 
       String locationNodeID = lineData.getColumnString("locationNodeID");
       Location location = CSVManager.getInstance().locationIDMap.get(locationNodeID);
@@ -81,7 +81,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
           new String[] {
             Integer.toString(equipment.getId()),
             Integer.toString(equipment.getLocation().getId()),
-            equipment.getType().toString(),
+            Integer.toString(equipment.getType().ordinal()),
             equipment.getName(),
             equipment.isHasPatient() ? "1" : "0",
             equipment.isClean() ? "1" : "0"

@@ -1,5 +1,6 @@
 package edu.wpi.teame;
 
+import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.db.objectManagers.serviceRequests.*;
@@ -13,13 +14,15 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException, SQLException {
+  public static void main(String[] args)
+      throws IOException, SQLException, CsvValidationException, ParseException {
     DBManager.getInstance();
 
     Location loc1 =
@@ -129,11 +132,13 @@ public class Main {
       System.out.println(emp);
     }
 
-    //     employeeManager.update(new Employee(1, DepartmentType.PLASTICSURGERY, "Jose L", false));
-    //     employeeList = employeeManager.getAll();
-    //     for (Employee emp : employeeList) {
-    //       System.out.println(emp);
-    //     }
+    System.out.println("updating employee...");
+    employeeManager.update(
+        new Employee(1, DepartmentType.PLASTICSURGERY, "Jose L", EmployeeType.Admin));
+    employeeList = employeeManager.getAll();
+    for (Employee emp : employeeList) {
+      System.out.println(emp);
+    }
 
     System.out.println();
 
@@ -150,6 +155,10 @@ public class Main {
     pman.insert(patient2);
     pman.insert(patient3);
 
+    System.out.println("updating patient...");
+    pman.update(new Patient(loc1, date, "Jose Morales 2.0", 1));
+
+    System.out.println();
     /**
      * DataBaseObjectType type, ServiceRequestPriority priority, ServiceRequestStatus status, String
      * additionalInfo, Employee assignee, Location location, Date requestDate, Date closeDate, Date
@@ -199,6 +208,22 @@ public class Main {
     secReqManager.insert(secReq1);
     secReqManager.insert(secReq2);
     secReqManager.insert(secReq3);
+
+    System.out.println("updating standardSR...");
+    secReqManager.update(
+        new ServiceRequest(
+            DataBaseObjectType.SecuritySR,
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.CLOSED,
+            "I need swecurity heheheheheheh",
+            emp3,
+            loc3,
+            Date.valueOf("2017-03-31"),
+            null,
+            date,
+            "titel",
+            3));
+    System.out.println();
 
     List<ServiceRequest> securitylist = secReqManager.getAll();
     for (ServiceRequest sec : securitylist) {
@@ -257,10 +282,26 @@ public class Main {
     sanReqManager.insert(sanReq2);
     sanReqManager.insert(sanReq3);
 
+    System.out.println("updating sanitationSR...");
+    sanReqManager.update(
+        new ServiceRequest(
+            DataBaseObjectType.SanitationSR,
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp3,
+            loc3,
+            Date.valueOf("2015-05-31"),
+            date,
+            date,
+            "titel",
+            3));
+
     List<ServiceRequest> sanReqlist = sanReqManager.getAll();
     for (ServiceRequest san : sanReqlist) {
       System.out.println(san);
     }
+    System.out.println();
 
     //     sanReqManager.update(
     //         new SanitationServiceRequest(ServiceRequestStatus.CLOSED, emp1, loc1, date, date,
@@ -319,11 +360,28 @@ public class Main {
     medReqManager.insert(medReq2);
     medReqManager.insert(medReq3);
 
+    System.out.println("updating medicineDeliverySR...");
+    medReqManager.update(
+        new MedicineDeliveryServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp3,
+            loc3,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            "djkfdshgfuiowelkfjbvhdjkfs",
+            "od",
+            patient3));
+
     List<MedicineDeliveryServiceRequest> medReqlist = medReqManager.getAll();
     for (MedicineDeliveryServiceRequest san : medReqlist) {
       System.out.println(san);
     }
-
+    System.out.println();
     //     medReqManager.update(
     //         new MedicineDeliveryServiceRequest(
     //             ServiceRequestStatus.CLOSED, emp1, loc1, date, date, 1, date));
@@ -382,6 +440,22 @@ public class Main {
     medEqpManager.insert(sr1);
     medEqpManager.insert(sr2);
     medEqpManager.insert(sr3);
+
+    System.out.println("updating medicalEquipmentSR...");
+    medEqpManager.update(
+        new MedicalEquipmentServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp2,
+            loc1,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel.......",
+            3,
+            equipment3));
+    System.out.println();
 
     List<MedicalEquipmentServiceRequest> medEqpList = medEqpManager.getAll();
     for (MedicalEquipmentServiceRequest test : medEqpList) {
@@ -677,6 +751,25 @@ public class Main {
     extTransportMan.insert(transport1);
     extTransportMan.insert(transport3);
 
+    System.out.println("updating PatientTransportationSR...");
+    transportMan.update(
+        new PatientTransportationServiceRequest(
+            false,
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc3,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            loc1,
+            equipment3,
+            patient3));
+    System.out.println();
+
     ReligiousSRManager regman = DBManager.getInstance().getReligiousSR();
     regman.insert(reg1);
     regman.insert(reg2);
@@ -688,12 +781,68 @@ public class Main {
       System.out.println(san);
     }
 
-    //    System.out.println();
-    //    System.out.println();
-    //    System.out.println(emp1);
-    //    employeeManager.update(new Employee(1, DepartmentType.PLASTICSURGERY, "Jose Morales",
-    // false))
-    //    System.out.println(employeeManager.get(1));
+    regman.update(
+        new ReligiousServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CANCELLED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            date,
+            date,
+            "titel",
+            3,
+            patient3,
+            "none"));
+
+    System.out.println("testing languageSR............");
+    LanguageInterpreterSRManager langMan =
+        new LanguageInterpreterSRManager(DataBaseObjectType.LanguageInterpreterSR);
+    langMan.insert(language1);
+    langMan.insert(language2);
+    langMan.insert(language3);
+
+    List<LanguageInterpreterServiceRequest> langReqlist = langMan.getAll();
+    System.out.println(langReqlist.size());
+    for (LanguageInterpreterServiceRequest lang : langReqlist) {
+      System.out.println(lang);
+    }
+
+    langMan.update(
+        new LanguageInterpreterServiceRequest(
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.CLOSED,
+            "updating....ggg",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            LanguageType.Japanese,
+            patient3));
+    System.out.println();
+
+    DBManager.getInstance().writeDBToCSV();
+
+    foodMan.update(
+        new FoodDeliveryServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CANCELLED,
+            "update to readCSV into DB",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            patient3,
+            "pizza"));
+
+    DBManager.getInstance().loadDBFromCSV();
 
     // App.launch(App.class, args);
   }
