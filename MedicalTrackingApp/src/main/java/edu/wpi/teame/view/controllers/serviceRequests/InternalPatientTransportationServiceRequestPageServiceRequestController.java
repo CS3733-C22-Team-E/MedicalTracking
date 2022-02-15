@@ -3,6 +3,7 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
@@ -18,12 +19,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class InternalPatientTransportationServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private DatePicker requestDate;
+  @FXML private TextField patientName;
   @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField destinationLocation;
   @FXML private AutoCompleteTextField assignee;
+  @FXML private AutoCompleteTextField equipment;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
@@ -68,6 +73,23 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             listener -> {
               validateSubmitButton();
             });
+
+    equipment.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    destinationLocation.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
   }
 
   @FXML
@@ -80,6 +102,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -91,8 +114,15 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
       employeeNames.add(emp.getName());
     }
 
+    List<String> equipmentNames = new LinkedList<String>();
+    for (Equipment equ : equipments) {
+      equipmentNames.add(equ.getName());
+    }
+
     locationText.getEntries().addAll(locationNames);
+    destinationLocation.getEntries().addAll(locationNames);
     assignee.getEntries().addAll(employeeNames);
+    equipment.getEntries().addAll(equipmentNames);
   }
 
   @FXML
@@ -119,13 +149,19 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || equipment.getEntries() == null
+            || destinationLocation.getEntries() == null
+            || patientName.getText().isEmpty());
   }
 
   public void clearText() {
     additionalInfo.setText("");
+    patientName.setText("");
     locationText.setText("");
     assignee.setText("");
+    destinationLocation.setText("");
+    equipment.setText("");
     requestDate.setValue(null);
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
