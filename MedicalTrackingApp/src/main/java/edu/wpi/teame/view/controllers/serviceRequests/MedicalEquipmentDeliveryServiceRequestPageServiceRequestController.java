@@ -5,7 +5,9 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.SQLException;
@@ -27,6 +29,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
+  @FXML private TextArea patientName;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
   private boolean hasRun = false;
@@ -110,9 +113,9 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
   @FXML
   public void sendToDB() throws SQLException {
     String pName = patientName.getText();
-    String roomNum = (String) requestLocation.getText();
-    String assignee = (String) requestAssignee.getValue();
-    EquipmentType equipNeeded = EquipmentType.getValue(equipmentNeeded.getValue().toString());
+    String roomNum = (String) locationText.getText();
+    String emp = (String) assignee.getText();
+    EquipmentType equipNeeded = EquipmentType.getValue(equipment.getText());
 
     List<MedicalEquipmentServiceRequest> allSerReq =
         DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
@@ -120,7 +123,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
       System.out.println(serviceReq);
     }
 
-    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
+    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(emp);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
     Equipment equipment =
         DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
