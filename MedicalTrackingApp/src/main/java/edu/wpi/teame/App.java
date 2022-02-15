@@ -81,7 +81,7 @@ public class App extends Application {
   }
 
   private void heyStinky() {
-    Media m = new Media(App.class.getResource("audio/HeyStinky.mp3").toString());
+    Media m = new Media(App.class.getResource("audio/HeyStinky2.mp3").toString());
     MediaPlayer player = new MediaPlayer(m);
     player.setVolume(1);
     player.play();
