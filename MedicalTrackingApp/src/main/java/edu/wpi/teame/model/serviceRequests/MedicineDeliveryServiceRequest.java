@@ -30,6 +30,7 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
       String medicineName,
       String medicineQuantity,
       Patient patient) {
+
     super(
         DataBaseObjectType.MedicineDeliverySR,
         priority,

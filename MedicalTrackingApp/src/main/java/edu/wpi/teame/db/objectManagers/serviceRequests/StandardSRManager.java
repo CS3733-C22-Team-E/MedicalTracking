@@ -62,7 +62,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
 
       //new ServiceRequest
       ServiceRequest newSR = new ServiceRequest(dbType, priority, requestStatus, additionalInfo, newEmployee, newLocation, requestDate, closeDate, openDate, title, id);
-      //DBManager.getInstance().getStandardSRManager().insert(newSR);
+      getManager().insert(newSR);
 
     }
   }
@@ -84,8 +84,6 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
     List<ServiceRequest> listOfSerReq = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
-    //data.add(new String[] {"id", "locationID", "status", "employeeID", "closeDate", "openDate"});
-    //data.add(new String[] {"priority", "requestStatus", "dbType", "additionalInfo", "assignee", "location", "requestDate", "closeDate", "openDate", "title", "id"});
     data.add(new String[] {"id", "locationID", "assigneeID", "openDate", "closeDate", "status", "title", "additionalInfo", "priority", "requestDate"});
 
     for (ServiceRequest serReq : listOfSerReq) {
@@ -102,26 +100,46 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             Integer.toString(serReq.getPriority().ordinal()),
             serReq.getRequestDate().toString()
           });
-      /*
-      data.add(
-        new String[] {
-                Integer.toString(serReq.getPriority().ordinal()),
-                Integer.toString(serReq.getStatus().ordinal()),
-                Integer.toString(serReq.getDBType().ordinal()),
-                serReq.getAdditionalInfo(),
-                Integer.toString(serReq.getAssignee().getId()),
-                Integer.toString(serReq.getLocation().getId()),
-                serReq.getRequestDate().toString(),
-                serReq.getCloseDate().toString(),
-                serReq.getOpenDate().toString(),
-                serReq.getTitle(),
-                Integer.toString(serReq.getId())
-        }
-      );
-       */
 
     }
     writer.writeAll(data);
     writer.close();
   }
+
+  private ObjectManager getManager() throws SQLException {
+    switch(super.objectType) {
+      case AudioVisualSR:
+        return DBManager.getInstance().getAudioVisualSRManager();
+      case ComputerSR:
+        return DBManager.getInstance().getComputerSRManager();
+      case FoodDeliverySR:
+        return DBManager.getInstance().getFoodDeliverySRManager();
+      case GiftAndFloralSR:
+        return DBManager.getInstance().getGiftAndFloralSRManager();
+      case InternalPatientTransferSR:
+        return DBManager.getInstance().getInternalPatientSRManager();
+      case ExternalPatientTransportation:
+        return DBManager.getInstance().getExternalPatientSRManager();
+      case LanguageInterpreterSR:
+        return DBManager.getInstance().getLanguageSRManager();
+      case LaundrySR:
+        return DBManager.getInstance().getLaundrySRManager();
+      case ReligiousSR:
+        return DBManager.getInstance().getReligiousSR();
+      case SecuritySR:
+        return DBManager.getInstance().getSecuritySRManager();
+      case MedicalEquipmentSR:
+        return DBManager.getInstance().getMedicalEquipmentSRManager();
+      case MedicineDeliverySR:
+        return DBManager.getInstance().getMedicineDeliverySRManager();
+      case FacilitiesMaintenanceSR:
+        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();
+      case SanitationSR:
+        return DBManager.getInstance().getSanitationSRManager();
+      default:
+        return DBManager.getInstance().getMedicalEquipmentSRManager();
+    }
+  }
+
+
 }
