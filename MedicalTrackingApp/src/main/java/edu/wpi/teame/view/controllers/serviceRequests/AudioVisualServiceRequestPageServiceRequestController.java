@@ -99,24 +99,24 @@ public class AudioVisualServiceRequestPageServiceRequestController
 
   @FXML
   void sendToDB() throws SQLException {
-  Employee employee =
-          DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
-  Location location =
-          DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
-            new ServiceRequest(
-                    DataBaseObjectType.AudioVisualSR,
-                    (ServiceRequestPriority) priority.getValue(),
-                    (ServiceRequestStatus) status.getValue(),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    Date.valueOf(requestDate.getValue()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0);
+        new ServiceRequest(
+            DataBaseObjectType.AudioVisualSR,
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0);
     DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 

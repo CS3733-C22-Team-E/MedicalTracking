@@ -4,9 +4,13 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,15 +104,20 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    // SecurityServiceRequest serviceRequest = //TODO send to db
-    //    new SecurityServiceRequest(
-    //        ServiceRequestStatus.OPEN,
-    //        employee,
-    //        location,
-    //        new Date(0),
-    //        new Date(new java.util.Date().getTime()),
-    //        0);
-    // DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+    ServiceRequest serviceRequest =
+        new ServiceRequest(
+            DataBaseObjectType.FacilitiesMaintenanceSR,
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0);
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {
