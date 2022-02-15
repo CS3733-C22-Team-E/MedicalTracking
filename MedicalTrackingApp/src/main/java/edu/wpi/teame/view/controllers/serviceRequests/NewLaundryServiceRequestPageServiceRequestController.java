@@ -9,7 +9,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class Laundry_SR_Page_Controller extends ServiceRequestController {
+public class NewLaundryServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML public Button send;
   @FXML public Button clear;
   @FXML private DatePicker requestDate;
