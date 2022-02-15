@@ -366,7 +366,7 @@ public final class DBManager {
     getLaundrySRManager().readCSV("LaundryServiceRequest.csv");
     getMedicalEquipmentSRManager().readCSV("MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().readCSV("MedicineDeliveryServiceRequest.csv");
-    getReligiousSR().readCSV("ReligiousServiceRequest.csv");
+    getReligiousSRManager().readCSV("ReligiousServiceRequest.csv");
     getSanitationSRManager().readCSV("SanitationServiceRequest.csv");
     getSecuritySRManager().readCSV("SecurityServiceRequest.csv");
   }
@@ -388,7 +388,7 @@ public final class DBManager {
     getLaundrySRManager().writeToCSV("LaundryServiceRequest.csv");
     getMedicalEquipmentSRManager().writeToCSV("MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().writeToCSV("MedicineDeliveryServiceRequest.csv");
-    getReligiousSR().writeToCSV("ReligiousServiceRequest.csv");
+    getReligiousSRManager().writeToCSV("ReligiousServiceRequest.csv");
     getSanitationSRManager().writeToCSV("SanitationServiceRequest.csv");
     getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
   }
@@ -484,7 +484,7 @@ public final class DBManager {
     return new MedicineDeliverySRManager();
   }
 
-  public ReligiousSRManager getReligiousSR() throws SQLException {
+  public ReligiousSRManager getReligiousSRManager() throws SQLException {
     return new ReligiousSRManager();
   }
 

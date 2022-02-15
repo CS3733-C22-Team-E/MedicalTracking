@@ -82,7 +82,7 @@ public final class ReligiousSRManager extends ObjectManager<ReligiousServiceRequ
               id,
               newPatient,
               religion);
-      DBManager.getInstance().getReligiousSR().insert(newSR);
+      DBManager.getInstance().getReligiousSRManager().insert(newSR);
     }
   }
 

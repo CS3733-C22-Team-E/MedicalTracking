@@ -770,7 +770,7 @@ public class Main {
             patient3));
     System.out.println();
 
-    ReligiousSRManager regman = DBManager.getInstance().getReligiousSR();
+    ReligiousSRManager regman = DBManager.getInstance().getReligiousSRManager();
     regman.insert(reg1);
     regman.insert(reg2);
     regman.insert(reg3);

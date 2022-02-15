@@ -154,7 +154,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
       case LaundrySR:
         return DBManager.getInstance().getLaundrySRManager();
       case ReligiousSR:
-        return DBManager.getInstance().getReligiousSR();
+        return DBManager.getInstance().getReligiousSRManager();
       case SecuritySR:
         return DBManager.getInstance().getSecuritySRManager();
       case MedicalEquipmentSR:
