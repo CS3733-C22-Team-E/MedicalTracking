@@ -7,6 +7,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import java.awt.*;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -18,12 +19,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class LanguageInterpreterServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
+  @FXML private TextField patientName;
+  @FXML private JFXComboBox language;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
@@ -37,6 +41,9 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
 
     priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+    language.setItems(
+        FXCollections.observableArrayList(
+            new String[] {"Spanish", "Mandarin", "Tagalog", "French", "Vietnamese"}));
 
     requestDate
         .valueProperty()
@@ -63,6 +70,20 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
             });
 
     status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    language
         .valueProperty()
         .addListener(
             listener -> {
@@ -119,7 +140,9 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty()
+            || language.getValue() == null);
   }
 
   public void clearText() {
@@ -130,5 +153,7 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
+    language.valueProperty().setValue(null);
   }
 }
