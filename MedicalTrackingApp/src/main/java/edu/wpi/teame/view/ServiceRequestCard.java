@@ -5,6 +5,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.sql.SQLException;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,6 +35,7 @@ public class ServiceRequestCard {
   private final Color color;
   private Background nonHoverBG;
   private Background hoverBG;
+  private boolean isDead = false;
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
     sr = serviceRequest;
@@ -42,17 +44,32 @@ public class ServiceRequestCard {
     location = sr.getLocation();
   }
 
+  public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b, boolean dead) {
+    sr = serviceRequest;
+    backlog = b;
+    color = getServiceRequestColor();
+    location = sr.getLocation();
+    isDead = true;
+  }
+
   public HBox getCard(double width, double height) {
     // Setup grid
     HBox card = new HBox();
-    card.setEffect(new DropShadow(5, color));
+    if (!isDead) {
+      card.setEffect(new DropShadow(5, color));
+    }
     Stop[] stops = new Stop[] {new Stop(0, Color.WHITE), new Stop(1, color)};
     Stop[] stops2 = new Stop[] {new Stop(0, Color.LIGHTGRAY), new Stop(1, color)};
     LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
     LinearGradient lg2 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops2);
     nonHoverBG = new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY));
     hoverBG = new Background(new BackgroundFill(lg2, CornerRadii.EMPTY, Insets.EMPTY));
-    card.setBackground(nonHoverBG);
+    if (!isDead) {
+      card.setBackground(nonHoverBG);
+    } else {
+      card.setBackground(
+          new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+    }
 
     createBookend(card, 40);
     card.getChildren().add(getDoneCheckbox());
@@ -97,7 +114,9 @@ public class ServiceRequestCard {
     card.setAlignment(Pos.CENTER_RIGHT);
     card.setPrefSize(width, height);
     card.setFillHeight(false);
-    setHoverStyling(card);
+    if (!isDead) {
+      setHoverStyling(card);
+    }
     return card;
   }
 
@@ -116,7 +135,9 @@ public class ServiceRequestCard {
     textBox.getChildren().add(titleText);
     Text srText = new Text(" Service Request");
     srText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-    srText.setFill(color);
+    if (!isDead) {
+      srText.setFill(color);
+    }
     textBox.getChildren().add(srText);
     textBox.setAlignment(Pos.CENTER_LEFT);
     return textBox;
@@ -129,7 +150,14 @@ public class ServiceRequestCard {
     doneBox.setPadding(new Insets(0, -40, 0, 0));
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
-    doneBox.setOnMouseClicked((event -> deleteRequest(backlog)));
+    doneBox.setOnMouseClicked(
+        (event -> {
+          try {
+            deleteRequest(backlog);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        }));
     Tooltip t = new Tooltip("Click to delete");
     Tooltip.install(doneBox, t);
     return doneBox;
@@ -151,8 +179,11 @@ public class ServiceRequestCard {
     return titleSeparator;
   }
 
-  private void deleteRequest(ServiceRequestBacklog b) {
-    b.removeServiceRequest(this.sr.getId());
+  private void deleteRequest(ServiceRequestBacklog b) throws SQLException {
+    if (!isDead) {
+      b.killServiceRequest(this.sr);
+    }
+    b.removeServiceRequest(this.sr);
   }
 
   public void setPatientName(String patientName) {
