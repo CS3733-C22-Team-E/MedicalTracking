@@ -52,7 +52,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "')";
+    return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "'";
   }
 
   @Override

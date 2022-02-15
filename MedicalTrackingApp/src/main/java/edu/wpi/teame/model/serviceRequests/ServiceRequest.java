@@ -207,8 +207,6 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   public String toString() {
-    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
-
     return this.dbType + " id is " + id;
   }
 }

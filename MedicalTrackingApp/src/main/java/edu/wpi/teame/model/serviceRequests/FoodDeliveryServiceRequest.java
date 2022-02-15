@@ -88,4 +88,8 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
   public void setFood(String food) {
     this.food = food;
   }
+
+  public String toString() {
+    return super.dbType + " id is " + id;
+  }
 }

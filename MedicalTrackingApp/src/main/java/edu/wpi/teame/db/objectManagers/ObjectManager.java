@@ -111,7 +111,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case Employee:
         return (T) new Employee(resultSet);
       case Patient:
-        return (T) new Patient(resultSet);
+        return (T) new Patient(resultSet)\\\\;
     }
     return null;
   }

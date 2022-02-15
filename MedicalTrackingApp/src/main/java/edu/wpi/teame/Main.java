@@ -614,27 +614,50 @@ public class Main {
             patient3,
             "none");
 
-    FoodDeliverySRManager foodMan = new FoodDeliverySRManager();
+    FoodDeliverySRManager foodMan = DBManager.getInstance().getFoodDeliverySRManager();
     foodMan.insert(food1);
     foodMan.insert(food2);
     foodMan.insert(food3);
 
-    GiftAndFloralSRManager giftMan = new GiftAndFloralSRManager();
+    List<FoodDeliveryServiceRequest> foodReqlist = foodMan.getAll();
+    for (FoodDeliveryServiceRequest san : foodReqlist) {
+      System.out.println(san);
+    }
+
+    GiftAndFloralSRManager giftMan = DBManager.getInstance().getGiftAndFloralSRManager();
     giftMan.insert(gift1);
     giftMan.insert(gift2);
     giftMan.insert(gift3);
 
-    PatientTransportationSRManager transportMan = new PatientTransportationSRManager(true);
+    List<GiftAndFloralServiceRequest> giftReqlist = giftMan.getAll();
+    for (GiftAndFloralServiceRequest san : giftReqlist) {
+      System.out.println(san);
+    }
+
+    PatientTransportationSRManager transportMan =
+        DBManager.getInstance().getInternalPatientSRManager();
     transportMan.insert(transport2);
 
-    PatientTransportationSRManager extTransportMan = new PatientTransportationSRManager(false);
+    List<PatientTransportationServiceRequest> gtransportReqlist = transportMan.getAll();
+    for (PatientTransportationServiceRequest san : gtransportReqlist) {
+      System.out.println(san);
+    }
+
+    PatientTransportationSRManager extTransportMan =
+        DBManager.getInstance().getExternalPatientSRManager();
     extTransportMan.insert(transport1);
     extTransportMan.insert(transport3);
 
-    ReligiousSRManager regman = new ReligiousSRManager();
+    ReligiousSRManager regman = DBManager.getInstance().getReligiousSR();
     regman.insert(reg1);
     regman.insert(reg2);
     regman.insert(reg3);
+
+    List<ReligiousServiceRequest> regReqlist = regman.getAll();
+    System.out.println(regReqlist.size());
+    for (ReligiousServiceRequest san : regReqlist) {
+      System.out.println(san);
+    }
 
     //    System.out.println();
     //    System.out.println();
