@@ -67,23 +67,23 @@ public class ServiceRequest implements ISQLSerializable {
   @Override
   public String getSQLInsertString() {
     return location.getId()
-        + ", "
-        + assignee.getId()
-        + ", '"
-        + openDate.toString()
-        + "', '"
-        + closeDate.toString()
-        + "', "
-        + status.ordinal()
-        + ", '"
-        + title
-        + "', '"
-        + additionalInfo
-        + "', "
-        + priority.ordinal()
-        + ", "
-        + requestDate.toString()
-        + "'";
+                + ", "
+                + assignee.getId()
+                + ", '"
+                + openDate.toString()
+                + "', '"
+                + closeDate == null ? "" : closeDate.toString()
+            + "', "
+            + status.ordinal()
+            + ", '"
+            + title
+            + "', '"
+            + additionalInfo
+            + "', "
+            + priority.ordinal()
+            + ", "
+            + requestDate.toString()
+            + "'";
   }
 
   @Override

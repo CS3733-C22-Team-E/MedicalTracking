@@ -16,7 +16,7 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineName;
   private Patient patient;
 
-  private MedicineDeliveryServiceRequest(
+  public MedicineDeliveryServiceRequest(
       ServiceRequestPriority priority,
       ServiceRequestStatus status,
       String additionalInfo,

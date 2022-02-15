@@ -315,7 +315,7 @@ public final class DBManager {
             + "title VARCHAR(50), "
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
-            + "requestDate DATE, "
+            + "requestDate Time, " // change to timestamp
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSanitationSRTable);
