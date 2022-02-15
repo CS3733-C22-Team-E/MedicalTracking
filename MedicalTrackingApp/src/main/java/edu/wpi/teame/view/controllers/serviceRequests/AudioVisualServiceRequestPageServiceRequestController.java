@@ -1,41 +1,92 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
-import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AudioVisualServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML private JFXButton clearButton;
-  @FXML private JFXButton sendButton;
-  @FXML private AutoCompleteTextField patientName;
-  @FXML private AutoCompleteTextField roomNumber;
-  @FXML private TextField floor;
-  @FXML DatePicker startDate;
-  @FXML DatePicker endDate;
-  @FXML TextField startTime;
-  @FXML TextField endTime;
+  @FXML private TextField titleTextField;
+  @FXML private DatePicker serviceDatePicker;
+  @FXML private JFXComboBox locationComboBox;
+  @FXML private JFXComboBox assigneeComboBox;
+  @FXML private JFXComboBox priorityComboBox;
+  @FXML private JFXComboBox statusComboBox;
+  @FXML private TextArea additionalInfoTextArea;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    patientName.getEntries().addAll(Arrays.asList("Madison", "Kalina", "Samay"));
+    // TODO: Change priority comboBox to actual values
+    priorityComboBox.setItems(
+        FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    statusComboBox.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    locationComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    assigneeComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+
+    serviceDatePicker
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    assigneeComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    priorityComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    statusComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
   }
 
-  @FXML
-  private void clearText() {
-    patientName.setText("");
-    roomNumber.setText("");
-    floor.setText("");
-    startTime.setText("");
-    endTime.setText("");
-    startDate.setValue(null);
-    startDate.getEditor().clear();
-    endDate.setValue(null);
-    endDate.getEditor().clear();
+  public void clearText() {
+    titleTextField.setText("");
+    serviceDatePicker.setValue(null);
+    serviceDatePicker.getEditor().clear();
+    locationComboBox.valueProperty().setValue(null);
+    assigneeComboBox.valueProperty().setValue(null);
+    priorityComboBox.valueProperty().setValue(null);
+    statusComboBox.valueProperty().setValue(null);
+    additionalInfoTextArea.setText("");
+  }
+
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        titleTextField.getText().isEmpty()
+            || serviceDatePicker.getValue() == null
+            || locationComboBox.getValue() == null
+            || assigneeComboBox.getValue() == null
+            || priorityComboBox.getValue() == null
+            || statusComboBox.getValue() == null);
   }
 }

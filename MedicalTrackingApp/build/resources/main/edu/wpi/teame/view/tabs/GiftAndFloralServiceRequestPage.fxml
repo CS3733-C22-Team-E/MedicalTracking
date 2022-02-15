@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.NewGiftAndFloralDeliveryServiceRequestPageServiceRequestController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.GiftAndFloralDeliveryServiceRequestPageServiceRequestController">
    <children>
       <GridPane prefHeight="400.0" prefWidth="600.0">
         <columnConstraints>
@@ -37,14 +37,14 @@
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Info:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
             <JFXButton fx:id="clearButton" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <DatePicker fx:id="requestDateDatePicker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+<!--            <DatePicker fx:id="requestDateDatePicker" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />-->
             <JFXComboBox fx:id="destinationComboBox" promptText="Choose a location..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <JFXComboBox fx:id="assigneeComboBox" promptText="Choose an employee..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <JFXComboBox fx:id="priorityComboBox" promptText="Choose priority..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <JFXComboBox fx:id="statusComboBox" promptText="Choose status..." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <JFXComboBox fx:id="patientComboBox" promptText="Choose a patient..." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Patient:" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-            <TextArea fx:id="additionalInfoTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+<!--            <TextArea fx:id="additionalInfoTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />-->
          </children>
       </GridPane>
    </children>

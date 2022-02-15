@@ -1,93 +1,88 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Location;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.SanitationServiceRequest;
-import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import lombok.SneakyThrows;
 
 public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
 
-  @FXML private AutoCompleteTextField timeNeeded;
-
-  @FXML private DatePicker startDate;
-  @FXML private DatePicker endDate;
-
-  @FXML public AutoCompleteTextField serviceLocation;
-  @FXML public AutoCompleteTextField serviceAssignee;
-
-  @FXML public JFXCheckBox completed;
-  boolean hasRun = false;
+  @FXML private DatePicker requestDate;
+  @FXML private JFXComboBox locationDropdown;
+  @FXML private JFXComboBox assigneeDropdown;
+  @FXML private JFXComboBox statusDropdown;
+  @FXML private JFXComboBox priorityDropdown;
+  @FXML private TextArea additionalInfo;
+  @FXML private JFXButton clearButton;
+  @FXML private JFXButton submitButton;
 
   @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
-    timeNeeded.getEntries().addAll(createTime());
-  }
+    priorityDropdown.setItems(
+        FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    statusDropdown.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+    locationDropdown.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    assigneeDropdown.setItems(FXCollections.observableArrayList(new String[] {"test"}));
 
-  @FXML
-  private void sendToDB() throws SQLException {
-    Employee employee =
-        DBManager.getInstance().getEmployeeManager().getByAssignee(serviceAssignee.getText());
-    Location location =
-        DBManager.getInstance().getLocationManager().getByName(serviceLocation.getText());
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
 
-    SanitationServiceRequest serviceRequest =
-        new SanitationServiceRequest(
-            ServiceRequestStatus.OPEN,
-            employee,
-            location,
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            0);
-    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
-  }
+    locationDropdown
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
 
-  public void updateFromDB() throws SQLException {
-    if (hasRun) {
-      return;
-    }
-    hasRun = true;
+    assigneeDropdown
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
 
-    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+    priorityDropdown
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
 
-    List<String> locationNames = new LinkedList<String>();
-    for (Location loc : locations) {
-      locationNames.add(loc.getLongName());
-    }
-
-    List<String> employeeNames = new LinkedList<String>();
-    for (Employee emp : employees) {
-      employeeNames.add(emp.getName());
-    }
-    serviceLocation.getEntries().addAll(locationNames);
-    serviceAssignee.getEntries().addAll(employeeNames);
+    statusDropdown
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
   }
 
   @FXML
   private void clearText() {
-    timeNeeded.setText("");
-    startDate.setValue(null);
-    startDate.getEditor().clear();
-    endDate.setValue(null);
-    endDate.getEditor().clear();
-    serviceLocation.clear();
-    serviceAssignee.clear();
-    completed.setSelected(false);
+    additionalInfo.setText("");
+    locationDropdown.valueProperty().set(null);
+    assigneeDropdown.valueProperty().set(null);
+    statusDropdown.valueProperty().set(null);
+    priorityDropdown.valueProperty().set(null);
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+  }
+
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationDropdown.getValue() == null
+            || assigneeDropdown.getValue() == null
+            || priorityDropdown.getValue() == null
+            || statusDropdown.getValue() == null);
   }
 }

@@ -1,50 +1,123 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
 
 public class ExternalPatientTransportationServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML private Text externalPatientTransportationServiceRequest;
-  @FXML private Text patientNameText;
-  @FXML private Text roomText;
-  @FXML private Text floorText;
-  @FXML private Text dateText;
-  @FXML private Text pickupTimeText;
-  @FXML private Text chooseTransportationText;
-  @FXML private Text dropoffAddressText;
 
-  @FXML private TextField patientName;
-  @FXML private TextField floorNum;
-  @FXML private TextField roomNum;
-  @FXML private TextField pickupTime;
-  @FXML private TextField dropoffAddress;
-
-  @FXML private DatePicker datePickup;
-
-  @FXML private ComboBox<String> chooseTransportation;
-
-  @FXML public Button sendButton;
+  @FXML private TextField titleTextField;
+  @FXML private DatePicker serviceDatePicker;
+  @FXML private JFXComboBox locationComboBox;
+  @FXML private JFXComboBox assigneeComboBox;
+  @FXML private JFXComboBox priorityComboBox;
+  @FXML private JFXComboBox statusComboBox;
+  @FXML private TextArea additionalInfoTextArea;
+  @FXML public JFXComboBox patientComboBox;
+  @FXML public JFXComboBox equipmentComboBox;
+  @FXML public JFXComboBox destinationComboBox;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    chooseTransportation.setItems(
-        FXCollections.observableArrayList("Ambulance", "Helicopter", "Car", "Other"));
+    // TODO: Change priority comboBox to actual values
+    priorityComboBox.setItems(
+        FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    statusComboBox.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    locationComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    assigneeComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    patientComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    destinationComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    locationComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+    equipmentComboBox.setItems(FXCollections.observableArrayList(new String[] {"test"}));
+
+    serviceDatePicker
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    assigneeComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    priorityComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    statusComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    equipmentComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+    destinationComboBox
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
   }
 
-  @FXML
-  private void clearText() {
-    patientName.setText("");
-    floorNum.setText("");
-    roomNum.setText("");
-    pickupTime.setText("");
-    dropoffAddress.setText("");
-    datePickup.setValue(null);
-    datePickup.getEditor().clear();
-    chooseTransportation.valueProperty().set(null);
+  public void clearText() {
+    titleTextField.setText("");
+    serviceDatePicker.setValue(null);
+    serviceDatePicker.getEditor().clear();
+    locationComboBox.valueProperty().setValue(null);
+    assigneeComboBox.valueProperty().setValue(null);
+    priorityComboBox.valueProperty().setValue(null);
+    statusComboBox.valueProperty().setValue(null);
+    additionalInfoTextArea.setText("");
+    patientComboBox.valueProperty().setValue(null);
+    destinationComboBox.valueProperty().setValue(null);
+    equipmentComboBox.valueProperty().setValue(null);
+  }
+
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        titleTextField.getText().isEmpty()
+            || serviceDatePicker.getValue() == null
+            || locationComboBox.getValue() == null
+            || assigneeComboBox.getValue() == null
+            || priorityComboBox.getValue() == null
+            || statusComboBox.getValue() == null
+            || patientComboBox.getValue() == null
+            || equipmentComboBox.getValue() == null
+            || destinationComboBox.getValue() == null);
   }
 }

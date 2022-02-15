@@ -1,32 +1,35 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class LaundryServiceRequestPageServiceRequestController extends ServiceRequestController {
-  @FXML public JFXButton sendButton;
-  @FXML private TextField patientName;
-  @FXML private TextField roomNumber;
-  @FXML private TextField floor;
-  @FXML private TextField time;
-  @FXML private DatePicker startDate;
-  @FXML private DatePicker endDate;
+  @FXML public Button send;
+  @FXML public Button clear;
+  @FXML private DatePicker requestDate;
+  @FXML private TextField location;
+  @FXML private TextField assignee;
+  @FXML private JFXComboBox<String> priority;
+  @FXML private JFXComboBox<String> status;
+  @FXML private TextArea additionalInfo;
 
+  @Override
   public void initialize(URL location, ResourceBundle resources) {}
 
   @FXML
   private void clearText() {
-    patientName.setText("");
-    roomNumber.setText("");
-    floor.setText("");
-    time.setText("");
-    startDate.setValue(null);
-    startDate.getEditor().clear();
-    endDate.setValue(null);
-    endDate.getEditor().clear();
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    location.setText("");
+    assignee.setText("");
+    priority.valueProperty().set(null);
+    status.valueProperty().set(null);
+    additionalInfo.setText("");
   }
 }
