@@ -44,12 +44,9 @@
 
 .button {
   -fx-background-color: -fx-button-background-color;
+  -fx-text-fill: -fx-button-text-color;
+  -fx-button-text-fill: -fx-button-text-color;
   -fx-background-radius: 5;
-}
-
-.button.text {
-  -fx-text-fill: black;
-  -fx-fill: black;
 }
 
 .combo-box {
