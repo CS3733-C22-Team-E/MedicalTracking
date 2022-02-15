@@ -5,7 +5,6 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -95,23 +94,23 @@ public class AudioVisualServiceRequestPageServiceRequestController
     assignee.getEntries().addAll(employeeNames);
   }
 
-  @FXML
-  void sendToDB() throws SQLException {
-    Employee employee =
-        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
-    Location location =
-        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
-
-    SecurityServiceRequest serviceRequest =
-        new SecurityServiceRequest(
-            ServiceRequestStatus.OPEN,
-            employee,
-            location,
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            0);
-    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
-  }
+//  @FXML
+//  void sendToDB() throws SQLException {
+//    Employee employee =
+//        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+//    Location location =
+//        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+//
+//    SecurityServiceRequest serviceRequest =
+//        new SecurityServiceRequest(
+//            ServiceRequestStatus.OPEN,
+//            employee,
+//            location,
+//            new Date(0),
+//            new Date(new java.util.Date().getTime()),
+//            0);
+//    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+//  }
 
   public void validateSubmitButton() {
     submitButton.setDisable(
