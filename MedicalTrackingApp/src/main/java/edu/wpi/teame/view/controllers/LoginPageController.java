@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
@@ -58,8 +59,10 @@ public class LoginPageController implements Initializable {
       return;
     }
 
-    MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
-    mediaPlayer.setVolume(0.3);
+    if (loginSound != null) { // TODO find out why this couses null pointer
+      MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
+      mediaPlayer.setVolume(0.3);
+    }
 
     TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
     t2.setFromY(-50);
@@ -85,10 +88,11 @@ public class LoginPageController implements Initializable {
     t1.setOnFinished(e -> {});
     t1.play();
     r.play();
-    mediaPlayer.play();
+    // mediaPlayer.play(); //TODO uncomment when sounds play
   }
 
   private void switchToLandingPage() {
+    System.out.println("Switching to landing page...");
     App.getAppPrimaryStage().setScene(landingPage);
     App.getAppPrimaryStage().show();
     App.getAppPrimaryStage().setFullScreen(true);
@@ -224,7 +228,10 @@ public class LoginPageController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     try {
-      landingPage = new Scene(FXMLLoader.load(App.class.getResource("view/LandingPage.fxml")));
+      landingPage =
+          new Scene(
+              FXMLLoader.load(
+                  Objects.requireNonNull(App.class.getResource("view/LandingPage.fxml"))));
       loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     } catch (IOException e) {
       e.printStackTrace();

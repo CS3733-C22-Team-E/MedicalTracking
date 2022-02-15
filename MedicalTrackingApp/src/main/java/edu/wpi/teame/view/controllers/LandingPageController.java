@@ -135,11 +135,11 @@ public class LandingPageController implements Initializable {
             SortOrder.ByName,
             getPageUrl(DataBaseObjectType.ExternalPatientSR)));
 
-    tabs.add(
-        new StyledTab(
-            "Audio/Video Services",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.AudioVisualSR)));
+    // tabs.add(
+    //    new StyledTab(
+    //        "Audio/Video Services",
+    //        SortOrder.ByName,
+    //        getPageUrl(DataBaseObjectType.AudioVisualSR))); //TODO AV stops program
 
     tabs.add(
         new StyledTab(
@@ -159,9 +159,9 @@ public class LandingPageController implements Initializable {
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
-    test =
-        (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
-            tabs.get(11).controller;
+    // test =
+    //    (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
+    //        tabs.ge//t(11).controller; //TODO again, sorry Samay. I need to get this running
   }
 
   private String getPageUrl(DataBaseObjectType t) {
