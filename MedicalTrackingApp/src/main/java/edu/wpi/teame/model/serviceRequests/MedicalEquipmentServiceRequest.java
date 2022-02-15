@@ -56,7 +56,7 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + "equipmentID)";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, equipmentID)";
   }
 
   public Equipment getEquipment() {

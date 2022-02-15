@@ -57,14 +57,15 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
+    String patientID = patient == null ? "NULL" : Integer.toString(patient.getId());
     return super.getSQLInsertString()
         + ", '"
         + medicineName
         + "', "
-        + patient.getId()
+        + patientID
         + ", '"
         + medicineQuantity
-        + "', ";
+        + "'";
   }
 
   @Override
@@ -86,7 +87,8 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + ", medicineName, patientID, medicineQuantity)";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate"
+        + ", medicineName, patientID, medicineQuantity)";
   }
 
   public String getMedicineQuantity() {

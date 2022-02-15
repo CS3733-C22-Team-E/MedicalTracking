@@ -63,7 +63,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     insertQuery.append(getTableName()).append(newObject.getTableColumns());
     insertQuery.append(" VALUES(");
     insertQuery.append(newObject.getSQLInsertString()).append(")");
-
+    System.out.println(insertQuery.toString());
     PreparedStatement insertStatement =
         connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
     int rowsAffected = insertStatement.executeUpdate();

@@ -8,10 +8,10 @@ import edu.wpi.teame.db.objectManagers.serviceRequests.StandardSRManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.*;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.*;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -120,6 +120,7 @@ public class Main {
       System.out.println(emp);
     }
 
+
     //     employeeManager.update(new Employee(1, DepartmentType.PLASTICSURGERY, "Jose L", false));
     //     employeeList = employeeManager.getAll();
     //     for (Employee emp : employeeList) {
@@ -131,6 +132,10 @@ public class Main {
     long d = System.currentTimeMillis();
     Date date = new Date(d);
     DateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
+
+    Patient patient1 = new Patient(loc1, date, "Jose Morales", 1);
+    Patient patient2 = new Patient(loc2, date, "Josie Morales", 2);
+    Patient patient3 = new Patient(loc3, date, "Joseph Morales", 3);
 
     /**
      * DataBaseObjectType type, ServiceRequestPriority priority, ServiceRequestStatus status, String
@@ -264,7 +269,7 @@ public class Main {
             1,
             "od",
             "od",
-            null);
+            patient1);
     MedicineDeliveryServiceRequest medReq2 =
         new MedicineDeliveryServiceRequest(
             ServiceRequestPriority.Low,
@@ -279,7 +284,7 @@ public class Main {
             1,
             "od",
             "od",
-            null);
+            patient2);
     MedicineDeliveryServiceRequest medReq3 =
         new MedicineDeliveryServiceRequest(
             ServiceRequestPriority.Normal,
@@ -294,7 +299,7 @@ public class Main {
             1,
             "od",
             "od",
-            null);
+            patient3);
 
     MedicineDeliverySRManager medReqManager = new MedicineDeliverySRManager();
     medReqManager.insert(medReq1);
@@ -370,6 +375,201 @@ public class Main {
       System.out.println(test);
     }
 
+    FoodDeliveryServiceRequest food1 = new FoodDeliveryServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp1,
+            loc1,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            1,
+            patient1, "potatoes");
+    FoodDeliveryServiceRequest food2 = new FoodDeliveryServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            2,
+            patient2, "potatoes");
+    FoodDeliveryServiceRequest food3 = new FoodDeliveryServiceRequest(
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            patient3, "potatoes");
+
+    GiftAndFloralServiceRequest gift1 = new GiftAndFloralServiceRequest(
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            1,
+            patient1);
+
+    GiftAndFloralServiceRequest gift2 = new GiftAndFloralServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            2,
+            patient1);
+
+    GiftAndFloralServiceRequest gift3 = new GiftAndFloralServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            patient1);
+
+    LanguageInterpreterServiceRequest language1 = new LanguageInterpreterServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.PENDING,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            1,LanguageType.English,
+            patient1);
+
+    LanguageInterpreterServiceRequest language2 = new LanguageInterpreterServiceRequest(
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            2,LanguageType.Samoan,
+            patient2);
+
+    LanguageInterpreterServiceRequest language3 = new LanguageInterpreterServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,LanguageType.Japanese,
+            patient3);
+
+    PatientTransportationServiceRequest transport1 = new PatientTransportationServiceRequest(
+            false,
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            1,loc2,equipment1,
+            patient1);
+
+    PatientTransportationServiceRequest transport2 = new PatientTransportationServiceRequest(
+            true,
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            2,loc3,equipment2,
+            patient2);
+
+    PatientTransportationServiceRequest transport3 = new PatientTransportationServiceRequest(
+            false,
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,loc1,equipment3,
+            patient3);
+
+    ReligiousServiceRequest reg1 =  new ReligiousServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            1,
+            patient1,"me");
+
+    ReligiousServiceRequest reg2 =  new ReligiousServiceRequest(
+            ServiceRequestPriority.High,
+            ServiceRequestStatus.OPEN,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            2,
+            patient2,"you");
+
+    ReligiousServiceRequest reg3 =  new ReligiousServiceRequest(
+            ServiceRequestPriority.Normal,
+            ServiceRequestStatus.CANCELLED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            patient3,"none");
     //    System.out.println();
     //    System.out.println();
     //    System.out.println(emp1);

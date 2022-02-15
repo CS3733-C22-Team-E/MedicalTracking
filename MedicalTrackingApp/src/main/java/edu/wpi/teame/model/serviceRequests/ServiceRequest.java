@@ -1,7 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -52,7 +51,6 @@ public class ServiceRequest implements ISQLSerializable {
 
   public ServiceRequest(ResultSet resultSet, DataBaseObjectType type) throws SQLException {
     this.priority = ServiceRequestPriority.values()[resultSet.getInt("status")];
-    this.assignee = new EmployeeManager().get(resultSet.getInt("employeeID"));
     this.location = new LocationManager().get(resultSet.getInt("locationID"));
     this.status = ServiceRequestStatus.values()[resultSet.getInt("status")];
     this.additionalInfo = resultSet.getString("additionalInfo");
@@ -66,24 +64,25 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
+    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
     return location.getId()
-                + ", "
-                + assignee.getId()
-                + ", '"
-                + openDate.toString()
-                + "', '"
-                + closeDate == null ? "" : closeDate.toString()
-            + "', "
-            + status.ordinal()
-            + ", '"
-            + title
-            + "', '"
-            + additionalInfo
-            + "', "
-            + priority.ordinal()
-            + ", "
-            + requestDate.toString()
-            + "'";
+        + ", "
+        + assignee.getId()
+        + ", '"
+        + openDate.toString()
+        + "',"
+        + closeDateString
+        + ", "
+        + status.ordinal()
+        + ", '"
+        + title
+        + "', '"
+        + additionalInfo
+        + "', "
+        + priority.ordinal()
+        + ", '"
+        + requestDate.toString()
+        + "'";
   }
 
   @Override
@@ -119,7 +118,7 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getTableColumns() {
-    return "(location, assignee, openDate, closeDate, status, title, additionalInfo, priority, requestDate";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)";
   }
 
   @Override
@@ -205,5 +204,11 @@ public class ServiceRequest implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String toString() {
+    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
+
+    return this.dbType + " id is " + id;
   }
 }
