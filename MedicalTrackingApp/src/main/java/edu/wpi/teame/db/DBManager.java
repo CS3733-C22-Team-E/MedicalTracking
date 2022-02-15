@@ -340,16 +340,6 @@ public final class DBManager {
 
   public void loadDBFromCSV()
       throws CsvValidationException, SQLException, IOException, ParseException {
-    try {
-      new CredentialManager().insert("admin", "admin");
-
-      System.out.println(new CredentialManager().logIn("Amitai", "password"));
-      System.out.println(new CredentialManager().logIn("test", "password"));
-      System.out.println(new CredentialManager().logIn("Amitai", "amitai"));
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
     getLocationManager().readCSV("csv/TowerLocationsE.csv");
     getEquipmentManager().readCSV("csv/EquipmentE.csv");
     getEmployeeManager().readCSV("csv/EmployeesE.csv");

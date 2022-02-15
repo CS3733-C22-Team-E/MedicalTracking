@@ -15,6 +15,7 @@ import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -150,12 +151,14 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     PatientTransportationServiceRequest serviceRequest =
         new PatientTransportationServiceRequest(
             true,
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
             employee,
             location,
-            Date.valueOf(requestDate.getValue()),
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
@@ -163,7 +166,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             dest,
             equipBring,
             new Patient(location, new Date(0), patientName.getText(), 0));
-    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+    DBManager.getInstance().getInternalPatientSRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {

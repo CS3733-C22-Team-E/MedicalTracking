@@ -12,6 +12,7 @@ import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,7 +39,6 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
     mainAnchorPane.setEffect(
         new DropShadow(20, DataBaseObjectType.FacilitiesMaintenanceSR.getColor()));
     priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
@@ -109,19 +109,21 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
-        new ServiceRequest(
-            DataBaseObjectType.FacilitiesMaintenanceSR,
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
-            additionalInfo.getText(),
-            employee,
-            location,
-            Date.valueOf(requestDate.getValue()),
-            new Date(0),
-            new Date(new java.util.Date().getTime()),
-            "",
-            0);
-    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+            new ServiceRequest(
+                    DataBaseObjectType.ComputerSR,
+                    ServiceRequestPriority.valueOf(priority.getValue().toString()),
+                    ServiceRequestStatus.valueOf(status.getValue().toString()),
+                    additionalInfo.getText(),
+                    employee,
+                    location,
+                    new Date(
+                            Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                                    .getTime()),
+                    new Date(0),
+                    new Date(new java.util.Date().getTime()),
+                    "",
+                    0);
+    DBManager.getInstance().getFacilitiesMaintenanceSRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {
