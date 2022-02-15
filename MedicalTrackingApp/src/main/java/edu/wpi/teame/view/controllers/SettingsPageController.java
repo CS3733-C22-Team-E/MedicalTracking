@@ -212,8 +212,15 @@ public class SettingsPageController implements Initializable {
       throws SQLException, IOException, CsvValidationException, ParseException {
     // writeDBToCSV
     DBManager.getInstance().writeDBToCSV();
-    // setupClientDB
-    DBManager.getInstance().setupClientDB();
+
+    // switch DB type
+    if (dbSwitchComboBox.getValue().toString().equals("Client/Server Database")) {
+      DBManager.getInstance().setupDB();
+    }
+    else {
+      DBManager.getInstance().setupClientDB();
+    }
+
     // loadCSVintoDB
     DBManager.getInstance().loadDBFromCSV();
     System.out.println("Technically Switched DBConnection");
