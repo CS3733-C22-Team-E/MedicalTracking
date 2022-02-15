@@ -16,7 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import lombok.SneakyThrows;
 
-public class NewGiftAndFloralDeliveryServiceRequestPageServiceRequestController extends ServiceRequestController {
+public class NewGiftAndFloralDeliveryServiceRequestPageServiceRequestController
+    extends ServiceRequestController {
 
   @FXML public JFXButton sendButton;
   @FXML public JFXButton clearButton;

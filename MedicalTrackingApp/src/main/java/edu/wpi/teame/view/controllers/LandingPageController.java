@@ -162,10 +162,10 @@ public class LandingPageController implements Initializable {
     String url = "view/tabs/";
     switch (t) {
       case LaundrySR:
-        url += "NewLaundry";
+        url += "Laundry";
         break;
       case ComputerSR:
-        url += "NewComputer";
+        url += "Computer";
         break;
       case SecuritySR:
         url += "Security";
@@ -174,10 +174,10 @@ public class LandingPageController implements Initializable {
         url += "Religious";
         break;
       case AudioVisualSR:
-        url += "NewAudioVisual";
+        url += "AudioVisual";
         break;
       case FoodDeliverySR:
-        url += "NewFoodDelivery";
+        url += "FoodDelivery";
         break;
       case GiftAndFloralSR:
         url += "GiftAndFloral";
@@ -195,13 +195,13 @@ public class LandingPageController implements Initializable {
         url += "FacilitiesMaintenance";
         break;
       case InternalPatientTransferSR:
-        url += "NewInternalPatientTransportation";
+        url += "InternalPatientTransportation";
         break;
       case ExternalPatientTransportation:
-        url += "NewExternalPatientTransportation";
+        url += "ExternalPatientTransportation";
         break;
       case SanitationSR:
-        url += "NewSanitation";
+        url += "Sanitation";
         break;
       default:
         return null;
