@@ -18,12 +18,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
+  @FXML private TextField patientName;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
@@ -54,6 +56,13 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
         listener -> {
           validateSubmitButton();
         });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
 
     priority
         .valueProperty()
@@ -119,7 +128,8 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty());
   }
 
   public void clearText() {
@@ -130,5 +140,6 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
   }
 }
