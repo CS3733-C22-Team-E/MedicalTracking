@@ -43,8 +43,7 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
 
     priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
-    language.setItems(
-        FXCollections.observableArrayList(LanguageType.values()));
+    language.setItems(FXCollections.observableArrayList(LanguageType.values()));
 
     requestDate
         .valueProperty()
@@ -125,19 +124,19 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
     LanguageInterpreterServiceRequest serviceRequest =
-            new LanguageInterpreterServiceRequest(
-                    (ServiceRequestPriority) priority.getValue(),
-                    (ServiceRequestStatus) status.getValue(),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    Date.valueOf(requestDate.getValue()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0,
-                    (LanguageType) language.getValue(),
-                    new Patient(location, new Date(0), patientName.getText(), 0));
+        new LanguageInterpreterServiceRequest(
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0,
+            (LanguageType) language.getValue(),
+            new Patient(location, new Date(0), patientName.getText(), 0));
     DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 

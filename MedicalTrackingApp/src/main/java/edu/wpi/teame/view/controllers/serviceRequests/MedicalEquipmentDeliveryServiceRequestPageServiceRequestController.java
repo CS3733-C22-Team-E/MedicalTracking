@@ -131,18 +131,18 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
         DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
 
     MedicalEquipmentServiceRequest serviceRequest =
-            new MedicalEquipmentServiceRequest(
-                    (ServiceRequestPriority) priority.getValue(),
-                    (ServiceRequestStatus) status.getValue(),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    Date.valueOf(requestDate.getValue()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0,
-                    equipment);
+        new MedicalEquipmentServiceRequest(
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0,
+            equipment);
     DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
   }
 

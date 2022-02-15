@@ -9,7 +9,6 @@ import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
@@ -137,26 +136,29 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
     Location dest =
-            DBManager.getInstance().getLocationManager().getByName(destinationLocation.getText());
+        DBManager.getInstance().getLocationManager().getByName(destinationLocation.getText());
     Equipment equipBring =
-            DBManager.getInstance().getEquipmentManager().getByAvailability(Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
+        DBManager.getInstance()
+            .getEquipmentManager()
+            .getByAvailability(
+                Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
 
     PatientTransportationServiceRequest serviceRequest =
-            new PatientTransportationServiceRequest(
-                    true,
-                    (ServiceRequestPriority) priority.getValue(),
-                    (ServiceRequestStatus) status.getValue(),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    Date.valueOf(requestDate.getValue()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0,
-                    dest,
-                    equipBring,
-                    new Patient(location, new Date(0), patientName.getText(), 0));
+        new PatientTransportationServiceRequest(
+            true,
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0,
+            dest,
+            equipBring,
+            new Patient(location, new Date(0), patientName.getText(), 0));
     DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 

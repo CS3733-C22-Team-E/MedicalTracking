@@ -146,20 +146,20 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
 
     MedicineDeliveryServiceRequest serviceRequest =
-            new MedicineDeliveryServiceRequest(
-                    (ServiceRequestPriority) priority.getValue(),
-                    (ServiceRequestStatus) status.getValue(),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    Date.valueOf(requestDate.getValue()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0,
-                    medicineName.getText(),
-                    medicineQuantity.getText(),
-                    new Patient(location, new Date(0), patientName.getText(), 0));
+        new MedicineDeliveryServiceRequest(
+            (ServiceRequestPriority) priority.getValue(),
+            (ServiceRequestStatus) status.getValue(),
+            additionalInfo.getText(),
+            employee,
+            location,
+            Date.valueOf(requestDate.getValue()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0,
+            medicineName.getText(),
+            medicineQuantity.getText(),
+            new Patient(location, new Date(0), patientName.getText(), 0));
     DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
   }
 
