@@ -109,7 +109,6 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
           "assigneeID",
           "openDate",
           "closeDate",
-          "equipmentID",
           "status",
           "title",
           "additionalInfo",

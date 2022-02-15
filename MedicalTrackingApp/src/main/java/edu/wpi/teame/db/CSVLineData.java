@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class CSVLineData {
   private List<String> headers = null;
@@ -24,8 +25,11 @@ public class CSVLineData {
   }
 
   public Date getColumnDate(String columnName) throws ParseException {
-    long time =
-        new SimpleDateFormat("yyyy-MM-dd").parse(parsedData[headers.indexOf(columnName)]).getTime();
+    String dateString = parsedData[headers.indexOf(columnName)];
+    if (dateString.equals("")) {
+      return null;
+    }
+    long time = new SimpleDateFormat("yyyy-MM-dd").parse(dateString).getTime();
     return new Date(time);
   }
 
@@ -34,7 +38,11 @@ public class CSVLineData {
   }
 
   public int getColumnInt(String columnName) {
-    return Integer.parseInt(parsedData[headers.indexOf(columnName)]);
+    int colIndex = headers.indexOf(columnName);
+    if (Objects.equals(parsedData[colIndex], "")) {
+      return 0;
+    }
+    return Integer.parseInt(parsedData[colIndex]);
   }
 
   public List<String> getHeaders() {

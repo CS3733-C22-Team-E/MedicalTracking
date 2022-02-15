@@ -844,6 +844,6 @@ public class Main {
 
     DBManager.getInstance().loadDBFromCSV();
 
-    // App.launch(App.class, args);
+    App.launch(App.class, args);
   }
 }
