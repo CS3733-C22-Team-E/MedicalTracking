@@ -50,6 +50,7 @@ public class ServiceRequestBacklog {
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
+    //serviceRequestsFromDB.sort(super.getDateCreated()); // TODO sort by date created. I need this from DB
     for (ServiceRequest sr : serviceRequestsFromDB) {
       ServiceRequestCard card = new ServiceRequestCard(sr, this);
       card.setPatientName(
