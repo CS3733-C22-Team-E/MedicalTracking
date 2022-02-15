@@ -434,7 +434,54 @@ public final class DBManager {
     createDBConnection(true);
 
     // Create DB Tables
-    createDBTables();
+    if (!tableExists()) {
+      createDBTables();
+    }
+  }
+
+  private boolean tableExists() {
+    try {
+      boolean tableExist = false;
+      DatabaseMetaData dbMetaData = connection.getMetaData();
+      ResultSet rset = dbMetaData.getTables(null, null, null, new String[] {"TABLE"});
+
+      while (rset.next()) {
+        String name = rset.getString("TABLE_NAME");
+
+        if (name.equals("LOCATION")
+            || name.equals("Equipment")
+            || name.equals("Credential")
+            || name.equals("ComputerSR")
+            || name.equals("FoodDeliverySR")
+            || name.equals("GiftAndFloralSR")
+            || name.equals("InternalPatientTransferSR")
+            || name.equals("ExternalPatientSR")
+            || name.equals("LanguageInterpreterSR")
+            || name.equals("LaundrySR")
+            || name.equals("ReligiousSR")
+            || name.equals("SecuritySR")
+            || name.equals("MedicalEquipmentSR")
+            || name.equals("MedicineDeliverySR")
+            || name.equals("FacilitiesMaintenanceSR")
+            || name.equals("SanitationSR")
+            || name.equals("Location")
+            || name.equals("Equipment")
+            || name.equals("Patient")
+            || name.equals("Employee")) {
+          tableExist = true;
+        }
+
+        if(name.equals("LOCATION")) {
+          System.out.println("Location exists");
+        }
+      }
+
+      return tableExist;
+    } catch (SQLException e) {
+      System.out.println("Could not check database meta data.");
+      e.printStackTrace();
+      return false;
+    }
   }
 
   public CredentialManager getCredentialManager() throws SQLException, NoSuchAlgorithmException {

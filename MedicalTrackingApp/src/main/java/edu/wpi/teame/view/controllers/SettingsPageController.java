@@ -214,11 +214,11 @@ public class SettingsPageController implements Initializable {
     DBManager.getInstance().writeDBToCSV();
 
     // switch DB type
+    System.out.println(dbSwitchComboBox.getValue().toString());
     if (dbSwitchComboBox.getValue().toString().equals("Client/Server Database")) {
-      DBManager.getInstance().setupDB();
-    }
-    else {
       DBManager.getInstance().setupClientDB();
+    } else {
+      DBManager.getInstance().setupDB();
     }
 
     // loadCSVintoDB
