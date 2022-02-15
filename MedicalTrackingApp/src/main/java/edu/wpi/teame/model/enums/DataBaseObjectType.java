@@ -1,5 +1,8 @@
 package edu.wpi.teame.model.enums;
 
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import java.sql.SQLException;
 import javafx.scene.paint.Color;
 
 public enum DataBaseObjectType {
@@ -139,6 +142,101 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+    }
+    return null;
+  }
+
+  public String getDescription() {
+    String s = "Fulfil a";
+    switch (this) {
+      case AudioVisualSR:
+        s += "n Audio/Visual Service Request";
+        break;
+      case ComputerSR:
+        s += " Computer Service Request";
+        break;
+      case FoodDeliverySR:
+        s += " Food Delivery Service Request";
+        break;
+      case GiftAndFloralSR:
+        s += " Gift/Floral Delivery Service Request";
+        break;
+      case ExternalPatientSR:
+        s += "n External Patient Transportation Service Request";
+        break;
+      case LanguageInterpreterSR:
+        s += " Language Interpreter Service Request";
+        break;
+      case InternalPatientTransferSR:
+        s += "n Internal Patient Transportation Service Request";
+        break;
+      case LaundrySR:
+        s += " Laundry Service Request";
+        break;
+      case SecuritySR:
+        s += " Security Service Request";
+        break;
+      case ReligiousSR:
+        s += " Religious Service Request";
+        break;
+      case SanitationSR:
+        s += " Sanitation Service Request";
+        break;
+      case MedicalEquipmentSR:
+        s += " Medical Equipment Delivery Service Request";
+        break;
+      case MedicineDeliverySR:
+        s += " Medicine Delivery Service Request";
+        break;
+      case FacilitiesMaintenanceSR:
+        s += " Facilities Maintenance Service Request";
+        break;
+      case Employee:
+        return "This is an employee.";
+      case Location:
+        return "This is a location.";
+      case Equipment:
+        return "This is an equipment.";
+    }
+    return s + " at the requested location.";
+  }
+
+  public ObjectManager getDBManagerInstance() throws SQLException {
+    switch (this) {
+      case AudioVisualSR:
+        return DBManager.getInstance().getAudioVisualSRManager();
+      case ComputerSR:
+        return DBManager.getInstance().getComputerSRManager();
+      case FoodDeliverySR:
+        return DBManager.getInstance().getFoodDeliverySRManager();
+      case GiftAndFloralSR:
+        return DBManager.getInstance().getGiftAndFloralSRManager();
+      case ExternalPatientSR:
+        return DBManager.getInstance().getExternalPatientSRManager();
+      case LanguageInterpreterSR:
+        return DBManager.getInstance().getLanguageSRManager();
+      case InternalPatientTransferSR:
+        return DBManager.getInstance().getInternalPatientSRManager();
+      case LaundrySR:
+        return DBManager.getInstance().getLaundrySRManager();
+      case SecuritySR:
+        return DBManager.getInstance().getSecuritySRManager();
+      case ReligiousSR:
+        return DBManager.getInstance().getReligiousSRManager();
+      case SanitationSR:
+        return DBManager.getInstance().getSanitationSRManager();
+      case MedicalEquipmentSR:
+        return DBManager.getInstance().getMedicalEquipmentSRManager();
+      case MedicineDeliverySR:
+        return DBManager.getInstance().getMedicineDeliverySRManager();
+      case FacilitiesMaintenanceSR:
+        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();
+      case Employee:
+        return DBManager.getInstance().getEmployeeManager();
+      case Location:
+        return DBManager.getInstance().getLocationManager();
+      case Equipment:
+        return DBManager.getInstance().getEquipmentManager();
     }
     return null;
   }
