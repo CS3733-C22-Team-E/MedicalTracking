@@ -1,41 +1,74 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
-import java.awt.*;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import lombok.SneakyThrows;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 
 public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
-
-  @FXML public JFXComboBox patientComboBox;
-  @FXML public JFXComboBox destinationComboBox;
-  @FXML public JFXComboBox assigneeComboBox;
-  @FXML public JFXComboBox priorityComboBox;
-  @FXML public JFXComboBox statusComboBox;
-
-  @FXML public JFXDatePicker requestDateDatePicker;
-
-  @FXML public TextArea additionalInfoTextArea;
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
   private boolean hasRun = false;
 
-  @FXML
-  @SneakyThrows
-  public void initialize(URL location, ResourceBundle resources) {}
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    // TODO: Change priority comboBox to actual values
+
+    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationText.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    assignee.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    priority
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+  }
 
   @FXML
   public void updateFromDB() throws SQLException {
@@ -45,7 +78,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    java.util.List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
     List<String> locationNames = new LinkedList<String>();
@@ -58,77 +91,44 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
       employeeNames.add(emp.getName());
     }
 
-    destinationComboBox.setItems(FXCollections.observableArrayList(locationNames));
-    assigneeComboBox.setItems(FXCollections.observableArrayList(employeeNames));
+    locationText.getEntries().addAll(locationNames);
+    assignee.getEntries().addAll(employeeNames);
   }
-
-  /*
-  // TODO finish this
 
   @FXML
-  public void sendToDB() throws SQLException, ParseException {
-      Employee employee =
-              DBManager.getInstance().getEmployeeManager().getByAssignee(assigneeComboBox.getAccessibleText());
-      Location location =
-              DBManager.getInstance().getLocationManager().getByName(destinationComboBox.getAccessibleText());
+  void sendToDB() throws SQLException {
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-      String srDate = requestDateDatePicker.getValue().format(formatter);
-      long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
-      java.sql.Date date = new java.sql.Date(time);
-
-      //ServiceRequestStatus requestStatus = new ServiceRequestStatus();
-
-      // TODO Create the class GiftAndFloralServiceRequest
-      // TODO Mimic every other ServiceRequest class
-      // TODO Include additional info
-      GiftAndFloralDeliveryServiceRequest serviceRequest =
-              new GiftAndFloralDeliveryServiceRequest(
-                      statusComboBox.getValue(),
-                      employee,
-                      location,
-                      new java.sql.Date(0),
-                      new java.sql.Date(new java.util.Date().getTime()),
-                      0,
-                      date); // TODO Change to vary with amount of service requests
-
-
-
-
-      // TODO Create method getGiftAndFloralSRManager, mimic others
-      DBManager.getInstance().getGiftAndFloralSRManager().insert(serviceRequest);
+    SecurityServiceRequest serviceRequest =
+        new SecurityServiceRequest(
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            0);
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
-  */
-
-  @FXML
-  void clearText() {
-    // TODO implement clear, this might work
-
-    patientComboBox.setValue("");
-    destinationComboBox.setValue("");
-    assigneeComboBox.setValue("");
-    priorityComboBox.setValue("");
-    statusComboBox.setValue("");
-    requestDateDatePicker.setValue(null);
-    requestDateDatePicker.getEditor().clear();
-    additionalInfoTextArea.setText("");
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationText.getEntries() == null
+            || assignee.getEntries() == null
+            || priority.getValue() == null
+            || status.getValue() == null);
   }
 
-  // When send button pressed, calls sendToDB and then clearText
-  // TODO Maybe add a cute 'sent' notification
-  @FXML
-  void send() {
-    try {
-      // this.sendToDB(); TODO uncomment this when sendToDB() works
-      this.clearText();
-    } catch (Exception e) {
-      // TODO Yell at user that all fields aren't complete
-      System.out.println("Error with Gift and Floral, send() failed");
-    }
+  public void clearText() {
+    additionalInfo.setText("");
+    locationText.setText("");
+    assignee.setText("");
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    priority.valueProperty().setValue(null);
+    status.valueProperty().setValue(null);
   }
-
-  // TODO implement clear button
-  // Calls clearText method
-
 }

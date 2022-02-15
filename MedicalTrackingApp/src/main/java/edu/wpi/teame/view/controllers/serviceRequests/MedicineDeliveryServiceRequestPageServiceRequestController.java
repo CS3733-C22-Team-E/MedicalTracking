@@ -1,50 +1,74 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
+import javafx.scene.control.TextArea;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
-
-  @FXML private TextField patientName;
-  @FXML private TextField medicineRequested;
-  @FXML private TextField timeNeeded;
-
-  @FXML private DatePicker datePicker;
-
-  @FXML public JFXCheckBox completed;
-
-  @FXML public JFXComboBox serviceLocation;
-  @FXML public JFXComboBox serviceAssignee;
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
   private boolean hasRun = false;
 
-  @FXML
-  @SneakyThrows
-  public void initialize(URL location, ResourceBundle resources) {}
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    // TODO: Change priority comboBox to actual values
+
+    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationText.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    assignee.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    priority
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+  }
 
   @FXML
   public void updateFromDB() throws SQLException {
@@ -67,49 +91,44 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
       employeeNames.add(emp.getName());
     }
 
-    serviceLocation.setItems(FXCollections.observableArrayList(locationNames));
-    serviceAssignee.setItems(FXCollections.observableArrayList(employeeNames));
+    locationText.getEntries().addAll(locationNames);
+    assignee.getEntries().addAll(employeeNames);
   }
 
   @FXML
-  public void sendToDB() throws SQLException, ParseException {
-    String roomNum = (String) serviceLocation.getValue();
-    String assignee = (String) serviceAssignee.getValue();
+  void sendToDB() throws SQLException {
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String srDate = datePicker.getValue().format(formatter);
-    long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
-
-    List<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
-    for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
-      System.out.println(serviceReq);
-    }
-
-    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
-    Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
-
-    MedicineDeliveryServiceRequest serviceRequest =
-        new MedicineDeliveryServiceRequest(
+    SecurityServiceRequest serviceRequest =
+        new SecurityServiceRequest(
             ServiceRequestStatus.OPEN,
             employee,
             location,
             new Date(0),
             new Date(new java.util.Date().getTime()),
-            0,
-            new Date(time));
-    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
+            0);
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
-  @FXML
-  private void clearText() {
-    patientName.setText("");
-    medicineRequested.setText("");
-    timeNeeded.setText("");
-    datePicker.setValue(null);
-    datePicker.getEditor().clear();
-    serviceLocation.valueProperty().set(null);
-    serviceAssignee.valueProperty().set(null);
-    completed.setSelected(false);
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationText.getEntries() == null
+            || assignee.getEntries() == null
+            || priority.getValue() == null
+            || status.getValue() == null);
+  }
+
+  public void clearText() {
+    additionalInfo.setText("");
+    locationText.setText("");
+    assignee.setText("");
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    priority.valueProperty().setValue(null);
+    status.valueProperty().setValue(null);
   }
 }
