@@ -19,8 +19,8 @@ public class ServiceRequestBacklog {
   private double SCENEHEIGHT;
   private final double VGAP = 3;
 
-  private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
-  private List<ServiceRequestCard> cardsDisplayed = new LinkedList<ServiceRequestCard>();
+  private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<>();
+  private List<ServiceRequestCard> cardsDisplayed = new LinkedList<>();
 
   public ServiceRequestBacklog(double width, double height) {
     SCENEWIDTH = width;
