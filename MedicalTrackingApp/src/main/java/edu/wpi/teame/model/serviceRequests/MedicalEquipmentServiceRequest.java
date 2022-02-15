@@ -12,18 +12,18 @@ import java.sql.SQLException;
 public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   private Equipment equipment;
 
-  private MedicalEquipmentServiceRequest(
-      ServiceRequestPriority priority,
-      ServiceRequestStatus status,
-      String additionalInfo,
-      Employee assignee,
-      Location location,
-      Date requestDate,
-      Date closeDate,
-      Date openDate,
-      String title,
-      int id,
-      Equipment equipment) {
+  public MedicalEquipmentServiceRequest(
+          ServiceRequestPriority priority,
+          ServiceRequestStatus status,
+          String additionalInfo,
+          Employee assignee,
+          Location location,
+          Date requestDate,
+          Date closeDate,
+          Date openDate,
+          String title,
+          int id,
+          Equipment equipment) {
     super(
         DataBaseObjectType.MedicalEquipmentSR,
         priority,
