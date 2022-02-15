@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.FacilitiesMaintenanceServiceRequestPageServiceRequestController">
    <children>
-      <GridPane layoutX="2.0" layoutY="4.0" prefHeight="580.0" prefWidth="800.0">
+      <GridPane layoutX="2.0" layoutY="4.0" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
