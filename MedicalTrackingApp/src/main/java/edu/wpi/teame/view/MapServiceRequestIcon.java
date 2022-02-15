@@ -122,57 +122,6 @@ public class MapServiceRequestIcon {
                     .getResource("images/Icons/ServiceRequestIcons/Sanitation.png")
                     .toString())));
   }
-  //
-  //  public MapServiceRequestIcon(
-  //      Pane pane,
-  //      double X,
-  //      double Y,
-  //      DataBaseObjectType SRType,
-  //      ServiceRequest sr,
-  //      ArrayList<MapServiceRequestIcon> list) {
-  //    onList = list;
-  //    SR = sr;
-  //    this.timer = new Timer();
-  //    progressIndicator = new FillProgressIndicator();
-  //    progressIndicator.setProgress(0);
-  //    Icon = Graphics.get(SRType);
-  //    Icon.setTranslateX(X);
-  //    Icon.setTranslateY(Y);
-  //    Icon.setFitHeight(35);
-  //    Icon.setFitWidth(35);
-  //    progressIndicator.setTranslateX(X);
-  //    progressIndicator.setTranslateY(Y);
-  //    pane.getChildren().addAll(progressIndicator, Icon);
-  //    onPane = pane;
-  //    System.out.println("Added");
-  //  }
-  //
-  //  public MapServiceRequestIcon(
-  //      Pane pane,
-  //      Location onLocation,
-  //      DataBaseObjectType SRType,
-  //      ServiceRequest sr,
-  //      ArrayList<MapServiceRequestIcon> list,
-  //      double mapWidth,
-  //      double mapHeight) {
-  //    onList = list;
-  //    SR = sr;
-  //    this.timer = new Timer();
-  //    progressIndicator = new FillProgressIndicator();
-  //    progressIndicator.setProgress(0);
-  //    Icon = Graphics.get(SRType);
-  //    double X = onLocation.getX() - mapWidth / 2;
-  //    double Y = onLocation.getY() - mapHeight / 2;
-  //    Icon.setTranslateX(X);
-  //    Icon.setTranslateY(Y);
-  //    Icon.setFitHeight(35);
-  //    Icon.setFitWidth(35);
-  //    progressIndicator.setTranslateX(X);
-  //    progressIndicator.setTranslateY(Y);
-  //    pane.getChildren().addAll(progressIndicator, Icon);
-  //    onPane = pane;
-  //    System.out.println("Added");
-  //  }
 
   public MapServiceRequestIcon startTimer(int seconds) {
     timer.scheduleAtFixedRate(
@@ -228,5 +177,6 @@ public class MapServiceRequestIcon {
 
   public void addToList(ArrayList<MapServiceRequestIcon> SRList) {
     attachedTo = SRList;
+    SRList.add(this);
   }
 }

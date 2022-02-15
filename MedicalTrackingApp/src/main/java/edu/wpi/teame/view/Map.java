@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.*;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
@@ -23,31 +23,24 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Pair;
 
 public class Map {
-  private final HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
-  private Image backgroundImage;
+  private final HashMap<FloorType, Image> Images = new HashMap<>();
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
-  private double MAPHEIGHT = 0;
-  private double MAPWIDTH = 0;
   private final double ZOOMINMAX = 1.5;
   private final double ZOOMOUTMAX = .2;
-  private boolean showLocationNodes = false;
   private final HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private final HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
   private final HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor =
@@ -57,11 +50,16 @@ public class Map {
       new HashMap<>();
   private final ContextMenu EquipmentClicked = new ContextMenu();
   private final ContextMenu PaneMenu = new ContextMenu();
+  private final StackPane layout = new StackPane();
+  private final LandingPageController appController;
+  private Image backgroundImage;
+  private double MAPHEIGHT = 0;
+  private double MAPWIDTH = 0;
+  private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
-  private final StackPane layout = new StackPane();
   private FloorType currFloor;
-  private final LandingPageController appController;
+  private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
 
   public Map(FloorType floor, LandingPageController app) {
     appController = app;
@@ -190,6 +188,7 @@ public class Map {
         });
     dialog.showAndWait();
   }
+
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
@@ -219,6 +218,7 @@ public class Map {
     scroll.setPrefSize(WIDTH, HEIGHT);
     return scroll;
   }
+
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
@@ -256,6 +256,7 @@ public class Map {
         });
     return zoomInButton;
   }
+
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -328,6 +329,7 @@ public class Map {
       layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));
     }
   }
+
   // Catch-all zoomIn method
   private void zoomIn(double amp) throws SQLException {
     amp /= 10; // amp must be low so that the image does not scale too far
@@ -338,6 +340,7 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
+
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -438,11 +441,6 @@ public class Map {
     return newMapIcon;
   }
 
-  private static class Position {
-    double x;
-    double y;
-  }
-
   private void draggable(MapEquipmentIcon i) {
     JFXButton node = i.getButton();
     final Position startingPosition = new Position();
@@ -492,6 +490,11 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
+            try {
+              DBManager.getInstance().getEquipmentManager().update(i.getEquipment());
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
             appController.mainTabPane.getSelectionModel().select(11);
             appController.test.requestLocation.setText(nearestLocation.getLongName());
             appController.test.equipmentNeeded.setValue(i.equipment.getType());
@@ -520,7 +523,6 @@ public class Map {
         MouseEvent.MOUSE_DRAGGED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-
             Point2D updatedLocation =
                 layout.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
             double x = updatedLocation.getX() - MAPWIDTH / 2;
@@ -562,8 +564,6 @@ public class Map {
     }
   }
 
-  private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
-
   public void RefreshSRfromDB() throws SQLException {
     ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
     serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
@@ -603,7 +603,6 @@ public class Map {
     double X = SR.getLocation().getX() - MAPWIDTH / 2;
     double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
-    ActiveSRByFloor.get(currFloor).add(newIcon);
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
     newIcon.startTimer(60);
     updateLayoutChildren();
@@ -687,5 +686,10 @@ public class Map {
         i.getButton().setVisible(true);
       }
     }
+  }
+
+  private static class Position {
+    double x;
+    double y;
   }
 }
