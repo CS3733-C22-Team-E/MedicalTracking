@@ -353,20 +353,42 @@ public final class DBManager {
     getLocationManager().readCSV("csv/TowerLocationsE.csv");
     getEquipmentManager().readCSV("csv/EquipmentE.csv");
     getEmployeeManager().readCSV("csv/EmployeesE.csv");
+    getPatientManager().readCSV("csv/Patient.csv");
 
-    getMedicalEquipmentSRManager().readCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
-    getMedicineDeliverySRManager().readCSV("MedicineDeliveryServiceRequestSave.csv");
+    getAudioVisualSRManager().readCSV("AudioVisualServiceRequest.csv");
+    getComputerSRManager().readCSV("ComputerServiceRequest.csv");
+    getExternalPatientSRManager().readCSV("ExternalPatientTransportationServiceRequest.csv");
+    getFacilitiesMaintenanceSRManager().readCSV("FacilitiesMaintenanceServiceRequest.csv");
+    getFoodDeliverySRManager().readCSV("FoodDeliveryServiceRequest.csv");
+    getGiftAndFloralSRManager().readCSV("GiftAndFloralServiceRequest.csv");
+    getInternalPatientSRManager().readCSV("InternalPatientTransportationServiceRequest.csv");
+    getLanguageSRManager().readCSV("LanguageInterpreterServiceRequest.csv");
+    getLaundrySRManager().readCSV("LaundryServiceRequest.csv");
+    getMedicalEquipmentSRManager().readCSV("MedicalEquipmentDeliverServiceRequest.csv");
+    getMedicineDeliverySRManager().readCSV("MedicineDeliveryServiceRequest.csv");
+    getReligiousSR().readCSV("ReligiousServiceRequest.csv");
     getSanitationSRManager().readCSV("SanitationServiceRequest.csv");
     getSecuritySRManager().readCSV("SecurityServiceRequest.csv");
   }
 
   public void writeDBToCSV() throws SQLException, IOException {
-    getLocationManager().writeToCSV("TowerLocationsESave.csv");
-    getEquipmentManager().writeToCSV("EquipmentESave.csv");
-    getEmployeeManager().writeToCSV("EmployeesESave.csv");
+    getLocationManager().writeToCSV("csv/TowerLocationsE.csv");
+    getEquipmentManager().writeToCSV("csv/EquipmentE.csv");
+    getEmployeeManager().writeToCSV("csv/EmployeesE.csv");
+    getPatientManager().writeToCSV("csv/Patient.csv");
 
-    getMedicalEquipmentSRManager().writeToCSV("MedicalEquipmentDeliverServiceRequestSave.csv");
-    getMedicineDeliverySRManager().writeToCSV("MedicineDeliveryServiceRequestSave.csv");
+    getAudioVisualSRManager().writeToCSV("AudioVisualServiceRequest.csv");
+    getComputerSRManager().writeToCSV("ComputerServiceRequest.csv");
+    getExternalPatientSRManager().writeToCSV("ExternalPatientTransportationServiceRequest.csv");
+    getFacilitiesMaintenanceSRManager().writeToCSV("FacilitiesMaintenanceServiceRequest.csv");
+    getFoodDeliverySRManager().writeToCSV("FoodDeliveryServiceRequest.csv");
+    getGiftAndFloralSRManager().writeToCSV("GiftAndFloralServiceRequest.csv");
+    getInternalPatientSRManager().writeToCSV("InternalPatientTransportationServiceRequest.csv");
+    getLanguageSRManager().writeToCSV("LanguageInterpreterServiceRequest.csv");
+    getLaundrySRManager().writeToCSV("LaundryServiceRequest.csv");
+    getMedicalEquipmentSRManager().writeToCSV("MedicalEquipmentDeliverServiceRequest.csv");
+    getMedicineDeliverySRManager().writeToCSV("MedicineDeliveryServiceRequest.csv");
+    getReligiousSR().writeToCSV("ReligiousServiceRequest.csv");
     getSanitationSRManager().writeToCSV("SanitationServiceRequest.csv");
     getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
   }
