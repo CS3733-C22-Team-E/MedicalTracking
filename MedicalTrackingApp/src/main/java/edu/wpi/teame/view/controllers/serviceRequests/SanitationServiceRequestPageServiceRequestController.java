@@ -108,7 +108,7 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     //            new Date(new java.util.Date().getTime()),
     //            0);
     //    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
-    }
+  }
 
   public void validateSubmitButton() {
     submitButton.setDisable(

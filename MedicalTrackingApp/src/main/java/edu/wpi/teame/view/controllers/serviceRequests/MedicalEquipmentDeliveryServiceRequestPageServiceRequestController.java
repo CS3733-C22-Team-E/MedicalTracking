@@ -136,7 +136,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     //            equipment,
     //            pName);
     //    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
-    }
+  }
 
   public void validateSubmitButton() {
     submitButton.setDisable(

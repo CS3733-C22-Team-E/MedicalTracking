@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class MedicineDeliveryServiceRequestManager
     extends ObjectManager<MedicineDeliveryServiceRequest> {
-  public MedicineDeliveryServiceRequestManager() {
+  public MedicineDeliveryServiceRequestManager() throws SQLException {
     super(DataBaseObjectType.MedicineDeliverySR);
   }
 

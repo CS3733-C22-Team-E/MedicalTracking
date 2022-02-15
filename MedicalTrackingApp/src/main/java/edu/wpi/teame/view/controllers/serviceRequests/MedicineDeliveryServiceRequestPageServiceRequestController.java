@@ -4,11 +4,14 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -121,20 +124,20 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
   @FXML
   public void sendToDB() throws SQLException, ParseException {
-    String roomNum = (String) serviceLocation.getValue();
-    String assignee = (String) serviceAssignee.getValue();
+    String roomNum = (String) locationText.getText();
+    String worker = (String) assignee.getText();
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     String srDate = datePicker.getValue().format(formatter);
     long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
 
     List<MedicalEquipmentServiceRequest> allSerReq =
-            DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
+        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }
 
-    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
+    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(worker);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
 
     //    MedicineDeliveryServiceRequest serviceRequest =
@@ -149,7 +152,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     //    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
   }
 
-    public void validateSubmitButton() {
+  public void validateSubmitButton() {
     submitButton.setDisable(
         requestDate.getValue() == null
             || locationText.getEntries() == null
