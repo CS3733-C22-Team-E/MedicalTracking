@@ -496,10 +496,10 @@ public class Map {
               e.printStackTrace();
             }
             appController.mainTabPane.getSelectionModel().select(11);
-            appController.test.requestLocation.setText(nearestLocation.getLongName());
-            appController.test.equipmentNeeded.setValue(i.equipment.getType());
-            appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-            appController.test.datePicker.setValue(LocalDate.now());
+           // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO Sorry Samay idk what's going on here
+           // appController.test.equipmentNeeded.setValue(i.equipment.getType());
+           // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
+           // appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
