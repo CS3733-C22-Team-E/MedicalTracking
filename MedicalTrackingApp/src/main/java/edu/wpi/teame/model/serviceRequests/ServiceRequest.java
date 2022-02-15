@@ -82,8 +82,6 @@ public class ServiceRequest implements ISQLSerializable {
         + "', "
         + priority.ordinal()
         + ", "
-        + id
-        + ", '"
         + requestDate.toString()
         + "'";
   }
