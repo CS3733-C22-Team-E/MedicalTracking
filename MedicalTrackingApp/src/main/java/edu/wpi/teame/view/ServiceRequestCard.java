@@ -126,6 +126,7 @@ public class ServiceRequestCard {
     JFXCheckBox doneBox = new JFXCheckBox();
     doneBox.setCheckedColor(Color.LIGHTBLUE);
     doneBox.setCheckedColor(Color.LIGHTGRAY);
+    doneBox.setPadding(new Insets(0, -40, 0, 0));
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
     doneBox.setOnMouseClicked((event -> deleteRequest(backlog)));
