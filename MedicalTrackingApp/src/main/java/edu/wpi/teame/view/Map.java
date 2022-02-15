@@ -9,11 +9,9 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -496,10 +494,11 @@ public class Map {
               e.printStackTrace();
             }
             appController.mainTabPane.getSelectionModel().select(11);
-           // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO Sorry Samay idk what's going on here
-           // appController.test.equipmentNeeded.setValue(i.equipment.getType());
-           // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-           // appController.test.datePicker.setValue(LocalDate.now());
+            // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO
+            // Sorry Samay idk what's going on here
+            // appController.test.equipmentNeeded.setValue(i.equipment.getType());
+            // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
+            // appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
