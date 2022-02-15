@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class ReligiousServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private DatePicker requestDate;
@@ -25,6 +26,8 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
+  @FXML private TextField patientName;
+  @FXML private TextField religion;
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
@@ -63,6 +66,20 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
 
     status
         .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    religion
+        .onActionProperty()
         .addListener(
             listener -> {
               validateSubmitButton();
@@ -118,7 +135,9 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty()
+            || religion.getText().isEmpty());
   }
 
   public void clearText() {
@@ -129,5 +148,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
+    religion.setText("");
   }
 }
