@@ -10,6 +10,7 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.view.MissingEquipmentNotification;
 import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
@@ -93,8 +94,14 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+
+    // Display notification instead of sending to DB if no equipment available
     Equipment equipment =
         DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
+    if (equipment == null) {
+      MissingEquipmentNotification.show(equipmentNeeded.getValue().toString());
+      return;
+    } // TODO Test when DB implemented
 
     MedicalEquipmentServiceRequest serviceRequest =
         new MedicalEquipmentServiceRequest(
