@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

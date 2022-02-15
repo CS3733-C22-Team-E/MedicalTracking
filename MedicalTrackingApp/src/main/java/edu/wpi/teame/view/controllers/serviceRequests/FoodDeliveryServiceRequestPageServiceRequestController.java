@@ -1,100 +1,154 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class FoodDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML public Button sendButton;
+
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
   @FXML private TextField patientName;
-  @FXML private TextField roomNumber;
-  @FXML private TextField floor;
-  @FXML private CheckBox dietaryRestrictions;
-  @FXML private TextArea dietaryRestrictionsDescribe;
-  @FXML private Text dietaryRestrictionsDescribeText;
-  @FXML private CheckBox breakfastCheck;
-  @FXML private CheckBox lunchCheck;
-  @FXML private CheckBox dinnerCheck;
-  @FXML private Text breakfastText;
-  @FXML private Text lunchText;
-  @FXML private Text dinnerText;
-  @FXML private Text TimeTextB;
-  @FXML private Text TimeTextL;
-  @FXML private Text TimeTextD;
-  @FXML private Text MealTextB;
-  @FXML private Text MealTextL;
-  @FXML private Text MealTextD;
-  @FXML private JFXComboBox<String> breakfastMealDropdown;
-  @FXML private JFXComboBox<String> lunchMealDropdown;
-  @FXML private JFXComboBox<String> dinnerMealDropdown;
-  @FXML private TextField breakfastTimeTextField;
-  @FXML private TextField lunchTimeTextField;
-  @FXML private TextField dinnerTimeTextField;
-  @FXML private DatePicker startDate;
-  @FXML private DatePicker endDate;
+  @FXML private TextField food;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
+  private boolean hasRun = false;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    breakfastMealDropdown.setItems(FXCollections.observableArrayList("Eggs", "Yogurt", "Oatmeal"));
-    lunchMealDropdown.setItems(
-        FXCollections.observableArrayList("Ham Sandwich", "Turkey Sandwich", "Chicken Bake"));
-    dinnerMealDropdown.setItems(
-        FXCollections.observableArrayList("Steak", "Thanksgiving Dinner", "Chicken Tacos"));
+    // TODO: Change priority comboBox to actual values
+
+    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationText.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    assignee.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    priority
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    food.onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
   }
 
   @FXML
-  private void BreakfastOptionsCallBack() {
-    breakfastText.setVisible(!breakfastText.isVisible());
-    MealTextB.setVisible(!MealTextB.isVisible());
-    TimeTextB.setVisible(!TimeTextB.isVisible());
-    breakfastMealDropdown.setVisible(!breakfastMealDropdown.isVisible());
-    breakfastTimeTextField.setVisible(!breakfastTimeTextField.isVisible());
+  public void updateFromDB() throws SQLException {
+    if (hasRun) {
+      return;
+    }
+    hasRun = true;
+
+    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
+    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+
+    List<String> locationNames = new LinkedList<String>();
+    for (Location loc : locations) {
+      locationNames.add(loc.getLongName());
+    }
+
+    List<String> employeeNames = new LinkedList<String>();
+    for (Employee emp : employees) {
+      employeeNames.add(emp.getName());
+    }
+
+    locationText.getEntries().addAll(locationNames);
+    assignee.getEntries().addAll(employeeNames);
   }
 
   @FXML
-  private void LunchOptionsCallBack() {
-    lunchText.setVisible(!lunchText.isVisible());
-    MealTextL.setVisible(!MealTextL.isVisible());
-    TimeTextL.setVisible(!TimeTextL.isVisible());
-    lunchMealDropdown.setVisible(!lunchMealDropdown.isVisible());
-    lunchTimeTextField.setVisible(!lunchTimeTextField.isVisible());
+  void sendToDB() throws SQLException {
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+
+    SecurityServiceRequest serviceRequest =
+        new SecurityServiceRequest(
+            ServiceRequestStatus.OPEN,
+            employee,
+            location,
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            0);
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
-  @FXML
-  private void DinnerOptionsCallBack() {
-    dinnerText.setVisible(!dinnerText.isVisible());
-    MealTextD.setVisible(!MealTextD.isVisible());
-    TimeTextD.setVisible(!TimeTextD.isVisible());
-    dinnerMealDropdown.setVisible(!dinnerMealDropdown.isVisible());
-    dinnerTimeTextField.setVisible(!dinnerTimeTextField.isVisible());
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationText.getEntries() == null
+            || assignee.getEntries() == null
+            || priority.getValue() == null
+            || status.getValue() == null
+            || patientName.getText().isEmpty()
+            || food.getText().isEmpty());
   }
 
-  @FXML
-  private void DietaryRestrictionsCallBack() {
-    dietaryRestrictionsDescribe.setVisible(!dietaryRestrictionsDescribe.isVisible());
-    dietaryRestrictionsDescribeText.setVisible(!dietaryRestrictionsDescribeText.isVisible());
-  }
-
-  @FXML
-  private void clearText() {
+  public void clearText() {
+    additionalInfo.setText("");
+    locationText.setText("");
+    assignee.setText("");
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    priority.valueProperty().setValue(null);
+    status.valueProperty().setValue(null);
     patientName.setText("");
-    roomNumber.setText("");
-    floor.setText("");
-    breakfastTimeTextField.setText("");
-    lunchTimeTextField.setText("");
-    dinnerTimeTextField.setText("");
-    startDate.setValue(null);
-    startDate.getEditor().clear();
-    endDate.setValue(null);
-    endDate.getEditor().clear();
-    breakfastMealDropdown.valueProperty().set(null);
-    lunchMealDropdown.valueProperty().set(null);
-    dinnerMealDropdown.valueProperty().set(null);
-    dietaryRestrictions.setSelected(false);
+    food.setText("");
   }
 }

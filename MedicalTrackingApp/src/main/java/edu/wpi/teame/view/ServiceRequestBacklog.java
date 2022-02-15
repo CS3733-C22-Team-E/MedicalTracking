@@ -3,7 +3,6 @@ package edu.wpi.teame.view;
 import static javafx.application.Application.launch;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.LinkedList;

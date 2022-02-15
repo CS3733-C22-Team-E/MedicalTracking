@@ -1,17 +1,11 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.teame.db.*;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.view.MissingEquipmentNotification;
-import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -21,37 +15,65 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import lombok.SneakyThrows;
+import javafx.scene.control.TextArea;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML private GridPane pagePane;
-
-  @FXML private TextField patientName;
-  @FXML private TextField startTime;
-  @FXML private TextField endTime;
-
-  @FXML public DatePicker datePicker;
-
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
-
-  @FXML public JFXComboBox equipmentNeeded;
-  @FXML public JFXComboBox requestState;
-  @FXML private JFXComboBox requestAssignee;
-  @FXML public AutoCompleteTextField requestLocation;
-
-  @FXML private JFXCheckBox completed;
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
+  @FXML private AutoCompleteTextField equipment;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
   private boolean hasRun = false;
 
-  @FXML
-  @SneakyThrows
+  @Override
   public void initialize(URL location, ResourceBundle resources) {
-    requestState.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
-    equipmentNeeded.setItems(FXCollections.observableArrayList(EquipmentType.values()));
+    // TODO: Change priority comboBox to actual values
+
+    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationText.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    assignee.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    priority
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    equipment.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
   }
 
   @FXML
@@ -64,6 +86,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -75,63 +98,52 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
       employeeNames.add(emp.getName());
     }
 
-    requestLocation.getEntries().addAll(locationNames);
-    requestAssignee.setItems(FXCollections.observableArrayList(employeeNames));
+    List<String> equipmentNames = new LinkedList<String>();
+    for (Equipment equ : equipments) {
+      equipmentNames.add(equ.getName());
+    }
+
+    locationText.getEntries().addAll(locationNames);
+    assignee.getEntries().addAll(employeeNames);
+    equipment.getEntries().addAll(equipmentNames);
   }
 
   @FXML
-  public void sendToDB() throws SQLException {
-    String pName = patientName.getText();
-    String roomNum = (String) requestLocation.getText();
-    String assignee = (String) requestAssignee.getValue();
-    EquipmentType equipNeeded = EquipmentType.getValue(equipmentNeeded.getValue().toString());
+  void sendToDB() throws SQLException {
+    Employee employee =
+        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+    Location location =
+        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    List<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
-    for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
-      System.out.println(serviceReq);
-    }
-
-    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(assignee);
-    Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
-
-    // Display notification instead of sending to DB if no equipment available
-    Equipment equipment =
-        DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
-    if (equipment == null) {
-      MissingEquipmentNotification.show(equipmentNeeded.getValue().toString());
-      return;
-    } // TODO Test when DB implemented
-
-    MedicalEquipmentServiceRequest serviceRequest =
-        new MedicalEquipmentServiceRequest(
+    SecurityServiceRequest serviceRequest =
+        new SecurityServiceRequest(
             ServiceRequestStatus.OPEN,
             employee,
             location,
             new Date(0),
             new Date(new java.util.Date().getTime()),
-            0,
-            equipment,
-            pName);
-    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
-    SRSentAnimation a = new SRSentAnimation();
-    a.getStackPane().setLayoutX(pagePane.getWidth() - sendButton.getLayoutX());
-    a.getStackPane().setLayoutY(sendButton.getLayoutY() - 50);
-    pagePane.getChildren().add(a.getStackPane());
-    a.play();
+            0);
+    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
   }
 
-  @FXML
-  private void clearText() {
-    patientName.setText("");
-    startTime.setText("");
-    endTime.setText("");
-    datePicker.setValue(null);
-    datePicker.getEditor().clear();
-    equipmentNeeded.valueProperty().set(null);
-    requestAssignee.valueProperty().set(null);
-    requestLocation.setText("");
-    requestState.valueProperty().set(null);
-    completed.setSelected(false);
+  public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationText.getEntries() == null
+            || assignee.getEntries() == null
+            || priority.getValue() == null
+            || status.getValue() == null
+            || equipment.getEntries() == null);
+  }
+
+  public void clearText() {
+    additionalInfo.setText("");
+    locationText.setText("");
+    assignee.setText("");
+    equipment.setText("");
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    priority.valueProperty().setValue(null);
+    status.valueProperty().setValue(null);
   }
 }
