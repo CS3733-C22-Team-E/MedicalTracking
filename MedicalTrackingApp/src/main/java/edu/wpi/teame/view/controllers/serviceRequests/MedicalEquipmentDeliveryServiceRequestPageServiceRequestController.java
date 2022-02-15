@@ -6,10 +6,12 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -128,17 +130,20 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     Equipment equipment =
         DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
 
-    //    MedicalEquipmentServiceRequest serviceRequest =
-    //        new MedicalEquipmentServiceRequest(
-    //            ServiceRequestStatus.OPEN,
-    //            employee,
-    //            location,
-    //            new Date(0),
-    //            new Date(new java.util.Date().getTime()),
-    //            0,
-    //            equipment,
-    //            pName);
-    //    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
+    MedicalEquipmentServiceRequest serviceRequest =
+            new MedicalEquipmentServiceRequest(
+                    (ServiceRequestPriority) priority.getValue(),
+                    (ServiceRequestStatus) status.getValue(),
+                    additionalInfo.getText(),
+                    employee,
+                    location,
+                    Date.valueOf(requestDate.getValue()),
+                    new Date(0),
+                    new Date(new java.util.Date().getTime()),
+                    "",
+                    0,
+                    equipment);
+    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {
