@@ -20,10 +20,8 @@ import javafx.scene.text.TextAlignment;
 
 public class ServiceRequestCard {
 
-  private int hexColor;
-
   // Styling
-  private int BORDERRADIUS = 10;
+  private final int BORDERRADIUS = 10;
 
   // Details
   private final ServiceRequestBacklog backlog;
@@ -118,9 +116,7 @@ public class ServiceRequestCard {
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
     doneBox.setOnMouseClicked(
-        (event -> {
-          deleteRequest(backlog);
-        }));
+        (event -> deleteRequest(backlog)));
     Tooltip t = new Tooltip("Click to delete");
     Tooltip.install(doneBox, t);
     return doneBox;
@@ -165,19 +161,15 @@ public class ServiceRequestCard {
 
   private void setHoverStyling(HBox c) {
     c.setOnMouseEntered(
-        e -> {
-          c.setBackground(
-              new Background(
-                  new BackgroundFill(
-                      Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-        });
+        e -> c.setBackground(
+            new Background(
+                new BackgroundFill(
+                    Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
 
     c.setOnMouseExited(
-        e -> {
-          c.setBackground(
+        e -> c.setBackground(
               new Background(
-                  new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-        });
+                  new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
   }
 
   public ServiceRequest getServiceRequest() {
