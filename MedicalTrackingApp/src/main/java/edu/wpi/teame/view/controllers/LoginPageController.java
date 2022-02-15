@@ -22,10 +22,12 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -56,6 +58,7 @@ public class LoginPageController implements Initializable {
 
     // Check if we were able to log in.
     if (!loggedIn) {
+      loginFailedAnimation();
       return;
     }
 
@@ -89,6 +92,23 @@ public class LoginPageController implements Initializable {
     t1.play();
     r.play();
     // mediaPlayer.play(); //TODO uncomment when sounds play
+  }
+
+  private void loginFailedAnimation() {
+    RotateTransition r3 = new RotateTransition(new Duration(50), icon);
+    r3.setFromAngle(15);
+    r3.setToAngle(0);
+    r3.setOnFinished(e -> icon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));
+    RotateTransition r2 = new RotateTransition(new Duration(100), icon);
+    r2.setFromAngle(-15);
+    r2.setToAngle(15);
+    r2.setOnFinished(r -> r3.play());
+    RotateTransition r1 = new RotateTransition(new Duration(50), icon);
+    r1.setFromAngle(0);
+    r1.setToAngle(-15);
+    r1.setOnFinished(e -> r2.play());
+    r1.play();
+    icon.setEffect(new DropShadow(30, 0, 0, Color.RED));
   }
 
   private void switchToLandingPage() {
