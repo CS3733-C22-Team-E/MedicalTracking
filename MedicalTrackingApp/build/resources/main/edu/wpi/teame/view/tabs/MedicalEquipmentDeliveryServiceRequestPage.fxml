@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
-<AnchorPane onMouseEntered="#updateFromDB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController">
+<AnchorPane onMouseEntered="#updateFromDB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController">
    <children>
       <GridPane fx:id="pagePane" prefHeight="580.0" prefWidth="800.0">
         <columnConstraints>

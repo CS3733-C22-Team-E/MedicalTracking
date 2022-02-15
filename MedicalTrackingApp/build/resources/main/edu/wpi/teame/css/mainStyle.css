@@ -85,13 +85,20 @@
   -fx-background-color: -fx-pane-background-color;
 }
 
+.grid-pane {
+  -fx-background-color:  linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef);
+  -fx-background-radius: 5px;
+}
+
 /* Tab View */
 .tab {
-  -fx-background-color: -fx-secondary-color;
+  -fx-background-color:  linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef);
+  -fx-background-radius: 5px;
+
 }
 
 .tab:selected {
-  -fx-background-color: -fx-highlight-color;
+  -fx-background-color:  -fx-highlight-color;
 }
 
 .tab .tab-label {
