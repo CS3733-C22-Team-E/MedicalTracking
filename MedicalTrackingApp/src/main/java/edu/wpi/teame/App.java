@@ -10,6 +10,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -44,26 +46,8 @@ public class App extends Application {
         new EventHandler<WindowEvent>() {
           @Override
           public void handle(WindowEvent event) {
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Are you sure you want to quit?");
-            ImageView newIcon =
-                new ImageView(
-                    new Image(App.class.getResource("images/icons/ExitIcon.png").toString()));
-            newIcon.setFitHeight(30);
-            newIcon.setFitWidth(30);
-            dialog.getDialogPane().setGraphic(newIcon);
-            ButtonType OK = new ButtonType("Exit", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);
-            dialog.setResultConverter(
-                dialogButton -> {
-                  if (dialogButton == OK) {
-                    appPrimaryStage.close();
-                  } else {
-                    event.consume();
-                  }
-                  return null;
-                });
-            dialog.showAndWait();
+            heyStinky();
+            handleExit(event);
           }
         });
     appPrimaryStage.show();
@@ -72,5 +56,34 @@ public class App extends Application {
   @Override
   public void stop() {
     log.info("Shutting Down");
+  }
+
+  private void handleExit(WindowEvent event) {
+    Dialog dialog = new Dialog();
+    dialog.setTitle("Are you sure you want to quit?");
+    ImageView newIcon =
+        new ImageView(new Image(App.class.getResource("images/icons/ExitIcon.png").toString()));
+    newIcon.setFitHeight(30);
+    newIcon.setFitWidth(30);
+    dialog.getDialogPane().setGraphic(newIcon);
+    ButtonType OK = new ButtonType("Exit", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);
+    dialog.setResultConverter(
+        dialogButton -> {
+          if (dialogButton == OK) {
+            appPrimaryStage.close();
+          } else {
+            event.consume();
+          }
+          return null;
+        });
+    dialog.showAndWait();
+  }
+
+  private void heyStinky() {
+    Media m = new Media(App.class.getResource("audio/HeyStinky.mp3").toString());
+    MediaPlayer player = new MediaPlayer(m);
+    player.setVolume(1);
+    player.play();
   }
 }

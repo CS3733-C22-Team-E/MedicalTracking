@@ -7,6 +7,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.SecurityServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -16,8 +17,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.GridPane;
 
 public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
+  @FXML private GridPane pagePane;
+
   @FXML private JFXButton clearButton;
   @FXML private JFXButton sendButton;
 
@@ -73,6 +77,11 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
             new Date(new java.util.Date().getTime()),
             0);
     DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(pagePane.getWidth() - sendButton.getLayoutX());
+    a.getStackPane().setLayoutY(sendButton.getLayoutY() - 50);
+    pagePane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   @FXML
