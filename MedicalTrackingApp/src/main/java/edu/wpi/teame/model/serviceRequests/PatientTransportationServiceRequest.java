@@ -35,7 +35,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     super(
         isInternal
             ? DataBaseObjectType.InternalPatientTransferSR
-            : DataBaseObjectType.ExternalPatientTransportation,
+            : DataBaseObjectType.ExternalPatientSR,
         priority,
         status,
         additionalInfo,
@@ -57,7 +57,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
         resultSet,
         isInternal
             ? DataBaseObjectType.InternalPatientTransferSR
-            : DataBaseObjectType.ExternalPatientTransportation);
+            : DataBaseObjectType.ExternalPatientSR);
     this.destination =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("destinationID"));
     this.equipment =
@@ -94,7 +94,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + ", destinationID, equipmentID, patientID)";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)";
   }
 
   public Location getDestination() {

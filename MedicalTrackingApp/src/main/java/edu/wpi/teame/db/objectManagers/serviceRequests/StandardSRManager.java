@@ -40,7 +40,8 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
     while ((record = csvReader.readNext()) != null) {
       lineData.setParsedData(record);
 
-      ServiceRequestPriority priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
+      ServiceRequestPriority priority =
+          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
           ServiceRequestStatus.values()[lineData.getColumnInt("requestStatus")];
       DataBaseObjectType dbType = DataBaseObjectType.values()[lineData.getColumnInt("dbType")];
@@ -60,10 +61,21 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
       LocationManager locationManager = new LocationManager();
       Location newLocation = locationManager.get(location);
 
-      //new ServiceRequest
-      ServiceRequest newSR = new ServiceRequest(dbType, priority, requestStatus, additionalInfo, newEmployee, newLocation, requestDate, closeDate, openDate, title, id);
+      // new ServiceRequest
+      ServiceRequest newSR =
+          new ServiceRequest(
+              dbType,
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id);
       getManager().insert(newSR);
-
     }
   }
 
@@ -84,7 +96,19 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
     List<ServiceRequest> listOfSerReq = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
-    data.add(new String[] {"id", "locationID", "assigneeID", "openDate", "closeDate", "status", "title", "additionalInfo", "priority", "requestDate"});
+    data.add(
+        new String[] {
+          "id",
+          "locationID",
+          "assigneeID",
+          "openDate",
+          "closeDate",
+          "status",
+          "title",
+          "additionalInfo",
+          "priority",
+          "requestDate"
+        });
 
     for (ServiceRequest serReq : listOfSerReq) {
       data.add(
@@ -100,14 +124,13 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             Integer.toString(serReq.getPriority().ordinal()),
             serReq.getRequestDate().toString()
           });
-
     }
     writer.writeAll(data);
     writer.close();
   }
 
   private ObjectManager getManager() throws SQLException {
-    switch(super.objectType) {
+    switch (super.objectType) {
       case AudioVisualSR:
         return DBManager.getInstance().getAudioVisualSRManager();
       case ComputerSR:
@@ -118,7 +141,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
         return DBManager.getInstance().getGiftAndFloralSRManager();
       case InternalPatientTransferSR:
         return DBManager.getInstance().getInternalPatientSRManager();
-      case ExternalPatientTransportation:
+      case ExternalPatientSR:
         return DBManager.getInstance().getExternalPatientSRManager();
       case LanguageInterpreterSR:
         return DBManager.getInstance().getLanguageSRManager();
@@ -140,6 +163,4 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
         return DBManager.getInstance().getMedicalEquipmentSRManager();
     }
   }
-
-
 }

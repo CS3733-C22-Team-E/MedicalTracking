@@ -65,7 +65,7 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + ", patientID";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID)";
     // return super.getTableColumns();
   }
 

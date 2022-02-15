@@ -133,7 +133,7 @@ public class LandingPageController implements Initializable {
         new StyledTab(
             "External Patient Transportation",
             SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.ExternalPatientTransportation)));
+            getPageUrl(DataBaseObjectType.ExternalPatientSR)));
 
     tabs.add(
         new StyledTab(
@@ -203,7 +203,7 @@ public class LandingPageController implements Initializable {
       case InternalPatientTransferSR:
         url += "InternalPatientTransportation";
         break;
-      case ExternalPatientTransportation:
+      case ExternalPatientSR:
         url += "ExternalPatientTransportation";
         break;
       case SanitationSR:

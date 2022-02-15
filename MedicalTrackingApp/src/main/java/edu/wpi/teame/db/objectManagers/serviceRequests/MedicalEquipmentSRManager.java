@@ -16,8 +16,6 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,7 +34,7 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
   public void readCSV(String inputFileName)
       throws IOException, CsvValidationException, SQLException, ParseException {
     String filePath =
-            System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
@@ -44,9 +42,10 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
     while ((record = csvReader.readNext()) != null) {
       lineData.setParsedData(record);
 
-      ServiceRequestPriority priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
+      ServiceRequestPriority priority =
+          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
-              ServiceRequestStatus.values()[lineData.getColumnInt("status")];
+          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
       int assignee = lineData.getColumnInt("assigneeID");
       int location = lineData.getColumnInt("locationID");
@@ -67,10 +66,21 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
       EquipmentManager equipmentManager = new EquipmentManager();
       Equipment newEquipment = equipmentManager.get(equipment);
 
-      //new ServiceRequest
-      MedicalEquipmentServiceRequest newSR = new MedicalEquipmentServiceRequest(priority, requestStatus, additionalInfo, newEmployee, newLocation, requestDate, closeDate, openDate, title, id, newEquipment);
+      // new ServiceRequest
+      MedicalEquipmentServiceRequest newSR =
+          new MedicalEquipmentServiceRequest(
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id,
+              newEquipment);
       DBManager.getInstance().getMedicalEquipmentSRManager().insert(newSR);
-
     }
   }
 
@@ -93,25 +103,35 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
     List<String[]> data = new ArrayList<String[]>();
     data.add(
         new String[] {
-          "id", "locationID", "assigneeID", "openDate", "closeDate", "equipmentID", "status", "title", "additionalInfo", "priority", "requestDate", "equipmentID"
+          "id",
+          "locationID",
+          "assigneeID",
+          "openDate",
+          "closeDate",
+          "equipmentID",
+          "status",
+          "title",
+          "additionalInfo",
+          "priority",
+          "requestDate",
+          "equipmentID"
         });
 
     for (MedicalEquipmentServiceRequest serReq : listOfSerReq) {
       data.add(
-              new String[] {
-                      Integer.toString(serReq.getId()),
-                      Integer.toString(serReq.getLocation().getId()),
-                      Integer.toString(serReq.getAssignee().getId()),
-                      serReq.getOpenDate().toString(),
-                      serReq.getCloseDate().toString(),
-                      serReq.getStatus().toString(),
-                      serReq.getTitle(),
-                      serReq.getAdditionalInfo(),
-                      Integer.toString(serReq.getPriority().ordinal()),
-                      serReq.getRequestDate().toString(),
-                      Integer.toString(serReq.getEquipment().getId())
-              });
-
+          new String[] {
+            Integer.toString(serReq.getId()),
+            Integer.toString(serReq.getLocation().getId()),
+            Integer.toString(serReq.getAssignee().getId()),
+            serReq.getOpenDate().toString(),
+            serReq.getCloseDate().toString(),
+            serReq.getStatus().toString(),
+            serReq.getTitle(),
+            serReq.getAdditionalInfo(),
+            Integer.toString(serReq.getPriority().ordinal()),
+            serReq.getRequestDate().toString(),
+            Integer.toString(serReq.getEquipment().getId())
+          });
     }
     writer.writeAll(data);
     writer.close();

@@ -14,8 +14,6 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,14 +29,14 @@ public final class PatientTransportationSRManager
     super(
         isInternal
             ? DataBaseObjectType.InternalPatientTransferSR
-            : DataBaseObjectType.ExternalPatientTransportation);
+            : DataBaseObjectType.ExternalPatientSR);
   }
 
   @Override
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException {
     String filePath =
-            System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
@@ -46,9 +44,10 @@ public final class PatientTransportationSRManager
     while ((record = csvReader.readNext()) != null) {
       lineData.setParsedData(record);
 
-      ServiceRequestPriority priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
+      ServiceRequestPriority priority =
+          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
-              ServiceRequestStatus.values()[lineData.getColumnInt("status")];
+          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
       int assignee = lineData.getColumnInt("assigneeID");
       int location = lineData.getColumnInt("locationID");
@@ -60,7 +59,6 @@ public final class PatientTransportationSRManager
       int destination = lineData.getColumnInt("destinationID");
       int equipment = lineData.getColumnInt("equipmentID");
       int patient = lineData.getColumnInt("patientID");
-
 
       // select assignee where id = assignee
       EmployeeManager employeeManager = new EmployeeManager();
@@ -76,67 +74,92 @@ public final class PatientTransportationSRManager
       PatientManager patientManager = new PatientManager();
       Patient newPatient = patientManager.get(patient);
 
-      //new ServiceRequest
-      PatientTransportationServiceRequest newSR = new PatientTransportationServiceRequest(getInternalBool(), priority, requestStatus, additionalInfo, newEmployee, newLocation, requestDate, closeDate, openDate, title, id, newDestination, newEquipment, newPatient);
+      // new ServiceRequest
+      PatientTransportationServiceRequest newSR =
+          new PatientTransportationServiceRequest(
+              getInternalBool(),
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id,
+              newDestination,
+              newEquipment,
+              newPatient);
       if (getInternalBool()) {
         DBManager.getInstance().getInternalPatientSRManager().insert(newSR);
       } else {
         DBManager.getInstance().getExternalPatientSRManager().insert(newSR);
       }
-
     }
   }
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
     String filePath =
-            System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
 
     FileWriter outputFile = new FileWriter(filePath);
     CSVWriter writer =
-            new CSVWriter(
-                    outputFile,
-                    ',',
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
 
     List<PatientTransportationServiceRequest> listOfSerReq = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
-    data.add(new String[] {"id", "locationID", "assigneeID", "openDate", "closeDate", "status", "title", "additionalInfo", "priority", "requestDate", "destinationID", "patientID", "equipmentID"});
+    data.add(
+        new String[] {
+          "id",
+          "locationID",
+          "assigneeID",
+          "openDate",
+          "closeDate",
+          "status",
+          "title",
+          "additionalInfo",
+          "priority",
+          "requestDate",
+          "destinationID",
+          "patientID",
+          "equipmentID"
+        });
 
     for (PatientTransportationServiceRequest serReq : listOfSerReq) {
       data.add(
-              new String[] {
-                      Integer.toString(serReq.getId()),
-                      Integer.toString(serReq.getLocation().getId()),
-                      Integer.toString(serReq.getAssignee().getId()),
-                      serReq.getOpenDate().toString(),
-                      serReq.getCloseDate().toString(),
-                      serReq.getStatus().toString(),
-                      serReq.getTitle(),
-                      serReq.getAdditionalInfo(),
-                      Integer.toString(serReq.getPriority().ordinal()),
-                      serReq.getRequestDate().toString(),
-                      Integer.toString(serReq.getDestination().getId()),
-                      Integer.toString(serReq.getPatient().getId()),
-                      Integer.toString(serReq.getEquipment().getId())
-              });
-
+          new String[] {
+            Integer.toString(serReq.getId()),
+            Integer.toString(serReq.getLocation().getId()),
+            Integer.toString(serReq.getAssignee().getId()),
+            serReq.getOpenDate().toString(),
+            serReq.getCloseDate().toString(),
+            serReq.getStatus().toString(),
+            serReq.getTitle(),
+            serReq.getAdditionalInfo(),
+            Integer.toString(serReq.getPriority().ordinal()),
+            serReq.getRequestDate().toString(),
+            Integer.toString(serReq.getDestination().getId()),
+            Integer.toString(serReq.getPatient().getId()),
+            Integer.toString(serReq.getEquipment().getId())
+          });
     }
     writer.writeAll(data);
     writer.close();
   }
 
-
-public boolean getInternalBool() {
-      if (super.objectType == DataBaseObjectType.InternalPatientTransferSR) {
-        return true;
-      }
-      else {
-        return false;
-      }
+  public boolean getInternalBool() {
+    if (super.objectType == DataBaseObjectType.InternalPatientTransferSR) {
+      return true;
+    } else {
+      return false;
     }
-
+  }
 }

@@ -22,7 +22,7 @@ public class Patient implements ISQLSerializable {
 
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
-        DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
+        DBManager.getInstance().getLocationManager().get(resultSet.getInt("currentLocationID"));
     this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");

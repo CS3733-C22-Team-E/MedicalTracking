@@ -57,7 +57,7 @@ public class MapServiceRequestIcon {
                     .getResource("images/Icons/ServiceRequestIcons/InternalPatientTransfer.png")
                     .toString())));
     Graphics.put(
-        DataBaseObjectType.ExternalPatientTransportation,
+        DataBaseObjectType.ExternalPatientSR,
         new ImageView(
             new Image(
                 App.class

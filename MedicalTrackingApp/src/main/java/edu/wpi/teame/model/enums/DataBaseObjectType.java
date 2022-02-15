@@ -6,7 +6,7 @@ public enum DataBaseObjectType {
   FoodDeliverySR,
   GiftAndFloralSR,
   InternalPatientTransferSR,
-  ExternalPatientTransportation,
+  ExternalPatientSR,
   LanguageInterpreterSR,
   LaundrySR,
   ReligiousSR,
@@ -32,7 +32,7 @@ public enum DataBaseObjectType {
         return "Food Delivery Service Request";
       case GiftAndFloralSR:
         return "Gift/Floral Delivery Service Request";
-      case ExternalPatientTransportation:
+      case ExternalPatientSR:
         return "External Patient Transportation Service Request";
       case LanguageInterpreterSR:
         return "Language Interpreter Service Request";
