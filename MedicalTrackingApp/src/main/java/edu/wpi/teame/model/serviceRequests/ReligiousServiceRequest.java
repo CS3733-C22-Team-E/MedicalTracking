@@ -71,7 +71,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
 
   @Override
   public String getTableColumns() {
-    return super.getTableColumns() + ", patientID, religion)";
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, religion)";
   }
 
   public Patient getPatient() {
