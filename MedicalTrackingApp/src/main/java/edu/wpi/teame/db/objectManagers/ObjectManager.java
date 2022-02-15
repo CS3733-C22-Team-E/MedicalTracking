@@ -8,7 +8,6 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +61,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     insertQuery.append(getTableName()).append(newObject.getTableColumns());
     insertQuery.append(" VALUES(");
     insertQuery.append(newObject.getSQLInsertString()).append(")");
-    System.out.println(insertQuery.toString());
     PreparedStatement insertStatement =
         connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
     int rowsAffected = insertStatement.executeUpdate();
@@ -86,6 +84,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder updateQuery = new StringBuilder("UPDATE ");
     updateQuery.append(getTableName()).append(" SET ");
     updateQuery.append(updatedObject.getSQLUpdateString());
+    System.out.println(updateQuery.toString());
+
     statement.executeUpdate(updateQuery.toString());
   }
 
@@ -113,6 +113,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
+      case ReligiousSR:
+        return (T) new ReligiousServiceRequest(resultSet);
       case SanitationSR:
         return (T) new ServiceRequest(resultSet, objectType);
       case SecuritySR:
@@ -124,7 +126,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case Employee:
         return (T) new Employee(resultSet);
       case Patient:
-        return (T) new Patient(resultSet)\\\\;
+        return (T) new Patient(resultSet);
     }
     return null;
   }

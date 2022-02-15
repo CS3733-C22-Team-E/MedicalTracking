@@ -87,6 +87,7 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getSQLUpdateString() {
+    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
     return "locationID = "
         + location.getId()
         + ", "
@@ -96,9 +97,9 @@ public class ServiceRequest implements ISQLSerializable {
         + "openDate = '"
         + openDate.toString()
         + "', "
-        + "closeDate = '"
-        + closeDate.toString()
-        + "', "
+        + "closeDate = "
+        + closeDateString
+        + ", "
         + "status = "
         + status.ordinal()
         + ", "

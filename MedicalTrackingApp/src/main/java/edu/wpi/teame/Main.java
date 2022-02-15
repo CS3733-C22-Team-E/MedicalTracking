@@ -619,6 +619,21 @@ public class Main {
     foodMan.insert(food2);
     foodMan.insert(food3);
 
+    foodMan.update(
+        new FoodDeliveryServiceRequest(
+            ServiceRequestPriority.Low,
+            ServiceRequestStatus.CANCELLED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "titel",
+            3,
+            patient3,
+            "pizza"));
+
     List<FoodDeliveryServiceRequest> foodReqlist = foodMan.getAll();
     for (FoodDeliveryServiceRequest san : foodReqlist) {
       System.out.println(san);
@@ -633,6 +648,20 @@ public class Main {
     for (GiftAndFloralServiceRequest san : giftReqlist) {
       System.out.println(san);
     }
+
+    giftMan.update(
+        new GiftAndFloralServiceRequest(
+            ServiceRequestPriority.Critical,
+            ServiceRequestStatus.CLOSED,
+            "I need sanitatrion",
+            emp2,
+            loc2,
+            Date.valueOf("2015-03-31"),
+            null,
+            date,
+            "New",
+            3,
+            patient1));
 
     PatientTransportationSRManager transportMan =
         DBManager.getInstance().getInternalPatientSRManager();
