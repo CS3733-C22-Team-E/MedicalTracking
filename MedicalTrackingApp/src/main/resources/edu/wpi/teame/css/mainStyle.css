@@ -43,8 +43,7 @@
 }
 
 .button {
-  -fx-background-color: -fx-button-background-color;
-  -fx-text-fill: -fx-button-text-color;
+  -fx-background-color: -fx-button-background-color;;
   -fx-background-radius: 5;
 }
 
@@ -76,7 +75,6 @@
 
 .text {
   -fx-text-fill: -fx-text-color;
-  -fx-fill: -fx-text-color;
 }
 
 /* Panes and Backgrounds */
@@ -95,7 +93,6 @@
 .tab {
   -fx-background-color:  linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef);
   -fx-background-radius: 5px;
-
 }
 
 .tab:selected {
