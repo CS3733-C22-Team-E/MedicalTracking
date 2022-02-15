@@ -41,6 +41,7 @@ dependencies {
             files("src/libraries/commons-lang3-3.12.0.jar"),
             files("src/libraries/commons-text-1.9.jar"),
             files('src/libraries/opencsv-5.5.2.jar'))
+    implementation 'junit:junit:4.13.1'
 
     testCompile(
             "org.testfx:testfx-core:4.0.16-alpha",
