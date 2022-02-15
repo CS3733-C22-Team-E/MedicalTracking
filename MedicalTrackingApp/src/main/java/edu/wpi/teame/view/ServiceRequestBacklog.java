@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 public class ServiceRequestBacklog {
 
   ScrollPane scrollWrapper = new ScrollPane();
-  int cardCursor = 0;
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
   private final double VGAP = 3;
@@ -23,7 +22,7 @@ public class ServiceRequestBacklog {
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<ServiceRequest>();
   private List<ServiceRequestCard> cardsDisplayed = new LinkedList<ServiceRequestCard>();
 
-  public ServiceRequestBacklog(double width, double height) throws SQLException {
+  public ServiceRequestBacklog(double width, double height) {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
@@ -43,7 +42,6 @@ public class ServiceRequestBacklog {
   public Parent getBacklogScene() throws SQLException {
     serviceRequestsFromDB.clear();
     getSecurityRequests();
-    System.out.println("getBacklogScene");
     scrollWrapper.setContent(getRequestHolder());
     return scrollWrapper;
   }
@@ -67,9 +65,9 @@ public class ServiceRequestBacklog {
     cardsDisplayed.add(c);
   }
 
-  // TODO Fix this method. Checkbox doesn't do anything yet
   public void removeServiceRequest(int id) {
     serviceRequestsFromDB.removeIf(sr -> sr.getId() == id);
     scrollWrapper.setContent(getRequestHolder());
+    //TODO update DB on delete
   }
 }
