@@ -6,7 +6,6 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
-
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;

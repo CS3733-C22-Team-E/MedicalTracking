@@ -11,7 +11,6 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;

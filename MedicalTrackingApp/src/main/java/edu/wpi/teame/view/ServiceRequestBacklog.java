@@ -3,7 +3,6 @@ package edu.wpi.teame.view;
 import static javafx.application.Application.launch;
 
 import edu.wpi.teame.db.DBManager;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;

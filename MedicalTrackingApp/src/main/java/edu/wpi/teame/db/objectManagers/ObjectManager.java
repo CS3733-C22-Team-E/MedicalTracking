@@ -6,7 +6,6 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
