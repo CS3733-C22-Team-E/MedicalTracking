@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -108,8 +107,9 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             equipment,
             pName);
     DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
-    SRSentAnimation a = new SRSentAnimation(serviceRequest);
-    pagePane.setAlignment(Pos.CENTER);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(pagePane.getWidth() - sendButton.getLayoutX());
+    a.getStackPane().setLayoutY(sendButton.getLayoutY() - 50);
     pagePane.getChildren().add(a.getStackPane());
     a.play();
   }

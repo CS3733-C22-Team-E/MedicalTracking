@@ -115,8 +115,7 @@ public class ServiceRequestCard {
     doneBox.setCheckedColor(Color.LIGHTGRAY);
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
-    doneBox.setOnMouseClicked(
-        (event -> deleteRequest(backlog)));
+    doneBox.setOnMouseClicked((event -> deleteRequest(backlog)));
     Tooltip t = new Tooltip("Click to delete");
     Tooltip.install(doneBox, t);
     return doneBox;
@@ -161,15 +160,17 @@ public class ServiceRequestCard {
 
   private void setHoverStyling(HBox c) {
     c.setOnMouseEntered(
-        e -> c.setBackground(
-            new Background(
-                new BackgroundFill(
-                    Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
+        e ->
+            c.setBackground(
+                new Background(
+                    new BackgroundFill(
+                        Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
 
     c.setOnMouseExited(
-        e -> c.setBackground(
-              new Background(
-                  new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
+        e ->
+            c.setBackground(
+                new Background(
+                    new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
   }
 
   public ServiceRequest getServiceRequest() {

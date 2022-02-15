@@ -68,6 +68,6 @@ public class ServiceRequestBacklog {
   public void removeServiceRequest(int id) {
     serviceRequestsFromDB.removeIf(sr -> sr.getId() == id);
     scrollWrapper.setContent(getRequestHolder());
-    //TODO update DB on delete
+    // TODO update DB on delete
   }
 }

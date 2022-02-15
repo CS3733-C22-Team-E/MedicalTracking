@@ -1,7 +1,6 @@
 package edu.wpi.teame.view;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -22,10 +21,8 @@ import javafx.util.Duration;
 public class SRSentAnimation {
 
   private StackPane stackPane;
-  private final ServiceRequest serviceRequest;
 
-  public SRSentAnimation(ServiceRequest sr) {
-    serviceRequest = sr;
+  public SRSentAnimation() {
     stackPane = new StackPane();
     stackPane.setAlignment(Pos.CENTER);
     // stackPane.setPrefSize(100, 100);
@@ -39,7 +36,7 @@ public class SRSentAnimation {
   }
 
   public void play() {
-    Text sentText = new Text(serviceRequest.getDBType().toString() + " sent!");
+    Text sentText = new Text("Sent!");
     sentText.setFont(Font.font("Arial", 24));
     sentText.setOpacity(0);
 
