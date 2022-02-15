@@ -140,6 +140,12 @@ public class SettingsPageController implements Initializable {
                 } catch (IOException e) {
                   e.printStackTrace();
                   System.out.println("Could not write to settings.properties");
+                } catch (CsvValidationException e) {
+                  e.printStackTrace();
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                } catch (ParseException e) {
+                  e.printStackTrace();
                 }
               });
 
@@ -202,7 +208,14 @@ public class SettingsPageController implements Initializable {
   }
 
   @FXML
-  private void changeDBConnection() {
+  private void changeDBConnection()
+      throws SQLException, IOException, CsvValidationException, ParseException {
+    // writeDBToCSV
+    DBManager.getInstance().writeDBToCSV();
+    // setupClientDB
+    DBManager.getInstance().setupClientDB();
+    // loadCSVintoDB
+    DBManager.getInstance().loadDBFromCSV();
     System.out.println("Technically Switched DBConnection");
   }
 

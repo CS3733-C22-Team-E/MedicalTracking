@@ -397,7 +397,9 @@ public final class DBManager {
     String connectionString =
         "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
     if (isClientServer) {
-      connectionString = "jdbc:derby://localhost:1527/ClientServerE;create=true;username=admin;password=admin"; // TODO: Add Client/Server connection string
+      System.out.println("want client-server DB....");
+      connectionString =
+          "jdbc:derby://localhost:1527/ClientServerE;create=true;username=admin;password=admin"; // TODO: Add Client/Server connection string
     }
 
     connection = DriverManager.getConnection(connectionString);
@@ -424,8 +426,7 @@ public final class DBManager {
     // add client-server driver
     try {
       Class.forName("org.apache.derby.jdbc.ClientDriver");
-    }
-    catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       e.printStackTrace();
       return;
     }
@@ -434,7 +435,6 @@ public final class DBManager {
 
     // Create DB Tables
     createDBTables();
-
   }
 
   public CredentialManager getCredentialManager() throws SQLException, NoSuchAlgorithmException {
