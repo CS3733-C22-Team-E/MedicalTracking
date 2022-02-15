@@ -16,20 +16,20 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineName;
   private Patient patient;
 
-  private MedicineDeliveryServiceRequest(
-      ServiceRequestPriority priority,
-      ServiceRequestStatus status,
-      String additionalInfo,
-      Employee assignee,
-      Location location,
-      Date requestDate,
-      Date closeDate,
-      Date openDate,
-      String title,
-      int id,
-      String medicineName,
-      String medicineQuantity,
-      Patient patient) {
+  public MedicineDeliveryServiceRequest(
+          ServiceRequestPriority priority,
+          ServiceRequestStatus status,
+          String additionalInfo,
+          Employee assignee,
+          Location location,
+          Date requestDate,
+          Date closeDate,
+          Date openDate,
+          String title,
+          int id,
+          String medicineName,
+          String medicineQuantity,
+          Patient patient) {
     super(
         DataBaseObjectType.MedicineDeliverySR,
         priority,

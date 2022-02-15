@@ -46,11 +46,10 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
 
       ServiceRequestPriority priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
-              ServiceRequestStatus.values()[lineData.getColumnInt("requestStatus")];
-      DataBaseObjectType dbType = DataBaseObjectType.values()[lineData.getColumnInt("dbType")];
+              ServiceRequestStatus.values()[lineData.getColumnInt("status")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
-      int assignee = lineData.getColumnInt("assignee");
-      int location = lineData.getColumnInt("location");
+      int assignee = lineData.getColumnInt("assigneeID");
+      int location = lineData.getColumnInt("locationID");
       Date requestDate = lineData.getColumnDate("requestDate");
       Date closeDate = lineData.getColumnDate("closeDate");
       Date openDate = lineData.getColumnDate("openDate");
@@ -94,20 +93,25 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
     List<String[]> data = new ArrayList<String[]>();
     data.add(
         new String[] {
-          "id", "locationID", "status", "employeeID", "closeDate", "openDate", "equipmentID"
+          "id", "locationID", "assigneeID", "openDate", "closeDate", "equipmentID", "status", "title", "additionalInfo", "priority", "requestDate", "equipmentID"
         });
 
     for (MedicalEquipmentServiceRequest serReq : listOfSerReq) {
       data.add(
-          new String[] {
-            Integer.toString(serReq.getId()),
-            Integer.toString(serReq.getLocation().getId()),
-            serReq.getStatus().toString(),
-            Integer.toString(serReq.getAssignee().getId()),
-            serReq.getCloseDate().toString(),
-            serReq.getOpenDate().toString(),
-            Integer.toString(serReq.getEquipment().getId())
-          });
+              new String[] {
+                      Integer.toString(serReq.getId()),
+                      Integer.toString(serReq.getLocation().getId()),
+                      Integer.toString(serReq.getAssignee().getId()),
+                      serReq.getOpenDate().toString(),
+                      serReq.getCloseDate().toString(),
+                      serReq.getStatus().toString(),
+                      serReq.getTitle(),
+                      serReq.getAdditionalInfo(),
+                      Integer.toString(serReq.getPriority().ordinal()),
+                      serReq.getRequestDate().toString(),
+                      Integer.toString(serReq.getEquipment().getId())
+              });
+
     }
     writer.writeAll(data);
     writer.close();

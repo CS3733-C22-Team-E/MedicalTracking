@@ -46,17 +46,16 @@ public final class GiftAndFloralSRManager extends ObjectManager<GiftAndFloralSer
 
       ServiceRequestPriority priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
-              ServiceRequestStatus.values()[lineData.getColumnInt("requestStatus")];
-      DataBaseObjectType dbType = DataBaseObjectType.values()[lineData.getColumnInt("dbType")];
+              ServiceRequestStatus.values()[lineData.getColumnInt("status")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
-      int assignee = lineData.getColumnInt("assignee");
-      int location = lineData.getColumnInt("location");
+      int assignee = lineData.getColumnInt("assigneeID");
+      int location = lineData.getColumnInt("locationID");
       Date requestDate = lineData.getColumnDate("requestDate");
       Date closeDate = lineData.getColumnDate("closeDate");
       Date openDate = lineData.getColumnDate("openDate");
       String title = lineData.getColumnString("title");
       int id = lineData.getColumnInt("id");
-      int patient = lineData.getColumnInt("patient");
+      int patient = lineData.getColumnInt("patientID");
 
       // select assignee where id = assignee
       EmployeeManager employeeManager = new EmployeeManager();
