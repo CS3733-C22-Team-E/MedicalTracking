@@ -74,7 +74,7 @@ public enum DataBaseObjectType {
         return Color.SALMON;
       case GiftAndFloralSR:
         return Color.MEDIUMAQUAMARINE;
-      case ExternalPatientTransportation:
+      case ExternalPatientSR:
         return Color.SEAGREEN;
       case LanguageInterpreterSR:
         return Color.CORAL;
@@ -113,7 +113,7 @@ public enum DataBaseObjectType {
         return "Food Delivery";
       case GiftAndFloralSR:
         return "Gift/Floral Delivery";
-      case ExternalPatientTransportation:
+      case ExternalPatientSR:
         return "External Patient Transportation";
       case LanguageInterpreterSR:
         return "Language Interpreter";

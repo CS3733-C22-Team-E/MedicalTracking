@@ -29,6 +29,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
+  @FXML private DatePicker datePicker;
   @FXML private TextField patientName;
   @FXML private TextField medicineName;
   @FXML private TextField medicineQuantity;
