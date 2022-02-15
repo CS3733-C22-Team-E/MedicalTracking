@@ -8,12 +8,15 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.LanguageType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.LanguageInterpreterServiceRequest;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,8 +26,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class StandardSRManager extends ObjectManager<ServiceRequest> {
-  public StandardSRManager(DataBaseObjectType dbType) throws SQLException {
+public final class LanguageInterpreterSRManager
+    extends ObjectManager<LanguageInterpreterServiceRequest> {
+  public LanguageInterpreterSRManager(DataBaseObjectType dbType) throws SQLException {
     super(dbType);
   }
 
@@ -44,7 +48,6 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
           ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
       ServiceRequestStatus requestStatus =
           ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      DataBaseObjectType dbType = DataBaseObjectType.values()[lineData.getColumnInt("dbType")];
       String additionalInfo = lineData.getColumnString("additionalInfo");
       int assignee = lineData.getColumnInt("assigneeID");
       int location = lineData.getColumnInt("locationID");
@@ -53,6 +56,8 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
       Date openDate = lineData.getColumnDate("openDate");
       String title = lineData.getColumnString("title");
       int id = lineData.getColumnInt("id");
+      LanguageType languageType = LanguageType.values()[lineData.getColumnInt("language")];
+      int patient = lineData.getColumnInt("patientID");
 
       // select assignee where id = employeeID
       EmployeeManager employeeManager = new EmployeeManager();
@@ -60,11 +65,13 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
       // select location where id = locationID
       LocationManager locationManager = new LocationManager();
       Location newLocation = locationManager.get(location);
+      // select patient where id = patient
+      PatientManager patientManager = new PatientManager();
+      Patient newPatient = patientManager.get(patient);
 
       // new ServiceRequest
-      ServiceRequest newSR =
-          new ServiceRequest(
-              dbType,
+      LanguageInterpreterServiceRequest newSR =
+          new LanguageInterpreterServiceRequest(
               priority,
               requestStatus,
               additionalInfo,
@@ -74,8 +81,10 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
               closeDate,
               openDate,
               title,
-              id);
-      getManager().insert(newSR);
+              id,
+              languageType,
+              newPatient);
+      DBManager.getInstance().getLanguageSRManager().insert(newSR);
     }
   }
 
@@ -93,7 +102,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-    List<ServiceRequest> listOfSerReq = this.getAll();
+    List<LanguageInterpreterServiceRequest> listOfSerReq = this.getAll();
 
     List<String[]> data = new ArrayList<String[]>();
     data.add(
@@ -107,10 +116,12 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
           "title",
           "additionalInfo",
           "priority",
-          "requestDate"
+          "requestDate",
+          "language",
+          "patientID"
         });
 
-    for (ServiceRequest serReq : listOfSerReq) {
+    for (LanguageInterpreterServiceRequest serReq : listOfSerReq) {
       data.add(
           new String[] {
             Integer.toString(serReq.getId()),
@@ -122,45 +133,12 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             serReq.getTitle(),
             serReq.getAdditionalInfo(),
             Integer.toString(serReq.getPriority().ordinal()),
-            serReq.getRequestDate().toString()
+            serReq.getRequestDate().toString(),
+            Integer.toString(serReq.getLanguage().ordinal()),
+            Integer.toString(serReq.getPatient().getId())
           });
     }
     writer.writeAll(data);
     writer.close();
-  }
-
-  private ObjectManager getManager() throws SQLException {
-    switch (super.objectType) {
-      case AudioVisualSR:
-        return DBManager.getInstance().getAudioVisualSRManager();
-      case ComputerSR:
-        return DBManager.getInstance().getComputerSRManager();
-      case FoodDeliverySR:
-        return DBManager.getInstance().getFoodDeliverySRManager();
-      case GiftAndFloralSR:
-        return DBManager.getInstance().getGiftAndFloralSRManager();
-      case InternalPatientTransferSR:
-        return DBManager.getInstance().getInternalPatientSRManager();
-      case ExternalPatientTransportation:
-        return DBManager.getInstance().getExternalPatientSRManager();
-      case LanguageInterpreterSR:
-        return DBManager.getInstance().getLanguageSRManager();
-      case LaundrySR:
-        return DBManager.getInstance().getLaundrySRManager();
-      case ReligiousSR:
-        return DBManager.getInstance().getReligiousSR();
-      case SecuritySR:
-        return DBManager.getInstance().getSecuritySRManager();
-      case MedicalEquipmentSR:
-        return DBManager.getInstance().getMedicalEquipmentSRManager();
-      case MedicineDeliverySR:
-        return DBManager.getInstance().getMedicineDeliverySRManager();
-      case FacilitiesMaintenanceSR:
-        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();
-      case SanitationSR:
-        return DBManager.getInstance().getSanitationSRManager();
-      default:
-        return DBManager.getInstance().getMedicalEquipmentSRManager();
-    }
   }
 }

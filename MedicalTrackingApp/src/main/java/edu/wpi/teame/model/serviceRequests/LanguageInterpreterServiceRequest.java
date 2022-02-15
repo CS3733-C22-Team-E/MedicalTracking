@@ -2,7 +2,6 @@ package edu.wpi.teame.model.serviceRequests;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;

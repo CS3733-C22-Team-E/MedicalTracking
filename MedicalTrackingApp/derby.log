@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Mon Feb 14 14:49:04 EST 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-f9c8-0e05-00000efd1e00 
-on database directory memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66 
-Loaded from file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
+Tue Feb 15 02:06:39 EST 2022:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-fc34-66b4-000007300000 
+on database directory memory:/Users/brindavenkataraman/Documents/GitHub/MedicalTracking/MedicalTrackingApp/ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@6fffcba5 
+Loaded from file:/Users/brindavenkataraman/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
 java.vendor=Microsoft
-java.runtime.version=11.0.12+7
-user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
+java.runtime.version=11.0.13+8-LTS
+user.dir=/Users/brindavenkataraman/Documents/GitHub/MedicalTracking/MedicalTrackingApp
+os.name=Mac OS X
+os.arch=x86_64
+os.version=11.5.2
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
