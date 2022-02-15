@@ -13,6 +13,9 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -29,6 +32,8 @@ public class ServiceRequestCard {
   private Location location;
   private final ServiceRequest sr;
   private final Color color;
+  private Background nonHoverBG;
+  private Background hoverBG;
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
     sr = serviceRequest;
@@ -41,9 +46,13 @@ public class ServiceRequestCard {
     // Setup grid
     HBox card = new HBox();
     card.setEffect(new DropShadow(5, color));
-    card.setBackground(
-        new Background(
-            new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
+    Stop[] stops = new Stop[] {new Stop(0, Color.WHITE), new Stop(1, color)};
+    Stop[] stops2 = new Stop[] {new Stop(0, Color.LIGHTGRAY), new Stop(1, color)};
+    LinearGradient lg1 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops);
+    LinearGradient lg2 = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops2);
+    nonHoverBG = new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY));
+    hoverBG = new Background(new BackgroundFill(lg2, CornerRadii.EMPTY, Insets.EMPTY));
+    card.setBackground(nonHoverBG);
 
     createSpacer(card);
     card.getChildren().add(getDoneCheckbox());
@@ -54,10 +63,35 @@ public class ServiceRequestCard {
     titleAndDescription.add(getTitleText(), 0, 0);
     titleAndDescription.add(getSeparatorH(), 0, 1);
     titleAndDescription.add(getDescriptionText(), 0, 2);
+    titleAndDescription.setAlignment(Pos.CENTER_LEFT);
     card.getChildren().add(titleAndDescription);
     createSpacer(card);
 
-    card.getChildren().add(getDetailGrid());
+    GridPane detailsGrid = new GridPane();
+    detailsGrid.setAlignment(Pos.CENTER);
+    detailsGrid.setHgap(20);
+    detailsGrid.add(generateDetailText("Assignee: "), 2, 0);
+    detailsGrid.add(getSeparatorH(), 2, 1);
+    detailsGrid.add(generateDetailText("Location: "), 2, 2);
+    detailsGrid.add(getSeparatorH(), 2, 3);
+    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
+    detailsGrid.add(getSeparatorH(), 2, 5);
+    detailsGrid.add(generateDetailText("Status: "), 2, 6);
+    detailsGrid.add(getSeparatorH(), 2, 7);
+
+    try {
+      detailsGrid.add(generateDetailText(sr.getAssignee().getName()), 3, 0);
+    } catch (Exception e) {
+      detailsGrid.add(generateDetailText("No assignee!"), 3, 0);
+    }
+    detailsGrid.add(getSeparatorH(), 3, 1);
+    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
+    detailsGrid.add(getSeparatorH(), 3, 3);
+    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
+    detailsGrid.add(getSeparatorH(), 3, 5);
+    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
+    detailsGrid.add(getSeparatorH(), 3, 7);
+    card.getChildren().add(detailsGrid);
     createSpacer(card);
 
     card.setAlignment(Pos.CENTER_RIGHT);
@@ -81,10 +115,10 @@ public class ServiceRequestCard {
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
     textBox.getChildren().add(titleText);
     Text srText = new Text(" Service Request");
-    srText.setFont(Font.font("Arial", 12));
-    srText.setFill(Color.LIGHTGRAY);
+    srText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+    srText.setFill(color);
     textBox.getChildren().add(srText);
-    textBox.setAlignment(Pos.BASELINE_CENTER);
+    textBox.setAlignment(Pos.CENTER_LEFT);
     return textBox;
   }
 
@@ -102,8 +136,8 @@ public class ServiceRequestCard {
 
   private Text getDescriptionText() {
     Text descriptionText = new Text(sr.getDBType().getDescription());
-    descriptionText.setFont(Font.font("Arial", 12));
-    descriptionText.setFill(Color.DARKGRAY);
+    descriptionText.setFont(Font.font("Arial", 16));
+    descriptionText.setFill(Color.BLACK);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
     return descriptionText;
   }
@@ -137,18 +171,9 @@ public class ServiceRequestCard {
   }
 
   private void setHoverStyling(HBox c) {
-    c.setOnMouseEntered(
-        e ->
-            c.setBackground(
-                new Background(
-                    new BackgroundFill(
-                        Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
+    c.setOnMouseEntered(e -> c.setBackground(hoverBG));
 
-    c.setOnMouseExited(
-        e ->
-            c.setBackground(
-                new Background(
-                    new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
+    c.setOnMouseExited(e -> c.setBackground(nonHoverBG));
   }
 
   public ServiceRequest getServiceRequest() {
@@ -164,30 +189,5 @@ public class ServiceRequestCard {
 
   private Color getServiceRequestColor() {
     return this.sr.getDBType().getColor();
-  }
-
-  private GridPane getDetailGrid() {
-    GridPane detailsGrid = new GridPane();
-    detailsGrid.setAlignment(Pos.CENTER);
-    detailsGrid.setHgap(20);
-    detailsGrid.add(generateDetailText("Assignee: "), 2, 0);
-    detailsGrid.add(getSeparatorH(), 2, 1);
-    detailsGrid.add(generateDetailText("Location: "), 2, 2);
-    detailsGrid.add(getSeparatorH(), 2, 3);
-    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
-    detailsGrid.add(getSeparatorH(), 2, 5);
-    detailsGrid.add(generateDetailText("Status: "), 2, 6);
-    detailsGrid.add(getSeparatorH(), 2, 7);
-
-    detailsGrid.add(generateDetailText(sr.getAssignee().getName()), 3, 0);
-    detailsGrid.add(getSeparatorH(), 3, 1);
-    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
-    detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
-    detailsGrid.add(getSeparatorH(), 3, 5);
-    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
-    detailsGrid.add(getSeparatorH(), 3, 7);
-
-    return detailsGrid;
   }
 }
