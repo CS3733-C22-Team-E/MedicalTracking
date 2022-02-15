@@ -4,12 +4,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.*;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,47 +23,53 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Pair;
 
 public class Map {
-  private HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
-  private Image backgroundImage;
+  private final HashMap<FloorType, Image> Images = new HashMap<>();
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
-  private double MAPHEIGHT = 0;
-  private double MAPWIDTH = 0;
   private final double ZOOMINMAX = 1.5;
   private final double ZOOMOUTMAX = .2;
+  private final HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
+  private final HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
+  private final HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor =
+      new HashMap<>();
+  private final HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
+  private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor =
+      new HashMap<>();
+  private final ContextMenu EquipmentClicked = new ContextMenu();
+  private final ContextMenu PaneMenu = new ContextMenu();
+  private final StackPane layout = new StackPane();
+  private final LandingPageController appController;
+  private Image backgroundImage;
+  private double MAPHEIGHT = 0;
+  private double MAPWIDTH = 0;
   private boolean showLocationNodes = false;
-  private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
-  private HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
-  private HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
-  private ContextMenu EquipmentClicked = new ContextMenu();
-  private ContextMenu PaneMenu = new ContextMenu();
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
-  private StackPane layout = new StackPane();
   private FloorType currFloor;
+  private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
 
-  public Map(FloorType floor) {
+  public Map(FloorType floor, LandingPageController app) {
+    appController = app;
     currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
-      Images.put(currFloor, new Image(App.class.getResource(getMapImg(currFloor)).toString()));
+      Images.put(currFloor, new Image(getImageResource(getMapImg(currFloor))));
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
+      radialMenusByFloor.put(currFloor, new ArrayList<>());
+      ActiveSRByFloor.put(currFloor, new ArrayList<>());
     }
     System.out.println("Loaded Maps");
     switchFloors(floor);
@@ -178,6 +188,7 @@ public class Map {
         });
     dialog.showAndWait();
   }
+
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
@@ -187,17 +198,27 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getImageView());
     }
+    for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
+      layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+    }
+    updateRadialMenus();
+    createNewRadialMenus();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      layout.getChildren().add(rm.getButton());
+    }
+    showEquipmentRemovedFromRadialMenus();
   }
+
   // Init ScrollPane that holds the StackPane containing map and all icons
-  private ScrollPane createScrollPane(Pane layout) {
-    ScrollPane scroll = new ScrollPane();
+  private ZoomableScrollPane createScrollPane(Pane layout) {
+    ZoomableScrollPane scroll = new ZoomableScrollPane(layout);
     scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scroll.setPannable(true);
     scroll.setPrefSize(WIDTH, HEIGHT);
-    scroll.setContent(layout);
     return scroll;
   }
+
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
@@ -216,6 +237,7 @@ public class Map {
   }
 
   private JFXButton createZoomInButton() {
+
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
@@ -226,10 +248,15 @@ public class Map {
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
-          zoomIn(1);
+          try {
+            zoomIn(1);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         });
     return zoomInButton;
   }
+
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -285,6 +312,11 @@ public class Map {
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
           zoomOut(1);
+          try {
+            RefreshSRfromDB();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         });
     return zoomOutButton;
   }
@@ -297,8 +329,9 @@ public class Map {
       layout.setScaleY(layout.getScaleY() * 1 / (1 + amp));
     }
   }
+
   // Catch-all zoomIn method
-  private void zoomIn(double amp) {
+  private void zoomIn(double amp) throws SQLException {
     amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() < ZOOMINMAX) {
       layout.setScaleX(layout.getScaleX() * (1 + amp));
@@ -307,6 +340,7 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
+
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -344,15 +378,15 @@ public class Map {
     layout.setScaleX(.5);
     layout.setScaleY(.5);
     // TODO
+    ZoomableScrollPane scroll = createScrollPane(layout);
+    StackPane staticWrapper = new StackPane();
     layout.setOnScroll(
         new EventHandler<ScrollEvent>() {
           @Override
           public void handle(ScrollEvent event) {
-            double scrollVal = event.getDeltaY();
+            scroll.zoomNode.fireEvent(event);
           }
         });
-    ScrollPane scroll = createScrollPane(layout);
-    StackPane staticWrapper = new StackPane();
     staticWrapper
         .getChildren()
         .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
@@ -370,7 +404,8 @@ public class Map {
             PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
           }
         });
-
+    layout.setOnMouseMoved(this::closeRadialMenus);
+    System.out.println("Init Complete");
     return staticWrapper;
   }
 
@@ -406,11 +441,6 @@ public class Map {
     return newMapIcon;
   }
 
-  private static class Position {
-    double x;
-    double y;
-  }
-
   private void draggable(MapEquipmentIcon i) {
     JFXButton node = i.getButton();
     final Position startingPosition = new Position();
@@ -432,7 +462,7 @@ public class Map {
         MouseEvent.MOUSE_PRESSED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-            System.out.println("Started");
+            System.out.println("Started drag");
             for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
               dot.getImageView().setVisible(true);
             }
@@ -460,6 +490,16 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
+            try {
+              DBManager.getInstance().getEquipmentManager().update(i.getEquipment());
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+            appController.mainTabPane.getSelectionModel().select(11);
+            appController.test.requestLocation.setText(nearestLocation.getLongName());
+            appController.test.equipmentNeeded.setValue(i.equipment.getType());
+            appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
+            appController.test.datePicker.setValue(LocalDate.now());
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
@@ -472,6 +512,10 @@ public class Map {
             }
           }
           updateLayoutChildren();
+
+          for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+            rm.hide();
+          }
         });
 
     // Realize drag and drop function
@@ -479,7 +523,6 @@ public class Map {
         MouseEvent.MOUSE_DRAGGED,
         event -> {
           if (event.getButton() == MouseButton.PRIMARY) {
-
             Point2D updatedLocation =
                 layout.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
             double x = updatedLocation.getX() - MAPWIDTH / 2;
@@ -496,20 +539,14 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       Location l = dot.getLocation();
       double d = dot.getDistanceToLocation(x, y);
-      System.out.println("Testing location: " + dot.getLocation().getShortName());
       if (d < closestDistance) {
-        System.out.println("Found new closest location.");
         closestDistance = d;
         closestLocation = l;
       }
     }
     if (closestDistance > 50) {
-      System.out.println("Not close enough to snap.");
       return null;
     }
-    System.out.println("Closest Location:");
-    System.out.println(closestLocation.getLongName());
-    System.out.println(closestDistance);
     return closestLocation;
   }
 
@@ -527,6 +564,24 @@ public class Map {
     }
   }
 
+  public void RefreshSRfromDB() throws SQLException {
+    ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    serviceRequestsFromDB.stream()
+        .forEach(
+            serviceRequest -> {
+              if (oldSR.contains(serviceRequest)) {
+                serviceRequestsFromDB.remove(serviceRequest);
+              } else {
+                oldSR.add(serviceRequest);
+                ServiceRequestToMapElement(serviceRequest);
+              }
+            });
+  }
+
   private void locationToMapElement(Location location) {
     ImageView locationDot = new ImageView();
     locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
@@ -542,5 +597,99 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+  }
+
+  private void ServiceRequestToMapElement(ServiceRequest SR) {
+    double X = SR.getLocation().getX() - MAPWIDTH / 2;
+    double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
+    MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
+    newIcon.addToList(ActiveSRByFloor.get(currFloor));
+    newIcon.startTimer(60);
+    updateLayoutChildren();
+  }
+
+  private void createNewRadialMenus() {
+    System.out.println("Creating radial menus...");
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      List<MapEquipmentIcon> mapEquipmentIconsAtLocation = new LinkedList<>();
+      for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+        Equipment e = i.getEquipment();
+        if (e.getLocation().equalsByName(dot.getLocation())) {
+          mapEquipmentIconsAtLocation.add(i);
+        }
+      }
+
+      // If there's more than 1 equipment per location, create a radial menu.
+      if (mapEquipmentIconsAtLocation.size() > 1) {
+        System.out.println("Equipment sharing location!");
+        RadialEquipmentMenu r = new RadialEquipmentMenu(mapEquipmentIconsAtLocation);
+        // Make sure we don't already have this radial menu:
+        boolean found = false;
+        for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+          if (r.toString().equals(rm.toString())) {
+            found = true;
+          }
+        }
+        if (!found) {
+          System.out.println("New radial menu detected— adding to HashMap...");
+          radialMenusByFloor.get(currFloor).add(r);
+        }
+      }
+    }
+
+    // Put on map
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.hideIndividualIcons();
+      rm.place(MAPWIDTH, MAPHEIGHT);
+    }
+  }
+
+  private void closeRadialMenus(MouseEvent e) {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));
+      double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());
+      if (distance > rm.getRadius()) {
+        rm.hide();
+      }
+    }
+  }
+
+  private void updateRadialMenus() {
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      if (!rm.getIcons().isEmpty()) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {
+            rm.removeEquipmentIcon(i);
+          }
+        }
+      }
+
+      if (rm.getIcons().size() < 2) {
+        for (MapEquipmentIcon i : rm.getIcons()) {
+          i.getButton().setVisible(true);
+        }
+        radialMenusByFloor.get(currFloor).remove(rm);
+        rm.kill();
+      }
+    }
+  }
+
+  // This is the longest method name I will tolerate. Do not do this.
+  private void showEquipmentRemovedFromRadialMenus() {
+    LinkedList<MapEquipmentIcon> iconsInMenus = new LinkedList<>();
+    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+      rm.getButton().setVisible(true);
+      iconsInMenus.addAll(rm.getIcons());
+    }
+    for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {
+      if (!i.getButton().isVisible() && !iconsInMenus.contains(i)) {
+        i.getButton().setVisible(true);
+      }
+    }
+  }
+
+  private static class Position {
+    double x;
+    double y;
   }
 }

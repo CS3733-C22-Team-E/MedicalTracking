@@ -23,6 +23,7 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
   private Parent tabPage;
   private String tabName;
   private Image tabIcon;
+  public Object controller;
 
   public StyledTab(String name, SortOrder order, Parent page) throws IOException {
     tabPageUrl = null;
@@ -36,8 +37,11 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     tabPageUrl = pageUrl;
     tabOrder = order;
     tabName = name;
-    System.out.println(tabPageUrl);
-    tabPage = new FXMLLoader(App.class.getResource(tabPageUrl)).load();
+    FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));
+    tabPage = loader.load();
+    if (name != "Service Request Backlog" || name != "Home" || name != "Hospital Map") {
+      controller = loader.getController();
+    }
     setUpTab();
   }
 
