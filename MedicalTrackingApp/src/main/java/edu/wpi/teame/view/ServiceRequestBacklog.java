@@ -26,6 +26,7 @@ public class ServiceRequestBacklog {
   public ServiceRequestBacklog(double width, double height) throws SQLException {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
+    scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
   }
 
   public static void main(String[] args) {
@@ -43,10 +44,13 @@ public class ServiceRequestBacklog {
     serviceRequestsFromDB.clear();
     getSecurityRequests();
     System.out.println("getBacklogScene");
+    scrollWrapper.setContent(getRequestHolder());
+    return scrollWrapper;
+  }
+
+  public GridPane getRequestHolder() {
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
-    scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    scrollWrapper.setContent(requestHolder);
     cardsDisplayed.clear();
     for (ServiceRequest sr : serviceRequestsFromDB) {
       ServiceRequestCard card = new ServiceRequestCard(sr, this);
@@ -54,7 +58,7 @@ public class ServiceRequestBacklog {
           "John Doe"); // TODO make name a field in SR and have it set in card automatically
       addServiceRequestCard(card, requestHolder);
     }
-    return scrollWrapper;
+    return requestHolder;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
@@ -64,5 +68,8 @@ public class ServiceRequestBacklog {
   }
 
   // TODO Fix this method. Checkbox doesn't do anything yet
-  public void removeServiceRequest() {}
+  public void removeServiceRequest(int id) {
+    serviceRequestsFromDB.removeIf(sr -> sr.getId() == id);
+    scrollWrapper.setContent(getRequestHolder());
+  }
 }

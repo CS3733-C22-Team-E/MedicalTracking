@@ -144,7 +144,7 @@ public class ServiceRequestCard {
   }
 
   private void deleteRequest(ServiceRequestBacklog b) {
-    // TODO Implement this method
+    b.removeServiceRequest(this.sr.getId());
   }
 
   public void setPatientName(String patientName) {
