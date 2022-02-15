@@ -13,9 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ServiceRequest implements ISQLSerializable {
+  protected DataBaseObjectType dbType;
   protected ServiceRequestPriority priority;
   protected ServiceRequestStatus status;
-  protected DataBaseObjectType dbType;
   protected String additionalInfo;
   protected Employee assignee;
   protected Location location;
