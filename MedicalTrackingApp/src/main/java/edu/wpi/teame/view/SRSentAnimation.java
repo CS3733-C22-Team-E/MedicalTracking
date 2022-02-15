@@ -1,6 +1,7 @@
 package edu.wpi.teame.view;
 
 import edu.wpi.teame.App;
+import java.util.Objects;
 import javafx.animation.FadeTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -17,8 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.util.Objects;
 
 public class SRSentAnimation {
 
@@ -43,12 +42,18 @@ public class SRSentAnimation {
     sentText.setOpacity(0);
 
     ImageView wheel =
-        new ImageView(new Image(Objects.requireNonNull(App.class.getResource("images/icons/LoadingWheel.png")).toString()));
+        new ImageView(
+            new Image(
+                Objects.requireNonNull(App.class.getResource("images/icons/LoadingWheel.png"))
+                    .toString()));
     wheel.setFitWidth(100);
     wheel.setFitHeight(100);
 
     ImageView rocket =
-        new ImageView(new Image(Objects.requireNonNull(App.class.getResource("images/icons/Rocket.png")).toString()));
+        new ImageView(
+            new Image(
+                Objects.requireNonNull(App.class.getResource("images/icons/Rocket.png"))
+                    .toString()));
     rocket.setFitWidth(100);
     rocket.setFitHeight(100);
     rocket.setOpacity(0);
