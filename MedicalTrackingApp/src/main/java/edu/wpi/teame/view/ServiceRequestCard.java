@@ -57,27 +57,7 @@ public class ServiceRequestCard {
     card.getChildren().add(titleAndDescription);
     createSpacer(card);
 
-    GridPane detailsGrid = new GridPane();
-    detailsGrid.setAlignment(Pos.CENTER);
-    detailsGrid.setHgap(20);
-    detailsGrid.add(generateDetailText("Patient Name: "), 2, 0);
-    detailsGrid.add(getSeparatorH(), 2, 1);
-    detailsGrid.add(generateDetailText("Location: "), 2, 2);
-    detailsGrid.add(getSeparatorH(), 2, 3);
-    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
-    detailsGrid.add(getSeparatorH(), 2, 5);
-    detailsGrid.add(generateDetailText("Status: "), 2, 6);
-    detailsGrid.add(getSeparatorH(), 2, 7);
-
-    detailsGrid.add(generateDetailText(patientName), 3, 0);
-    detailsGrid.add(getSeparatorH(), 3, 1);
-    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
-    detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
-    detailsGrid.add(getSeparatorH(), 3, 5);
-    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
-    detailsGrid.add(getSeparatorH(), 3, 7);
-    card.getChildren().add(detailsGrid);
+    card.getChildren().add(getDetailGrid());
     createSpacer(card);
 
     card.setAlignment(Pos.CENTER_RIGHT);
@@ -108,7 +88,6 @@ public class ServiceRequestCard {
     return textBox;
   }
 
-  // Commit
   private JFXCheckBox getDoneCheckbox() {
     JFXCheckBox doneBox = new JFXCheckBox();
     doneBox.setCheckedColor(Color.LIGHTBLUE);
@@ -122,8 +101,7 @@ public class ServiceRequestCard {
   }
 
   private Text getDescriptionText() {
-    Text descriptionText = new Text(sr.getLocation().getLongName());
-    // TODO This will be SR Description field in future ^
+    Text descriptionText = new Text(sr.getDBType().getDescription());
     descriptionText.setFont(Font.font("Arial", 12));
     descriptionText.setFill(Color.DARKGRAY);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
@@ -186,5 +164,30 @@ public class ServiceRequestCard {
 
   private Color getServiceRequestColor() {
     return this.sr.getDBType().getColor();
+  }
+
+  private GridPane getDetailGrid() {
+    GridPane detailsGrid = new GridPane();
+    detailsGrid.setAlignment(Pos.CENTER);
+    detailsGrid.setHgap(20);
+    detailsGrid.add(generateDetailText("Assignee: "), 2, 0);
+    detailsGrid.add(getSeparatorH(), 2, 1);
+    detailsGrid.add(generateDetailText("Location: "), 2, 2);
+    detailsGrid.add(getSeparatorH(), 2, 3);
+    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
+    detailsGrid.add(getSeparatorH(), 2, 5);
+    detailsGrid.add(generateDetailText("Status: "), 2, 6);
+    detailsGrid.add(getSeparatorH(), 2, 7);
+
+    detailsGrid.add(generateDetailText(sr.getAssignee().getName()), 3, 0);
+    detailsGrid.add(getSeparatorH(), 3, 1);
+    detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
+    detailsGrid.add(getSeparatorH(), 3, 3);
+    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
+    detailsGrid.add(getSeparatorH(), 3, 5);
+    detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
+    detailsGrid.add(getSeparatorH(), 3, 7);
+
+    return detailsGrid;
   }
 }

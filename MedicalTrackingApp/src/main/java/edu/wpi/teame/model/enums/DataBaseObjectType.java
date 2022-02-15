@@ -142,4 +142,45 @@ public enum DataBaseObjectType {
     }
     return null;
   }
+
+  public String getDescription() {
+    String s = "Fulfil a";
+    switch (this) {
+      case AudioVisualSR:
+        s += "n Audio/Visual Service Request";
+      case ComputerSR:
+        s += " Computer Service Request";
+      case FoodDeliverySR:
+        s += " Food Delivery Service Request";
+      case GiftAndFloralSR:
+        s += " Gift/Floral Delivery Service Request";
+      case ExternalPatientSR:
+        s += "n External Patient Transportation Service Request";
+      case LanguageInterpreterSR:
+        s += " Language Interpreter Service Request";
+      case InternalPatientTransferSR:
+        s += "n Internal Patient Transportation Service Request";
+      case LaundrySR:
+        s += " Laundry Service Request";
+      case SecuritySR:
+        s += " Security Service Request";
+      case ReligiousSR:
+        s += " Religious Service Request";
+      case SanitationSR:
+        s += " Sanitation Service Request";
+      case MedicalEquipmentSR:
+        s += " Medical Equipment Delivery Service Request";
+      case MedicineDeliverySR:
+        s += " Medicine Delivery Service Request";
+      case FacilitiesMaintenanceSR:
+        s += " Facilities Maintenance Service Request";
+      case Employee:
+        return "This is an employee.";
+      case Location:
+        return "This is a location.";
+      case Equipment:
+        return "This is an equipment.";
+    }
+    return s + " at the requested location.";
+  }
 }
