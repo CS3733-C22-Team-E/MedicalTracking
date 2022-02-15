@@ -201,7 +201,7 @@ public class LandingPageController implements Initializable {
         url += "NewExternalPatientTransportation";
         break;
       case SanitationSR:
-        url += "Sanitation";
+        url += "NewSanitation";
         break;
       default:
         return null;

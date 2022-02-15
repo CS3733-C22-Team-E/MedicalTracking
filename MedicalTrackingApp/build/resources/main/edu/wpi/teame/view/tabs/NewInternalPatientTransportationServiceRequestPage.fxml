@@ -24,9 +24,9 @@
         <rowConstraints>
           <RowConstraints maxHeight="60.809329986572266" minHeight="10.0" prefHeight="51.97693634033203" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="59.49718475341797" minHeight="10.0" prefHeight="38.52306365966797" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="56.47694396972656" minHeight="10.0" prefHeight="43.27165222167969" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="57.289085388183594" minHeight="10.0" prefHeight="42.91619873046875" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="63.20527648925781" minHeight="10.0" prefHeight="42.08380126953125" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="56.47694396972656" minHeight="10.0" prefHeight="43.27165222167969" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="74.53767395019531" minHeight="10.0" prefHeight="48.77165222167969" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="77.95388793945312" minHeight="10.0" prefHeight="48.875701904296875" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="77.95388793945312" minHeight="10.0" prefHeight="48.355438232421875" vgrow="SOMETIMES" />
@@ -41,12 +41,12 @@
                   <Font size="24.0" />
                </font>
             </Text>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Request Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -56,7 +56,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <DatePicker fx:id="requestDate" prefHeight="26.0" prefWidth="490.0" promptText="Choose request date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <DatePicker fx:id="requestDate" prefHeight="26.0" prefWidth="490.0" promptText="Choose request date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -81,7 +81,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Destination:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Destination:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
@@ -106,12 +106,12 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <JFXComboBox fx:id="locationDropdown" prefHeight="26.0" prefWidth="365.0" promptText="Choose patient location..." GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <JFXComboBox fx:id="locationDropdown" prefHeight="26.0" prefWidth="365.0" promptText="Choose patient location..." GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="destinationDropdown" prefHeight="26.0" prefWidth="365.0" promptText="Choose destination..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <JFXComboBox fx:id="destinationDropdown" prefHeight="26.0" prefWidth="365.0" promptText="Choose destination..." styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
