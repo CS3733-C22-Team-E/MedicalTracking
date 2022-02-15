@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
@@ -26,6 +27,9 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
+  @FXML private TextField patientName;
+  @FXML private TextField medicineName;
+  @FXML private TextField medicineQuantity;
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
@@ -64,6 +68,27 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
     status
         .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    medicineName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    medicineQuantity
+        .onActionProperty()
         .addListener(
             listener -> {
               validateSubmitButton();
@@ -119,7 +144,10 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty()
+            || medicineName.getText().isEmpty()
+            || medicineQuantity.getText().isEmpty());
   }
 
   public void clearText() {
@@ -130,5 +158,8 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
+    medicineName.setText("");
+    medicineQuantity.setText("");
   }
 }
