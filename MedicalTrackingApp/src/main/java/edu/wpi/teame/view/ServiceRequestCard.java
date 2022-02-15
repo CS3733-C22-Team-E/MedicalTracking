@@ -54,7 +54,7 @@ public class ServiceRequestCard {
     hoverBG = new Background(new BackgroundFill(lg2, CornerRadii.EMPTY, Insets.EMPTY));
     card.setBackground(nonHoverBG);
 
-    createSpacer(card);
+    createBookend(card, 40);
     card.getChildren().add(getDoneCheckbox());
     createSpacer(card);
 
@@ -92,7 +92,7 @@ public class ServiceRequestCard {
     detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
     card.getChildren().add(detailsGrid);
-    createSpacer(card);
+    createBookend(card, 40);
 
     card.setAlignment(Pos.CENTER_RIGHT);
     card.setPrefSize(width, height);
@@ -185,6 +185,16 @@ public class ServiceRequestCard {
     final Region spacer = new Region();
     // Make it always grow or shrink according to the available space
     HBox.setHgrow(spacer, Priority.ALWAYS);
+    c.getChildren().add(spacer);
+  }
+
+  private void createBookend(HBox c, double w) {
+    final Region spacer = new Region();
+    // Make it always grow or shrink according to the available space
+    spacer.setPrefWidth(w);
+    spacer.setMaxWidth(w);
+    spacer.setMinWidth(w);
+    HBox.setHgrow(spacer, Priority.SOMETIMES);
     c.getChildren().add(spacer);
   }
 
