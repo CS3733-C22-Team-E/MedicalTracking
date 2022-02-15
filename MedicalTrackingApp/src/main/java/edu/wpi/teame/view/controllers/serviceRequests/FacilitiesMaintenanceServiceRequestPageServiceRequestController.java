@@ -4,10 +4,15 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,9 +36,7 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
-
-    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
     requestDate
@@ -100,15 +103,22 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    // SecurityServiceRequest serviceRequest = //TODO send to db
-    //    new SecurityServiceRequest(
-    //        ServiceRequestStatus.OPEN,
-    //        employee,
-    //        location,
-    //        new Date(0),
-    //        new Date(new java.util.Date().getTime()),
-    //        0);
-    // DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+    ServiceRequest serviceRequest =
+            new ServiceRequest(
+                    DataBaseObjectType.ComputerSR,
+                    ServiceRequestPriority.valueOf(priority.getValue().toString()),
+                    ServiceRequestStatus.valueOf(status.getValue().toString()),
+                    additionalInfo.getText(),
+                    employee,
+                    location,
+                    new Date(
+                            Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                                    .getTime()),
+                    new Date(0),
+                    new Date(new java.util.Date().getTime()),
+                    "",
+                    0);
+    DBManager.getInstance().getFacilitiesMaintenanceSRManager().insert(serviceRequest);
   }
 
   public void validateSubmitButton() {

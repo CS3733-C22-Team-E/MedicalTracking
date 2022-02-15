@@ -75,8 +75,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void remove(int id) throws SQLException {
     StringBuilder removeQuery = new StringBuilder("DELETE FROM ");
-    removeQuery.append(getTableName()).append(" WHERE id = ");
-    removeQuery.append(id).append("");
+    removeQuery.append(getTableName()).append(" WHERE id = ").append(id);
     statement.executeUpdate(removeQuery.toString());
   }
 
@@ -93,13 +92,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case ComputerSR:
+      case FacilitiesMaintenanceSR:
+      case LaundrySR:
+      case SanitationSR:
+      case SecuritySR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
         return (T) new PatientTransportationServiceRequest(false, resultSet);
-      case FacilitiesMaintenanceSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case FoodDeliverySR:
         return (T) new FoodDeliveryServiceRequest(resultSet);
       case GiftAndFloralSR:
@@ -108,18 +108,12 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new PatientTransportationServiceRequest(true, resultSet);
       case LanguageInterpreterSR:
         return (T) new LanguageInterpreterServiceRequest(resultSet);
-      case LaundrySR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case MedicalEquipmentSR:
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(resultSet);
-      case SanitationSR:
-        return (T) new ServiceRequest(resultSet, objectType);
-      case SecuritySR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case Location:
         return (T) new Location(resultSet);
       case Equipment:
