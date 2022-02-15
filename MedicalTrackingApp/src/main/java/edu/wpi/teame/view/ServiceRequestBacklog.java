@@ -41,7 +41,8 @@ public class ServiceRequestBacklog {
     serviceRequestsFromDB.addAll(DBManager.getInstance().getAudioVisualSRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getExternalPatientSRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getComputerSRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getFacilitiesMaintenanceSRManager().getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getFacilitiesMaintenanceSRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getFoodDeliverySRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getGiftAndFloralSRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getInternalPatientSRManager().getAll());
