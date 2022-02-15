@@ -15,7 +15,6 @@ import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -40,7 +39,7 @@ import javafx.stage.Screen;
 import javafx.util.Pair;
 
 public class Map {
-  private HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
+  private final HashMap<FloorType, Image> Images = new HashMap<FloorType, Image>();
   private Image backgroundImage;
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -49,17 +48,20 @@ public class Map {
   private final double ZOOMINMAX = 1.5;
   private final double ZOOMOUTMAX = .2;
   private boolean showLocationNodes = false;
-  private HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
-  private HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
-  private HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor = new HashMap<>();
-  private HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
-  private ContextMenu EquipmentClicked = new ContextMenu();
-  private ContextMenu PaneMenu = new ContextMenu();
+  private final HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
+  private final HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
+  private final HashMap<FloorType, ArrayList<RadialEquipmentMenu>> radialMenusByFloor =
+      new HashMap<>();
+  private final HashMap<EquipmentType, Image> TypeGraphics = new HashMap<EquipmentType, Image>();
+  private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor =
+      new HashMap<>();
+  private final ContextMenu EquipmentClicked = new ContextMenu();
+  private final ContextMenu PaneMenu = new ContextMenu();
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
-  private StackPane layout = new StackPane();
+  private final StackPane layout = new StackPane();
   private FloorType currFloor;
-  private LandingPageController appController;
+  private final LandingPageController appController;
 
   public Map(FloorType floor, LandingPageController app) {
     appController = app;
@@ -69,6 +71,7 @@ public class Map {
       mapIconsByFloor.put(currFloor, new ArrayList<>());
       locationsByFloor.put(currFloor, new ArrayList<>());
       radialMenusByFloor.put(currFloor, new ArrayList<>());
+      ActiveSRByFloor.put(currFloor, new ArrayList<>());
     }
     System.out.println("Loaded Maps");
     switchFloors(floor);
@@ -196,6 +199,9 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getImageView());
     }
+    for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
+      layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+    }
     updateRadialMenus();
     createNewRadialMenus();
     for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
@@ -203,6 +209,7 @@ public class Map {
     }
     showEquipmentRemovedFromRadialMenus();
   }
+
   // Init ScrollPane that holds the StackPane containing map and all icons
   private ZoomableScrollPane createScrollPane(Pane layout) {
     ZoomableScrollPane scroll = new ZoomableScrollPane(layout);
@@ -230,6 +237,7 @@ public class Map {
   }
 
   private JFXButton createZoomInButton() {
+
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
@@ -240,7 +248,11 @@ public class Map {
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
-          zoomIn(1);
+          try {
+            zoomIn(1);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         });
     return zoomInButton;
   }
@@ -299,6 +311,11 @@ public class Map {
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
           zoomOut(1);
+          try {
+            RefreshSRfromDB();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
         });
     return zoomOutButton;
   }
@@ -312,7 +329,7 @@ public class Map {
     }
   }
   // Catch-all zoomIn method
-  private void zoomIn(double amp) {
+  private void zoomIn(double amp) throws SQLException {
     amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() < ZOOMINMAX) {
       layout.setScaleX(layout.getScaleX() * (1 + amp));
@@ -321,28 +338,6 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
-    Timer refreshTimer = new Timer();
-    refreshTimer.scheduleAtFixedRate(
-        new TimerTask() {
-          @Override
-          public void run() {
-            Platform.runLater(
-                () -> {
-                  System.out.println("Refreshing DB");
-                  try {
-                    for (ServiceRequest sr : refreshDB()) {
-                      new MapServiceRequestIcon(layout, sr.getLocation(), sr.getDBType())
-                          .startTimer(60);
-                      System.out.println("Created");
-                    }
-                  } catch (SQLException e) {
-                    e.printStackTrace();
-                  }
-                });
-          }
-        },
-        0,
-        5000);
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -407,17 +402,8 @@ public class Map {
           }
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
-
+    System.out.println("Init Complete");
     return staticWrapper;
-  }
-
-  private ArrayList<ServiceRequest> refreshDB() throws SQLException {
-    ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
-    return serviceRequestsFromDB;
   }
 
   private MapEquipmentIcon addEquipmentToMap(Equipment equipment) {
@@ -576,6 +562,26 @@ public class Map {
     }
   }
 
+  private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
+
+  public void RefreshSRfromDB() throws SQLException {
+    ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
+    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    serviceRequestsFromDB.stream()
+        .forEach(
+            serviceRequest -> {
+              if (oldSR.contains(serviceRequest)) {
+                serviceRequestsFromDB.remove(serviceRequest);
+              } else {
+                oldSR.add(serviceRequest);
+                ServiceRequestToMapElement(serviceRequest);
+              }
+            });
+  }
+
   private void locationToMapElement(Location location) {
     ImageView locationDot = new ImageView();
     locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
@@ -590,6 +596,16 @@ public class Map {
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
+    updateLayoutChildren();
+  }
+
+  private void ServiceRequestToMapElement(ServiceRequest SR) {
+    double X = SR.getLocation().getX() - MAPWIDTH / 2;
+    double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
+    MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
+    ActiveSRByFloor.get(currFloor).add(newIcon);
+    newIcon.addToList(ActiveSRByFloor.get(currFloor));
+    newIcon.startTimer(60);
     updateLayoutChildren();
   }
 

@@ -1,23 +1,25 @@
 package edu.wpi.teame.view;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.model.Location;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 public class MapServiceRequestIcon {
   Timer timer;
   FillProgressIndicator progressIndicator;
   ImageView Icon;
-  Pane onPane;
+  ServiceRequest SR;
+  ArrayList<MapServiceRequestIcon> attachedTo;
   static HashMap<DataBaseObjectType, ImageView> Graphics =
       new HashMap<DataBaseObjectType, ImageView>();
 
@@ -120,39 +122,59 @@ public class MapServiceRequestIcon {
                     .getResource("images/Icons/ServiceRequestIcons/Sanitation.png")
                     .toString())));
   }
+  //
+  //  public MapServiceRequestIcon(
+  //      Pane pane,
+  //      double X,
+  //      double Y,
+  //      DataBaseObjectType SRType,
+  //      ServiceRequest sr,
+  //      ArrayList<MapServiceRequestIcon> list) {
+  //    onList = list;
+  //    SR = sr;
+  //    this.timer = new Timer();
+  //    progressIndicator = new FillProgressIndicator();
+  //    progressIndicator.setProgress(0);
+  //    Icon = Graphics.get(SRType);
+  //    Icon.setTranslateX(X);
+  //    Icon.setTranslateY(Y);
+  //    Icon.setFitHeight(35);
+  //    Icon.setFitWidth(35);
+  //    progressIndicator.setTranslateX(X);
+  //    progressIndicator.setTranslateY(Y);
+  //    pane.getChildren().addAll(progressIndicator, Icon);
+  //    onPane = pane;
+  //    System.out.println("Added");
+  //  }
+  //
+  //  public MapServiceRequestIcon(
+  //      Pane pane,
+  //      Location onLocation,
+  //      DataBaseObjectType SRType,
+  //      ServiceRequest sr,
+  //      ArrayList<MapServiceRequestIcon> list,
+  //      double mapWidth,
+  //      double mapHeight) {
+  //    onList = list;
+  //    SR = sr;
+  //    this.timer = new Timer();
+  //    progressIndicator = new FillProgressIndicator();
+  //    progressIndicator.setProgress(0);
+  //    Icon = Graphics.get(SRType);
+  //    double X = onLocation.getX() - mapWidth / 2;
+  //    double Y = onLocation.getY() - mapHeight / 2;
+  //    Icon.setTranslateX(X);
+  //    Icon.setTranslateY(Y);
+  //    Icon.setFitHeight(35);
+  //    Icon.setFitWidth(35);
+  //    progressIndicator.setTranslateX(X);
+  //    progressIndicator.setTranslateY(Y);
+  //    pane.getChildren().addAll(progressIndicator, Icon);
+  //    onPane = pane;
+  //    System.out.println("Added");
+  //  }
 
-  public MapServiceRequestIcon(Pane pane, double X, double Y, DataBaseObjectType SRType) {
-    this.timer = new Timer();
-    progressIndicator = new FillProgressIndicator();
-    progressIndicator.setProgress(0);
-    Icon = Graphics.get(SRType);
-    Icon.setTranslateX(X);
-    Icon.setTranslateY(Y);
-    Icon.setFitHeight(35);
-    Icon.setFitWidth(35);
-    progressIndicator.setTranslateX(X);
-    progressIndicator.setTranslateY(Y);
-    pane.getChildren().addAll(progressIndicator, Icon);
-    onPane = pane;
-  }
-
-  public MapServiceRequestIcon(Pane pane, Location location, DataBaseObjectType SRType) {
-    this.timer = new Timer();
-    progressIndicator = new FillProgressIndicator();
-    progressIndicator.setProgress(0);
-    Icon = Graphics.get(SRType);
-    Icon.setTranslateX(location.getX());
-    Icon.setTranslateY(location.getY());
-    Icon.setFitHeight(35);
-    Icon.setFitWidth(35);
-    Tooltip.install(Icon, new Tooltip(location.getShortName()));
-    progressIndicator.setTranslateX(location.getX());
-    progressIndicator.setTranslateY(location.getY());
-    pane.getChildren().addAll(progressIndicator, Icon);
-    onPane = pane;
-  }
-
-  public void startTimer(int seconds) {
+  public MapServiceRequestIcon startTimer(int seconds) {
     timer.scheduleAtFixedRate(
         new TimerTask() {
           @Override
@@ -163,21 +185,48 @@ public class MapServiceRequestIcon {
                   if (progressIndicator.getProgress() >= 100) {
                     progressIndicator.setVisible(false);
                     Icon.setVisible(false);
-                    onPane.getChildren().removeAll(progressIndicator, Icon);
+                    attachedTo.remove(this);
+                    try {
+                      DBManager.getInstance().getSanitationSRManager().remove(SR.getId());
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                    }
                   }
                 });
           }
         },
         0,
         (int) (seconds * 10));
+    return this;
+  }
+
+  public MapServiceRequestIcon(ServiceRequest SR_, double TranslateX, double TranslateY) {
+    timer = new Timer();
+    progressIndicator = new FillProgressIndicator();
+    Icon = Graphics.get(SR_.getDBType());
+    SR = SR_;
+    this.setTranslateXandY(TranslateX, TranslateY);
+    Icon.setFitWidth(35);
+    Icon.setFitHeight(35);
+  }
+
+  public void setTranslateXandY(double Tx, double Ty) {
+    Icon.setTranslateX(Tx);
+    Icon.setTranslateY(Ty);
+    progressIndicator.setTranslateX(Tx);
+    progressIndicator.setTranslateY(Ty);
   }
 
   public void setTimerTask(TimerTask timerTask, int seconds) {
     timer.cancel();
-    timer.scheduleAtFixedRate(timerTask, 0, seconds);
+    timer.scheduleAtFixedRate(timerTask, 0, seconds * 1000);
   }
 
   public void cancelTimer() {
     timer.cancel();
+  }
+
+  public void addToList(ArrayList<MapServiceRequestIcon> SRList) {
+    attachedTo = SRList;
   }
 }
