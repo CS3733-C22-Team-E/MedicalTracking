@@ -5,6 +5,7 @@ import static javafx.application.Application.launch;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.scene.Parent;
@@ -50,7 +51,13 @@ public class ServiceRequestBacklog {
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
-    //serviceRequestsFromDB.sort(super.getDateCreated()); // TODO sort by date created. I need this from DB
+    serviceRequestsFromDB.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            return serviceRequest.getOpenDate().compareTo(t1.getOpenDate());
+          }
+        });
     for (ServiceRequest sr : serviceRequestsFromDB) {
       ServiceRequestCard card = new ServiceRequestCard(sr, this);
       card.setPatientName(
