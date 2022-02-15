@@ -18,9 +18,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 public class SRSentAnimation {
 
-  private StackPane stackPane;
+  private final StackPane stackPane;
 
   public SRSentAnimation() {
     stackPane = new StackPane();
@@ -41,12 +43,12 @@ public class SRSentAnimation {
     sentText.setOpacity(0);
 
     ImageView wheel =
-        new ImageView(new Image(App.class.getResource("images/icons/LoadingWheel.png").toString()));
+        new ImageView(new Image(Objects.requireNonNull(App.class.getResource("images/icons/LoadingWheel.png")).toString()));
     wheel.setFitWidth(100);
     wheel.setFitHeight(100);
 
     ImageView rocket =
-        new ImageView(new Image(App.class.getResource("images/icons/Rocket.png").toString()));
+        new ImageView(new Image(Objects.requireNonNull(App.class.getResource("images/icons/Rocket.png")).toString()));
     rocket.setFitWidth(100);
     rocket.setFitHeight(100);
     rocket.setOpacity(0);
