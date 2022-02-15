@@ -4,12 +4,12 @@ import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -19,56 +19,34 @@ import javafx.scene.text.TextAlignment;
 
 public class ServiceRequestCard {
 
-  private int hexColor;
-
   // Styling
-  private Color BORDERCOLOR = Color.GREEN;
-  private int BORDERRADIUS = 10;
-  private int BORDERWIDTH = 5;
-  private Border BORDER =
-      new Border(
-          new BorderStroke(
-              BORDERCOLOR,
-              BorderStrokeStyle.SOLID,
-              new CornerRadii(BORDERRADIUS),
-              new BorderWidths(BORDERWIDTH)));
-
-  private Color BORDERHOVERCOLOR = Color.BLUE;
-  private Border HOVERBOARDER =
-      new Border(
-          new BorderStroke(
-              BORDERHOVERCOLOR,
-              BorderStrokeStyle.SOLID,
-              new CornerRadii(BORDERRADIUS),
-              new BorderWidths(BORDERWIDTH)));
+  private final int BORDERRADIUS = 10;
 
   // Details
-  private ServiceRequestBacklog backlog;
+  private final ServiceRequestBacklog backlog;
   private String patientName;
   private Location location;
   private final ServiceRequest sr;
+  private final Color color;
 
-  public ServiceRequestCard(ServiceRequest serviceRequest, int SRColor, ServiceRequestBacklog b) {
+  public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
     sr = serviceRequest;
-    hexColor = SRColor;
     backlog = b;
-
+    color = getServiceRequestColor();
     location = sr.getLocation();
   }
 
-  // TODO Cards are displayed with wrong width
-  // TODO Cards are displayed with funky internal spacing (Squished!)
   public HBox getCard(double width, double height) {
     // Setup grid
     HBox card = new HBox();
-    card.setBorder(BORDER);
+    card.setEffect(new DropShadow(5, color));
     card.setBackground(
         new Background(
             new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-    card.setPrefSize(width, height);
-    setHoverStyling(card);
 
+    createSpacer(card);
     card.getChildren().add(getDoneCheckbox());
+    createSpacer(card);
 
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
@@ -76,6 +54,7 @@ public class ServiceRequestCard {
     titleAndDescription.add(getSeparatorH(), 0, 1);
     titleAndDescription.add(getDescriptionText(), 0, 2);
     card.getChildren().add(titleAndDescription);
+    createSpacer(card);
 
     GridPane detailsGrid = new GridPane();
     detailsGrid.setAlignment(Pos.CENTER);
@@ -97,9 +76,13 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 5);
     detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
-
     card.getChildren().add(detailsGrid);
+    createSpacer(card);
 
+    card.setAlignment(Pos.CENTER_RIGHT);
+    card.setPrefSize(width, height);
+    card.setFillHeight(false);
+    setHoverStyling(card);
     return card;
   }
 
@@ -111,11 +94,17 @@ public class ServiceRequestCard {
     return detailText;
   }
 
-  private Text getTitleText() {
-    Text titleText = new Text(sr.getDBType().toString());
+  private HBox getTitleText() {
+    HBox textBox = new HBox();
+    Text titleText = new Text(sr.getDBType().shortName());
     titleText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-    titleText.setTextAlignment(TextAlignment.CENTER);
-    return titleText;
+    textBox.getChildren().add(titleText);
+    Text srText = new Text(" Service Request");
+    srText.setFont(Font.font("Arial", 12));
+    srText.setFill(Color.LIGHTGRAY);
+    textBox.getChildren().add(srText);
+    textBox.setAlignment(Pos.BASELINE_CENTER);
+    return textBox;
   }
 
   // Commit
@@ -123,14 +112,9 @@ public class ServiceRequestCard {
     JFXCheckBox doneBox = new JFXCheckBox();
     doneBox.setCheckedColor(Color.LIGHTBLUE);
     doneBox.setCheckedColor(Color.LIGHTGRAY);
-    doneBox.setAlignment(Pos.CENTER_LEFT);
     doneBox.setScaleX(2);
     doneBox.setScaleY(2);
-    doneBox.setPadding(new Insets(40, 40, 40, 40));
-    doneBox.setOnMouseClicked(
-        (event -> {
-          deleteRequest(backlog);
-        }));
+    doneBox.setOnMouseClicked((event -> deleteRequest(backlog)));
     Tooltip t = new Tooltip("Click to delete");
     Tooltip.install(doneBox, t);
     return doneBox;
@@ -154,7 +138,7 @@ public class ServiceRequestCard {
   }
 
   private void deleteRequest(ServiceRequestBacklog b) {
-    // TODO Implement this method
+    b.removeServiceRequest(this.sr.getId());
   }
 
   public void setPatientName(String patientName) {
@@ -175,24 +159,31 @@ public class ServiceRequestCard {
 
   private void setHoverStyling(HBox c) {
     c.setOnMouseEntered(
-        e -> {
-          c.setBorder(HOVERBOARDER);
-          c.setBackground(
-              new Background(
-                  new BackgroundFill(
-                      Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-        });
+        e ->
+            c.setBackground(
+                new Background(
+                    new BackgroundFill(
+                        Color.LIGHTGRAY, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
 
     c.setOnMouseExited(
-        e -> {
-          c.setBorder(BORDER);
-          c.setBackground(
-              new Background(
-                  new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY)));
-        });
+        e ->
+            c.setBackground(
+                new Background(
+                    new BackgroundFill(Color.WHITE, new CornerRadii(BORDERRADIUS), Insets.EMPTY))));
   }
 
   public ServiceRequest getServiceRequest() {
     return this.sr;
+  }
+
+  private void createSpacer(HBox c) {
+    final Region spacer = new Region();
+    // Make it always grow or shrink according to the available space
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    c.getChildren().add(spacer);
+  }
+
+  private Color getServiceRequestColor() {
+    return this.sr.getDBType().getColor();
   }
 }

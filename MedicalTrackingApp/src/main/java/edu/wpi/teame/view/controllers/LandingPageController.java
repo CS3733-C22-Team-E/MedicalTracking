@@ -46,7 +46,7 @@ public class LandingPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
 
-    Map mapView = new Map(FloorType.ThirdFloor);
+    Map mapView = new Map(FloorType.ThirdFloor, this);
     StyledTab mapTab =
         new StyledTab(
             "Hospital Map",
@@ -67,8 +67,8 @@ public class LandingPageController implements Initializable {
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
-            Screen.getPrimary().getBounds().getWidth() - tabContentWidth,
-            Screen.getPrimary().getBounds().getHeight() - tabContentHeight);
+            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,
+            Screen.getPrimary().getBounds().getHeight());
     StyledTab backlogTab =
         new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
     backlogTab.setOnSelectionChanged(

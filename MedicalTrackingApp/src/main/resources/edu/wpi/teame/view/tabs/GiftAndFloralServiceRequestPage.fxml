@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -12,133 +13,116 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.GiftAndFloralDeliveryServiceRequestPageServiceRequestController">
-    <children>
-      <GridPane alignment="CENTER" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updateFromDB" prefHeight="580.0" prefWidth="800.0" styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.GiftAndFloralDeliveryServiceRequestPageServiceRequestController">   <children>
+    <GridPane layoutX="6.0" layoutY="6.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="52.60001220703123" minHeight="0.0" prefHeight="44.5" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-         <children>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Gift/Floral Delivery Request" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font>
+        <children>
+            <Text fill="#17ccec" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Gift/Floral Service Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                <font>
+                    <Font size="24.0" />
+                </font>
             </Text>
-              <JFXButton fx:id="sendButton" buttonType="RAISED" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Floor:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+            <Text fill="#fcd8d8" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Request Date:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin></Text>
+            <Text fill="#e7c7c7" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Additional Info:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin>
+            </Text>
+            <Text fill="#dccdcd" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Location:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin></Text>
+            <Text fill="#e1a9a9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Assignee:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin></Text>
+            <Text fill="#e1abab" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Priority: " GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin></Text>
+            <Text fill="#f7bfbf" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                <GridPane.margin>
+                    <Insets right="10.0" />
+                </GridPane.margin>
+            </Text>
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Button>
+            <Button fx:id="submitButton" disable="true" mnemonicParsing="false" onAction="#sendToDB" text="Submit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Button>
+            <TextArea fx:id="additionalInfo" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="247.0" promptText="Add any additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </GridPane.margin>
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+            </TextArea>
+            <DatePicker fx:id="requestDate" editable="false" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="527.0" promptText="Choose a request date..." styleClass="calendar-picker" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </DatePicker>
+            <AutoCompleteTextField fx:id="locationText" promptText="Enter a location..." GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
+                </GridPane.margin>
+            </AutoCompleteTextField>
+            <AutoCompleteTextField fx:id="assignee" promptText="Enter an assignee..." styleClass="jfx-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
+                </GridPane.margin>
+            </AutoCompleteTextField>
+            <JFXComboBox fx:id="priority" prefHeight="26.0" prefWidth="569.0" promptText="  Choose priority..." GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </JFXComboBox>
+            <JFXComboBox fx:id="status" prefHeight="26.0" prefWidth="569.0" promptText="  Choose status..." GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <GridPane.margin>
+                    <Insets left="10.0" right="10.0" />
+                </GridPane.margin>
+            </JFXComboBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Patient Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-              <TextField fx:id="floorTextBox" promptText="Enter patient floor..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="patientName" prefHeight="26.0" prefWidth="324.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Room Number:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Text>
-              <TextField fx:id="roomTextBox" promptText="Enter patient room number..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-              <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Patient Name: " GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Text>
-              <TextField fx:id="patientNameTextBox" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
-            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                    <CheckBox fx:id="fragileCheckbox" mnemonicParsing="false" text="Fragile? (Y/N)">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </CheckBox>
-                    <CheckBox fx:id="scheduleCheckbox" mnemonicParsing="false" onAction="#ScheduleCallBack" text="Deliver at a later time/date?" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </CheckBox>
-               </children>
-            </GridPane>
-            <GridPane fx:id="deliveryGridPaneRight" prefHeight="60.0" prefWidth="418.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                      <TextField fx:id="deliveryTimeTextbox" promptText="Enter deliver time..." styleClass="text-box">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </TextField>
-                      <DatePicker fx:id="deliveryDateDatebox" promptText="Choose delivery date..." styleClass="calendar-picker" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </DatePicker>
-               </children>
-            </GridPane>
-            <GridPane fx:id="deliveryGridPaneLeft" visible="false" GridPane.rowIndex="5">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                      <Text fx:id="deliveryTimeText" disable="true" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Delivery Time:" GridPane.halignment="RIGHT">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Text>
-                      <Text fx:id="deliveryDateText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Delivery Date" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets right="10.0" />
-                     </GridPane.margin>
-                  </Text>
-               </children>
-            </GridPane>
-            <JFXButton fx:id="clearButton" buttonType="RAISED" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="5">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </JFXButton>
-         </children>
-      </GridPane>
-    </children>
+        </children>
+    </GridPane>
+</children>
 </AnchorPane>

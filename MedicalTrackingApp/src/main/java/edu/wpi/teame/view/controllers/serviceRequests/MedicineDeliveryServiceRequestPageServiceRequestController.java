@@ -1,45 +1,98 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-
-  @FXML public JFXButton sendButton;
-  @FXML public JFXButton clearButton;
-
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
   @FXML private TextField patientName;
-  @FXML private TextField medicineRequested;
-  @FXML private TextField timeNeeded;
-
-  @FXML private DatePicker datePicker;
-
-  @FXML public JFXCheckBox completed;
-
-  @FXML public JFXComboBox serviceLocation;
-  @FXML public JFXComboBox serviceAssignee;
+  @FXML private TextField medicineName;
+  @FXML private TextField medicineQuantity;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
   private boolean hasRun = false;
 
-  @FXML
-  public void initialize(URL location, ResourceBundle resources) {}
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    // TODO: Change priority comboBox to actual values
+
+    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
+
+    requestDate
+        .valueProperty()
+        .addListener(
+            (listener) -> {
+              validateSubmitButton();
+            });
+
+    locationText.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    assignee.setOnMousePressed(
+        listener -> {
+          validateSubmitButton();
+        });
+
+    priority
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    status
+        .valueProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    medicineName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
+    medicineQuantity
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+  }
 
   @FXML
   public void updateFromDB() throws SQLException {
@@ -62,8 +115,8 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
       employeeNames.add(emp.getName());
     }
 
-    serviceLocation.setItems(FXCollections.observableArrayList(locationNames));
-    serviceAssignee.setItems(FXCollections.observableArrayList(employeeNames));
+    locationText.getEntries().addAll(locationNames);
+    assignee.getEntries().addAll(employeeNames);
   }
 
   @FXML
@@ -76,7 +129,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
 
     List<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
+            DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
       System.out.println(serviceReq);
     }
@@ -96,15 +149,28 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     //    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
   }
 
-  @FXML
-  private void clearText() {
+    public void validateSubmitButton() {
+    submitButton.setDisable(
+        requestDate.getValue() == null
+            || locationText.getEntries() == null
+            || assignee.getEntries() == null
+            || priority.getValue() == null
+            || status.getValue() == null
+            || patientName.getText().isEmpty()
+            || medicineName.getText().isEmpty()
+            || medicineQuantity.getText().isEmpty());
+  }
+
+  public void clearText() {
+    additionalInfo.setText("");
+    locationText.setText("");
+    assignee.setText("");
+    requestDate.setValue(null);
+    requestDate.getEditor().clear();
+    priority.valueProperty().setValue(null);
+    status.valueProperty().setValue(null);
     patientName.setText("");
-    medicineRequested.setText("");
-    timeNeeded.setText("");
-    datePicker.setValue(null);
-    datePicker.getEditor().clear();
-    serviceLocation.valueProperty().set(null);
-    serviceAssignee.valueProperty().set(null);
-    completed.setSelected(false);
+    medicineName.setText("");
+    medicineQuantity.setText("");
   }
 }
