@@ -210,20 +210,14 @@ public class SettingsPageController implements Initializable {
   @FXML
   private void changeDBConnection()
       throws SQLException, IOException, CsvValidationException, ParseException {
-    // writeDBToCSV
+    // write to CSV
     DBManager.getInstance().writeDBToCSV();
 
     // switch DB type
-    System.out.println(dbSwitchComboBox.getValue().toString());
-    if (dbSwitchComboBox.getValue().toString().equals("Client/Server Database")) {
-      DBManager.getInstance().setupClientDB();
-    } else {
-      DBManager.getInstance().setupDB();
-    }
-
-    // loadCSVintoDB
+    boolean isClientServer = dbSwitchComboBox.getValue().toString().contains("Client/Server");
+    DBManager.getInstance().switchConnection(isClientServer);
+    // load DB from CSV
     DBManager.getInstance().loadDBFromCSV();
-    System.out.println("Technically Switched DBConnection");
   }
 
   @FXML

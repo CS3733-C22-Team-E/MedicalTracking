@@ -340,16 +340,6 @@ public final class DBManager {
 
   public void loadDBFromCSV()
       throws CsvValidationException, SQLException, IOException, ParseException {
-    try {
-      new CredentialManager().insert("admin", "admin");
-
-      System.out.println(new CredentialManager().logIn("Amitai", "password"));
-      System.out.println(new CredentialManager().logIn("test", "password"));
-      System.out.println(new CredentialManager().logIn("Amitai", "amitai"));
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
     getLocationManager().readCSV("csv/TowerLocationsE.csv");
     getEquipmentManager().readCSV("csv/EquipmentE.csv");
     getEmployeeManager().readCSV("csv/EmployeesE.csv");
@@ -393,13 +383,13 @@ public final class DBManager {
     getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
   }
 
-  private void createDBConnection(boolean isClientServer) throws SQLException {
+  public void switchConnection(boolean isClientServer) throws SQLException {
     String connectionString =
         "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
     if (isClientServer) {
       System.out.println("want client-server DB....");
       connectionString =
-          "jdbc:derby://localhost:1527/ClientServerE;create=true;username=admin;password=admin"; // TODO: Add Client/Server connection string
+          "jdbc:derby://localhost:1527/ClientServerE;create=true;username=admin;password=admin";
     }
 
     connection = DriverManager.getConnection(connectionString);
@@ -415,25 +405,6 @@ public final class DBManager {
       return;
     }
 
-    // Create connection to Embedded DB
-    createDBConnection(false);
-    DatabaseMetaData dbMetaData = connection.getMetaData();
-    ResultSet rset = dbMetaData.getTables(null, null, null, new String[] {"TABLE"});
-
-    // Create DB Tables
-    if (!tableExists()) {
-      createDBTables();
-    }
-
-    System.out.println();
-    System.out.println();
-    System.out.println("Should print here:");
-    while (rset.next()) {
-      System.out.println(rset.getString("TABLE_NAME"));
-    }
-  }
-
-  public void setupClientDB() throws SQLException {
     // add client-server driver
     try {
       Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -441,58 +412,14 @@ public final class DBManager {
       e.printStackTrace();
       return;
     }
-    // Create connection to ClientServer DB
-    createDBConnection(true);
 
-    // Create DB Tables
-    if (!tableExists()) {
-      createDBTables();
-    }
-  }
+    // Create connection to Embedded DB
+    switchConnection(false);
+    createDBTables();
 
-  private boolean tableExists() {
-    try {
-      boolean tableExist = false;
-      DatabaseMetaData dbMetaData = connection.getMetaData();
-      ResultSet rset = dbMetaData.getTables(null, null, null, new String[] {"TABLE"});
-
-      while (rset.next()) {
-        String name = rset.getString("TABLE_NAME");
-
-        if (name.equals("LOCATION")
-            || name.equals("Equipment")
-            || name.equals("Credential")
-            || name.equals("ComputerSR")
-            || name.equals("FoodDeliverySR")
-            || name.equals("GiftAndFloralSR")
-            || name.equals("InternalPatientTransferSR")
-            || name.equals("ExternalPatientSR")
-            || name.equals("LanguageInterpreterSR")
-            || name.equals("LaundrySR")
-            || name.equals("ReligiousSR")
-            || name.equals("SecuritySR")
-            || name.equals("MedicalEquipmentSR")
-            || name.equals("MedicineDeliverySR")
-            || name.equals("FacilitiesMaintenanceSR")
-            || name.equals("SanitationSR")
-            || name.equals("Location")
-            || name.equals("Equipment")
-            || name.equals("Patient")
-            || name.equals("Employee")) {
-          tableExist = true;
-        }
-
-        if (name.equals("LOCATION")) {
-          System.out.println("Location exists");
-        }
-      }
-
-      return tableExist;
-    } catch (SQLException e) {
-      System.out.println("Could not check database meta data.");
-      e.printStackTrace();
-      return false;
-    }
+    // Create connection to Client DB
+    switchConnection(true);
+    createDBTables();
   }
 
   public CredentialManager getCredentialManager() throws SQLException, NoSuchAlgorithmException {
