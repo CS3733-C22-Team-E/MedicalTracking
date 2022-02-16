@@ -17,7 +17,8 @@ public class Main {
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
 
-    // Load Credentials
+    // Setup the DB
+    DBManager.getInstance();
     DBManager.getInstance().setupDB();
 
     // Launch App

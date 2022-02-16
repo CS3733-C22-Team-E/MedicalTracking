@@ -211,14 +211,10 @@ public class SettingsPageController implements Initializable {
   @FXML
   private void changeDBConnection()
       throws SQLException, IOException, CsvValidationException, ParseException {
-    // write to CSV
-    DBManager.getInstance().writeDBToCSV();
 
     // switch DB type
     boolean isClientServer = dbSwitchComboBox.getValue().toString().contains("Client/Server");
     DBManager.getInstance().switchConnection(isClientServer);
-    // load DB from CSV
-    DBManager.getInstance().loadDBFromCSV();
   }
 
   @FXML
@@ -239,11 +235,11 @@ public class SettingsPageController implements Initializable {
   @FXML
   private void loadFromCSV()
       throws IOException, CsvValidationException, SQLException, ParseException {
-    DBManager.getInstance().loadDBFromCSV();
+    DBManager.getInstance().loadDBFromCSV(true);
   }
 
   @FXML
   public void writeToCSV() throws SQLException, IOException {
-    DBManager.getInstance().writeDBToCSV();
+    DBManager.getInstance().writeDBToCSV(true);
   }
 }

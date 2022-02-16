@@ -10,6 +10,11 @@ import java.sql.*;
 import java.text.ParseException;
 
 public final class DBManager {
+  private final String ClientServerConnectionString =
+      "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
+  private final String EmbeddedConnectionString =
+      "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
+
   private boolean isClientServer = false;
   private static DBManager instance;
   private Connection connection;
@@ -337,71 +342,95 @@ public final class DBManager {
     System.out.println("SecuritySR Table created");
   }
 
-  public void loadDBFromCSV()
+  public void loadDBFromCSV(boolean fromBackup)
       throws CsvValidationException, SQLException, IOException, ParseException {
+    String subFolder = "switchFiles/";
+    if (fromBackup) {
+      subFolder = "backup/";
+    }
+
     try {
-      getCredentialManager().readCSV("Credentials.csv");
+      getCredentialManager().readCSV(subFolder + "Credentials.csv");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
 
-    getLocationManager().readCSV("TowerLocationsE.csv");
-    getEquipmentManager().readCSV("EquipmentE.csv");
-    getEmployeeManager().readCSV("EmployeesE.csv");
-    getPatientManager().readCSV("Patient.csv");
+    getLocationManager().readCSV(subFolder + "TowerLocationsE.csv");
+    getEquipmentManager().readCSV(subFolder + "EquipmentE.csv");
+    getEmployeeManager().readCSV(subFolder + "EmployeesE.csv");
+    getPatientManager().readCSV(subFolder + "Patient.csv");
 
-    getAudioVisualSRManager().readCSV("AudioVisualServiceRequest.csv");
-    getComputerSRManager().readCSV("ComputerServiceRequest.csv");
-    getExternalPatientSRManager().readCSV("ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager().readCSV("FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().readCSV("FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().readCSV("GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager().readCSV("InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().readCSV("LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().readCSV("LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager().readCSV("MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().readCSV("MedicineDeliveryServiceRequest.csv");
-    getReligiousSRManager().readCSV("ReligiousServiceRequest.csv");
-    getSanitationSRManager().readCSV("SanitationServiceRequest.csv");
-    getSecuritySRManager().readCSV("SecurityServiceRequest.csv");
+    getAudioVisualSRManager().readCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getComputerSRManager().readCSV(subFolder + "ComputerServiceRequest.csv");
+    getExternalPatientSRManager()
+        .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
+    getFacilitiesMaintenanceSRManager()
+        .readCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
+    getFoodDeliverySRManager().readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getGiftAndFloralSRManager().readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getInternalPatientSRManager()
+        .readCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
+    getLanguageSRManager().readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getLaundrySRManager().readCSV(subFolder + "LaundryServiceRequest.csv");
+    getMedicalEquipmentSRManager().readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
+    getMedicineDeliverySRManager().readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getReligiousSRManager().readCSV(subFolder + "ReligiousServiceRequest.csv");
+    getSanitationSRManager().readCSV(subFolder + "SanitationServiceRequest.csv");
+    getSecuritySRManager().readCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
-  public void writeDBToCSV() throws SQLException, IOException {
-    getLocationManager().writeToCSV("TowerLocationsE.csv");
-    getEquipmentManager().writeToCSV("EquipmentE.csv");
-    getEmployeeManager().writeToCSV("EmployeesE.csv");
-    getPatientManager().writeToCSV("Patient.csv");
-
-    getAudioVisualSRManager().writeToCSV("AudioVisualServiceRequest.csv");
-    getComputerSRManager().writeToCSV("ComputerServiceRequest.csv");
-    getExternalPatientSRManager().writeToCSV("ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager().writeToCSV("FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().writeToCSV("FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().writeToCSV("GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager().writeToCSV("InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().writeToCSV("LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().writeToCSV("LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager().writeToCSV("MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().writeToCSV("MedicineDeliveryServiceRequest.csv");
-    getReligiousSRManager().writeToCSV("ReligiousServiceRequest.csv");
-    getSanitationSRManager().writeToCSV("SanitationServiceRequest.csv");
-    getSecuritySRManager().writeToCSV("SecurityServiceRequest.csv");
-  }
-
-  public void switchConnection(boolean isClientServer) throws SQLException {
-    String connectionString =
-        "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
-    if (isClientServer) {
-      connectionString =
-          "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
+  public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
+    String subFolder = "switchFiles/";
+    if (isBackup) {
+      subFolder = "backup/";
     }
 
-    connection = DriverManager.getConnection(connectionString);
-    stmt = connection.createStatement();
-    this.isClientServer = isClientServer;
+    getLocationManager().writeToCSV(subFolder + "TowerLocationsE.csv");
+    getEquipmentManager().writeToCSV(subFolder + "EquipmentE.csv");
+    getEmployeeManager().writeToCSV(subFolder + "EmployeesE.csv");
+    getPatientManager().writeToCSV(subFolder + "Patient.csv");
+
+    getAudioVisualSRManager().writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getComputerSRManager().writeToCSV(subFolder + "ComputerServiceRequest.csv");
+    getExternalPatientSRManager()
+        .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
+    getFacilitiesMaintenanceSRManager()
+        .writeToCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
+    getFoodDeliverySRManager().writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getGiftAndFloralSRManager().writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getInternalPatientSRManager()
+        .writeToCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
+    getLanguageSRManager().writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getLaundrySRManager().writeToCSV(subFolder + "LaundryServiceRequest.csv");
+    getMedicalEquipmentSRManager()
+        .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
+    getMedicineDeliverySRManager().writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getReligiousSRManager().writeToCSV(subFolder + "ReligiousServiceRequest.csv");
+    getSanitationSRManager().writeToCSV(subFolder + "SanitationServiceRequest.csv");
+    getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
-  public void setupDB() throws SQLException {
+  public void switchConnection(boolean isClientServer)
+      throws SQLException, IOException, CsvValidationException, ParseException {
+    // Write DB to CSV
+    DBManager.getInstance().writeDBToCSV(false);
+
+    // Switch to the connection
+    String connectionString = EmbeddedConnectionString;
+    if (isClientServer) {
+      connectionString = ClientServerConnectionString;
+    }
+
+    // Create Connection
+    connection = DriverManager.getConnection(connectionString);
+    this.isClientServer = isClientServer;
+    stmt = connection.createStatement();
+
+    // Load DB from CSV
+    DBManager.getInstance().loadDBFromCSV(false);
+  }
+
+  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
     // add embedded driver
     try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -418,9 +447,13 @@ public final class DBManager {
       return;
     }
 
+    // Default connect to Embedded Server
+    connection = DriverManager.getConnection(EmbeddedConnectionString);
+    stmt = connection.createStatement();
+    isClientServer = false;
+
     // Create connection to Client DB
     try {
-      loadDBFromCSV();
       switchConnection(true);
       createDBTables();
     } catch (Exception ex) {
