@@ -14,9 +14,9 @@
     <children>
         <GridPane alignment="CENTER" layoutY="7.0" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -28,7 +28,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Service Request Directory" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header2" text="Service Request Directory" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Language: " visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                 <ComboBox fx:id="languageComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="496.0" promptText="Change Language..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <GridPane.margin>
@@ -51,76 +51,123 @@
                         <Insets left="10.0" />
                     </padding>
                 </ComboBox>
-            <Button fx:id="securitySR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Security Service Request" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="securitySR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Security" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="audioVisualSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Audio/Visual Service Request" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="audioVisualSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Audio/Visual" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="externalSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="External Patient Transportation Service Request" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="externalSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="External Patient Transportation" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="facilitiesSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Facilities Maintenance Service Request" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="facilitiesSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Facilities Maintenance" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="computerSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Computer Service Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="computerSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Computer" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="giftFloralSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Gift And Floral Service Request" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="giftFloralSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Gift/Floral" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="internalSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Interal Patient Transportation Service Request" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button fx:id="internalSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="300.0" text="Internal Patient Transportation" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="foodSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Food Delivery Service Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="foodSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Food Delivery" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="languageSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Language Interpreter Service Request" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button fx:id="languageSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Language Interpreter" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="laundrySR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Laundry Service Request" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Button fx:id="laundrySR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Laundry" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="medEquipSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Medical Equipment Delivery Service Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Button fx:id="medEquipSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Medical Equipment" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="medDeliverySR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Medicine Delivery Service Request" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+            <Button fx:id="medDeliverySR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Medicine Delivery" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
-                  <Font name="System Bold" size="10.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="religiousSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Religious Service Request" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="religiousSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Religious" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
-            <Button fx:id="sanitationSR" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" text="Sanitation Service Request" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button fx:id="sanitationSR" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" text="Sanitation" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header2" text="Choose A Service Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
             </children>
 
         </GridPane>
