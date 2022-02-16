@@ -44,7 +44,7 @@ public class SRSentAnimation {
     ImageView wheel =
         new ImageView(
             new Image(
-                Objects.requireNonNull(App.class.getResource("images/icons/LoadingWheel.png"))
+                Objects.requireNonNull(App.class.getResource("images/Icons/LoadingWheel.png"))
                     .toString()));
     wheel.setFitWidth(100);
     wheel.setFitHeight(100);
@@ -52,7 +52,7 @@ public class SRSentAnimation {
     ImageView rocket =
         new ImageView(
             new Image(
-                Objects.requireNonNull(App.class.getResource("images/icons/Rocket.png"))
+                Objects.requireNonNull(App.class.getResource("images/Icons/Rocket.png"))
                     .toString()));
     rocket.setFitWidth(100);
     rocket.setFitHeight(100);

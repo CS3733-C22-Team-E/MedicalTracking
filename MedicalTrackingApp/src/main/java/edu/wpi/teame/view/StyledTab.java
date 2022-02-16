@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 
@@ -18,12 +19,17 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
   public static final double Height = 250;
   public static final double Width = 35;
 
+  private AnchorPane anchorPane;
+  private ImageView imageView;
+  private Label tabText;
+
+  public Object controller;
+  private Parent tabPage;
+  private Image tabIcon;
+
   private SortOrder tabOrder;
   private String tabPageUrl;
-  private Parent tabPage;
   private String tabName;
-  private Image tabIcon;
-  public Object controller;
 
   public StyledTab(String name, SortOrder order, Parent page) throws IOException {
     tabPageUrl = null;
@@ -33,15 +39,36 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     setUpTab();
   }
 
+  public StyledTab(String name, SortOrder order, Parent page, Image icon) throws IOException {
+    tabPageUrl = null;
+    tabOrder = order;
+    tabName = name;
+    tabPage = page;
+    tabIcon = icon;
+    setUpTab();
+  }
+
   public StyledTab(String name, SortOrder order, String pageUrl) throws IOException {
     tabPageUrl = pageUrl;
     tabOrder = order;
     tabName = name;
+    tabIcon = null;
+
     FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));
     tabPage = loader.load();
-    if (name != "Service Request Backlog" || name != "Home" || name != "Hospital Map") {
-      controller = loader.getController();
-    }
+    controller = loader.getController();
+    setUpTab();
+  }
+
+  public StyledTab(String name, SortOrder order, String pageUrl, Image icon) throws IOException {
+    tabPageUrl = pageUrl;
+    tabOrder = order;
+    tabName = name;
+    tabIcon = icon;
+
+    FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));
+    tabPage = loader.load();
+    controller = loader.getController();
     setUpTab();
   }
 
@@ -49,14 +76,31 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     tabPage = p;
   }
 
-  private void setUpTab() throws IOException {
-    Label label = new Label(tabName);
-    label.setTextAlignment(TextAlignment.CENTER);
-    label.setStyle("-fx-text-fill: -fx-text-color");
-    label.setRotate(90.0);
+  public void toggleTabSize(boolean showImage) {
+    if (showImage) {
+      anchorPane.getChildren().remove(0);
+      anchorPane.getChildren().add(imageView);
+      return;
+    }
 
-    AnchorPane anchorPane = new AnchorPane();
-    anchorPane.getChildren().add(label);
+    anchorPane.getChildren().remove(0);
+    anchorPane.getChildren().add(tabText);
+  }
+
+  private void setUpTab() {
+    tabText = new Label(tabName);
+    tabText.setTextAlignment(TextAlignment.CENTER);
+    tabText.setStyle("-fx-text-fill: -fx-text-color");
+    tabText.setRotate(90.0);
+
+    imageView = new ImageView();
+    imageView.setImage(tabIcon);
+    imageView.setFitHeight(50);
+    imageView.setFitWidth(50);
+    imageView.setRotate(90);
+
+    anchorPane = new AnchorPane();
+    anchorPane.getChildren().add(tabText);
 
     tabPage.setStyle("@../css/mainStyle.css");
     GridPane gridPane = createContentPane();

@@ -62,7 +62,7 @@ public class App extends Application {
     Dialog dialog = new Dialog();
     dialog.setTitle("Are you sure you want to quit?");
     ImageView newIcon =
-        new ImageView(new Image(App.class.getResource("images/icons/ExitIcon.png").toString()));
+        new ImageView(new Image(App.class.getResource("images/Icons/ExitIcon.png").toString()));
     newIcon.setFitHeight(30);
     newIcon.setFitWidth(30);
     dialog.getDialogPane().setGraphic(newIcon);

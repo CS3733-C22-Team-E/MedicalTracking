@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FillProgressIndicatorSkin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.ProgressBar</a> &gt; <span class="el_source">FillProgressIndicatorSkin.java</span></div><h1>FillProgressIndicatorSkin.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (c) 2014, Andrea Vacondio
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.wpi.teame.view.ProgressBar;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.Node;
+import javafx.scene.control.Skin;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+/**
+ * Skin for the {@link FillProgressIndicator} that represents progress and a circle that fills
+ *
+ * @author Andrea Vacondio
+ */
+public class FillProgressIndicatorSkin implements Skin&lt;FillProgressIndicator&gt; {
+  private final FillProgressIndicator indicator;
+<span class="nc" id="L37">  private final StackPane container = new StackPane();</span>
+  // private final Label percentLabel = new Label();
+<span class="nc" id="L39">  private final Rectangle cover = new Rectangle();</span>
+<span class="nc" id="L40">  private final Circle borderCircle = new Circle();</span>
+<span class="nc" id="L41">  private final Circle fillerCircle = new Circle();</span>
+
+<span class="nc" id="L43">  private final Timeline transition = new Timeline();</span>
+
+<span class="nc" id="L45">  public FillProgressIndicatorSkin(final FillProgressIndicator indicator) {</span>
+<span class="nc" id="L46">    this.indicator = indicator;</span>
+<span class="nc" id="L47">    initContainer(indicator);</span>
+<span class="nc" id="L48">    updateRadii();</span>
+<span class="nc" id="L49">    initStyles();</span>
+<span class="nc" id="L50">    AnchorPane coverPane = new AnchorPane();</span>
+<span class="nc" id="L51">    cover.getStyleClass().add(&quot;fillindicator-filler-cover&quot;);</span>
+<span class="nc" id="L52">    cover.widthProperty().bind(coverPane.widthProperty());</span>
+<span class="nc" id="L53">    cover.setManaged(false);</span>
+<span class="nc" id="L54">    AnchorPane.setTopAnchor(cover, 0.0);</span>
+<span class="nc" id="L55">    AnchorPane.setLeftAnchor(cover, 0.0);</span>
+<span class="nc" id="L56">    AnchorPane.setRightAnchor(cover, 0.0);</span>
+<span class="nc" id="L57">    coverPane.getChildren().addAll(cover);</span>
+
+<span class="nc" id="L59">    this.indicator</span>
+<span class="nc" id="L60">        .indeterminateProperty()</span>
+<span class="nc" id="L61">        .addListener(</span>
+            (o, oldVal, newVal) -&gt; {
+<span class="nc" id="L63">              initIndeterminate(newVal);</span>
+<span class="nc" id="L64">            });</span>
+<span class="nc" id="L65">    this.indicator</span>
+<span class="nc" id="L66">        .progressProperty()</span>
+<span class="nc" id="L67">        .addListener(</span>
+            (o, oldVal, newVal) -&gt; {
+<span class="nc" id="L69">              setProgressLabel(newVal.intValue());</span>
+<span class="nc" id="L70">              this.cover.setHeight(coverPane.getHeight() * ((100 - newVal.intValue()) / 100d));</span>
+<span class="nc" id="L71">            });</span>
+
+<span class="nc" id="L73">    this.indicator</span>
+<span class="nc" id="L74">        .innerCircleRadiusProperty()</span>
+<span class="nc" id="L75">        .addListener(</span>
+            (e) -&gt; {
+<span class="nc" id="L77">              updateRadii();</span>
+<span class="nc" id="L78">            });</span>
+<span class="nc" id="L79">    coverPane</span>
+<span class="nc" id="L80">        .heightProperty()</span>
+<span class="nc" id="L81">        .addListener(</span>
+            (o, oldVal, newVal) -&gt; {
+<span class="nc" id="L83">              this.cover.setHeight(newVal.intValue() * ((100 - indicator.getProgress()) / 100d));</span>
+<span class="nc" id="L84">            });</span>
+<span class="nc" id="L85">    initLabel(indicator.getProgress());</span>
+<span class="nc" id="L86">    indicator</span>
+<span class="nc" id="L87">        .visibleProperty()</span>
+<span class="nc" id="L88">        .addListener(</span>
+            (o, oldVal, newVal) -&gt; {
+<span class="nc bnc" id="L90" title="All 4 branches missed.">              if (newVal &amp;&amp; this.indicator.isIndeterminate()) {</span>
+<span class="nc" id="L91">                transition.play();</span>
+              } else {
+<span class="nc" id="L93">                transition.pause();</span>
+              }
+<span class="nc" id="L95">            });</span>
+
+<span class="nc" id="L97">    this.container.getChildren().addAll(fillerCircle, coverPane, borderCircle);</span>
+<span class="nc" id="L98">    initTransition();</span>
+<span class="nc" id="L99">    initIndeterminate(indicator.isIndeterminate());</span>
+<span class="nc" id="L100">  }</span>
+
+  private void initContainer(final FillProgressIndicator indicator) {
+<span class="nc" id="L103">    container.getStylesheets().addAll(indicator.getStylesheets());</span>
+<span class="nc" id="L104">    container.getStyleClass().addAll(&quot;circleindicator-container&quot;);</span>
+<span class="nc" id="L105">    container.setMaxHeight(Region.USE_PREF_SIZE);</span>
+<span class="nc" id="L106">    container.setMaxWidth(Region.USE_PREF_SIZE);</span>
+<span class="nc" id="L107">  }</span>
+
+  private void initTransition() {
+<span class="nc" id="L110">    transition.setCycleCount(Timeline.INDEFINITE);</span>
+<span class="nc" id="L111">    transition.setAutoReverse(true);</span>
+<span class="nc" id="L112">    final KeyValue kv = new KeyValue(this.cover.heightProperty(), 0);</span>
+<span class="nc" id="L113">    transition.getKeyFrames().addAll(new KeyFrame(Duration.millis(1500), kv));</span>
+<span class="nc" id="L114">  }</span>
+
+  private void initStyles() {
+<span class="nc" id="L117">    fillerCircle.getStyleClass().add(&quot;fillindicator-filler-circle&quot;);</span>
+<span class="nc" id="L118">    borderCircle.getStyleClass().add(&quot;fillindicator-border-circle&quot;);</span>
+<span class="nc" id="L119">  }</span>
+
+  private void updateRadii() {
+<span class="nc" id="L122">    fillerCircle.setRadius(this.indicator.getInnerCircleRadius() + 5);</span>
+<span class="nc" id="L123">    borderCircle.setRadius(this.indicator.getInnerCircleRadius());</span>
+<span class="nc" id="L124">  }</span>
+
+  private void initLabel(int value) {
+<span class="nc" id="L127">    setProgressLabel(value);</span>
+    // percentLabel.getStyleClass().add(&quot;circleindicator-label&quot;);
+<span class="nc" id="L129">  }</span>
+
+  private void setProgressLabel(int value) {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">    if (value &gt;= 0) {</span>
+      // percentLabel.setText(String.format(&quot;%d%%&quot;, value));
+    }
+<span class="nc" id="L135">  }</span>
+
+  private void initIndeterminate(boolean newVal) {
+    // percentLabel.setVisible(!newVal);
+<span class="nc bnc" id="L139" title="All 4 branches missed.">    if (newVal &amp;&amp; indicator.isVisible()) {</span>
+<span class="nc" id="L140">      transition.play();</span>
+    } else {
+<span class="nc" id="L142">      transition.stop();</span>
+    }
+<span class="nc" id="L144">  }</span>
+
+  @Override
+  public FillProgressIndicator getSkinnable() {
+<span class="nc" id="L148">    return indicator;</span>
+  }
+
+  @Override
+  public Node getNode() {
+<span class="nc" id="L153">    return this.container;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L158">    transition.stop();</span>
+<span class="nc" id="L159">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

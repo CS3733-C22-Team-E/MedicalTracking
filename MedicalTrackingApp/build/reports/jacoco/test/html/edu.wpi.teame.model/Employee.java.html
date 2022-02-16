@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Employee.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model</a> &gt; <span class="el_source">Employee.java</span></div><h1>Employee.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model;
+
+import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.DepartmentType;
+import edu.wpi.teame.model.enums.EmployeeType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Employee implements ISQLSerializable {
+  private DepartmentType department;
+  private EmployeeType type;
+  private String name;
+  private int id;
+
+<span class="nc" id="L16">  public Employee(int id, DepartmentType dept, String name, EmployeeType type) {</span>
+<span class="nc" id="L17">    this.department = dept;</span>
+<span class="nc" id="L18">    this.type = type;</span>
+<span class="nc" id="L19">    this.name = name;</span>
+<span class="nc" id="L20">    this.id = id;</span>
+<span class="nc" id="L21">  }</span>
+
+<span class="nc" id="L23">  public Employee(ResultSet resultSet) throws SQLException {</span>
+<span class="nc" id="L24">    this.type = EmployeeType.values()[resultSet.getInt(&quot;type&quot;)];</span>
+<span class="nc" id="L25">    this.department = DepartmentType.values()[resultSet.getInt(&quot;department&quot;)];</span>
+<span class="nc" id="L26">    this.name = resultSet.getString(&quot;name&quot;);</span>
+<span class="nc" id="L27">    this.id = resultSet.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L28">  }</span>
+
+  public String toString() {
+<span class="nc" id="L31">    StringBuilder employeeString = new StringBuilder();</span>
+<span class="nc" id="L32">    employeeString.append(&quot;id: &quot;).append(this.id).append(&quot; &quot;);</span>
+<span class="nc" id="L33">    employeeString.append(&quot;department: &quot;).append(this.department).append(&quot; &quot;);</span>
+<span class="nc" id="L34">    employeeString.append(&quot;name: &quot;).append(this.name).append(&quot; &quot;);</span>
+<span class="nc" id="L35">    employeeString.append(&quot;type: &quot;).append(this.type);</span>
+<span class="nc" id="L36">    return employeeString.toString();</span>
+  }
+
+  // GETTERS &amp; SETTERS
+  public int getId() {
+<span class="nc" id="L41">    return id;</span>
+  }
+
+  public void setId(int id) {
+<span class="nc" id="L45">    this.id = id;</span>
+<span class="nc" id="L46">  }</span>
+
+  public DepartmentType getDepartment() {
+<span class="nc" id="L49">    return department;</span>
+  }
+
+  public void setDepartment(DepartmentType department) {
+<span class="nc" id="L53">    this.department = department;</span>
+<span class="nc" id="L54">  }</span>
+
+  public String getName() {
+<span class="nc" id="L57">    return name;</span>
+  }
+
+  public void setName(String name) {
+<span class="nc" id="L61">    this.name = name;</span>
+<span class="nc" id="L62">  }</span>
+
+  public EmployeeType getType() {
+<span class="nc" id="L65">    return type;</span>
+  }
+
+  public void setType(EmployeeType type) {
+<span class="nc" id="L69">    this.type = type;</span>
+<span class="nc" id="L70">  }</span>
+
+  @Override
+  public DataBaseObjectType getDBType() {
+<span class="nc" id="L74">    return DataBaseObjectType.Employee;</span>
+  }
+
+  @Override
+  public String getSQLInsertString() {
+<span class="nc" id="L79">    return department.ordinal() + &quot;, '&quot; + name + &quot;', &quot; + type.ordinal();</span>
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+<span class="nc" id="L84">    return &quot;department = &quot;</span>
+<span class="nc" id="L85">        + department.ordinal()</span>
+        + &quot;, name = '&quot;
+        + name
+        + &quot;', type = &quot;
+<span class="nc" id="L89">        + type.ordinal()</span>
+        + &quot; WHERE id = &quot;
+        + id;
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L96">    return &quot;(department, name, type)&quot;;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

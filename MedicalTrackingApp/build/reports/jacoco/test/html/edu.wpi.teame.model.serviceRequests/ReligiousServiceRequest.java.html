@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReligiousServiceRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model.serviceRequests</a> &gt; <span class="el_source">ReligiousServiceRequest.java</span></div><h1>ReligiousServiceRequest.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model.serviceRequests;
+
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public final class ReligiousServiceRequest extends ServiceRequest {
+  private Patient patient;
+  private String religion;
+
+  public ReligiousServiceRequest(
+      ServiceRequestPriority priority,
+      ServiceRequestStatus status,
+      String additionalInfo,
+      Employee assignee,
+      Location location,
+      Date requestDate,
+      Date closeDate,
+      Date openDate,
+      String title,
+      int id,
+      Patient patient,
+      String religion) {
+<span class="nc" id="L31">    super(</span>
+        DataBaseObjectType.ReligiousSR,
+        priority,
+        status,
+        additionalInfo,
+        assignee,
+        location,
+        requestDate,
+        closeDate,
+        openDate,
+        title,
+        id);
+<span class="nc" id="L43">    this.patient = patient;</span>
+<span class="nc" id="L44">    this.religion = religion;</span>
+<span class="nc" id="L45">  }</span>
+
+  public ReligiousServiceRequest(ResultSet resultSet) throws SQLException {
+<span class="nc" id="L48">    super(resultSet, DataBaseObjectType.ReligiousSR);</span>
+<span class="nc" id="L49">    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt(&quot;patientID&quot;));</span>
+<span class="nc" id="L50">    this.religion = resultSet.getString(&quot;religion&quot;);</span>
+<span class="nc" id="L51">  }</span>
+
+  @Override
+  public String getSQLInsertString() {
+<span class="nc" id="L55">    return super.getSQLInsertString() + &quot;, &quot; + patient.getId() + &quot;, '&quot; + religion + &quot;'&quot;;</span>
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+<span class="nc" id="L60">    return getRawUpdateString()</span>
+        + &quot;, &quot;
+        + &quot;patientID = &quot;
+<span class="nc" id="L63">        + patient.getId()</span>
+        + &quot;, &quot;
+        + &quot;religion = '&quot;
+        + religion
+        + &quot;'&quot;
+        + &quot; WHERE id = &quot;
+        + id;
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L74">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, religion)&quot;;</span>
+  }
+
+  public Patient getPatient() {
+<span class="nc" id="L78">    return patient;</span>
+  }
+
+  public void setPatient(Patient patient) {
+<span class="nc" id="L82">    this.patient = patient;</span>
+<span class="nc" id="L83">  }</span>
+
+  public String getReligion() {
+<span class="nc" id="L86">    return religion;</span>
+  }
+
+  public void setReligion(String religion) {
+<span class="nc" id="L90">    this.religion = religion;</span>
+<span class="nc" id="L91">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

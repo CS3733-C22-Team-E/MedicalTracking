@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers</a> &gt; <span class="el_source">SettingsPageController.java</span></div><h1>SettingsPageController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers;
+
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+
+<span class="nc" id="L21">public class SettingsPageController implements Initializable {</span>
+  @FXML public Button logoutButton;
+  @FXML public ComboBox languageComboBox;
+  @FXML public ComboBox colorComboBox;
+  @FXML public ComboBox accessibilityComboBox;
+  @FXML private ComboBox dbSwitchComboBox;
+
+  private Properties properties;
+<span class="nc" id="L29">  private String settingsPath =</span>
+<span class="nc" id="L30">      System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame//settings.properties&quot;;</span>
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    try {
+<span class="nc" id="L35">      FileReader reader = new FileReader(settingsPath);</span>
+<span class="nc" id="L36">      properties = new Properties();</span>
+<span class="nc" id="L37">      properties.load(reader);</span>
+
+<span class="nc" id="L39">      String[] dbOptions = new String[] {&quot;Embedded Database&quot;, &quot;Client/Server Database&quot;};</span>
+<span class="nc" id="L40">      dbSwitchComboBox.setItems(FXCollections.observableArrayList(dbOptions));</span>
+
+<span class="nc bnc" id="L42" title="All 2 branches missed.">      dbSwitchComboBox.setValue(dbOptions[DBManager.getInstance().isClientServer() ? 1 : 0]);</span>
+
+<span class="nc" id="L44">      languageComboBox.setItems(</span>
+<span class="nc" id="L45">          FXCollections.observableArrayList(</span>
+              new String[] {
+                &quot;Afrikanns&quot;,
+                &quot;Albanian&quot;,
+                &quot;Arabic&quot;,
+                &quot;Armenian&quot;,
+                &quot;Basque&quot;,
+                &quot;Bengali&quot;,
+                &quot;Bulgarian&quot;,
+                &quot;Catalan&quot;,
+                &quot;Cambodian&quot;,
+                &quot;Chinese&quot;,
+                &quot;Croation&quot;,
+                &quot;Czech&quot;,
+                &quot;Danish&quot;,
+                &quot;Dutch&quot;,
+                &quot;English&quot;,
+                &quot;Estonian&quot;,
+                &quot;Fiji&quot;,
+                &quot;Finnish&quot;,
+                &quot;French&quot;,
+                &quot;Georgian&quot;,
+                &quot;German&quot;,
+                &quot;Greek&quot;,
+                &quot;Gujarati&quot;,
+                &quot;Hebrew&quot;,
+                &quot;Hindi&quot;,
+                &quot;Hungarian&quot;,
+                &quot;Icelandic&quot;,
+                &quot;Indonesian&quot;,
+                &quot;Irish&quot;,
+                &quot;Italian&quot;,
+                &quot;Japanese&quot;,
+                &quot;Javanese&quot;,
+                &quot;Korean&quot;,
+                &quot;Latin&quot;,
+                &quot;Latvian&quot;,
+                &quot;Lithuanian&quot;,
+                &quot;Macedonian&quot;,
+                &quot;Malay&quot;,
+                &quot;Malayalam&quot;,
+                &quot;Maltese&quot;,
+                &quot;Maori&quot;,
+                &quot;Marathi&quot;,
+                &quot;Mongolian&quot;,
+                &quot;Nepali&quot;,
+                &quot;Norwegian&quot;,
+                &quot;Persian&quot;,
+                &quot;Polish&quot;,
+                &quot;Portuguese&quot;,
+                &quot;Punjabi&quot;,
+                &quot;Quechua&quot;,
+                &quot;Romanian&quot;,
+                &quot;Russian&quot;,
+                &quot;Samoan&quot;,
+                &quot;Serbian&quot;,
+                &quot;Slovak&quot;,
+                &quot;Slovenian&quot;,
+                &quot;Spanish&quot;,
+                &quot;Swahili&quot;,
+                &quot;Swedish&quot;,
+                &quot;Tamil&quot;,
+                &quot;Tatar&quot;,
+                &quot;Telugu&quot;,
+                &quot;Thai&quot;,
+                &quot;Tibetan&quot;,
+                &quot;Tonga&quot;,
+                &quot;Turkish&quot;,
+                &quot;Ukranian&quot;,
+                &quot;Urdu&quot;,
+                &quot;Uzbek&quot;,
+                &quot;Vietnamese&quot;,
+                &quot;Welsh&quot;,
+                &quot;Xhosa&quot;
+              }));
+
+<span class="nc" id="L121">      colorComboBox.setItems(FXCollections.observableArrayList(new String[] {&quot;Default&quot;, &quot;Blue&quot;}));</span>
+
+<span class="nc" id="L123">      accessibilityComboBox.setItems(</span>
+<span class="nc" id="L124">          FXCollections.observableArrayList(new String[] {&quot;None&quot;, &quot;Color Blind Mode&quot;}));</span>
+
+<span class="nc" id="L126">      dbSwitchComboBox.setValue(properties.getProperty(&quot;dbConnection&quot;));</span>
+<span class="nc" id="L127">      languageComboBox.setValue(properties.getProperty(&quot;language&quot;));</span>
+<span class="nc" id="L128">      colorComboBox.setValue(properties.getProperty(&quot;color&quot;));</span>
+<span class="nc" id="L129">      accessibilityComboBox.setValue(properties.getProperty(&quot;accessibility&quot;));</span>
+
+<span class="nc" id="L131">      dbSwitchComboBox</span>
+<span class="nc" id="L132">          .valueProperty()</span>
+<span class="nc" id="L133">          .addListener(</span>
+              listen -&gt; {
+                try {
+<span class="nc" id="L136">                  properties.setProperty(&quot;dbConnection&quot;, dbSwitchComboBox.getValue().toString());</span>
+<span class="nc" id="L137">                  FileWriter writer = new FileWriter(settingsPath);</span>
+<span class="nc" id="L138">                  properties.store(writer, &quot;App Settings&quot;);</span>
+<span class="nc" id="L139">                  changeDBConnection();</span>
+<span class="nc" id="L140">                  writer.close();</span>
+<span class="nc" id="L141">                } catch (IOException e) {</span>
+<span class="nc" id="L142">                  e.printStackTrace();</span>
+<span class="nc" id="L143">                  System.out.println(&quot;Could not write to settings.properties&quot;);</span>
+<span class="nc" id="L144">                } catch (CsvValidationException e) {</span>
+<span class="nc" id="L145">                  e.printStackTrace();</span>
+<span class="nc" id="L146">                } catch (SQLException e) {</span>
+<span class="nc" id="L147">                  e.printStackTrace();</span>
+<span class="nc" id="L148">                } catch (ParseException e) {</span>
+<span class="nc" id="L149">                  e.printStackTrace();</span>
+<span class="nc" id="L150">                }</span>
+<span class="nc" id="L151">              });</span>
+
+<span class="nc" id="L153">      languageComboBox</span>
+<span class="nc" id="L154">          .valueProperty()</span>
+<span class="nc" id="L155">          .addListener(</span>
+              listen -&gt; {
+                try {
+<span class="nc" id="L158">                  properties.setProperty(&quot;language&quot;, languageComboBox.getValue().toString());</span>
+<span class="nc" id="L159">                  FileWriter writer = new FileWriter(settingsPath);</span>
+<span class="nc" id="L160">                  properties.store(writer, &quot;App Settings&quot;);</span>
+<span class="nc" id="L161">                  changeLanguage();</span>
+<span class="nc" id="L162">                  writer.close();</span>
+<span class="nc" id="L163">                } catch (IOException e) {</span>
+<span class="nc" id="L164">                  e.printStackTrace();</span>
+<span class="nc" id="L165">                  System.out.println(&quot;Could not write to settings.properties&quot;);</span>
+<span class="nc" id="L166">                }</span>
+<span class="nc" id="L167">              });</span>
+
+<span class="nc" id="L169">      colorComboBox</span>
+<span class="nc" id="L170">          .valueProperty()</span>
+<span class="nc" id="L171">          .addListener(</span>
+              listen -&gt; {
+                try {
+<span class="nc" id="L174">                  properties.setProperty(&quot;color&quot;, colorComboBox.getValue().toString());</span>
+<span class="nc" id="L175">                  FileWriter writer = new FileWriter(settingsPath);</span>
+<span class="nc" id="L176">                  properties.store(writer, &quot;App Settings&quot;);</span>
+<span class="nc" id="L177">                  changeColor();</span>
+<span class="nc" id="L178">                  writer.close();</span>
+<span class="nc" id="L179">                } catch (IOException e) {</span>
+<span class="nc" id="L180">                  e.printStackTrace();</span>
+<span class="nc" id="L181">                  System.out.println(&quot;Could not write to settings.properties&quot;);</span>
+<span class="nc" id="L182">                }</span>
+<span class="nc" id="L183">              });</span>
+
+<span class="nc" id="L185">      accessibilityComboBox</span>
+<span class="nc" id="L186">          .valueProperty()</span>
+<span class="nc" id="L187">          .addListener(</span>
+              listen -&gt; {
+                try {
+<span class="nc" id="L190">                  properties.setProperty(</span>
+<span class="nc" id="L191">                      &quot;accessibility&quot;, accessibilityComboBox.getValue().toString());</span>
+<span class="nc" id="L192">                  FileWriter writer = new FileWriter(settingsPath);</span>
+<span class="nc" id="L193">                  properties.store(writer, &quot;App Settings&quot;);</span>
+<span class="nc" id="L194">                  changeAccessibility();</span>
+<span class="nc" id="L195">                  writer.close();</span>
+<span class="nc" id="L196">                } catch (IOException e) {</span>
+<span class="nc" id="L197">                  e.printStackTrace();</span>
+<span class="nc" id="L198">                  System.out.println(&quot;Could not write to settings.properties&quot;);</span>
+<span class="nc" id="L199">                }</span>
+<span class="nc" id="L200">              });</span>
+
+<span class="nc" id="L202">    } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L203">      e.printStackTrace();</span>
+<span class="nc" id="L204">      System.out.println(&quot;Could note initialize properties&quot;);</span>
+<span class="nc" id="L205">    } catch (IOException e) {</span>
+<span class="nc" id="L206">      e.printStackTrace();</span>
+<span class="nc" id="L207">      System.out.println(&quot;Could note initialize properties&quot;);</span>
+<span class="nc" id="L208">    }</span>
+<span class="nc" id="L209">  }</span>
+
+  @FXML
+  private void changeDBConnection()
+      throws SQLException, IOException, CsvValidationException, ParseException {
+
+    // switch DB type
+<span class="nc" id="L216">    boolean isClientServer = dbSwitchComboBox.getValue().toString().contains(&quot;Client/Server&quot;);</span>
+<span class="nc" id="L217">    DBManager.getInstance().switchConnection(isClientServer);</span>
+<span class="nc" id="L218">  }</span>
+
+  @FXML
+  private void changeLanguage() {
+<span class="nc" id="L222">    System.out.println(&quot;Technically switched language&quot;);</span>
+<span class="nc" id="L223">  }</span>
+
+  @FXML
+  private void changeColor() {
+<span class="nc" id="L227">    System.out.println(&quot;Technically changed color&quot;);</span>
+<span class="nc" id="L228">  }</span>
+
+  @FXML
+  private void changeAccessibility() {
+<span class="nc" id="L232">    System.out.println(&quot;Technically changed accessibility&quot;);</span>
+<span class="nc" id="L233">  }</span>
+
+  @FXML
+  private void loadFromCSV()
+      throws IOException, CsvValidationException, SQLException, ParseException {
+<span class="nc" id="L238">    DBManager.getInstance().loadDBFromCSV(true);</span>
+<span class="nc" id="L239">  }</span>
+
+  @FXML
+  public void writeToCSV() throws SQLException, IOException {
+<span class="nc" id="L243">    DBManager.getInstance().writeDBToCSV(true);</span>
+<span class="nc" id="L244">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataBaseObjectType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model.enums</a> &gt; <span class="el_source">DataBaseObjectType.java</span></div><h1>DataBaseObjectType.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model.enums;
+
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import java.sql.SQLException;
+import javafx.scene.paint.Color;
+
+<span class="nc" id="L8">public enum DataBaseObjectType {</span>
+<span class="nc" id="L9">  AudioVisualSR,</span>
+<span class="nc" id="L10">  ComputerSR,</span>
+<span class="nc" id="L11">  FoodDeliverySR,</span>
+<span class="nc" id="L12">  GiftAndFloralSR,</span>
+<span class="nc" id="L13">  InternalPatientTransferSR,</span>
+<span class="nc" id="L14">  ExternalPatientSR,</span>
+<span class="nc" id="L15">  LanguageInterpreterSR,</span>
+<span class="nc" id="L16">  LaundrySR,</span>
+<span class="nc" id="L17">  ReligiousSR,</span>
+<span class="nc" id="L18">  SecuritySR,</span>
+<span class="nc" id="L19">  MedicalEquipmentSR,</span>
+<span class="nc" id="L20">  MedicineDeliverySR,</span>
+<span class="nc" id="L21">  FacilitiesMaintenanceSR,</span>
+<span class="nc" id="L22">  SanitationSR,</span>
+
+<span class="nc" id="L24">  Location,</span>
+<span class="nc" id="L25">  Equipment,</span>
+<span class="nc" id="L26">  Patient,</span>
+<span class="nc" id="L27">  Employee;</span>
+
+  @Override
+  public String toString() {
+<span class="nc bnc" id="L31" title="All 18 branches missed.">    switch (this) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L33">        return &quot;Audio/Visual Service Request&quot;;</span>
+      case ComputerSR:
+<span class="nc" id="L35">        return &quot;Computer Service Request&quot;;</span>
+      case FoodDeliverySR:
+<span class="nc" id="L37">        return &quot;Food Delivery Service Request&quot;;</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L39">        return &quot;Gift/Floral Delivery Service Request&quot;;</span>
+      case ExternalPatientSR:
+<span class="nc" id="L41">        return &quot;External Patient Transportation Service Request&quot;;</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L43">        return &quot;Language Interpreter Service Request&quot;;</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L45">        return &quot;Internal Patient Transportation Service Request&quot;;</span>
+      case LaundrySR:
+<span class="nc" id="L47">        return &quot;Laundry Service Request&quot;;</span>
+      case SecuritySR:
+<span class="nc" id="L49">        return &quot;Security Service Request&quot;;</span>
+      case ReligiousSR:
+<span class="nc" id="L51">        return &quot;Religious Service Request&quot;;</span>
+      case SanitationSR:
+<span class="nc" id="L53">        return &quot;Sanitation Service Request&quot;;</span>
+      case MedicalEquipmentSR:
+<span class="nc" id="L55">        return &quot;Medical Equipment Delivery Service Request&quot;;</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L57">        return &quot;Medicine Delivery Service Request&quot;;</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L59">        return &quot;Facilities Maintenance Service Request&quot;;</span>
+      case Employee:
+<span class="nc" id="L61">        return &quot;Employee&quot;;</span>
+      case Location:
+<span class="nc" id="L63">        return &quot;Location&quot;;</span>
+      case Equipment:
+<span class="nc" id="L65">        return &quot;Equipment&quot;;</span>
+    }
+<span class="nc" id="L67">    return null;</span>
+  }
+
+  public Color getColor() {
+<span class="nc bnc" id="L71" title="All 17 branches missed.">    switch (this) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L73">        return Color.CYAN;</span>
+      case ComputerSR:
+<span class="nc" id="L75">        return Color.SILVER;</span>
+      case FoodDeliverySR:
+<span class="nc" id="L77">        return Color.SALMON;</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L79">        return Color.MEDIUMAQUAMARINE;</span>
+      case ExternalPatientSR:
+<span class="nc" id="L81">        return Color.SEAGREEN;</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L83">        return Color.CORAL;</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L85">        return Color.SPRINGGREEN;</span>
+      case LaundrySR:
+<span class="nc" id="L87">        return Color.WHITESMOKE;</span>
+      case SecuritySR:
+<span class="nc" id="L89">        return Color.ROYALBLUE;</span>
+      case ReligiousSR:
+<span class="nc" id="L91">        return Color.GOLD;</span>
+      case SanitationSR:
+<span class="nc" id="L93">        return Color.AQUA;</span>
+      case MedicalEquipmentSR:
+      case Equipment:
+<span class="nc" id="L96">        return Color.LIGHTGRAY;</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L98">        return Color.TOMATO;</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L100">        return Color.THISTLE;</span>
+      case Employee:
+<span class="nc" id="L102">        return Color.BLUE;</span>
+      case Location:
+<span class="nc" id="L104">        return Color.GREEN;</span>
+    }
+<span class="nc" id="L106">    return null;</span>
+  }
+
+  public String shortName() {
+<span class="nc bnc" id="L110" title="All 18 branches missed.">    switch (this) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L112">        return &quot;Audio/Visual&quot;;</span>
+      case ComputerSR:
+<span class="nc" id="L114">        return &quot;Computer&quot;;</span>
+      case FoodDeliverySR:
+<span class="nc" id="L116">        return &quot;Food Delivery&quot;;</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L118">        return &quot;Gift/Floral Delivery&quot;;</span>
+      case ExternalPatientSR:
+<span class="nc" id="L120">        return &quot;External Patient Transportation&quot;;</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L122">        return &quot;Language Interpreter&quot;;</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L124">        return &quot;Internal Patient Transportation&quot;;</span>
+      case LaundrySR:
+<span class="nc" id="L126">        return &quot;Laundry&quot;;</span>
+      case SecuritySR:
+<span class="nc" id="L128">        return &quot;Security&quot;;</span>
+      case ReligiousSR:
+<span class="nc" id="L130">        return &quot;Religious&quot;;</span>
+      case SanitationSR:
+<span class="nc" id="L132">        return &quot;Sanitation&quot;;</span>
+      case MedicalEquipmentSR:
+<span class="nc" id="L134">        return &quot;Medical Equipment Delivery&quot;;</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L136">        return &quot;Medicine Delivery&quot;;</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L138">        return &quot;Facilities Maintenance&quot;;</span>
+      case Employee:
+<span class="nc" id="L140">        return &quot;Employee&quot;;</span>
+      case Location:
+<span class="nc" id="L142">        return &quot;Location&quot;;</span>
+      case Equipment:
+<span class="nc" id="L144">        return &quot;Equipment&quot;;</span>
+    }
+<span class="nc" id="L146">    return null;</span>
+  }
+
+  public String getDescription() {
+<span class="nc" id="L150">    String s = &quot;Fulfil a&quot;;</span>
+<span class="nc bnc" id="L151" title="All 18 branches missed.">    switch (this) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L153">        s += &quot;n Audio/Visual Service Request&quot;;</span>
+<span class="nc" id="L154">        break;</span>
+      case ComputerSR:
+<span class="nc" id="L156">        s += &quot; Computer Service Request&quot;;</span>
+<span class="nc" id="L157">        break;</span>
+      case FoodDeliverySR:
+<span class="nc" id="L159">        s += &quot; Food Delivery Service Request&quot;;</span>
+<span class="nc" id="L160">        break;</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L162">        s += &quot; Gift/Floral Delivery Service Request&quot;;</span>
+<span class="nc" id="L163">        break;</span>
+      case ExternalPatientSR:
+<span class="nc" id="L165">        s += &quot;n External Patient Transportation Service Request&quot;;</span>
+<span class="nc" id="L166">        break;</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L168">        s += &quot; Language Interpreter Service Request&quot;;</span>
+<span class="nc" id="L169">        break;</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L171">        s += &quot;n Internal Patient Transportation Service Request&quot;;</span>
+<span class="nc" id="L172">        break;</span>
+      case LaundrySR:
+<span class="nc" id="L174">        s += &quot; Laundry Service Request&quot;;</span>
+<span class="nc" id="L175">        break;</span>
+      case SecuritySR:
+<span class="nc" id="L177">        s += &quot; Security Service Request&quot;;</span>
+<span class="nc" id="L178">        break;</span>
+      case ReligiousSR:
+<span class="nc" id="L180">        s += &quot; Religious Service Request&quot;;</span>
+<span class="nc" id="L181">        break;</span>
+      case SanitationSR:
+<span class="nc" id="L183">        s += &quot; Sanitation Service Request&quot;;</span>
+<span class="nc" id="L184">        break;</span>
+      case MedicalEquipmentSR:
+<span class="nc" id="L186">        s += &quot; Medical Equipment Delivery Service Request&quot;;</span>
+<span class="nc" id="L187">        break;</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L189">        s += &quot; Medicine Delivery Service Request&quot;;</span>
+<span class="nc" id="L190">        break;</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L192">        s += &quot; Facilities Maintenance Service Request&quot;;</span>
+<span class="nc" id="L193">        break;</span>
+      case Employee:
+<span class="nc" id="L195">        return &quot;This is an employee.&quot;;</span>
+      case Location:
+<span class="nc" id="L197">        return &quot;This is a location.&quot;;</span>
+      case Equipment:
+<span class="nc" id="L199">        return &quot;This is an equipment.&quot;;</span>
+    }
+<span class="nc" id="L201">    return s + &quot; at the requested location.&quot;;</span>
+  }
+
+  public ObjectManager getDBManagerInstance() throws SQLException {
+<span class="nc bnc" id="L205" title="All 18 branches missed.">    switch (this) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L207">        return DBManager.getInstance().getAudioVisualSRManager();</span>
+      case ComputerSR:
+<span class="nc" id="L209">        return DBManager.getInstance().getComputerSRManager();</span>
+      case FoodDeliverySR:
+<span class="nc" id="L211">        return DBManager.getInstance().getFoodDeliverySRManager();</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L213">        return DBManager.getInstance().getGiftAndFloralSRManager();</span>
+      case ExternalPatientSR:
+<span class="nc" id="L215">        return DBManager.getInstance().getExternalPatientSRManager();</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L217">        return DBManager.getInstance().getLanguageSRManager();</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L219">        return DBManager.getInstance().getInternalPatientSRManager();</span>
+      case LaundrySR:
+<span class="nc" id="L221">        return DBManager.getInstance().getLaundrySRManager();</span>
+      case SecuritySR:
+<span class="nc" id="L223">        return DBManager.getInstance().getSecuritySRManager();</span>
+      case ReligiousSR:
+<span class="nc" id="L225">        return DBManager.getInstance().getReligiousSRManager();</span>
+      case SanitationSR:
+<span class="nc" id="L227">        return DBManager.getInstance().getSanitationSRManager();</span>
+      case MedicalEquipmentSR:
+<span class="nc" id="L229">        return DBManager.getInstance().getMedicalEquipmentSRManager();</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L231">        return DBManager.getInstance().getMedicineDeliverySRManager();</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L233">        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();</span>
+      case Employee:
+<span class="nc" id="L235">        return DBManager.getInstance().getEmployeeManager();</span>
+      case Location:
+<span class="nc" id="L237">        return DBManager.getInstance().getLocationManager();</span>
+      case Equipment:
+<span class="nc" id="L239">        return DBManager.getInstance().getEquipmentManager();</span>
+    }
+<span class="nc" id="L241">    return null;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardSRManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db.objectManagers.serviceRequests</a> &gt; <span class="el_source">StandardSRManager.java</span></div><h1>StandardSRManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db.objectManagers.serviceRequests;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class StandardSRManager extends ObjectManager&lt;ServiceRequest&gt; {
+  public StandardSRManager(DataBaseObjectType dbType) throws SQLException {
+<span class="nc" id="L28">    super(dbType);</span>
+<span class="nc" id="L29">  }</span>
+
+  @Override
+  public void readCSV(String inputFileName)
+      throws IOException, ParseException, CsvValidationException, SQLException {
+<span class="nc" id="L34">    String filePath =</span>
+<span class="nc" id="L35">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + inputFileName;</span>
+<span class="nc" id="L36">    CSVReader csvReader = new CSVReader(new FileReader(filePath));</span>
+<span class="nc" id="L37">    CSVLineData lineData = new CSVLineData(csvReader);</span>
+
+    String[] record;
+<span class="nc bnc" id="L40" title="All 2 branches missed.">    while ((record = csvReader.readNext()) != null) {</span>
+<span class="nc" id="L41">      lineData.setParsedData(record);</span>
+
+      ServiceRequestPriority priority =
+<span class="nc" id="L44">          ServiceRequestPriority.values()[lineData.getColumnInt(&quot;priority&quot;)];</span>
+      ServiceRequestStatus requestStatus =
+<span class="nc" id="L46">          ServiceRequestStatus.values()[lineData.getColumnInt(&quot;status&quot;)];</span>
+<span class="nc" id="L47">      String additionalInfo = lineData.getColumnString(&quot;additionalInfo&quot;);</span>
+      Integer assignee =
+<span class="nc bnc" id="L49" title="All 2 branches missed.">          lineData.getColumnString(&quot;assigneeID&quot;).equals(&quot;&quot;)</span>
+<span class="nc" id="L50">              ? -1</span>
+<span class="nc" id="L51">              : lineData.getColumnInt(&quot;assigneeID&quot;);</span>
+<span class="nc" id="L52">      int location = lineData.getColumnInt(&quot;locationID&quot;);</span>
+<span class="nc" id="L53">      Date requestDate = lineData.getColumnDate(&quot;requestDate&quot;);</span>
+      Date closeDate =
+<span class="nc bnc" id="L55" title="All 2 branches missed.">          lineData.getColumnString(&quot;closeDate&quot;).equals(&quot;&quot;)</span>
+<span class="nc" id="L56">              ? null</span>
+<span class="nc" id="L57">              : lineData.getColumnDate(&quot;closeDate&quot;);</span>
+<span class="nc" id="L58">      Date openDate = lineData.getColumnDate(&quot;openDate&quot;);</span>
+<span class="nc" id="L59">      String title = lineData.getColumnString(&quot;title&quot;);</span>
+<span class="nc" id="L60">      int id = lineData.getColumnInt(&quot;id&quot;);</span>
+<span class="nc" id="L61">      DataBaseObjectType dbType = super.objectType;</span>
+
+      // select assignee where id = employeeID
+<span class="nc" id="L64">      EmployeeManager employeeManager = new EmployeeManager();</span>
+<span class="nc" id="L65">      Employee newEmployee = employeeManager.get(assignee);</span>
+      // select location where id = locationID
+<span class="nc" id="L67">      LocationManager locationManager = new LocationManager();</span>
+<span class="nc" id="L68">      Location newLocation = locationManager.get(location);</span>
+
+      // new ServiceRequest
+<span class="nc" id="L71">      ServiceRequest newSR =</span>
+          new ServiceRequest(
+              dbType,
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id);
+<span class="nc" id="L84">      getManager().insert(newSR);</span>
+<span class="nc" id="L85">    }</span>
+<span class="nc" id="L86">  }</span>
+
+  @Override
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+<span class="nc" id="L90">    String filePath =</span>
+<span class="nc" id="L91">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + outputFileName;</span>
+
+<span class="nc" id="L93">    FileWriter outputFile = new FileWriter(filePath);</span>
+<span class="nc" id="L94">    CSVWriter writer =</span>
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+<span class="nc" id="L102">    List&lt;ServiceRequest&gt; listOfSerReq = this.getAll();</span>
+
+<span class="nc" id="L104">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
+<span class="nc" id="L105">    data.add(</span>
+        new String[] {
+          &quot;id&quot;,
+          &quot;locationID&quot;,
+          &quot;assigneeID&quot;,
+          &quot;openDate&quot;,
+          &quot;closeDate&quot;,
+          &quot;status&quot;,
+          &quot;title&quot;,
+          &quot;additionalInfo&quot;,
+          &quot;priority&quot;,
+          &quot;requestDate&quot;
+        });
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">    for (ServiceRequest serReq : listOfSerReq) {</span>
+<span class="nc" id="L120">      data.add(</span>
+          new String[] {
+<span class="nc" id="L122">            Integer.toString(serReq.getId()),</span>
+<span class="nc" id="L123">            Integer.toString(serReq.getLocation().getId()),</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            serReq.getAssignee() == null ? &quot;&quot; : Integer.toString(serReq.getAssignee().getId()),</span>
+<span class="nc" id="L125">            serReq.getOpenDate().toString(),</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            serReq.getCloseDate() == null ? &quot;&quot; : serReq.getCloseDate().toString(),</span>
+<span class="nc" id="L127">            Integer.toString(serReq.getStatus().ordinal()),</span>
+<span class="nc" id="L128">            serReq.getTitle(),</span>
+<span class="nc" id="L129">            serReq.getAdditionalInfo(),</span>
+<span class="nc" id="L130">            Integer.toString(serReq.getPriority().ordinal()),</span>
+<span class="nc" id="L131">            serReq.getRequestDate().toString()</span>
+          });
+<span class="nc" id="L133">    }</span>
+<span class="nc" id="L134">    writer.writeAll(data);</span>
+<span class="nc" id="L135">    writer.close();</span>
+<span class="nc" id="L136">  }</span>
+
+  private ObjectManager getManager() throws SQLException {
+<span class="nc bnc" id="L139" title="All 15 branches missed.">    switch (super.objectType) {</span>
+      case AudioVisualSR:
+<span class="nc" id="L141">        return DBManager.getInstance().getAudioVisualSRManager();</span>
+      case ComputerSR:
+<span class="nc" id="L143">        return DBManager.getInstance().getComputerSRManager();</span>
+      case FoodDeliverySR:
+<span class="nc" id="L145">        return DBManager.getInstance().getFoodDeliverySRManager();</span>
+      case GiftAndFloralSR:
+<span class="nc" id="L147">        return DBManager.getInstance().getGiftAndFloralSRManager();</span>
+      case InternalPatientTransferSR:
+<span class="nc" id="L149">        return DBManager.getInstance().getInternalPatientSRManager();</span>
+      case ExternalPatientSR:
+<span class="nc" id="L151">        return DBManager.getInstance().getExternalPatientSRManager();</span>
+      case LanguageInterpreterSR:
+<span class="nc" id="L153">        return DBManager.getInstance().getLanguageSRManager();</span>
+      case LaundrySR:
+<span class="nc" id="L155">        return DBManager.getInstance().getLaundrySRManager();</span>
+      case ReligiousSR:
+<span class="nc" id="L157">        return DBManager.getInstance().getReligiousSRManager();</span>
+      case SecuritySR:
+<span class="nc" id="L159">        return DBManager.getInstance().getSecuritySRManager();</span>
+      case MedicalEquipmentSR:
+<span class="nc" id="L161">        return DBManager.getInstance().getMedicalEquipmentSRManager();</span>
+      case MedicineDeliverySR:
+<span class="nc" id="L163">        return DBManager.getInstance().getMedicineDeliverySRManager();</span>
+      case FacilitiesMaintenanceSR:
+<span class="nc" id="L165">        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();</span>
+      case SanitationSR:
+<span class="nc" id="L167">        return DBManager.getInstance().getSanitationSRManager();</span>
+      default:
+<span class="nc" id="L169">        return null;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

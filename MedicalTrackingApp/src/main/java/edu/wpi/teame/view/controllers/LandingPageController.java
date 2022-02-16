@@ -1,11 +1,12 @@
 package edu.wpi.teame.view.controllers;
 
+import edu.wpi.teame.App;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.Map;
-import edu.wpi.teame.view.MapSideView;
-import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
+import edu.wpi.teame.view.map.Map;
+import edu.wpi.teame.view.map.MapSideView;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,14 +16,17 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
 public class LandingPageController implements Initializable {
-  @FXML public TabPane mainTabPane;
   @FXML public AnchorPane mainAnchorPane;
+  private boolean shouldEnlarge = true;
+  @FXML public TabPane mainTabPane;
 
   @Override
   @SneakyThrows
@@ -42,19 +46,36 @@ public class LandingPageController implements Initializable {
     mainTabPane.setRotateGraphic(true);
 
     List<StyledTab> tabs = new ArrayList<>();
-    tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
     tabs.add(
+        new StyledTab(
+            "Home",
+            SortOrder.First,
+            "view/HomePage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/Home.png").toString())));
+
+    StyledTab directoryTab =
         new StyledTab(
             "Service Request Directory",
             SortOrder.ByName,
-            "view/ServiceRequestDirectoryPage.fxml"));
+            "view/ServiceRequestDirectoryPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
+    directoryTab.setOnSelectionChanged(
+        new EventHandler<Event>() {
+          @Override
+          public void handle(Event event) {
+            shouldEnlarge = !shouldEnlarge;
+            System.out.println(shouldEnlarge);
+          }
+        });
+    tabs.add(directoryTab);
 
     Map mapView = new Map(FloorType.ThirdFloor, this);
     StyledTab mapTab =
         new StyledTab(
             "Hospital Map",
             SortOrder.ByName,
-            mapView.getMapScene(tabContentHeight, tabContentWidth));
+            mapView.getMapScene(tabContentHeight, tabContentWidth),
+            new Image(App.class.getResource("images/Icons/pageIcons/MapView.png").toString()));
     mapTab.setOnSelectionChanged(
         new EventHandler<Event>() {
           @Override
@@ -70,7 +91,11 @@ public class LandingPageController implements Initializable {
 
     MapSideView mapSideView = new MapSideView();
     StyledTab mapSideViewTab =
-        new StyledTab("Hospital Map Side-View", SortOrder.ByName, mapSideView.getMapScene());
+        new StyledTab(
+            "Hospital Map Side-View",
+            SortOrder.ByName,
+            mapSideView.getMapScene(),
+            new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
     tabs.add(mapSideViewTab);
 
     ServiceRequestBacklog backlogView =
@@ -78,7 +103,11 @@ public class LandingPageController implements Initializable {
             Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,
             Screen.getPrimary().getBounds().getHeight());
     StyledTab backlogTab =
-        new StyledTab("Service Request Backlog", SortOrder.ByName, backlogView.getBacklogScene());
+        new StyledTab(
+            "Service Request Backlog",
+            SortOrder.ByName,
+            backlogView.getBacklogScene(),
+            new Image(App.class.getResource("images/Icons/pageIcons/SRBacklog.png").toString()));
     backlogTab.setOnSelectionChanged(
         (event) -> {
           if (backlogTab.isSelected()) {
@@ -91,9 +120,36 @@ public class LandingPageController implements Initializable {
         });
     tabs.add(backlogTab);
 
-    tabs.add(new StyledTab("Settings", SortOrder.ByName, "view/tabs/SettingsPage.fxml"));
+    tabs.add(
+        new StyledTab(
+            "Settings",
+            SortOrder.ByName,
+            "view/tabs/SettingsPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString())));
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
+
+    shouldEnlarge = false;
+    updateTabSize();
+  }
+
+  @FXML
+  public void updateTabSize() {
+    if (shouldEnlarge) {
+      mainTabPane.setTabMaxHeight(StyledTab.Height);
+      mainTabPane.setTabMinHeight(StyledTab.Height);
+      mainTabPane.setTabMaxWidth(StyledTab.Width);
+      mainTabPane.setTabMinWidth(StyledTab.Width);
+    } else {
+      mainTabPane.setTabMaxHeight(75);
+      mainTabPane.setTabMinHeight(75);
+      mainTabPane.setTabMaxWidth(75);
+      mainTabPane.setTabMinWidth(75);
+    }
+
+    for (Tab tab : mainTabPane.getTabs()) {
+      ((StyledTab) tab).toggleTabSize(!shouldEnlarge);
+    }
   }
 }

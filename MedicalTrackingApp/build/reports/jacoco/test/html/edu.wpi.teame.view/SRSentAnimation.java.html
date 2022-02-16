@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SRSentAnimation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view</a> &gt; <span class="el_source">SRSentAnimation.java</span></div><h1>SRSentAnimation.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view;
+
+import edu.wpi.teame.App;
+import java.util.Objects;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+
+public class SRSentAnimation {
+
+  private final StackPane stackPane;
+
+<span class="nc" id="L26">  public SRSentAnimation() {</span>
+<span class="nc" id="L27">    stackPane = new StackPane();</span>
+<span class="nc" id="L28">    stackPane.setAlignment(Pos.CENTER);</span>
+    // stackPane.setPrefSize(100, 100);
+<span class="nc" id="L30">  }</span>
+
+  public StackPane getStackPane() {
+<span class="nc" id="L33">    stackPane.setBackground(</span>
+        new Background(new BackgroundFill(Color.TRANSPARENT, new CornerRadii(10), Insets.EMPTY)));
+<span class="nc" id="L35">    stackPane.setEffect(new DropShadow(5, Color.WHITE));</span>
+<span class="nc" id="L36">    return this.stackPane;</span>
+  }
+
+  public void play() {
+<span class="nc" id="L40">    Text sentText = new Text(&quot;Sent!&quot;);</span>
+<span class="nc" id="L41">    sentText.setFont(Font.font(&quot;Arial&quot;, 24));</span>
+<span class="nc" id="L42">    sentText.setOpacity(0);</span>
+
+<span class="nc" id="L44">    ImageView wheel =</span>
+        new ImageView(
+            new Image(
+<span class="nc" id="L47">                Objects.requireNonNull(App.class.getResource(&quot;images/icons/LoadingWheel.png&quot;))</span>
+<span class="nc" id="L48">                    .toString()));</span>
+<span class="nc" id="L49">    wheel.setFitWidth(100);</span>
+<span class="nc" id="L50">    wheel.setFitHeight(100);</span>
+
+<span class="nc" id="L52">    ImageView rocket =</span>
+        new ImageView(
+            new Image(
+<span class="nc" id="L55">                Objects.requireNonNull(App.class.getResource(&quot;images/icons/Rocket.png&quot;))</span>
+<span class="nc" id="L56">                    .toString()));</span>
+<span class="nc" id="L57">    rocket.setFitWidth(100);</span>
+<span class="nc" id="L58">    rocket.setFitHeight(100);</span>
+<span class="nc" id="L59">    rocket.setOpacity(0);</span>
+<span class="nc" id="L60">    stackPane.getChildren().add(wheel);</span>
+<span class="nc" id="L61">    stackPane.getChildren().add(rocket);</span>
+<span class="nc" id="L62">    stackPane.getChildren().add(sentText);</span>
+
+<span class="nc" id="L64">    FadeTransition rocketFadeOut = new FadeTransition(new Duration(500), rocket);</span>
+<span class="nc" id="L65">    rocketFadeOut.setFromValue(100);</span>
+<span class="nc" id="L66">    rocketFadeOut.setToValue(0);</span>
+<span class="nc" id="L67">    FadeTransition textFadeOut = new FadeTransition(new Duration(2000), sentText);</span>
+<span class="nc" id="L68">    textFadeOut.setFromValue(100);</span>
+<span class="nc" id="L69">    textFadeOut.setToValue(0);</span>
+<span class="nc" id="L70">    FadeTransition stackPaneFadeOut = new FadeTransition(new Duration(2000), stackPane);</span>
+<span class="nc" id="L71">    textFadeOut.setFromValue(100);</span>
+<span class="nc" id="L72">    textFadeOut.setToValue(0);</span>
+<span class="nc" id="L73">    FadeTransition textFadeIn = new FadeTransition(new Duration(200), sentText);</span>
+<span class="nc" id="L74">    textFadeIn.setFromValue(0);</span>
+<span class="nc" id="L75">    textFadeIn.setToValue(100);</span>
+<span class="nc" id="L76">    textFadeIn.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L78">          stackPane.setEffect(new DropShadow(5, Color.GOLD));</span>
+<span class="nc" id="L79">          textFadeOut.play();</span>
+<span class="nc" id="L80">          rocketFadeOut.play();</span>
+<span class="nc" id="L81">          stackPaneFadeOut.play();</span>
+<span class="nc" id="L82">        });</span>
+<span class="nc" id="L83">    TranslateTransition rocketTranslate = new TranslateTransition(new Duration(400), rocket);</span>
+<span class="nc" id="L84">    rocketTranslate.setFromY(0);</span>
+<span class="nc" id="L85">    rocketTranslate.setToY(-600);</span>
+<span class="nc" id="L86">    rocketTranslate.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L88">          textFadeIn.play();</span>
+<span class="nc" id="L89">          stackPane.setEffect(new DropShadow(5, Color.YELLOW));</span>
+<span class="nc" id="L90">        });</span>
+<span class="nc" id="L91">    FadeTransition rocketFadeIn = new FadeTransition(new Duration(100), rocket);</span>
+<span class="nc" id="L92">    rocketFadeIn.setFromValue(0);</span>
+<span class="nc" id="L93">    rocketFadeIn.setToValue(100);</span>
+<span class="nc" id="L94">    rocketFadeIn.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L96">          rocketTranslate.play();</span>
+<span class="nc" id="L97">          wheel.setOpacity(0);</span>
+<span class="nc" id="L98">        });</span>
+<span class="nc" id="L99">    RotateTransition wheelRotate = new RotateTransition(new Duration(500), wheel);</span>
+<span class="nc" id="L100">    wheelRotate.setFromAngle(0);</span>
+<span class="nc" id="L101">    wheelRotate.setToAngle(Math.random() * 360 + 270); // Random spin</span>
+<span class="nc" id="L102">    wheelRotate.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L104">          System.out.println(&quot;rotate done&quot;);</span>
+<span class="nc" id="L105">          rocketFadeIn.play();</span>
+<span class="nc" id="L106">        });</span>
+<span class="nc" id="L107">    wheelRotate.play();</span>
+<span class="nc" id="L108">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

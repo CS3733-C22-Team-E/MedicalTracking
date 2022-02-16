@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers</a> &gt; <span class="el_source">LoginPageController.java</span></div><h1>LoginPageController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers;
+
+import static javafx.animation.Interpolator.EASE_OUT;
+
+import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
+import java.io.IOException;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+
+<span class="nc" id="L35">public class LoginPageController implements Initializable {</span>
+
+  @FXML private JFXButton loginButton;
+  @FXML private TextField usernameTextInput;
+  @FXML private TextField passwordTextInput;
+  @FXML private Text usernameText;
+  @FXML private Text passwordText;
+  @FXML private Line usernameFillLine;
+  @FXML private Line passwordFillLine;
+  @FXML private ImageView usernameImage;
+  @FXML private ImageView passwordImage;
+  @FXML private ImageView icon;
+  @FXML private ImageView iconHole;
+  @FXML private Text title;
+
+<span class="nc" id="L50">  private Scene landingPage = null;</span>
+<span class="nc" id="L51">  private Media loginSound = null;</span>
+
+  @FXML
+  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException {
+<span class="nc" id="L55">    String username = usernameTextInput.getText();</span>
+<span class="nc" id="L56">    String password = passwordTextInput.getText();</span>
+<span class="nc" id="L57">    boolean loggedIn = DBManager.getInstance().getCredentialManager().logIn(username, password);</span>
+
+    // Check if we were able to log in.
+<span class="nc bnc" id="L60" title="All 2 branches missed.">    if (!loggedIn) {</span>
+<span class="nc" id="L61">      loginFailedAnimation();</span>
+<span class="nc" id="L62">      return;</span>
+    }
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">    if (loginSound != null) { // TODO find out why this couses null pointer</span>
+<span class="nc" id="L66">      MediaPlayer mediaPlayer = new MediaPlayer(loginSound);</span>
+<span class="nc" id="L67">      mediaPlayer.setVolume(0.3);</span>
+    }
+
+<span class="nc" id="L70">    TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);</span>
+<span class="nc" id="L71">    t2.setFromY(-50);</span>
+<span class="nc" id="L72">    t2.setToY(0);</span>
+<span class="nc" id="L73">    t2.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L75">          switchToLandingPage();</span>
+<span class="nc" id="L76">        });</span>
+
+<span class="nc" id="L78">    RotateTransition r = new RotateTransition(new Duration(300), icon);</span>
+<span class="nc" id="L79">    r.setFromAngle(0);</span>
+<span class="nc" id="L80">    r.setToAngle(360);</span>
+<span class="nc" id="L81">    r.setInterpolator(EASE_OUT);</span>
+<span class="nc" id="L82">    r.setOnFinished(</span>
+        e -&gt; {
+<span class="nc" id="L84">          t2.play();</span>
+<span class="nc" id="L85">        });</span>
+
+<span class="nc" id="L87">    TranslateTransition t1 = new TranslateTransition(new Duration(200), icon);</span>
+<span class="nc" id="L88">    t1.setInterpolator(EASE_OUT);</span>
+<span class="nc" id="L89">    t1.setFromY(0);</span>
+<span class="nc" id="L90">    t1.setToY(-50);</span>
+<span class="nc" id="L91">    t1.setOnFinished(e -&gt; {});</span>
+<span class="nc" id="L92">    t1.play();</span>
+<span class="nc" id="L93">    r.play();</span>
+    // mediaPlayer.play(); //TODO uncomment when sounds play
+<span class="nc" id="L95">  }</span>
+
+  private void loginFailedAnimation() {
+<span class="nc" id="L98">    RotateTransition r3 = new RotateTransition(new Duration(50), icon);</span>
+<span class="nc" id="L99">    r3.setFromAngle(15);</span>
+<span class="nc" id="L100">    r3.setToAngle(0);</span>
+<span class="nc" id="L101">    r3.setOnFinished(e -&gt; icon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));</span>
+<span class="nc" id="L102">    RotateTransition r2 = new RotateTransition(new Duration(100), icon);</span>
+<span class="nc" id="L103">    r2.setFromAngle(-15);</span>
+<span class="nc" id="L104">    r2.setToAngle(15);</span>
+<span class="nc" id="L105">    r2.setOnFinished(r -&gt; r3.play());</span>
+<span class="nc" id="L106">    RotateTransition r1 = new RotateTransition(new Duration(50), icon);</span>
+<span class="nc" id="L107">    r1.setFromAngle(0);</span>
+<span class="nc" id="L108">    r1.setToAngle(-15);</span>
+<span class="nc" id="L109">    r1.setOnFinished(e -&gt; r2.play());</span>
+<span class="nc" id="L110">    r1.play();</span>
+<span class="nc" id="L111">    icon.setEffect(new DropShadow(30, 0, 0, Color.RED));</span>
+<span class="nc" id="L112">  }</span>
+
+  private void switchToLandingPage() {
+<span class="nc" id="L115">    System.out.println(&quot;Switching to landing page...&quot;);</span>
+<span class="nc" id="L116">    App.getAppPrimaryStage().setScene(landingPage);</span>
+<span class="nc" id="L117">    App.getAppPrimaryStage().show();</span>
+<span class="nc" id="L118">    App.getAppPrimaryStage().setFullScreen(true);</span>
+<span class="nc" id="L119">  }</span>
+
+  @FXML
+  private void updateUsernameText() {
+<span class="nc" id="L123">    String t = usernameTextInput.getText();</span>
+<span class="nc" id="L124">    int numChars = usernameTextInput.getText().length();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    if (numChars &gt; 30) {</span>
+<span class="nc" id="L126">      usernameText.setText(t.substring(0, 30));</span>
+    } else {
+<span class="nc" id="L128">      usernameText.setText(t);</span>
+    }
+<span class="nc" id="L130">    enableLoginButton();</span>
+<span class="nc" id="L131">    checkFocus();</span>
+<span class="nc" id="L132">  }</span>
+
+  private void animateUsername(boolean activate) {
+<span class="nc" id="L135">    displayTextLine(usernameFillLine, activate);</span>
+<span class="nc" id="L136">    moveTextImage(usernameImage, activate);</span>
+<span class="nc" id="L137">  }</span>
+
+  @FXML
+<span class="nc" id="L140">  private void usernameAction() {}</span>
+
+  @FXML
+  private void usernameTextSelected() {
+<span class="nc" id="L144">    checkFocus();</span>
+<span class="nc" id="L145">  }</span>
+
+  @FXML
+  private void usernameMouseEnter() {
+<span class="nc" id="L149">    checkFocus();</span>
+<span class="nc" id="L150">  }</span>
+
+  @FXML
+  private void usernameMouseExit() {
+<span class="nc" id="L154">    checkFocus();</span>
+<span class="nc" id="L155">  }</span>
+
+  @FXML
+  private void updatePasswordText() {
+<span class="nc" id="L159">    String p = &quot;&quot;;</span>
+<span class="nc" id="L160">    int numStars = passwordTextInput.getText().length();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">    if (numStars &gt; 30) {</span>
+<span class="nc" id="L162">      numStars = 30;</span>
+    }
+<span class="nc bnc" id="L164" title="All 2 branches missed.">    for (int i = 0; i &lt; numStars; i++) {</span>
+<span class="nc" id="L165">      p += &quot;*&quot;;</span>
+    }
+<span class="nc" id="L167">    passwordText.setText(p);</span>
+<span class="nc" id="L168">    enableLoginButton();</span>
+<span class="nc" id="L169">    checkFocus();</span>
+<span class="nc" id="L170">  }</span>
+
+  private void animatePassword(boolean activate) {
+<span class="nc" id="L173">    displayTextLine(passwordFillLine, activate);</span>
+<span class="nc" id="L174">    moveTextImage(passwordImage, activate);</span>
+<span class="nc" id="L175">  }</span>
+
+  @FXML
+  private void passwordAction() {
+<span class="nc" id="L179">    displayTextLine(passwordFillLine, true);</span>
+<span class="nc" id="L180">  }</span>
+
+  @FXML
+  private void passwordTextSelected() {
+<span class="nc" id="L184">    checkFocus();</span>
+<span class="nc" id="L185">  }</span>
+
+  @FXML
+  private void passwordMouseEnter() {
+<span class="nc" id="L189">    checkFocus();</span>
+<span class="nc" id="L190">  }</span>
+
+  @FXML
+  private void passwordMouseExit() {
+<span class="nc" id="L194">    checkFocus();</span>
+<span class="nc" id="L195">  }</span>
+
+  private void displayTextLine(Line l, boolean display) {
+<span class="nc" id="L198">    ScaleTransition t = new ScaleTransition(new Duration(300), l);</span>
+<span class="nc" id="L199">    t.setInterpolator(EASE_OUT);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">    if (display) {</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">      if (l.getScaleX() &gt; 0) {</span>
+<span class="nc" id="L202">        return;</span>
+      }
+<span class="nc" id="L204">      t.setFromX(0);</span>
+<span class="nc" id="L205">      t.setToX(1);</span>
+    } else {
+<span class="nc bnc" id="L207" title="All 2 branches missed.">      if (l.getScaleX() &lt; 1) {</span>
+<span class="nc" id="L208">        return;</span>
+      }
+<span class="nc" id="L210">      t.setFromX(1);</span>
+<span class="nc" id="L211">      t.setToX(0);</span>
+    }
+<span class="nc" id="L213">    t.play();</span>
+<span class="nc" id="L214">  }</span>
+
+  private void moveTextImage(ImageView i, boolean dislocate) {
+<span class="nc" id="L217">    TranslateTransition t = new TranslateTransition(new Duration(200), i);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">    if (dislocate) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">      if (i.getTranslateY() &lt; -5) {</span>
+<span class="nc" id="L220">        return;</span>
+      }
+<span class="nc" id="L222">      t.setFromY(-5);</span>
+<span class="nc" id="L223">      t.setToY(-35);</span>
+    } else {
+<span class="nc bnc" id="L225" title="All 2 branches missed.">      if (i.getTranslateY() &gt; -35) {</span>
+<span class="nc" id="L226">        return;</span>
+      }
+<span class="nc" id="L228">      t.setFromY(-35);</span>
+<span class="nc" id="L229">      t.setToY(-5);</span>
+    }
+<span class="nc" id="L231">    t.play();</span>
+<span class="nc" id="L232">  }</span>
+
+  private void enableLoginButton() {
+<span class="nc bnc" id="L235" title="All 4 branches missed.">    loginButton.setDisable(usernameText.getText().equals(&quot;&quot;) || passwordText.getText().equals(&quot;&quot;));</span>
+<span class="nc" id="L236">  }</span>
+
+  @FXML
+  private void checkFocus() {
+<span class="nc bnc" id="L240" title="All 2 branches missed.">    if (usernameTextInput.focusedProperty().getValue()) {</span>
+<span class="nc" id="L241">      animateUsername(true);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">    } else animateUsername(!usernameText.getText().isEmpty());</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">    if (passwordTextInput.focusedProperty().getValue()) {</span>
+<span class="nc" id="L244">      animatePassword(true);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">    } else animatePassword(!passwordText.getText().isEmpty());</span>
+<span class="nc" id="L246">  }</span>
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    try {
+<span class="nc" id="L251">      landingPage =</span>
+          new Scene(
+<span class="nc" id="L253">              FXMLLoader.load(</span>
+<span class="nc" id="L254">                  Objects.requireNonNull(App.class.getResource(&quot;view/LandingPage.fxml&quot;))));</span>
+<span class="nc" id="L255">      loginSound = new Media(App.class.getResource(&quot;audio/Shoop.mp3&quot;).toString());</span>
+<span class="nc" id="L256">    } catch (IOException e) {</span>
+<span class="nc" id="L257">      e.printStackTrace();</span>
+<span class="nc" id="L258">    }</span>
+<span class="nc" id="L259">    usernameImage.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L260">    passwordImage.setOnMousePressed(e -&gt; checkFocus());</span>
+
+<span class="nc" id="L262">    usernameTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L263">    passwordTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
+
+<span class="nc" id="L265">    passwordText.setScaleX(1.5);</span>
+<span class="nc" id="L266">    passwordText.setScaleY(1.5);</span>
+
+    // Load the credentials before we show the log in page
+    try {
+<span class="nc" id="L270">      DBManager.getInstance().getCredentialManager().readCSV(&quot;Credentials.csv&quot;);</span>
+<span class="nc" id="L271">    } catch (Exception ex) {</span>
+<span class="nc" id="L272">      ex.printStackTrace();</span>
+<span class="nc" id="L273">    }</span>
+<span class="nc" id="L274">  }</span>
+
+  @FXML
+  public void closeApp() {
+<span class="nc" id="L278">    Dialog dialog = new Dialog();</span>
+<span class="nc" id="L279">    dialog.setTitle(&quot;Are you sure you want to quit?&quot;);</span>
+<span class="nc" id="L280">    ImageView newIcon =</span>
+<span class="nc" id="L281">        new ImageView(new Image(App.class.getResource(&quot;images/icons/ExitIcon.png&quot;).toString()));</span>
+<span class="nc" id="L282">    newIcon.setFitHeight(30);</span>
+<span class="nc" id="L283">    newIcon.setFitWidth(30);</span>
+<span class="nc" id="L284">    dialog.getDialogPane().setGraphic(newIcon);</span>
+<span class="nc" id="L285">    ButtonType OK = new ButtonType(&quot;Exit&quot;, ButtonBar.ButtonData.OK_DONE);</span>
+<span class="nc" id="L286">    dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);</span>
+<span class="nc" id="L287">    dialog.setResultConverter(</span>
+        dialogButton -&gt; {
+<span class="nc bnc" id="L289" title="All 2 branches missed.">          if (dialogButton == OK) {</span>
+<span class="nc" id="L290">            App.getAppPrimaryStage().close();</span>
+          }
+<span class="nc" id="L292">          return null;</span>
+        });
+<span class="nc" id="L294">    dialog.showAndWait();</span>
+<span class="nc" id="L295">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientTransportationSRManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db.objectManagers.serviceRequests</a> &gt; <span class="el_source">PatientTransportationSRManager.java</span></div><h1>PatientTransportationSRManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db.objectManagers.serviceRequests;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.*;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class PatientTransportationSRManager
+    extends ObjectManager&lt;PatientTransportationServiceRequest&gt; {
+  public PatientTransportationSRManager(boolean isInternal) throws SQLException {
+<span class="nc" id="L29">    super(</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        isInternal</span>
+<span class="nc" id="L31">            ? DataBaseObjectType.InternalPatientTransferSR</span>
+<span class="nc" id="L32">            : DataBaseObjectType.ExternalPatientSR);</span>
+<span class="nc" id="L33">  }</span>
+
+  @Override
+  public void readCSV(String inputFileName)
+      throws IOException, SQLException, CsvValidationException, ParseException {
+<span class="nc" id="L38">    String filePath =</span>
+<span class="nc" id="L39">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + inputFileName;</span>
+<span class="nc" id="L40">    CSVReader csvReader = new CSVReader(new FileReader(filePath));</span>
+<span class="nc" id="L41">    CSVLineData lineData = new CSVLineData(csvReader);</span>
+
+    String[] record;
+<span class="nc bnc" id="L44" title="All 2 branches missed.">    while ((record = csvReader.readNext()) != null) {</span>
+<span class="nc" id="L45">      lineData.setParsedData(record);</span>
+
+      ServiceRequestPriority priority =
+<span class="nc" id="L48">          ServiceRequestPriority.values()[lineData.getColumnInt(&quot;priority&quot;)];</span>
+      ServiceRequestStatus requestStatus =
+<span class="nc" id="L50">          ServiceRequestStatus.values()[lineData.getColumnInt(&quot;status&quot;)];</span>
+<span class="nc" id="L51">      String additionalInfo = lineData.getColumnString(&quot;additionalInfo&quot;);</span>
+      Integer assignee =
+<span class="nc bnc" id="L53" title="All 2 branches missed.">          lineData.getColumnString(&quot;assigneeID&quot;).equals(&quot;&quot;)</span>
+<span class="nc" id="L54">              ? -1</span>
+<span class="nc" id="L55">              : lineData.getColumnInt(&quot;assigneeID&quot;);</span>
+<span class="nc" id="L56">      int location = lineData.getColumnInt(&quot;locationID&quot;);</span>
+<span class="nc" id="L57">      Date requestDate = lineData.getColumnDate(&quot;requestDate&quot;);</span>
+      Date closeDate =
+<span class="nc bnc" id="L59" title="All 2 branches missed.">          lineData.getColumnString(&quot;closeDate&quot;).equals(&quot;&quot;)</span>
+<span class="nc" id="L60">              ? null</span>
+<span class="nc" id="L61">              : lineData.getColumnDate(&quot;closeDate&quot;);</span>
+<span class="nc" id="L62">      Date openDate = lineData.getColumnDate(&quot;openDate&quot;);</span>
+<span class="nc" id="L63">      String title = lineData.getColumnString(&quot;title&quot;);</span>
+<span class="nc" id="L64">      int id = lineData.getColumnInt(&quot;id&quot;);</span>
+<span class="nc" id="L65">      int destination = lineData.getColumnInt(&quot;destinationID&quot;);</span>
+<span class="nc" id="L66">      int equipment = lineData.getColumnInt(&quot;equipmentID&quot;);</span>
+<span class="nc" id="L67">      int patient = lineData.getColumnInt(&quot;patientID&quot;);</span>
+
+      // select assignee where id = assignee
+<span class="nc" id="L70">      EmployeeManager employeeManager = new EmployeeManager();</span>
+<span class="nc" id="L71">      Employee newEmployee = employeeManager.get(assignee);</span>
+      // select location where id = locationID, select destination where id = destination
+<span class="nc" id="L73">      LocationManager locationManager = new LocationManager();</span>
+<span class="nc" id="L74">      Location newLocation = locationManager.get(location);</span>
+<span class="nc" id="L75">      Location newDestination = locationManager.get(destination);</span>
+      // select equipment where id = equipment
+<span class="nc" id="L77">      EquipmentManager equipmentManager = new EquipmentManager();</span>
+<span class="nc" id="L78">      Equipment newEquipment = equipmentManager.get(equipment);</span>
+      // select patient where id = patient
+<span class="nc" id="L80">      PatientManager patientManager = new PatientManager();</span>
+<span class="nc" id="L81">      Patient newPatient = patientManager.get(patient);</span>
+
+      // new ServiceRequest
+<span class="nc" id="L84">      PatientTransportationServiceRequest newSR =</span>
+          new PatientTransportationServiceRequest(
+<span class="nc" id="L86">              getInternalBool(),</span>
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id,
+              newDestination,
+              newEquipment,
+              newPatient);
+<span class="nc bnc" id="L100" title="All 2 branches missed.">      if (getInternalBool()) {</span>
+<span class="nc" id="L101">        DBManager.getInstance().getInternalPatientSRManager().insert(newSR);</span>
+      } else {
+<span class="nc" id="L103">        DBManager.getInstance().getExternalPatientSRManager().insert(newSR);</span>
+      }
+<span class="nc" id="L105">    }</span>
+<span class="nc" id="L106">  }</span>
+
+  @Override
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+<span class="nc" id="L110">    String filePath =</span>
+<span class="nc" id="L111">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + outputFileName;</span>
+
+<span class="nc" id="L113">    FileWriter outputFile = new FileWriter(filePath);</span>
+<span class="nc" id="L114">    CSVWriter writer =</span>
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+<span class="nc" id="L122">    List&lt;PatientTransportationServiceRequest&gt; listOfSerReq = this.getAll();</span>
+
+<span class="nc" id="L124">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
+<span class="nc" id="L125">    data.add(</span>
+        new String[] {
+          &quot;id&quot;,
+          &quot;locationID&quot;,
+          &quot;assigneeID&quot;,
+          &quot;openDate&quot;,
+          &quot;closeDate&quot;,
+          &quot;status&quot;,
+          &quot;title&quot;,
+          &quot;additionalInfo&quot;,
+          &quot;priority&quot;,
+          &quot;requestDate&quot;,
+          &quot;destinationID&quot;,
+          &quot;patientID&quot;,
+          &quot;equipmentID&quot;
+        });
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">    for (PatientTransportationServiceRequest serReq : listOfSerReq) {</span>
+<span class="nc" id="L143">      data.add(</span>
+          new String[] {
+<span class="nc" id="L145">            Integer.toString(serReq.getId()),</span>
+<span class="nc" id="L146">            Integer.toString(serReq.getLocation().getId()),</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            serReq.getAssignee() == null ? &quot;&quot; : Integer.toString(serReq.getAssignee().getId()),</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            serReq.getOpenDate() == null ? &quot;&quot; : serReq.getOpenDate().toString(),</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            serReq.getCloseDate() == null ? &quot;&quot; : serReq.getCloseDate().toString(),</span>
+<span class="nc" id="L150">            Integer.toString(serReq.getStatus().ordinal()),</span>
+<span class="nc" id="L151">            serReq.getTitle(),</span>
+<span class="nc" id="L152">            serReq.getAdditionalInfo(),</span>
+<span class="nc" id="L153">            Integer.toString(serReq.getPriority().ordinal()),</span>
+<span class="nc" id="L154">            serReq.getRequestDate().toString(),</span>
+<span class="nc" id="L155">            Integer.toString(serReq.getDestination().getId()),</span>
+<span class="nc" id="L156">            Integer.toString(serReq.getPatient().getId()),</span>
+<span class="nc" id="L157">            Integer.toString(serReq.getEquipment().getId())</span>
+          });
+<span class="nc" id="L159">    }</span>
+<span class="nc" id="L160">    writer.writeAll(data);</span>
+<span class="nc" id="L161">    writer.close();</span>
+<span class="nc" id="L162">  }</span>
+
+  public boolean getInternalBool() {
+<span class="nc bnc" id="L165" title="All 2 branches missed.">    if (super.objectType == DataBaseObjectType.InternalPatientTransferSR) {</span>
+<span class="nc" id="L166">      return true;</span>
+    } else {
+<span class="nc" id="L168">      return false;</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

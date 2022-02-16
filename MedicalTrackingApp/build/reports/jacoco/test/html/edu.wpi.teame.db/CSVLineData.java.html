@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVLineData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db</a> &gt; <span class="el_source">CSVLineData.java</span></div><h1>CSVLineData.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+public class CSVLineData {
+<span class="nc" id="L14">  private List&lt;String&gt; headers = null;</span>
+<span class="nc" id="L15">  private CSVReader csvReader = null;</span>
+<span class="nc" id="L16">  private String[] parsedData = null;</span>
+
+<span class="nc" id="L18">  public CSVLineData(CSVReader reader) throws IOException, CsvValidationException {</span>
+<span class="nc" id="L19">    headers = Arrays.asList(reader.readNext());</span>
+<span class="nc" id="L20">    this.csvReader = reader;</span>
+<span class="nc" id="L21">  }</span>
+
+  public String getColumnString(String columnName) {
+<span class="nc" id="L24">    return parsedData[headers.indexOf(columnName)];</span>
+  }
+
+  public Date getColumnDate(String columnName) throws ParseException {
+<span class="nc" id="L28">    String dateString = parsedData[headers.indexOf(columnName)];</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">    if (dateString.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L30">      return null;</span>
+    }
+<span class="nc" id="L32">    long time = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(dateString).getTime();</span>
+<span class="nc" id="L33">    return new Date(time);</span>
+  }
+
+  public boolean getColumnBoolean(String columnName) {
+<span class="nc" id="L37">    return Boolean.parseBoolean(parsedData[headers.indexOf(columnName)]);</span>
+  }
+
+  public int getColumnInt(String columnName) {
+<span class="nc" id="L41">    int colIndex = headers.indexOf(columnName);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">    if (Objects.equals(parsedData[colIndex], &quot;&quot;)) {</span>
+<span class="nc" id="L43">      return 0;</span>
+    }
+<span class="nc" id="L45">    return Integer.parseInt(parsedData[colIndex].replace(&quot; &quot;, &quot;&quot;));</span>
+  }
+
+  public List&lt;String&gt; getHeaders() {
+<span class="nc" id="L49">    return headers;</span>
+  }
+
+  public String[] getParsedData() {
+<span class="nc" id="L53">    return parsedData;</span>
+  }
+
+  public void setParsedData(String[] parsedData) {
+<span class="nc" id="L57">    this.parsedData = parsedData;</span>
+<span class="nc" id="L58">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

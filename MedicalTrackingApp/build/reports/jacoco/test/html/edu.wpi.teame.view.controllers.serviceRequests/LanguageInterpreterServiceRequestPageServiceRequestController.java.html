@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LanguageInterpreterServiceRequestPageServiceRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers.serviceRequests</a> &gt; <span class="el_source">LanguageInterpreterServiceRequestPageServiceRequestController.java</span></div><h1>LanguageInterpreterServiceRequestPageServiceRequestController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers.serviceRequests;
+
+import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.LanguageType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.LanguageInterpreterServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import java.net.URL;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.ZoneId;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
+
+<span class="nc" id="L30">public class LanguageInterpreterServiceRequestPageServiceRequestController</span>
+    extends ServiceRequestController {
+  @FXML private AnchorPane mainAnchorPane;
+  @FXML private DatePicker requestDate;
+  @FXML private AutoCompleteTextField locationText;
+  @FXML private AutoCompleteTextField assignee;
+  @FXML private AutoCompleteTextField patientName;
+  @FXML private JFXComboBox language;
+  @FXML private JFXComboBox priority;
+  @FXML private JFXComboBox status;
+  @FXML private TextArea additionalInfo;
+  @FXML private Button clearButton;
+  @FXML private Button submitButton;
+<span class="nc" id="L43">  private boolean hasRun = false;</span>
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+<span class="nc" id="L47">    mainAnchorPane.setEffect(</span>
+<span class="nc" id="L48">        new DropShadow(20, DataBaseObjectType.LanguageInterpreterSR.getColor()));</span>
+<span class="nc" id="L49">    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));</span>
+<span class="nc" id="L50">    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));</span>
+<span class="nc" id="L51">    language.setItems(FXCollections.observableArrayList(LanguageType.values()));</span>
+
+<span class="nc" id="L53">    requestDate</span>
+<span class="nc" id="L54">        .valueProperty()</span>
+<span class="nc" id="L55">        .addListener(</span>
+            (listener) -&gt; {
+<span class="nc" id="L57">              validateSubmitButton();</span>
+<span class="nc" id="L58">            });</span>
+
+<span class="nc" id="L60">    locationText.setOnMousePressed(</span>
+        listener -&gt; {
+<span class="nc" id="L62">          validateSubmitButton();</span>
+<span class="nc" id="L63">        });</span>
+
+<span class="nc" id="L65">    assignee.setOnMousePressed(</span>
+        listener -&gt; {
+<span class="nc" id="L67">          validateSubmitButton();</span>
+<span class="nc" id="L68">        });</span>
+
+<span class="nc" id="L70">    priority</span>
+<span class="nc" id="L71">        .valueProperty()</span>
+<span class="nc" id="L72">        .addListener(</span>
+            listener -&gt; {
+<span class="nc" id="L74">              validateSubmitButton();</span>
+<span class="nc" id="L75">            });</span>
+
+<span class="nc" id="L77">    status</span>
+<span class="nc" id="L78">        .valueProperty()</span>
+<span class="nc" id="L79">        .addListener(</span>
+            listener -&gt; {
+<span class="nc" id="L81">              validateSubmitButton();</span>
+<span class="nc" id="L82">            });</span>
+
+<span class="nc" id="L84">    patientName</span>
+<span class="nc" id="L85">        .onActionProperty()</span>
+<span class="nc" id="L86">        .addListener(</span>
+            listener -&gt; {
+<span class="nc" id="L88">              validateSubmitButton();</span>
+<span class="nc" id="L89">            });</span>
+
+<span class="nc" id="L91">    language</span>
+<span class="nc" id="L92">        .valueProperty()</span>
+<span class="nc" id="L93">        .addListener(</span>
+            listener -&gt; {
+<span class="nc" id="L95">              validateSubmitButton();</span>
+<span class="nc" id="L96">            });</span>
+<span class="nc" id="L97">  }</span>
+
+  @FXML
+  public void updateFromDB() throws SQLException {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">    if (hasRun) {</span>
+<span class="nc" id="L102">      return;</span>
+    }
+<span class="nc" id="L104">    hasRun = true;</span>
+
+    // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
+<span class="nc" id="L107">    List&lt;Location&gt; locations = DBManager.getInstance().getLocationManager().getAll();</span>
+<span class="nc" id="L108">    List&lt;Employee&gt; employees = DBManager.getInstance().getEmployeeManager().getAll();</span>
+
+<span class="nc" id="L110">    List&lt;Patient&gt; patients = DBManager.getInstance().getPatientManager().getAll();</span>
+<span class="nc" id="L111">    List&lt;String&gt; patientNames = new LinkedList&lt;&gt;();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">    for (Patient p : patients) {</span>
+<span class="nc" id="L113">      patientNames.add(p.getName());</span>
+<span class="nc" id="L114">    }</span>
+<span class="nc" id="L115">    patientName.getEntries().addAll(patientNames);</span>
+
+<span class="nc" id="L117">    List&lt;String&gt; locationNames = new LinkedList&lt;String&gt;();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">    for (Location loc : locations) {</span>
+<span class="nc" id="L119">      locationNames.add(loc.getLongName());</span>
+<span class="nc" id="L120">    }</span>
+
+<span class="nc" id="L122">    List&lt;String&gt; employeeNames = new LinkedList&lt;String&gt;();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">    for (Employee emp : employees) {</span>
+<span class="nc" id="L124">      employeeNames.add(emp.getName());</span>
+<span class="nc" id="L125">    }</span>
+
+<span class="nc" id="L127">    locationText.getEntries().addAll(locationNames);</span>
+<span class="nc" id="L128">    assignee.getEntries().addAll(employeeNames);</span>
+<span class="nc" id="L129">  }</span>
+
+  @FXML
+  void sendToDB() throws SQLException {
+    Employee employee =
+<span class="nc" id="L134">        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());</span>
+    Location location =
+<span class="nc" id="L136">        DBManager.getInstance().getLocationManager().getByName(locationText.getText());</span>
+<span class="nc" id="L137">    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());</span>
+
+<span class="nc" id="L139">    LanguageInterpreterServiceRequest serviceRequest =</span>
+        new LanguageInterpreterServiceRequest(
+<span class="nc" id="L141">            ServiceRequestPriority.valueOf(priority.getValue().toString()),</span>
+<span class="nc" id="L142">            ServiceRequestStatus.valueOf(status.getValue().toString()),</span>
+<span class="nc" id="L143">            additionalInfo.getText(),</span>
+            employee,
+            location,
+            new Date(
+<span class="nc" id="L147">                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())</span>
+<span class="nc" id="L148">                    .getTime()),</span>
+            new Date(0),
+<span class="nc" id="L150">            new Date(new java.util.Date().getTime()),</span>
+            &quot;&quot;,
+            0,
+<span class="nc" id="L153">            (LanguageType) language.getValue(),</span>
+            patient);
+<span class="nc" id="L155">    DBManager.getInstance().getLanguageSRManager().insert(serviceRequest);</span>
+<span class="nc" id="L156">    SRSentAnimation a = new SRSentAnimation();</span>
+<span class="nc" id="L157">    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);</span>
+<span class="nc" id="L158">    a.getStackPane().setLayoutY(submitButton.getLayoutY());</span>
+<span class="nc" id="L159">    mainAnchorPane.getChildren().add(a.getStackPane());</span>
+<span class="nc" id="L160">    a.play();</span>
+<span class="nc" id="L161">  }</span>
+
+  public void validateSubmitButton() {
+<span class="nc" id="L164">    submitButton.setDisable(</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        requestDate.getValue() == null</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            || locationText.getEntries() == null</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            || assignee.getEntries() == null</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            || priority.getValue() == null</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            || status.getValue() == null</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            || patientName.getText().isEmpty()</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            || language.getValue() == null);</span>
+<span class="nc" id="L172">  }</span>
+
+  public void clearText() {
+<span class="nc" id="L175">    additionalInfo.setText(&quot;&quot;);</span>
+<span class="nc" id="L176">    locationText.setText(&quot;&quot;);</span>
+<span class="nc" id="L177">    assignee.setText(&quot;&quot;);</span>
+<span class="nc" id="L178">    requestDate.setValue(null);</span>
+<span class="nc" id="L179">    requestDate.getEditor().clear();</span>
+<span class="nc" id="L180">    priority.valueProperty().setValue(null);</span>
+<span class="nc" id="L181">    status.valueProperty().setValue(null);</span>
+<span class="nc" id="L182">    patientName.setText(&quot;&quot;);</span>
+<span class="nc" id="L183">    language.valueProperty().setValue(null);</span>
+<span class="nc" id="L184">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

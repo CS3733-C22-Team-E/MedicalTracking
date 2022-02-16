@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapServiceRequestIcon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view</a> &gt; <span class="el_source">MapServiceRequestIcon.java</span></div><h1>MapServiceRequestIcon.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view;
+
+import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class MapServiceRequestIcon {
+  Timer timer;
+  FillProgressIndicator progressIndicator;
+  ImageView Icon;
+  ServiceRequest SR;
+  ArrayList&lt;MapServiceRequestIcon&gt; attachedTo;
+<span class="nc" id="L23">  static HashMap&lt;DataBaseObjectType, ImageView&gt; Graphics =</span>
+      new HashMap&lt;DataBaseObjectType, ImageView&gt;();
+
+  static {
+<span class="nc" id="L27">    Graphics.put(</span>
+        DataBaseObjectType.AudioVisualSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L32">                    .getResource(&quot;images/Icons/ServiceRequestIcons/AudioVisual.png&quot;)</span>
+<span class="nc" id="L33">                    .toString())));</span>
+<span class="nc" id="L34">    Graphics.put(</span>
+        DataBaseObjectType.ComputerSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L39">                    .getResource(&quot;images/Icons/ServiceRequestIcons/Computer.png&quot;)</span>
+<span class="nc" id="L40">                    .toString())));</span>
+<span class="nc" id="L41">    Graphics.put(</span>
+        DataBaseObjectType.FoodDeliverySR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L46">                    .getResource(&quot;images/Icons/ServiceRequestIcons/FoodDelivery.png&quot;)</span>
+<span class="nc" id="L47">                    .toString())));</span>
+<span class="nc" id="L48">    Graphics.put(</span>
+        DataBaseObjectType.GiftAndFloralSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L53">                    .getResource(&quot;images/Icons/ServiceRequestIcons/GiftAndFloral.png&quot;)</span>
+<span class="nc" id="L54">                    .toString())));</span>
+<span class="nc" id="L55">    Graphics.put(</span>
+        DataBaseObjectType.InternalPatientTransferSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L60">                    .getResource(&quot;images/Icons/ServiceRequestIcons/InternalPatientTransfer.png&quot;)</span>
+<span class="nc" id="L61">                    .toString())));</span>
+<span class="nc" id="L62">    Graphics.put(</span>
+        DataBaseObjectType.ExternalPatientSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L67">                    .getResource(</span>
+                        &quot;images/Icons/ServiceRequestIcons/ExternalPatientTransportation.png&quot;)
+<span class="nc" id="L69">                    .toString())));</span>
+<span class="nc" id="L70">    Graphics.put(</span>
+        DataBaseObjectType.LanguageInterpreterSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L75">                    .getResource(&quot;images/Icons/ServiceRequestIcons/LanguageInterpreter.png&quot;)</span>
+<span class="nc" id="L76">                    .toString())));</span>
+<span class="nc" id="L77">    Graphics.put(</span>
+        DataBaseObjectType.LaundrySR,
+        new ImageView(
+            new Image(
+<span class="nc" id="L81">                App.class.getResource(&quot;images/Icons/ServiceRequestIcons/Laundry.png&quot;).toString())));</span>
+<span class="nc" id="L82">    Graphics.put(</span>
+        DataBaseObjectType.ReligiousSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L87">                    .getResource(&quot;images/Icons/ServiceRequestIcons/Religious.png&quot;)</span>
+<span class="nc" id="L88">                    .toString())));</span>
+<span class="nc" id="L89">    Graphics.put(</span>
+        DataBaseObjectType.SecuritySR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L94">                    .getResource(&quot;images/Icons/ServiceRequestIcons/Security.png&quot;)</span>
+<span class="nc" id="L95">                    .toString())));</span>
+<span class="nc" id="L96">    Graphics.put(</span>
+        DataBaseObjectType.MedicalEquipmentSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L101">                    .getResource(&quot;images/Icons/ServiceRequestIcons/MedicalEquipment.png&quot;)</span>
+<span class="nc" id="L102">                    .toString())));</span>
+<span class="nc" id="L103">    Graphics.put(</span>
+        DataBaseObjectType.MedicineDeliverySR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L108">                    .getResource(&quot;images/Icons/ServiceRequestIcons/MedicineDelivery.png&quot;)</span>
+<span class="nc" id="L109">                    .toString())));</span>
+<span class="nc" id="L110">    Graphics.put(</span>
+        DataBaseObjectType.FacilitiesMaintenanceSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L115">                    .getResource(&quot;images/Icons/ServiceRequestIcons/FacilitiesMaintenance.png&quot;)</span>
+<span class="nc" id="L116">                    .toString())));</span>
+<span class="nc" id="L117">    Graphics.put(</span>
+        DataBaseObjectType.SanitationSR,
+        new ImageView(
+            new Image(
+                App.class
+<span class="nc" id="L122">                    .getResource(&quot;images/Icons/ServiceRequestIcons/Sanitation.png&quot;)</span>
+<span class="nc" id="L123">                    .toString())));</span>
+<span class="nc" id="L124">  }</span>
+
+  public MapServiceRequestIcon startTimer(int seconds) {
+<span class="nc" id="L127">    timer.scheduleAtFixedRate(</span>
+<span class="nc" id="L128">        new TimerTask() {</span>
+          @Override
+          public void run() {
+<span class="nc" id="L131">            Platform.runLater(</span>
+                () -&gt; {
+<span class="nc" id="L133">                  progressIndicator.setProgress(progressIndicator.getProgress() + 1);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                  if (progressIndicator.getProgress() &gt;= 100) {</span>
+<span class="nc" id="L135">                    progressIndicator.setVisible(false);</span>
+<span class="nc" id="L136">                    Icon.setVisible(false);</span>
+<span class="nc" id="L137">                    attachedTo.remove(this);</span>
+                    try {
+<span class="nc bnc" id="L139" title="All 15 branches missed.">                      switch (SR.getDBType()) {</span>
+                        case AudioVisualSR:
+<span class="nc" id="L141">                          DBManager.getInstance().getAudioVisualSRManager().remove(SR.getId());</span>
+<span class="nc" id="L142">                          break;</span>
+                        case ComputerSR:
+<span class="nc" id="L144">                          DBManager.getInstance().getComputerSRManager().remove(SR.getId());</span>
+<span class="nc" id="L145">                          break;</span>
+                        case FoodDeliverySR:
+<span class="nc" id="L147">                          DBManager.getInstance().getFoodDeliverySRManager().remove(SR.getId());</span>
+<span class="nc" id="L148">                          break;</span>
+                        case GiftAndFloralSR:
+<span class="nc" id="L150">                          DBManager.getInstance().getGiftAndFloralSRManager().remove(SR.getId());</span>
+<span class="nc" id="L151">                          break;</span>
+                        case InternalPatientTransferSR:
+<span class="nc" id="L153">                          DBManager.getInstance().getInternalPatientSRManager().remove(SR.getId());</span>
+<span class="nc" id="L154">                          break;</span>
+                        case ExternalPatientSR:
+<span class="nc" id="L156">                          DBManager.getInstance().getExternalPatientSRManager().remove(SR.getId());</span>
+<span class="nc" id="L157">                          break;</span>
+                        case LanguageInterpreterSR:
+<span class="nc" id="L159">                          DBManager.getInstance().getLanguageSRManager().remove(SR.getId());</span>
+<span class="nc" id="L160">                          break;</span>
+                        case LaundrySR:
+<span class="nc" id="L162">                          DBManager.getInstance().getLaundrySRManager().remove(SR.getId());</span>
+<span class="nc" id="L163">                          break;</span>
+                        case ReligiousSR:
+<span class="nc" id="L165">                          DBManager.getInstance().getReligiousSRManager().remove(SR.getId());</span>
+<span class="nc" id="L166">                          break;</span>
+                        case SecuritySR:
+<span class="nc" id="L168">                          DBManager.getInstance().getSecuritySRManager().remove(SR.getId());</span>
+<span class="nc" id="L169">                          break;</span>
+                        case MedicalEquipmentSR:
+<span class="nc" id="L171">                          DBManager.getInstance().getMedicalEquipmentSRManager().remove(SR.getId());</span>
+<span class="nc" id="L172">                          break;</span>
+                        case MedicineDeliverySR:
+<span class="nc" id="L174">                          DBManager.getInstance().getMedicineDeliverySRManager().remove(SR.getId());</span>
+<span class="nc" id="L175">                          break;</span>
+                        case FacilitiesMaintenanceSR:
+<span class="nc" id="L177">                          DBManager.getInstance()</span>
+<span class="nc" id="L178">                              .getFacilitiesMaintenanceSRManager()</span>
+<span class="nc" id="L179">                              .remove(SR.getId());</span>
+<span class="nc" id="L180">                          break;</span>
+                        case SanitationSR:
+<span class="nc" id="L182">                          DBManager.getInstance().getSanitationSRManager().remove(SR.getId());</span>
+<span class="nc" id="L183">                          break;</span>
+                        default:
+<span class="nc" id="L185">                          System.out.println(&quot;THERE IS A BIG PROBLEM HERE!!&quot;);</span>
+                      }
+<span class="nc" id="L187">                    } catch (SQLException e) {</span>
+<span class="nc" id="L188">                      e.printStackTrace();</span>
+<span class="nc" id="L189">                    }</span>
+                  }
+<span class="nc" id="L191">                });</span>
+<span class="nc" id="L192">          }</span>
+        },
+        0,
+        (int) (seconds * 10));
+<span class="nc" id="L196">    return this;</span>
+  }
+
+<span class="nc" id="L199">  public MapServiceRequestIcon(ServiceRequest SR_, double TranslateX, double TranslateY) {</span>
+<span class="nc" id="L200">    timer = new Timer();</span>
+<span class="nc" id="L201">    progressIndicator = new FillProgressIndicator();</span>
+<span class="nc" id="L202">    Icon = Graphics.get(SR_.getDBType());</span>
+<span class="nc" id="L203">    SR = SR_;</span>
+<span class="nc" id="L204">    this.setTranslateXandY(TranslateX, TranslateY);</span>
+<span class="nc" id="L205">    Icon.setFitWidth(35);</span>
+<span class="nc" id="L206">    Icon.setFitHeight(35);</span>
+<span class="nc" id="L207">  }</span>
+
+  public void setTranslateXandY(double Tx, double Ty) {
+<span class="nc" id="L210">    Icon.setTranslateX(Tx);</span>
+<span class="nc" id="L211">    Icon.setTranslateY(Ty);</span>
+<span class="nc" id="L212">    progressIndicator.setTranslateX(Tx);</span>
+<span class="nc" id="L213">    progressIndicator.setTranslateY(Ty);</span>
+<span class="nc" id="L214">  }</span>
+
+  public void setTimerTask(TimerTask timerTask, int seconds) {
+<span class="nc" id="L217">    timer.cancel();</span>
+<span class="nc" id="L218">    timer.scheduleAtFixedRate(timerTask, 0, seconds * 1000);</span>
+<span class="nc" id="L219">  }</span>
+
+  public void cancelTimer() {
+<span class="nc" id="L222">    timer.cancel();</span>
+<span class="nc" id="L223">  }</span>
+
+  public void addToList(ArrayList&lt;MapServiceRequestIcon&gt; SRList) {
+<span class="nc" id="L226">    attachedTo = SRList;</span>
+<span class="nc" id="L227">    SRList.add(this);</span>
+<span class="nc" id="L228">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

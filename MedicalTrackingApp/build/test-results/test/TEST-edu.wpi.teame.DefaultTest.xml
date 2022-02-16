@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.wpi.teame.DefaultTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-02-16T05:49:06" hostname="ASUS-M16" time="0.012">
+  <properties/>
+  <testcase name="test()" classname="edu.wpi.teame.DefaultTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

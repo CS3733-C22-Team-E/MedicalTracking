@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutoCompleteTextField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers</a> &gt; <span class="el_source">AutoCompleteTextField.java</span></div><h1>AutoCompleteTextField.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
+public class AutoCompleteTextField extends TextField {
+  /** The existing autocomplete entries. */
+  private final SortedSet&lt;String&gt; entries;
+  /** The popup used to select an entry. */
+  private ContextMenu entriesPopup;
+
+  /** Construct a new AutoCompleteTextField. */
+  public AutoCompleteTextField() {
+<span class="nc" id="L26">    super();</span>
+<span class="nc" id="L27">    entries = new TreeSet&lt;&gt;();</span>
+<span class="nc" id="L28">    entriesPopup = new ContextMenu();</span>
+<span class="nc" id="L29">    entriesPopup.getStyleClass().add(&quot;combo-box&quot;);</span>
+<span class="nc" id="L30">    textProperty()</span>
+<span class="nc" id="L31">        .addListener(</span>
+<span class="nc" id="L32">            new ChangeListener&lt;String&gt;() {</span>
+              @Override
+              public void changed(
+                  ObservableValue&lt;? extends String&gt; observableValue, String s, String s2) {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (getText().length() == 0) {</span>
+<span class="nc" id="L37">                  entriesPopup.hide();</span>
+                } else {
+<span class="nc" id="L39">                  LinkedList&lt;String&gt; searchResult = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L40">                  final List&lt;String&gt; filteredEntries =</span>
+<span class="nc" id="L41">                      entries.stream()</span>
+<span class="nc" id="L42">                          .filter(e -&gt; e.toLowerCase().contains(getText().toLowerCase()))</span>
+<span class="nc" id="L43">                          .collect(Collectors.toList());</span>
+<span class="nc" id="L44">                  searchResult.addAll(filteredEntries);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">                  if (entries.size() &gt; 0) {</span>
+<span class="nc" id="L46">                    populatePopup(searchResult);</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">                    if (!entriesPopup.isShowing()) {</span>
+<span class="nc" id="L48">                      entriesPopup.show(AutoCompleteTextField.this, Side.BOTTOM, 0, 0);</span>
+                    }
+                  } else {
+<span class="nc" id="L51">                    entriesPopup.hide();</span>
+                  }
+                }
+<span class="nc" id="L54">              }</span>
+            });
+
+<span class="nc" id="L57">    focusedProperty()</span>
+<span class="nc" id="L58">        .addListener(</span>
+<span class="nc" id="L59">            new ChangeListener&lt;Boolean&gt;() {</span>
+              @Override
+              public void changed(
+                  ObservableValue&lt;? extends Boolean&gt; observableValue,
+                  Boolean aBoolean,
+                  Boolean aBoolean2) {
+<span class="nc" id="L65">                entriesPopup.hide();</span>
+<span class="nc" id="L66">              }</span>
+            });
+<span class="nc" id="L68">  }</span>
+
+  /**
+   * Get the existing set of autocomplete entries.
+   *
+   * @return The existing autocomplete entries.
+   */
+  public SortedSet&lt;String&gt; getEntries() {
+<span class="nc" id="L76">    return entries;</span>
+  }
+
+  /**
+   * Populate the entry set with the given search results. Display is limited to 10 entries, for
+   * performance.
+   *
+   * @param searchResult The set of matching strings.
+   */
+  private void populatePopup(List&lt;String&gt; searchResult) {
+<span class="nc" id="L86">    List&lt;CustomMenuItem&gt; menuItems = new LinkedList&lt;&gt;();</span>
+    // If you'd like more entries, modify this line.
+<span class="nc" id="L88">    int maxEntries = 10;</span>
+<span class="nc" id="L89">    int count = Math.min(searchResult.size(), maxEntries);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">    for (int i = 0; i &lt; count; i++) {</span>
+<span class="nc" id="L91">      final String result = searchResult.get(i);</span>
+<span class="nc" id="L92">      Label entryLabel = new Label(result);</span>
+<span class="nc" id="L93">      CustomMenuItem item = new CustomMenuItem(entryLabel, true);</span>
+<span class="nc" id="L94">      item.setOnAction(</span>
+<span class="nc" id="L95">          new EventHandler&lt;ActionEvent&gt;() {</span>
+            @Override
+            public void handle(ActionEvent actionEvent) {
+<span class="nc" id="L98">              setText(result);</span>
+<span class="nc" id="L99">              entriesPopup.hide();</span>
+<span class="nc" id="L100">            }</span>
+          });
+<span class="nc" id="L102">      menuItems.add(item);</span>
+    }
+<span class="nc" id="L104">    entriesPopup.getItems().clear();</span>
+<span class="nc" id="L105">    entriesPopup.getItems().addAll(menuItems);</span>
+<span class="nc" id="L106">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

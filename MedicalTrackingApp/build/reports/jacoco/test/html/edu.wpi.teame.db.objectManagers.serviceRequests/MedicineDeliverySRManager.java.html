@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MedicineDeliverySRManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db.objectManagers.serviceRequests</a> &gt; <span class="el_source">MedicineDeliverySRManager.java</span></div><h1>MedicineDeliverySRManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db.objectManagers.serviceRequests;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class MedicineDeliverySRManager extends ObjectManager&lt;MedicineDeliveryServiceRequest&gt; {
+  public MedicineDeliverySRManager() throws SQLException {
+<span class="nc" id="L30">    super(DataBaseObjectType.MedicineDeliverySR);</span>
+<span class="nc" id="L31">  }</span>
+
+  @Override
+  public void readCSV(String inputFileName)
+      throws IOException, ParseException, SQLException, CsvValidationException {
+<span class="nc" id="L36">    String filePath =</span>
+<span class="nc" id="L37">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + inputFileName;</span>
+<span class="nc" id="L38">    CSVReader csvReader = new CSVReader(new FileReader(filePath));</span>
+<span class="nc" id="L39">    CSVLineData lineData = new CSVLineData(csvReader);</span>
+
+    String[] record;
+<span class="nc bnc" id="L42" title="All 2 branches missed.">    while ((record = csvReader.readNext()) != null) {</span>
+<span class="nc" id="L43">      lineData.setParsedData(record);</span>
+
+      ServiceRequestPriority priority =
+<span class="nc" id="L46">          ServiceRequestPriority.values()[lineData.getColumnInt(&quot;priority&quot;)];</span>
+      ServiceRequestStatus requestStatus =
+<span class="nc" id="L48">          ServiceRequestStatus.values()[lineData.getColumnInt(&quot;status&quot;)];</span>
+<span class="nc" id="L49">      String additionalInfo = lineData.getColumnString(&quot;additionalInfo&quot;);</span>
+<span class="nc" id="L50">      int assignee = lineData.getColumnInt(&quot;assigneeID&quot;);</span>
+<span class="nc" id="L51">      int location = lineData.getColumnInt(&quot;locationID&quot;);</span>
+<span class="nc" id="L52">      Date requestDate = lineData.getColumnDate(&quot;requestDate&quot;);</span>
+<span class="nc" id="L53">      Date closeDate = lineData.getColumnDate(&quot;closeDate&quot;);</span>
+<span class="nc" id="L54">      Date openDate = lineData.getColumnDate(&quot;openDate&quot;);</span>
+<span class="nc" id="L55">      String title = lineData.getColumnString(&quot;title&quot;);</span>
+<span class="nc" id="L56">      int id = lineData.getColumnInt(&quot;id&quot;);</span>
+<span class="nc" id="L57">      String medicineQuantity = lineData.getColumnString(&quot;medicineQuantity&quot;);</span>
+<span class="nc" id="L58">      String medicineName = lineData.getColumnString(&quot;medicineName&quot;);</span>
+<span class="nc" id="L59">      int patient = lineData.getColumnInt(&quot;patientID&quot;);</span>
+
+      // select assignee where id = employeeID
+<span class="nc" id="L62">      EmployeeManager employeeManager = new EmployeeManager();</span>
+<span class="nc" id="L63">      Employee newEmployee = employeeManager.get(assignee);</span>
+      // select location where id = locationID
+<span class="nc" id="L65">      LocationManager locationManager = new LocationManager();</span>
+<span class="nc" id="L66">      Location newLocation = locationManager.get(location);</span>
+      // select patient where id = patient
+<span class="nc" id="L68">      PatientManager patientManager = new PatientManager();</span>
+<span class="nc" id="L69">      Patient newPatient = patientManager.get(patient);</span>
+
+      // new ServiceRequest
+<span class="nc" id="L72">      MedicineDeliveryServiceRequest newSR =</span>
+          new MedicineDeliveryServiceRequest(
+              priority,
+              requestStatus,
+              additionalInfo,
+              newEmployee,
+              newLocation,
+              requestDate,
+              closeDate,
+              openDate,
+              title,
+              id,
+              medicineQuantity,
+              medicineName,
+              newPatient);
+<span class="nc" id="L87">      DBManager.getInstance().getMedicineDeliverySRManager().insert(newSR);</span>
+<span class="nc" id="L88">    }</span>
+<span class="nc" id="L89">  }</span>
+
+  @Override
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+<span class="nc" id="L93">    String filePath =</span>
+<span class="nc" id="L94">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + outputFileName;</span>
+
+<span class="nc" id="L96">    FileWriter outputFile = new FileWriter(filePath);</span>
+<span class="nc" id="L97">    CSVWriter writer =</span>
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+<span class="nc" id="L105">    List&lt;MedicineDeliveryServiceRequest&gt; listOfSerReq = this.getAll();</span>
+
+<span class="nc" id="L107">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
+<span class="nc" id="L108">    data.add(</span>
+        new String[] {
+          &quot;id&quot;,
+          &quot;locationID&quot;,
+          &quot;assigneeID&quot;,
+          &quot;openDate&quot;,
+          &quot;closeDate&quot;,
+          &quot;status&quot;,
+          &quot;title&quot;,
+          &quot;additionalInfo&quot;,
+          &quot;priority&quot;,
+          &quot;requestDate&quot;,
+          &quot;medicineName&quot;,
+          &quot;patientID&quot;,
+          &quot;medicineQuantity&quot;
+        });
+
+<span class="nc bnc" id="L125" title="All 2 branches missed.">    for (MedicineDeliveryServiceRequest serReq : listOfSerReq) {</span>
+<span class="nc" id="L126">      data.add(</span>
+          new String[] {
+<span class="nc" id="L128">            Integer.toString(serReq.getId()),</span>
+<span class="nc" id="L129">            Integer.toString(serReq.getLocation().getId()),</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            serReq.getAssignee() == null ? &quot;&quot; : Integer.toString(serReq.getAssignee().getId()),</span>
+<span class="nc" id="L131">            serReq.getOpenDate().toString(),</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            serReq.getCloseDate() == null ? &quot;&quot; : serReq.getCloseDate().toString(),</span>
+<span class="nc" id="L133">            Integer.toString(serReq.getStatus().ordinal()),</span>
+<span class="nc" id="L134">            serReq.getTitle(),</span>
+<span class="nc" id="L135">            serReq.getAdditionalInfo(),</span>
+<span class="nc" id="L136">            Integer.toString(serReq.getPriority().ordinal()),</span>
+<span class="nc" id="L137">            serReq.getRequestDate().toString(),</span>
+<span class="nc" id="L138">            serReq.getMedicineName(),</span>
+<span class="nc" id="L139">            Integer.toString(serReq.getPatient().getId()),</span>
+<span class="nc" id="L140">            serReq.getMedicineQuantity()</span>
+          });
+<span class="nc" id="L142">    }</span>
+<span class="nc" id="L143">    writer.writeAll(data);</span>
+<span class="nc" id="L144">    writer.close();</span>
+<span class="nc" id="L145">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
