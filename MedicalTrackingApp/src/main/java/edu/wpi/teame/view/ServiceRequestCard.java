@@ -259,8 +259,9 @@ public class ServiceRequestCard {
   private void deleteRequest(ServiceRequestBacklog b) throws SQLException {
     if (!isDead) {
       b.killServiceRequest(this.sr);
+    } else {
+      b.removeServiceRequest(this.sr);
     }
-    b.removeServiceRequest(this.sr);
   }
 
   public void setPatientName(String patientName) {
