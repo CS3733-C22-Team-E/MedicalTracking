@@ -451,28 +451,7 @@ public class TestObjectManager {
     medEqpManager.insert(sr1);
     medEqpManager.insert(sr2);
     medEqpManager.insert(sr3);
-
-    System.out.println("updating medicalEquipmentSR...");
-    medEqpManager.update(
-            new MedicalEquipmentServiceRequest(
-                    ServiceRequestPriority.Normal,
-                    ServiceRequestStatus.PENDING,
-                    "I need sanitatrion",
-                    emp2,
-                    loc1,
-                    Date.valueOf("2015-03-31"),
-                    null,
-                    date,
-                    "titel.......",
-                    3,
-                    equipment3));
-    System.out.println();
-
-    List<MedicalEquipmentServiceRequest> medEqpList = medEqpManager.getAll();
-    for (MedicalEquipmentServiceRequest test : medEqpList) {
-      System.out.println(test);
-    }
-
+    
     FoodDeliveryServiceRequest food1 =
             new FoodDeliveryServiceRequest(
                     ServiceRequestPriority.Normal,
@@ -700,53 +679,11 @@ public class TestObjectManager {
                     "none");
 
     FoodDeliverySRManager foodMan = DBManager.getInstance().getFoodDeliverySRManager();
-    foodMan.insert(food1);
-    foodMan.insert(food2);
-    foodMan.insert(food3);
 
-    foodMan.update(
-            new FoodDeliveryServiceRequest(
-                    ServiceRequestPriority.Low,
-                    ServiceRequestStatus.CANCELLED,
-                    "I need sanitatrion",
-                    emp2,
-                    loc2,
-                    Date.valueOf("2015-03-31"),
-                    null,
-                    date,
-                    "titel",
-                    3,
-                    patient3,
-                    "pizza"));
-
-    List<FoodDeliveryServiceRequest> foodReqlist = foodMan.getAll();
-    for (FoodDeliveryServiceRequest san : foodReqlist) {
-      System.out.println(san);
-    }
 
     GiftAndFloralSRManager giftMan = DBManager.getInstance().getGiftAndFloralSRManager();
-    giftMan.insert(gift1);
-    giftMan.insert(gift2);
-    giftMan.insert(gift3);
 
-    List<GiftAndFloralServiceRequest> giftReqlist = giftMan.getAll();
-    for (GiftAndFloralServiceRequest san : giftReqlist) {
-      System.out.println(san);
-    }
 
-    giftMan.update(
-            new GiftAndFloralServiceRequest(
-                    ServiceRequestPriority.Critical,
-                    ServiceRequestStatus.CLOSED,
-                    "I need sanitatrion",
-                    emp2,
-                    loc2,
-                    Date.valueOf("2015-03-31"),
-                    null,
-                    date,
-                    "New",
-                    3,
-                    patient1));
 
     PatientTransportationSRManager transportMan =
             DBManager.getInstance().getInternalPatientSRManager();
