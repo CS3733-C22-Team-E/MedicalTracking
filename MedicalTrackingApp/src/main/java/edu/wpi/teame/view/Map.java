@@ -56,6 +56,8 @@ public class Map {
   private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
+  private Location lastPressedLocation;
+  private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
 
@@ -116,8 +118,14 @@ public class Map {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-            // TODO handle adding MapIcon of type equiptype
-            // Given X,Y,EquipmentType,Floor
+            Equipment ToBeInserted =
+                new Equipment(0, lastPressedLocation, equiptype, equiptype.toString(), false, true);
+            try {
+              DBManager.getInstance().getEquipmentManager().insert(ToBeInserted);
+              addEquipmentToMap(ToBeInserted);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     return retval;
@@ -404,8 +412,9 @@ public class Map {
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
-    MapSideView SideView = new MapSideView();
-    return SideView.getMapScene();
+    // MapSideView SideView = new MapSideView();
+    // return SideView.getMapScene();
+    return staticWrapper;
   }
 
   private MapEquipmentIcon addEquipmentToMap(Equipment equipment) {
@@ -597,6 +606,16 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+    locationDot.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              lastPressedLocation = location;
+              PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
+            }
+          }
+        });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) {
