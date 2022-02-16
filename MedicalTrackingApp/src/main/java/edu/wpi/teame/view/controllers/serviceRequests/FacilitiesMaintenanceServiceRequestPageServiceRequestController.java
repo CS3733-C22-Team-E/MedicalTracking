@@ -8,6 +8,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -109,21 +110,26 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
-            new ServiceRequest(
-                    DataBaseObjectType.ComputerSR,
-                    ServiceRequestPriority.valueOf(priority.getValue().toString()),
-                    ServiceRequestStatus.valueOf(status.getValue().toString()),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    new Date(
-                            Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
-                                    .getTime()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0);
+        new ServiceRequest(
+            DataBaseObjectType.ComputerSR,
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
+            additionalInfo.getText(),
+            employee,
+            location,
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0);
     DBManager.getInstance().getFacilitiesMaintenanceSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {
