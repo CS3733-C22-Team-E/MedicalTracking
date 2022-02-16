@@ -6,7 +6,6 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
@@ -95,7 +94,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
-    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getByAllAvailable();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -119,10 +118,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @FXML
   public void sendToDB() throws SQLException {
-    String pName = patientName.getText();
     String roomNum = (String) locationText.getText();
     String emp = (String) assignee.getText();
-    EquipmentType equipNeeded = EquipmentType.getValue(equipment.getText());
 
     List<MedicalEquipmentServiceRequest> allSerReq =
         DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
@@ -132,8 +129,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(emp);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
-    Equipment equipment =
-        DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
+    Equipment equipmentNeeded =
+        DBManager.getInstance().getEquipmentManager().getByName(equipment.getText());
 
     MedicalEquipmentServiceRequest serviceRequest =
         new MedicalEquipmentServiceRequest(
@@ -149,7 +146,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            equipment);
+            equipmentNeeded);
     DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
