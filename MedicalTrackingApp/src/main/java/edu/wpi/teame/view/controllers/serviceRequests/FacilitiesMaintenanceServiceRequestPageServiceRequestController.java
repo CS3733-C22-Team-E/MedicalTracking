@@ -109,20 +109,20 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
-            new ServiceRequest(
-                    DataBaseObjectType.ComputerSR,
-                    ServiceRequestPriority.valueOf(priority.getValue().toString()),
-                    ServiceRequestStatus.valueOf(status.getValue().toString()),
-                    additionalInfo.getText(),
-                    employee,
-                    location,
-                    new Date(
-                            Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
-                                    .getTime()),
-                    new Date(0),
-                    new Date(new java.util.Date().getTime()),
-                    "",
-                    0);
+        new ServiceRequest(
+            DataBaseObjectType.ComputerSR,
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
+            additionalInfo.getText(),
+            employee,
+            location,
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
+            new Date(0),
+            new Date(new java.util.Date().getTime()),
+            "",
+            0);
     DBManager.getInstance().getFacilitiesMaintenanceSRManager().insert(serviceRequest);
   }
 
