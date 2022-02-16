@@ -7,7 +7,6 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
@@ -19,7 +18,6 @@ import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -110,7 +108,7 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
-    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getByAllAvailable();
 
     List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
     List<String> patientNames = new LinkedList<>();
@@ -149,10 +147,7 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     Location dest =
         DBManager.getInstance().getLocationManager().getByName(destinationLocation.getText());
     Equipment equipBring =
-        DBManager.getInstance()
-            .getEquipmentManager()
-            .getByAvailability(
-                Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
+        DBManager.getInstance().getEquipmentManager().getByName(equipment.getText());
     Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     PatientTransportationServiceRequest serviceRequest =
