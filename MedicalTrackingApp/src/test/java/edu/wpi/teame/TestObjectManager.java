@@ -28,6 +28,34 @@ import org.junit.runners.Parameterized;
 public class TestObjectManager {
   public ObjectManager objectManager;
 
+  private LocationManager locationManager;
+  private Location loc1;
+  private Location loc2;
+  private Location loc3;
+  private Location loc4;
+
+  private EquipmentManager equipmentManager;
+  private Equipment equipment1;
+  private Equipment equipment2;
+  private Equipment equipment3;
+
+  private EmployeeManager employeeManager;
+  private Employee emp1;
+  private Employee emp2;
+  private Employee emp3;
+
+  private Date date1;
+  private Date date2;
+  private Date date3;
+
+  private Patient patient1;
+  private Patient patient2;
+  private Patient patient3;
+
+
+
+
+
   public TestObjectManager(ObjectManager manager) {
     objectManager = manager;
   }
@@ -36,7 +64,7 @@ public class TestObjectManager {
   public void setUp() throws SQLException {
     DBManager.getInstance();
 
-    Location loc1 =
+    loc1 =
             new Location(
                     1,
                     "Center for International Medicine",
@@ -46,7 +74,7 @@ public class TestObjectManager {
                     BuildingType.Tower,
                     LocationType.DEPT,
                     "ds");
-    Location loc2 =
+    loc2 =
             new Location(
                     2,
                     "Bretholtz Center for Patients and Families",
@@ -56,7 +84,7 @@ public class TestObjectManager {
                     BuildingType.Tower,
                     LocationType.DEPT,
                     "");
-    Location loc3 =
+    loc3 =
             new Location(
                     3,
                     "Multifaith Chapel",
@@ -67,7 +95,7 @@ public class TestObjectManager {
                     LocationType.DEPT,
                     "as");
 
-    Location loc4 =
+    loc4 =
             new Location(
                     4,
                     "M Chapel",
@@ -78,35 +106,36 @@ public class TestObjectManager {
                     LocationType.DEPT,
                     "as");
 
-    LocationManager location = new LocationManager();
+    locationManager = new LocationManager();
 
-    Equipment equipment1 =
+    equipment1 =
             new Equipment(1, loc1, EquipmentType.PBED, "Hospital Bed 1", true, false);
-    Equipment equipment2 =
+    equipment2 =
             new Equipment(2, loc2, EquipmentType.PBED, "Hospital Bed 13", false, true);
-    Equipment equipment3 =
+    equipment3 =
             new Equipment(3, loc3, EquipmentType.PUMP, "Infusion Pump 1", true, true);
 
-    EquipmentManager equipmentManager = new EquipmentManager();
+    equipmentManager = new EquipmentManager();
 
-    Employee emp1 = new Employee(1, DepartmentType.FAMILYMEDICINE, "Shannon L", EmployeeType.Admin);
-    Employee emp2 =
+    emp1 = new Employee(1, DepartmentType.FAMILYMEDICINE, "Shannon L", EmployeeType.Admin);
+    emp2 =
             new Employee(2, DepartmentType.CLINICALSERVICES, "Madelyn Pearson", EmployeeType.Staff);
-    Employee emp3 =
+    emp3 =
             new Employee(
                     3, DepartmentType.PLASTICSURGERY, "John Ronald Reagan Tolkien", EmployeeType.Admin);
 
-    EmployeeManager employeeManager = new EmployeeManager();
+    employeeManager = new EmployeeManager();
 
 
-    long d = System.currentTimeMillis();
-    Date date = new Date(d);
+    date1 = Date.valueOf("2022-01-31");
+    date2 = Date.valueOf("2022-01-10");
+    date3 = Date.valueOf("2022-01-20");
 
-    Patient patient1 = new Patient(loc1, date, "Jose Morales", 1);
-    Patient patient2 = new Patient(loc2, date, "Josie Morales", 2);
-    Patient patient3 = new Patient(loc3, date, "Joseph Morales", 3);
+    patient1 = new Patient(loc1, date1, "Jose Morales", 1);
+    patient2 = new Patient(loc2, date2, "Josie Morales", 2);
+    patient3 = new Patient(loc3, date3, "Joseph Morales", 3);
 
-    PatientManager pman = new PatientManager();
+    PatientManager patientManager = new PatientManager();
 
     ServiceRequest secReq1 =
             new ServiceRequest(
