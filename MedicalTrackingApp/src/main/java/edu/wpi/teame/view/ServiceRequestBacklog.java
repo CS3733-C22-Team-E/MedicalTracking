@@ -87,7 +87,6 @@ public class ServiceRequestBacklog {
       }
     }
     for (ServiceRequest sr : deadServiceRequests) {
-      serviceRequestsFromDB.remove(sr);
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }

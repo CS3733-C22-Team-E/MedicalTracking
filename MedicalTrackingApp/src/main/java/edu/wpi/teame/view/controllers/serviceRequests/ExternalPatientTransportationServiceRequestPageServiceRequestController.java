@@ -167,7 +167,7 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
             0,
             dest,
             equipBring,
-            patient);
+            patient); // TODO Equipment should be optional. Add a null option.
     DBManager.getInstance().getExternalPatientSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
