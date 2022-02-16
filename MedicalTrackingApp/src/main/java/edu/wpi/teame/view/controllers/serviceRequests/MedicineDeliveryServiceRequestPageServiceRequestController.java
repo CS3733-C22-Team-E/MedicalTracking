@@ -143,6 +143,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(worker);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     MedicineDeliveryServiceRequest serviceRequest =
         new MedicineDeliveryServiceRequest(
@@ -160,7 +161,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
             0,
             medicineName.getText(),
             medicineQuantity.getText(),
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);

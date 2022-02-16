@@ -69,6 +69,7 @@ public class ServiceRequestBacklog {
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
+    deadServiceRequests.clear();
     serviceRequestsFromDB.sort( // TODO This sorts by DATE, not date and time. This should be fixed.
         new Comparator<ServiceRequest>() {
           @Override
@@ -102,7 +103,7 @@ public class ServiceRequestBacklog {
   public void killServiceRequest(ServiceRequest sr) throws SQLException {
     sr.setStatus(ServiceRequestStatus.CLOSED);
     ObjectManager m = sr.getDBType().getDBManagerInstance();
-    m.update(sr); // TODO Update fails becuase assignee on fake SR is null :(
+    m.update(sr);
     scrollWrapper.setContent(getRequestHolder());
   }
 

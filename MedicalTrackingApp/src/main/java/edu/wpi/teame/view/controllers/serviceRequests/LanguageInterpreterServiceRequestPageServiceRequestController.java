@@ -128,6 +128,7 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     LanguageInterpreterServiceRequest serviceRequest =
         new LanguageInterpreterServiceRequest(
@@ -144,7 +145,7 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
             "",
             0,
             (LanguageType) language.getValue(),
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getLanguageSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
