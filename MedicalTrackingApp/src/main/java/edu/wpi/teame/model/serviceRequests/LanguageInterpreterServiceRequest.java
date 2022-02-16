@@ -58,7 +58,7 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
+    return getRawUpdateString()
         + ", "
         + "language = "
         + language.ordinal()

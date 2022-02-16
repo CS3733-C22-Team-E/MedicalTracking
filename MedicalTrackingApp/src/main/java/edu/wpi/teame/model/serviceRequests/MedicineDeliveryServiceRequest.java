@@ -70,7 +70,7 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
+    return getRawUpdateString()
         + ", "
         + "medicineName = '"
         + medicineName
