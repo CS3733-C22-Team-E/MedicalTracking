@@ -413,12 +413,12 @@ public final class DBManager {
       return;
     }
 
-    // Create connection to Embedded DB
-    switchConnection(false);
-    createDBTables();
-
     // Create connection to Client DB
     switchConnection(true);
+    createDBTables();
+
+    // Create connection to Embedded DB
+    switchConnection(false);
     createDBTables();
   }
 
