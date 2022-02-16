@@ -48,9 +48,58 @@ public class TestObjectManager {
   private Date date2;
   private Date date3;
 
+  private PatientManager patientManager;
   private Patient patient1;
   private Patient patient2;
   private Patient patient3;
+
+  private StandardSRManager secReqManager;
+  private ServiceRequest secReq1;
+  private ServiceRequest secReq2;
+  private ServiceRequest secReq3;
+
+  private StandardSRManager sanReqManager;
+  private ServiceRequest sanReq1;
+  private ServiceRequest sanReq2;
+  private ServiceRequest sanReq3;
+
+  private MedicineDeliverySRManager medReqManager;
+  private MedicineDeliveryServiceRequest medReq1;
+  private MedicineDeliveryServiceRequest medReq2;
+  private MedicineDeliveryServiceRequest medReq3;
+
+  private MedicalEquipmentSRManager medicalEquipmentSRManager;
+  private MedicalEquipmentServiceRequest sr1;
+  private MedicalEquipmentServiceRequest sr2;
+  private MedicalEquipmentServiceRequest sr3;
+
+  private FoodDeliverySRManager foodDeliverySRManager;
+  private FoodDeliveryServiceRequest food1;
+  private FoodDeliveryServiceRequest food2;
+  private FoodDeliveryServiceRequest food3;
+
+  private GiftAndFloralSRManager giftAndFloralSRManager;
+  private GiftAndFloralServiceRequest gift1;
+  private GiftAndFloralServiceRequest gift2;
+  private GiftAndFloralServiceRequest gift3;
+
+  private LanguageInterpreterSRManager languageInterpreterSRManager;
+  private LanguageInterpreterServiceRequest language1;
+  private LanguageInterpreterServiceRequest language2;
+  private LanguageInterpreterServiceRequest language3;
+
+  private PatientTransportationSRManager transportationSRManager;
+  private PatientTransportationServiceRequest transport1;
+  private PatientTransportationServiceRequest transport2;
+  private PatientTransportationServiceRequest transport3;
+
+  private ReligiousSRManager religiousSRManager;
+  private ReligiousServiceRequest reg1;
+  private ReligiousServiceRequest reg2;
+  private ReligiousServiceRequest reg3;
+
+
+
 
 
 
@@ -135,9 +184,9 @@ public class TestObjectManager {
     patient2 = new Patient(loc2, date2, "Josie Morales", 2);
     patient3 = new Patient(loc3, date3, "Joseph Morales", 3);
 
-    PatientManager patientManager = new PatientManager();
+    patientManager = new PatientManager();
 
-    ServiceRequest secReq1 =
+    secReq1 =
             new ServiceRequest(
                     DataBaseObjectType.SecuritySR,
                     ServiceRequestPriority.High,
@@ -147,10 +196,10 @@ public class TestObjectManager {
                     loc1,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1);
-    ServiceRequest secReq2 =
+    secReq2 =
             new ServiceRequest(
                     DataBaseObjectType.SecuritySR,
                     ServiceRequestPriority.Low,
@@ -160,10 +209,10 @@ public class TestObjectManager {
                     loc3,
                     Date.valueOf("2015-04-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2);
-    ServiceRequest secReq3 =
+    secReq3 =
             new ServiceRequest(
                     DataBaseObjectType.SecuritySR,
                     ServiceRequestPriority.Normal,
@@ -173,13 +222,13 @@ public class TestObjectManager {
                     loc3,
                     Date.valueOf("2017-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3);
 
-    StandardSRManager secReqManager = new StandardSRManager(DataBaseObjectType.SecuritySR);
+    secReqManager = new StandardSRManager(DataBaseObjectType.SecuritySR);
 
-    ServiceRequest sanReq1 =
+    sanReq1 =
             new ServiceRequest(
                     DataBaseObjectType.SanitationSR,
                     ServiceRequestPriority.High,
@@ -189,10 +238,10 @@ public class TestObjectManager {
                     loc1,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1);
-    ServiceRequest sanReq2 =
+    sanReq2 =
             new ServiceRequest(
                     DataBaseObjectType.SanitationSR,
                     ServiceRequestPriority.Low,
@@ -202,10 +251,10 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-04-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2);
-    ServiceRequest sanReq3 =
+    sanReq3 =
             new ServiceRequest(
                     DataBaseObjectType.SanitationSR,
                     ServiceRequestPriority.Normal,
@@ -215,14 +264,14 @@ public class TestObjectManager {
                     loc3,
                     Date.valueOf("2015-05-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3);
 
-    StandardSRManager sanReqManager = new StandardSRManager(DataBaseObjectType.SanitationSR);
+    sanReqManager = new StandardSRManager(DataBaseObjectType.SanitationSR);
 
 
-    MedicineDeliveryServiceRequest medReq1 =
+    medReq1 =
             new MedicineDeliveryServiceRequest(
                     ServiceRequestPriority.High,
                     ServiceRequestStatus.OPEN,
@@ -231,7 +280,7 @@ public class TestObjectManager {
                     loc4,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     "od",
@@ -246,7 +295,7 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-04-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     "od",
@@ -261,17 +310,16 @@ public class TestObjectManager {
                     loc3,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     "od",
                     "od",
                     patient3);
 
-    MedicineDeliverySRManager medReqManager = new MedicineDeliverySRManager();
+    medReqManager = new MedicineDeliverySRManager();
 
-    MedicalEquipmentSRManager medEqpManager = new MedicalEquipmentSRManager();
-    MedicalEquipmentServiceRequest sr1 =
+    sr1 =
             new MedicalEquipmentServiceRequest(
                     ServiceRequestPriority.High,
                     ServiceRequestStatus.OPEN,
@@ -280,12 +328,12 @@ public class TestObjectManager {
                     loc1,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     equipment1);
 
-    MedicalEquipmentServiceRequest sr2 =
+    sr2 =
             new MedicalEquipmentServiceRequest(
                     ServiceRequestPriority.Low,
                     ServiceRequestStatus.CLOSED,
@@ -294,12 +342,12 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     equipment2);
 
-    MedicalEquipmentServiceRequest sr3 =
+    sr3 =
             new MedicalEquipmentServiceRequest(
                     ServiceRequestPriority.Normal,
                     ServiceRequestStatus.PENDING,
@@ -308,12 +356,12 @@ public class TestObjectManager {
                     loc3,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     equipment3);
 
-    FoodDeliveryServiceRequest food1 =
+    food1 =
             new FoodDeliveryServiceRequest(
                     ServiceRequestPriority.Normal,
                     ServiceRequestStatus.PENDING,
@@ -322,12 +370,12 @@ public class TestObjectManager {
                     loc1,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     patient1,
                     "potatoes");
-    FoodDeliveryServiceRequest food2 =
+    food2 =
             new FoodDeliveryServiceRequest(
                     ServiceRequestPriority.Low,
                     ServiceRequestStatus.OPEN,
@@ -336,12 +384,12 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     patient2,
                     "potatoes");
-    FoodDeliveryServiceRequest food3 =
+    food3 =
             new FoodDeliveryServiceRequest(
                     ServiceRequestPriority.Critical,
                     ServiceRequestStatus.OPEN,
@@ -350,13 +398,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     patient3,
                     "potatoes");
 
-    GiftAndFloralServiceRequest gift1 =
+    gift1 =
             new GiftAndFloralServiceRequest(
                     ServiceRequestPriority.Critical,
                     ServiceRequestStatus.OPEN,
@@ -365,12 +413,12 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     patient1);
 
-    GiftAndFloralServiceRequest gift2 =
+    gift2 =
             new GiftAndFloralServiceRequest(
                     ServiceRequestPriority.Low,
                     ServiceRequestStatus.CLOSED,
@@ -379,12 +427,12 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     patient1);
 
-    GiftAndFloralServiceRequest gift3 =
+    gift3 =
             new GiftAndFloralServiceRequest(
                     ServiceRequestPriority.Normal,
                     ServiceRequestStatus.PENDING,
@@ -393,12 +441,12 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     patient1);
 
-    LanguageInterpreterServiceRequest language1 =
+    language1 =
             new LanguageInterpreterServiceRequest(
                     ServiceRequestPriority.Normal,
                     ServiceRequestStatus.PENDING,
@@ -407,13 +455,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     LanguageType.English,
                     patient1);
 
-    LanguageInterpreterServiceRequest language2 =
+    language2 =
             new LanguageInterpreterServiceRequest(
                     ServiceRequestPriority.Critical,
                     ServiceRequestStatus.OPEN,
@@ -422,13 +470,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     LanguageType.Samoan,
                     patient2);
 
-    LanguageInterpreterServiceRequest language3 =
+    language3 =
             new LanguageInterpreterServiceRequest(
                     ServiceRequestPriority.Low,
                     ServiceRequestStatus.CLOSED,
@@ -437,13 +485,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     LanguageType.Japanese,
                     patient3);
 
-    PatientTransportationServiceRequest transport1 =
+    transport1 =
             new PatientTransportationServiceRequest(
                     false,
                     ServiceRequestPriority.Low,
@@ -453,14 +501,14 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     loc2,
                     equipment1,
                     patient1);
 
-    PatientTransportationServiceRequest transport2 =
+    transport2 =
             new PatientTransportationServiceRequest(
                     true,
                     ServiceRequestPriority.Critical,
@@ -470,14 +518,14 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     loc3,
                     equipment2,
                     patient2);
 
-    PatientTransportationServiceRequest transport3 =
+    transport3 =
             new PatientTransportationServiceRequest(
                     false,
                     ServiceRequestPriority.Low,
@@ -487,14 +535,14 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     loc1,
                     equipment3,
                     patient3);
 
-    ReligiousServiceRequest reg1 =
+    reg1 =
             new ReligiousServiceRequest(
                     ServiceRequestPriority.Low,
                     ServiceRequestStatus.CLOSED,
@@ -503,13 +551,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date1,
                     "titel",
                     1,
                     patient1,
                     "me");
 
-    ReligiousServiceRequest reg2 =
+    reg2 =
             new ReligiousServiceRequest(
                     ServiceRequestPriority.High,
                     ServiceRequestStatus.OPEN,
@@ -518,13 +566,13 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date2,
                     "titel",
                     2,
                     patient2,
                     "you");
 
-    ReligiousServiceRequest reg3 =
+    reg3 =
             new ReligiousServiceRequest(
                     ServiceRequestPriority.Normal,
                     ServiceRequestStatus.CANCELLED,
@@ -533,28 +581,28 @@ public class TestObjectManager {
                     loc2,
                     Date.valueOf("2015-03-31"),
                     null,
-                    date,
+                    date3,
                     "titel",
                     3,
                     patient3,
                     "none");
 
-    FoodDeliverySRManager foodMan = DBManager.getInstance().getFoodDeliverySRManager();
+    foodDeliverySRManager = DBManager.getInstance().getFoodDeliverySRManager();
 
 
-    GiftAndFloralSRManager giftMan = DBManager.getInstance().getGiftAndFloralSRManager();
+    giftAndFloralSRManager = DBManager.getInstance().getGiftAndFloralSRManager();
 
 
 
-    PatientTransportationSRManager transportMan =
+    transportationSRManager =
             DBManager.getInstance().getInternalPatientSRManager();
 
-    PatientTransportationSRManager extTransportMan =
+    transportationSRManager =
             DBManager.getInstance().getExternalPatientSRManager();
 
-    ReligiousSRManager regman = DBManager.getInstance().getReligiousSRManager();
+    religiousSRManager = DBManager.getInstance().getReligiousSRManager();
 
-    LanguageInterpreterSRManager langMan =
+    languageInterpreterSRManager =
             new LanguageInterpreterSRManager(DataBaseObjectType.LanguageInterpreterSR);
 
   }
