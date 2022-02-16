@@ -3,6 +3,8 @@ package edu.wpi.teame.view;
 import static javafx.application.Application.launch;
 
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -22,6 +24,8 @@ public class ServiceRequestBacklog {
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<>();
   private List<ServiceRequestCard> cardsDisplayed = new LinkedList<>();
+  private List<ServiceRequest> deadServiceRequests = new LinkedList<>();
+  private List<ServiceRequestCard> deadCards = new LinkedList<>();
 
   public ServiceRequestBacklog(double width, double height) {
     SCENEWIDTH = width;
@@ -34,6 +38,9 @@ public class ServiceRequestBacklog {
   }
 
   private void getSecurityRequests() throws SQLException {
+    System.out.println("Getting SR");
+    serviceRequestsFromDB.clear();
+
     serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
     serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
@@ -53,15 +60,16 @@ public class ServiceRequestBacklog {
 
   public Parent getBacklogScene() throws SQLException {
     serviceRequestsFromDB.clear();
-    getSecurityRequests();
     scrollWrapper.setContent(getRequestHolder());
     return scrollWrapper;
   }
 
-  public GridPane getRequestHolder() {
+  public GridPane getRequestHolder() throws SQLException {
+    getSecurityRequests();
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
+    deadServiceRequests.clear();
     serviceRequestsFromDB.sort( // TODO This sorts by DATE, not date and time. This should be fixed.
         new Comparator<ServiceRequest>() {
           @Override
@@ -70,9 +78,16 @@ public class ServiceRequestBacklog {
           }
         });
     for (ServiceRequest sr : serviceRequestsFromDB) {
-      ServiceRequestCard card = new ServiceRequestCard(sr, this);
-      card.setPatientName(
-          "John Doe"); // TODO make name a field in SR and have it set in card automatically
+      if (sr.getStatus().equals(ServiceRequestStatus.CLOSED)
+          || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {
+        deadServiceRequests.add(sr);
+      } else {
+        ServiceRequestCard card = new ServiceRequestCard(sr, this);
+        addServiceRequestCard(card, requestHolder);
+      }
+    }
+    for (ServiceRequest sr : deadServiceRequests) {
+      ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
     return requestHolder;
@@ -84,9 +99,16 @@ public class ServiceRequestBacklog {
     cardsDisplayed.add(c);
   }
 
-  public void removeServiceRequest(int id) {
-    serviceRequestsFromDB.removeIf(sr -> sr.getId() == id);
+  public void killServiceRequest(ServiceRequest sr) throws SQLException {
+    sr.setStatus(ServiceRequestStatus.CLOSED);
+    ObjectManager m = sr.getDBType().getDBManagerInstance();
+    m.update(sr);
     scrollWrapper.setContent(getRequestHolder());
-    // TODO update DB on delete
+  }
+
+  public void removeServiceRequest(ServiceRequest sr) throws SQLException {
+    ObjectManager m = sr.getDBType().getDBManagerInstance();
+    m.remove(sr.getId());
+    scrollWrapper.setContent(getRequestHolder());
   }
 }

@@ -49,24 +49,16 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + patient.getId();
-    // return super.getSQLInsertString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
-        + ", "
-        + "patientID = "
-        + patient.getId()
-        + "WHERE id = "
-        + id;
-    // return super.getSQLUpdateString()
+    return getRawUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;
   }
 
   @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID)";
-    // return super.getTableColumns();
   }
 
   public Patient getPatient() {

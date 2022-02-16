@@ -58,14 +58,15 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     String patientID = patient == null ? "NULL" : Integer.toString(patient.getId());
-    return super.getSQLInsertString()
+    return getRawUpdateString()
         + ", '"
         + medicineName
         + "', "
         + patientID
         + ", '"
         + medicineQuantity
-        + "'";
+        + "' WHERE id = "
+        + id;
   }
 
   @Override

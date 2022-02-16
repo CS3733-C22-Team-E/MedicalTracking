@@ -5,14 +5,16 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.EquipmentType;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,15 +23,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
-  @FXML private DatePicker requestDate;
-  @FXML private AutoCompleteTextField locationText;
+  @FXML private AnchorPane mainAnchorPane;
+  @FXML public DatePicker requestDate;
+  @FXML public AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
-  @FXML private AutoCompleteTextField equipment;
-  @FXML private JFXComboBox priority;
-  @FXML private JFXComboBox status;
+  @FXML public AutoCompleteTextField equipment;
+  @FXML public JFXComboBox priority;
+  @FXML public JFXComboBox status;
   @FXML private TextArea additionalInfo;
   @FXML private TextArea patientName;
   @FXML private Button clearButton;
@@ -38,9 +43,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
-
-    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.MedicalEquipmentSR.getColor()));
+    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
     requestDate
@@ -90,7 +94,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
-    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getByAllAvailable();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -114,10 +118,8 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
   @FXML
   public void sendToDB() throws SQLException {
-    String pName = patientName.getText();
     String roomNum = (String) locationText.getText();
     String emp = (String) assignee.getText();
-    EquipmentType equipNeeded = EquipmentType.getValue(equipment.getText());
 
     List<MedicalEquipmentServiceRequest> allSerReq =
         DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
@@ -127,23 +129,30 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(emp);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
-    Equipment equipment =
-        DBManager.getInstance().getEquipmentManager().getByAvailability(equipNeeded, false);
+    Equipment equipmentNeeded =
+        DBManager.getInstance().getEquipmentManager().getByName(equipment.getText());
 
     MedicalEquipmentServiceRequest serviceRequest =
         new MedicalEquipmentServiceRequest(
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
             employee,
             location,
-            Date.valueOf(requestDate.getValue()),
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            equipment);
+            equipmentNeeded);
     DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

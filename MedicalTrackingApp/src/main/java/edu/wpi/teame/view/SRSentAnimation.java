@@ -57,11 +57,13 @@ public class SRSentAnimation {
     rocket.setFitWidth(100);
     rocket.setFitHeight(100);
     rocket.setOpacity(0);
-
     stackPane.getChildren().add(wheel);
     stackPane.getChildren().add(rocket);
     stackPane.getChildren().add(sentText);
 
+    FadeTransition rocketFadeOut = new FadeTransition(new Duration(500), rocket);
+    rocketFadeOut.setFromValue(100);
+    rocketFadeOut.setToValue(0);
     FadeTransition textFadeOut = new FadeTransition(new Duration(2000), sentText);
     textFadeOut.setFromValue(100);
     textFadeOut.setToValue(0);
@@ -75,6 +77,7 @@ public class SRSentAnimation {
         e -> {
           stackPane.setEffect(new DropShadow(5, Color.GOLD));
           textFadeOut.play();
+          rocketFadeOut.play();
           stackPaneFadeOut.play();
         });
     TranslateTransition rocketTranslate = new TranslateTransition(new Duration(400), rocket);

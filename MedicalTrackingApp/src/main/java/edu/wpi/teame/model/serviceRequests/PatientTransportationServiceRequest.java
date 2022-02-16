@@ -78,7 +78,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
+    return getRawUpdateString()
         + ", "
         + "destinationID = "
         + destination.getId()

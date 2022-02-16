@@ -5,17 +5,18 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,16 +26,19 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 
 public class MedicineDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+  @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private DatePicker datePicker;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private TextField medicineName;
   @FXML private TextField medicineQuantity;
   @FXML private TextArea additionalInfo;
@@ -44,9 +48,8 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
-
-    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.MedicineDeliverySR.getColor()));
+    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
     requestDate
@@ -113,6 +116,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -132,10 +142,6 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     String roomNum = (String) locationText.getText();
     String worker = (String) assignee.getText();
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String srDate = datePicker.getValue().format(formatter);
-    long time = new SimpleDateFormat("yyyy-MM-dd").parse(srDate).getTime();
-
     List<MedicalEquipmentServiceRequest> allSerReq =
         DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
     for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
@@ -144,23 +150,31 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(worker);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     MedicineDeliveryServiceRequest serviceRequest =
         new MedicineDeliveryServiceRequest(
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
             employee,
             location,
-            Date.valueOf(requestDate.getValue()),
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
             0,
             medicineName.getText(),
             medicineQuantity.getText(),
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

@@ -6,29 +6,32 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
-import edu.wpi.teame.model.enums.EquipmentType;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 
 public class ExternalPatientTransportationServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+  @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField destinationLocation;
   @FXML private AutoCompleteTextField assignee;
@@ -42,9 +45,8 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
-
-    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.ExternalPatientSR.getColor()));
+    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
     requestDate
@@ -78,10 +80,10 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
               validateSubmitButton();
             });
 
-    equipment.setOnMousePressed(
-        listener -> {
-          validateSubmitButton();
-        });
+    //    equipment.setOnMousePressed(
+    //        listener -> {
+    //          validateSubmitButton();
+    //        });
 
     destinationLocation.setOnMousePressed(
         listener -> {
@@ -106,7 +108,14 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
-    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getByAllAvailable();
+
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -138,28 +147,33 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     Location dest =
         DBManager.getInstance().getLocationManager().getByName(destinationLocation.getText());
     Equipment equipBring =
-        DBManager.getInstance()
-            .getEquipmentManager()
-            .getByAvailability(
-                Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
+        DBManager.getInstance().getEquipmentManager().getByName(equipment.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     PatientTransportationServiceRequest serviceRequest =
         new PatientTransportationServiceRequest(
             false,
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
             employee,
             location,
-            Date.valueOf(requestDate.getValue()),
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
             0,
             dest,
             equipBring,
-            new Patient(location, new Date(0), patientName.getText(), 0));
-    DBManager.getInstance().getSecuritySRManager().insert(serviceRequest);
+            patient); // TODO Equipment should be optional. Add a null option.
+    DBManager.getInstance().getExternalPatientSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {
@@ -169,7 +183,6 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
             || assignee.getEntries() == null
             || priority.getValue() == null
             || status.getValue() == null
-            || equipment.getEntries() == null
             || destinationLocation.getEntries() == null
             || patientName.getText().isEmpty());
   }

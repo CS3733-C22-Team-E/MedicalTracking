@@ -9,9 +9,12 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -56,6 +59,8 @@ public class Map {
   private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
+  private Location lastPressedLocation;
+  private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
 
@@ -116,8 +121,14 @@ public class Map {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-            // TODO handle adding MapIcon of type equiptype
-            // Given X,Y,EquipmentType,Floor
+            Equipment ToBeInserted =
+                new Equipment(0, lastPressedLocation, equiptype, equiptype.toString(), false, true);
+            try {
+              DBManager.getInstance().getEquipmentManager().insert(ToBeInserted);
+              addEquipmentToMap(ToBeInserted);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     return retval;
@@ -223,7 +234,7 @@ public class Map {
     for (FloorType floorType : FloorType.values()) {
       comboBox.getItems().add(floorType.toString());
     }
-    comboBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 2);
+    comboBox.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
     comboBox.setOnAction(event -> switchFloors(FloorType.valueOf(comboBox.getValue())));
@@ -274,10 +285,11 @@ public class Map {
       equipmentCheckBox.setSelected(true);
       equipmentCheckBox.setOnAction(event -> filter(currEquipment));
       retval.add(equipmentCheckBox);
-
+      equipmentCheckBox.setPrefWidth(30);
+      equipmentCheckBox.setPrefHeight(30);
       equipmentCheckBox.setTranslateY(
           -30 * currEquipment.ordinal() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
-      equipmentCheckBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 3);
+      equipmentCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
     }
 
     JFXCheckBox locationsCheckBox = new JFXCheckBox("Location Dots");
@@ -290,9 +302,11 @@ public class Map {
           }
           showLocationNodes = !showLocationNodes;
         });
+    locationsCheckBox.setPrefHeight(30);
+    locationsCheckBox.setPrefWidth(30);
     locationsCheckBox.setTranslateY(
         -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
-    locationsCheckBox.setTranslateX(-Screen.getPrimary().getVisualBounds().getHeight() / 3);
+    locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
     retval.add(locationsCheckBox);
 
     return retval;
@@ -338,7 +352,6 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
-
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -493,12 +506,17 @@ public class Map {
             } catch (SQLException e) {
               e.printStackTrace();
             }
-            appController.mainTabPane.getSelectionModel().select(11);
+            appController.mainTabPane.getSelectionModel().select(12);
             // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO
             // Sorry Samay idk what's going on here
             // appController.test.equipmentNeeded.setValue(i.equipment.getType());
             // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-            // appController.test.datePicker.setValue(LocalDate.now());
+            // appController.test.datePicker.setValue(LocalDate.now
+            appController.test.requestDate.setValue(LocalDate.now());
+            appController.test.locationText.setText(location.getLongName());
+            appController.test.equipment.setText(i.getEquipment().getType().toString());
+            appController.test.status.setValue(ServiceRequestStatus.OPEN);
+            appController.test.priority.setValue(ServiceRequestPriority.High);
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
@@ -596,6 +614,16 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+    locationDot.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              lastPressedLocation = location;
+              PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
+            }
+          }
+        });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) {
@@ -603,7 +631,7 @@ public class Map {
     double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
-    newIcon.startTimer(60);
+    newIcon.startTimer(20);
     updateLayoutChildren();
   }
 

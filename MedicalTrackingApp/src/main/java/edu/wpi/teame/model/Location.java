@@ -166,7 +166,9 @@ public class Location implements ISQLSerializable {
         + ", x = "
         + x
         + ", y = "
-        + y;
+        + y
+        + " WHERE id = "
+        + id;
   }
 
   @Override

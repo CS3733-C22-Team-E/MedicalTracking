@@ -23,18 +23,19 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
     super(DataBaseObjectType.Equipment);
   }
 
-  public Equipment getByAvailability(EquipmentType equipmentType, boolean hasPatient)
-      throws SQLException {
-    return super.getBy(
-            "WHERE hasPatient = " + (hasPatient ? 1 : 0) + " AND type = " + equipmentType.ordinal())
-        .get(0);
+  public List<Equipment> getByAllAvailable() throws SQLException {
+    return super.getBy("WHERE hasPatient = 0 AND isClean = 0");
+  }
+
+  public Equipment getByName(String name) throws SQLException {
+    return super.getBy("WHERE name = '" + name + "'").get(0);
   }
 
   @Override
   public void readCSV(String inputFileName)
       throws IOException, CsvValidationException, SQLException {
     String filePath =
-        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + inputFileName;
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
