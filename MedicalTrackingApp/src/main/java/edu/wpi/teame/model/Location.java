@@ -177,4 +177,39 @@ public class Location implements ISQLSerializable {
   public boolean equalsByName(Location l) {
     return this.getLongName().equals(l.getLongName());
   }
+
+  public boolean equals(Object o) {
+    // If the object is compared with itself then return true
+    if (o == this) {
+      return true;
+    }
+
+    /* Check if o is an instance of Complex or not
+    "null instanceof [type]" also returns false */
+    if (!(o instanceof Location)) {
+      return false;
+    }
+
+    // typecast o to Complex so that we can compare data members
+    Location l = (Location) o;
+
+    // Compare the data members and return accordingly
+    //    private LocationType type;
+    //    private String shortName;
+    //    private String longName;
+    //    private int id;
+    //
+    //    private BuildingType building;
+    //    private FloorType floor;
+    //    private int x;
+    //    private int y;
+    return type == l.getType()
+        && shortName.equals(l.getShortName())
+        && longName.equals(l.getLongName())
+        && id == l.getId()
+        && building.equals(l.getBuilding())
+        && floor.equals(l.getFloor())
+        && x == l.getX()
+        && y == l.getY();
+  }
 }
