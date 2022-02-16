@@ -53,12 +53,7 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
-        + ", "
-        + "patientID = "
-        + patient.getId()
-        + "WHERE id = "
-        + id;
+    return getRawUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;
   }
 
   @Override

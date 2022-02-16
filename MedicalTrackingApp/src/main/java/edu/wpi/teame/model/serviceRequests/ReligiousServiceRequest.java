@@ -57,7 +57,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLUpdateString() {
-    return super.getSQLUpdateString()
+    return getRawUpdateString()
         + ", "
         + "patientID = "
         + patient.getId()

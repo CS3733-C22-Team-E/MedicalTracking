@@ -92,6 +92,20 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getSQLUpdateString() {
+    return getRawUpdateString() + " WHERE id = " + id;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)";
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return dbType;
+  }
+
+  protected String getRawUpdateString() {
     String closeDateString = closeDate == null ? "NULL" : " '" + dateToSQLString(closeDate) + "'";
     return "locationID = "
         + location.getId()
@@ -120,16 +134,6 @@ public class ServiceRequest implements ISQLSerializable {
         + "requestDate = '"
         + dateToSQLString(requestDate)
         + "'";
-  }
-
-  @Override
-  public String getTableColumns() {
-    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)";
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return dbType;
   }
 
   protected String dateToSQLString(Date date) {
