@@ -1,4 +1,2 @@
 id,locationID,assigneeID,openDate,closeDate,status,title,additionalInfo,priority,requestDate,patientID
-1,2,,2022-02-15,,0,titel,I need sanitatrion,0,2015-03-31,1
-2,2,,2022-02-15,,2,titel,I need sanitatrion,2,2015-03-31,1
-3,2,,2022-02-15,,2,New,I need sanitatrion,2,2015-03-31,1
+

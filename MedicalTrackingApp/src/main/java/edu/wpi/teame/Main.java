@@ -14,13 +14,13 @@ import java.text.ParseException;
 public class Main {
 
   public static void main(String[] args)
-      throws SQLException, NoSuchAlgorithmException, CsvValidationException, IOException,
-          ParseException {
+      throws IOException, SQLException, CsvValidationException, ParseException,
+          NoSuchAlgorithmException {
 
-    // Load the DB on startup
-    DBManager.getInstance();
+    // Load Credentials
     DBManager.getInstance().getCredentialManager().readCSV("Credentials.csv");
 
+    // Launch App
     App.launch(App.class, args);
   }
 }
