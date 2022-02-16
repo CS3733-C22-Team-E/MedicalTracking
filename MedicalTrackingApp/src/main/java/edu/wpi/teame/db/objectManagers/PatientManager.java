@@ -16,6 +16,10 @@ public final class PatientManager extends ObjectManager<Patient> {
     super(DataBaseObjectType.Patient);
   }
 
+  public Patient getByName(String name) throws SQLException {
+    return super.getBy("WHERE name = '" + name + "'").get(0);
+  }
+
   @Override
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException {

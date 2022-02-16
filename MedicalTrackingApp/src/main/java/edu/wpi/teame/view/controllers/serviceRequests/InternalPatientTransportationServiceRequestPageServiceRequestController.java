@@ -148,6 +148,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             .getEquipmentManager()
             .getByAvailability(
                 Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     PatientTransportationServiceRequest serviceRequest =
         new PatientTransportationServiceRequest(
@@ -166,7 +167,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             0,
             dest,
             equipBring,
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getInternalPatientSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);

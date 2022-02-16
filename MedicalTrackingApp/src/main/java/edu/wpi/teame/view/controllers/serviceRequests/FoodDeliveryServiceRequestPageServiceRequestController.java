@@ -127,6 +127,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     FoodDeliveryServiceRequest serviceRequest =
         new FoodDeliveryServiceRequest(
@@ -142,7 +143,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0),
+            patient,
             food.getText());
     DBManager.getInstance().getFoodDeliverySRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
