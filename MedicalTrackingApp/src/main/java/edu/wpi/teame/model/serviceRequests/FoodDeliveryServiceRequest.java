@@ -52,7 +52,7 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-    return getRawUpdateString() + ", " + patient.getId() + ", '" + food + "'" + " WHERE id = " + id;
+    return getRawUpdateString() + ", " + patient.getId() + ", '" + food + "'";
   }
 
   @Override
