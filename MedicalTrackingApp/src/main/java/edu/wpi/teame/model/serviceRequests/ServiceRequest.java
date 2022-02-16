@@ -10,6 +10,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
 
 public class ServiceRequest implements ISQLSerializable {
   protected DataBaseObjectType dbType;
@@ -64,13 +65,13 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
-    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
+    String closeDateString = closeDate == null ? "NULL" : " '" + dateToSQLString(closeDate) + "'";
     String assigneeString = assignee == null ? "NULL" : " " + assignee.getId();
     return location.getId()
         + ", "
         + assigneeString
         + ", '"
-        + openDate.toString()
+        + dateToSQLString(openDate)
         + "', "
         + closeDateString
         + ", "
@@ -82,13 +83,13 @@ public class ServiceRequest implements ISQLSerializable {
         + "', "
         + priority.ordinal()
         + ", '"
-        + requestDate.toString()
+        + dateToSQLString(requestDate)
         + "'";
   }
 
   @Override
   public String getSQLUpdateString() {
-    String closeDateString = closeDate == null ? "NULL" : " '" + closeDate.toString() + "'";
+    String closeDateString = closeDate == null ? "NULL" : " '" + dateToSQLString(closeDate) + "'";
     return "locationID = "
         + location.getId()
         + ", "
@@ -96,7 +97,7 @@ public class ServiceRequest implements ISQLSerializable {
         + assignee.getId()
         + ", "
         + "openDate = '"
-        + openDate.toString()
+        + dateToSQLString(openDate)
         + "', "
         + "closeDate = "
         + closeDateString
@@ -114,7 +115,7 @@ public class ServiceRequest implements ISQLSerializable {
         + priority.ordinal()
         + ", "
         + "requestDate = '"
-        + requestDate.toString()
+        + dateToSQLString(requestDate)
         + "'";
   }
 
@@ -126,6 +127,12 @@ public class ServiceRequest implements ISQLSerializable {
   @Override
   public DataBaseObjectType getDBType() {
     return dbType;
+  }
+
+  protected String dateToSQLString(Date date) {
+    String dateAsString =
+        openDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toString();
+    return dateAsString.replace("T", " ").replace("Z", "");
   }
 
   public ServiceRequestPriority getPriority() {
