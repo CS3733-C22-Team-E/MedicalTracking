@@ -4,6 +4,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.Map;
+import edu.wpi.teame.view.MapSideView;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
@@ -64,6 +65,11 @@ public class LandingPageController implements Initializable {
           }
         });
     tabs.add(mapTab);
+
+    MapSideView mapSideView = new MapSideView();
+    StyledTab mapSideViewTab =
+        new StyledTab("Hospital Map Side-View", SortOrder.ByName, mapSideView.getMapScene());
+    tabs.add(mapSideViewTab);
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
@@ -162,6 +168,9 @@ public class LandingPageController implements Initializable {
     // test =
     //    (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
     //        tabs.ge//t(11).controller; //TODO again, sorry Samay. I need to get this running
+    test =
+        (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
+            tabs.get(12).controller;
   }
 
   private String getPageUrl(DataBaseObjectType t) {

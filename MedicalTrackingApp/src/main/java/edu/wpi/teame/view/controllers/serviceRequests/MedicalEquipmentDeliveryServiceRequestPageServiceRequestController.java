@@ -29,12 +29,12 @@ import javafx.scene.layout.AnchorPane;
 public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
-  @FXML private DatePicker requestDate;
-  @FXML private AutoCompleteTextField locationText;
+  @FXML public DatePicker requestDate;
+  @FXML public AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
-  @FXML private AutoCompleteTextField equipment;
-  @FXML private JFXComboBox priority;
-  @FXML private JFXComboBox status;
+  @FXML public AutoCompleteTextField equipment;
+  @FXML public JFXComboBox priority;
+  @FXML public JFXComboBox status;
   @FXML private TextArea additionalInfo;
   @FXML private TextArea patientName;
   @FXML private Button clearButton;
