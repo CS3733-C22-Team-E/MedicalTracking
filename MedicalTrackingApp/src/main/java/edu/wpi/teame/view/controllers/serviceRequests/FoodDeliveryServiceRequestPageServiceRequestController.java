@@ -11,6 +11,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.FoodDeliveryServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -35,7 +36,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private TextField food;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
@@ -106,6 +107,13 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -126,6 +134,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     FoodDeliveryServiceRequest serviceRequest =
         new FoodDeliveryServiceRequest(
@@ -141,9 +150,14 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0),
+            patient,
             food.getText());
     DBManager.getInstance().getFoodDeliverySRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

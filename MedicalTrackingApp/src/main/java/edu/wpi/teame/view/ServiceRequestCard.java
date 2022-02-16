@@ -96,11 +96,7 @@ public class ServiceRequestCard {
     detailsGrid.add(generateDetailText("Status: "), 2, 6);
     detailsGrid.add(getSeparatorH(), 2, 7);
 
-    try {
-      detailsGrid.add(generateDetailText(sr.getAssignee().getName()), 3, 0);
-    } catch (Exception e) {
-      detailsGrid.add(generateDetailText("No assignee!"), 3, 0);
-    }
+    detailsGrid.add(generateDetailText(sr.getAssignee().getName()), 3, 0);
     detailsGrid.add(getSeparatorH(), 3, 1);
     detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
     detailsGrid.add(getSeparatorH(), 3, 3);

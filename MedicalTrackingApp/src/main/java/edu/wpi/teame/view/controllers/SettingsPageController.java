@@ -36,9 +36,10 @@ public class SettingsPageController implements Initializable {
       properties = new Properties();
       properties.load(reader);
 
-      dbSwitchComboBox.setItems(
-          FXCollections.observableArrayList(
-              new String[] {"Embedded Database", "Client/Server Database"}));
+      String[] dbOptions = new String[] {"Embedded Database", "Client/Server Database"};
+      dbSwitchComboBox.setItems(FXCollections.observableArrayList(dbOptions));
+
+      dbSwitchComboBox.setValue(dbOptions[DBManager.getInstance().isClientServer() ? 1 : 0]);
 
       languageComboBox.setItems(
           FXCollections.observableArrayList(
@@ -140,6 +141,12 @@ public class SettingsPageController implements Initializable {
                 } catch (IOException e) {
                   e.printStackTrace();
                   System.out.println("Could not write to settings.properties");
+                } catch (CsvValidationException e) {
+                  e.printStackTrace();
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                } catch (ParseException e) {
+                  e.printStackTrace();
                 }
               });
 
@@ -202,8 +209,12 @@ public class SettingsPageController implements Initializable {
   }
 
   @FXML
-  private void changeDBConnection() {
-    System.out.println("Technically Switched DBConnection");
+  private void changeDBConnection()
+      throws SQLException, IOException, CsvValidationException, ParseException {
+
+    // switch DB type
+    boolean isClientServer = dbSwitchComboBox.getValue().toString().contains("Client/Server");
+    DBManager.getInstance().switchConnection(isClientServer);
   }
 
   @FXML
@@ -224,11 +235,11 @@ public class SettingsPageController implements Initializable {
   @FXML
   private void loadFromCSV()
       throws IOException, CsvValidationException, SQLException, ParseException {
-    DBManager.getInstance().loadDBFromCSV();
+    DBManager.getInstance().loadDBFromCSV(true);
   }
 
   @FXML
   public void writeToCSV() throws SQLException, IOException {
-    DBManager.getInstance().writeDBToCSV();
+    DBManager.getInstance().writeDBToCSV(true);
   }
 }

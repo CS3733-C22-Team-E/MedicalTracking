@@ -9,6 +9,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.GiftAndFloralServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -22,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 
@@ -32,7 +32,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
@@ -96,6 +96,13 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -116,6 +123,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     GiftAndFloralServiceRequest serviceRequest =
         new GiftAndFloralServiceRequest(
@@ -131,8 +139,13 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getGiftAndFloralSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

@@ -11,6 +11,7 @@ import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -25,7 +26,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 
@@ -33,7 +33,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField destinationLocation;
   @FXML private AutoCompleteTextField assignee;
@@ -113,6 +113,13 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
     List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -147,6 +154,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             .getEquipmentManager()
             .getByAvailability(
                 Objects.requireNonNull(EquipmentType.getValue(equipment.getText())), false);
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     PatientTransportationServiceRequest serviceRequest =
         new PatientTransportationServiceRequest(
@@ -165,8 +173,13 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             0,
             dest,
             equipBring,
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getInternalPatientSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

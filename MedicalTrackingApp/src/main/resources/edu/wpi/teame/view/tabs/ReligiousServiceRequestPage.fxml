@@ -120,11 +120,11 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="patientName" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
+            <AutoCompleteTextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
+                </GridPane.margin>
+            </AutoCompleteTextField>
             <TextField fx:id="religion" promptText="Enter religion..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <opaqueInsets>
                   <Insets />

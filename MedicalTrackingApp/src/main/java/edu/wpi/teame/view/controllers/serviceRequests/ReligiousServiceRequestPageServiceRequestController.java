@@ -9,6 +9,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ReligiousServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -33,7 +34,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private TextField religion;
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
@@ -103,6 +104,13 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -123,6 +131,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     ReligiousServiceRequest serviceRequest =
         new ReligiousServiceRequest(
@@ -138,9 +147,14 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0),
+            patient,
             religion.getText());
     DBManager.getInstance().getReligiousSRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

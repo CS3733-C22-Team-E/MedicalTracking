@@ -10,6 +10,7 @@ import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.view.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -37,7 +38,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private DatePicker datePicker;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private TextField medicineName;
   @FXML private TextField medicineQuantity;
   @FXML private TextArea additionalInfo;
@@ -115,6 +116,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
 
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -142,6 +150,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
 
     Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(worker);
     Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     MedicineDeliveryServiceRequest serviceRequest =
         new MedicineDeliveryServiceRequest(
@@ -159,8 +168,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
             0,
             medicineName.getText(),
             medicineQuantity.getText(),
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);
+    SRSentAnimation a = new SRSentAnimation();
+    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
+    a.getStackPane().setLayoutY(submitButton.getLayoutY());
+    mainAnchorPane.getChildren().add(a.getStackPane());
+    a.play();
   }
 
   public void validateSubmitButton() {

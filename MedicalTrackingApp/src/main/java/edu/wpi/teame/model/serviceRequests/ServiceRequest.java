@@ -1,7 +1,7 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -52,7 +52,10 @@ public class ServiceRequest implements ISQLSerializable {
 
   public ServiceRequest(ResultSet resultSet, DataBaseObjectType type) throws SQLException {
     this.priority = ServiceRequestPriority.values()[resultSet.getInt("status")];
-    this.location = new LocationManager().get(resultSet.getInt("locationID"));
+    this.location =
+        DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
+    this.assignee =
+        DBManager.getInstance().getEmployeeManager().get(resultSet.getInt("assigneeID"));
     this.status = ServiceRequestStatus.values()[resultSet.getInt("status")];
     this.additionalInfo = resultSet.getString("additionalInfo");
     this.requestDate = resultSet.getDate("requestDate");
