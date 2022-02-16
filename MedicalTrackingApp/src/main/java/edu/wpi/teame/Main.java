@@ -18,8 +18,8 @@ public class Main {
           NoSuchAlgorithmException {
 
     // Setup the DB
-    DBManager.getInstance();
     DBManager.getInstance().setupDB();
+    DBManager.getInstance().getCredentialManager().readCSV("backup/Credentials.csv");
 
     // Launch App
     App.launch(App.class, args);

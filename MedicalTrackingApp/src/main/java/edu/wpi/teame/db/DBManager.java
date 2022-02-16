@@ -13,7 +13,7 @@ public final class DBManager {
   private final String ClientServerConnectionString =
       "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
   private final String EmbeddedConnectionString =
-      "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
+      "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
   private boolean isClientServer = false;
   private static DBManager instance;
@@ -350,7 +350,7 @@ public final class DBManager {
     }
 
     try {
-      getCredentialManager().readCSV(subFolder + "Credentials.csv");
+      getCredentialManager().readCSV("backup/Credentials.csv");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -410,26 +410,6 @@ public final class DBManager {
     getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
-  public void switchConnection(boolean isClientServer)
-      throws SQLException, IOException, CsvValidationException, ParseException {
-    // Write DB to CSV
-    DBManager.getInstance().writeDBToCSV(false);
-
-    // Switch to the connection
-    String connectionString = EmbeddedConnectionString;
-    if (isClientServer) {
-      connectionString = ClientServerConnectionString;
-    }
-
-    // Create Connection
-    connection = DriverManager.getConnection(connectionString);
-    this.isClientServer = isClientServer;
-    stmt = connection.createStatement();
-
-    // Load DB from CSV
-    DBManager.getInstance().loadDBFromCSV(false);
-  }
-
   public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
     // add embedded driver
     try {
@@ -447,22 +427,50 @@ public final class DBManager {
       return;
     }
 
+    // Connect to Client/Server... that DB may already have the tables
+    try {
+      connection = DriverManager.getConnection(ClientServerConnectionString);
+      stmt = connection.createStatement();
+      isClientServer = true;
+      createDBTables();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
     // Default connect to Embedded Server
     connection = DriverManager.getConnection(EmbeddedConnectionString);
     stmt = connection.createStatement();
     isClientServer = false;
+    createDBTables();
+  }
 
-    // Create connection to Client DB
-    try {
-      switchConnection(true);
-      createDBTables();
-    } catch (Exception ex) {
-      ex.printStackTrace();
+  public void switchConnection(boolean isClientServer)
+      throws SQLException, IOException, CsvValidationException, ParseException {
+    // Write DB to CSV
+    DBManager.getInstance().writeDBToCSV(false);
+
+    // Clean the current dB table
+    cleanDBTables();
+
+    // Switch to the connection
+    String connectionString = EmbeddedConnectionString;
+    if (isClientServer) {
+      connectionString = ClientServerConnectionString;
     }
 
-    // Create connection to Embedded DB
-    switchConnection(false);
-    createDBTables();
+    // Create Connection
+    connection = DriverManager.getConnection(connectionString);
+    this.isClientServer = isClientServer;
+    stmt = connection.createStatement();
+
+    // Load DB from CSV
+    DBManager.getInstance().loadDBFromCSV(false);
+  }
+
+  private void cleanDBTables() throws SQLException {
+    for (DataBaseObjectType dbTable : DataBaseObjectType.values()) {
+      stmt.executeUpdate("DELETE " + dbTable.toString());
+    }
   }
 
   public CredentialManager getCredentialManager() throws SQLException, NoSuchAlgorithmException {
