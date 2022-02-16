@@ -54,7 +54,6 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
-    // return super.getSQLInsertString();
   }
 
   @Override

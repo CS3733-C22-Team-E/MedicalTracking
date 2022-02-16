@@ -166,7 +166,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
       case SanitationSR:
         return DBManager.getInstance().getSanitationSRManager();
       default:
-        return DBManager.getInstance().getMedicalEquipmentSRManager();
+        return null;
     }
   }
 }

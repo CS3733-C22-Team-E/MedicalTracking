@@ -28,7 +28,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
   public void readCSV(String inputFileName)
       throws IOException, CsvValidationException, SQLException {
     String filePath =
-        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/" + inputFileName;
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
