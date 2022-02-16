@@ -42,7 +42,7 @@ public class CSVLineData {
     if (Objects.equals(parsedData[colIndex], "")) {
       return 0;
     }
-    return Integer.parseInt(parsedData[colIndex]);
+    return Integer.parseInt(parsedData[colIndex].replace(" ", ""));
   }
 
   public List<String> getHeaders() {

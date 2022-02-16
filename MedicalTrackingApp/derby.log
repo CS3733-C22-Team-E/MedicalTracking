@@ -1,8 +1,5 @@
 ----------------------------------------------------------------
-Tue Feb 15 19:26:05 EST 2022:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-017e-ffec-055c-00000eb6b8a8 
-on database directory memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\ESpikeB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66 
-Loaded from file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.14.2.0/7efad40ef52fbb1f08142f07a83b42d29e47d8ce/derby-10.14.2.0.jar
+Tue Feb 15 21:48:34 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-006e-70ed-00000ea848b0, [2] memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
 java.vendor=Microsoft
 java.runtime.version=11.0.12+7
 user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp
@@ -10,4 +7,4 @@ os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null
-Database Class Loader started - derby.database.classpath=''
+C005 : [0] 

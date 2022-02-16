@@ -17,8 +17,9 @@ public class Main {
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
 
-    // Load Credentials
-    DBManager.getInstance().getCredentialManager().readCSV("Credentials.csv");
+    // Setup the DB
+    DBManager.getInstance().setupDB();
+    DBManager.getInstance().getCredentialManager().readCSV("backup/Credentials.csv");
 
     // Launch App
     App.launch(App.class, args);
