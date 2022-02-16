@@ -1,4 +1,1 @@
 id,locationID,assigneeID,openDate,closeDate,status,title,additionalInfo,priority,requestDate,medicineName,patientID,medicineQuantity
-1,4,,2022-02-15,,0,titel,I need sanitatrion,0,2015-03-31,od,1,od
-2,2,,2022-02-15,,2,titel,I need sanitatrion,2,2015-05-01,od,2,od
-3,3,,2022-02-15,,1,titel,I need sanitatrion,1,2015-03-31,djkfdshgfuiowelkfjbvhdjkfs,3,od

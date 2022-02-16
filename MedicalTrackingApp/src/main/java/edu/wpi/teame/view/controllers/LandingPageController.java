@@ -135,11 +135,11 @@ public class LandingPageController implements Initializable {
             SortOrder.ByName,
             getPageUrl(DataBaseObjectType.ExternalPatientSR)));
 
-    // tabs.add(
-    //    new StyledTab(
-    //        "Audio/Video Services",
-    //        SortOrder.ByName,
-    //        getPageUrl(DataBaseObjectType.AudioVisualSR))); //TODO AV stops program
+    tabs.add(
+        new StyledTab(
+            "Audio/Video Services",
+            SortOrder.ByName,
+            getPageUrl(DataBaseObjectType.AudioVisualSR)));
 
     tabs.add(
         new StyledTab(

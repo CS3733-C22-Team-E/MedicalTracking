@@ -12,6 +12,7 @@ import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -20,8 +21,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
 
 public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
+  @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
@@ -34,9 +38,8 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO: Change priority comboBox to actual values
-
-    priority.setItems(FXCollections.observableArrayList(new String[] {"Low", "Medium", "High"}));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.SecuritySR.getColor()));
+    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
     requestDate
@@ -106,12 +109,14 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
     ServiceRequest serviceRequest =
         new ServiceRequest(
             DataBaseObjectType.SecuritySR,
-            (ServiceRequestPriority) priority.getValue(),
-            (ServiceRequestStatus) status.getValue(),
+            ServiceRequestPriority.valueOf(priority.getValue().toString()),
+            ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
             employee,
             location,
-            Date.valueOf(requestDate.getValue()),
+            new Date(
+                Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                    .getTime()),
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
