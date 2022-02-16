@@ -124,6 +124,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     ReligiousServiceRequest serviceRequest =
         new ReligiousServiceRequest(
@@ -139,7 +140,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0),
+            patient,
             religion.getText());
     DBManager.getInstance().getReligiousSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
