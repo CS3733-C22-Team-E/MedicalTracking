@@ -1,10 +1,12 @@
 package edu.wpi.teame.view;
 
+import static edu.wpi.teame.model.enums.DataBaseObjectType.*;
+
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.*;
 import java.sql.SQLException;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -73,7 +75,7 @@ public class ServiceRequestCard {
 
     createBookend(card, 40);
     card.getChildren().add(getDoneCheckbox());
-    createSpacer(card);
+    createBookend(card, 80);
 
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
@@ -160,7 +162,86 @@ public class ServiceRequestCard {
   }
 
   private Text getDescriptionText() {
-    Text descriptionText = new Text(sr.getDBType().getDescription());
+    String d = "";
+    if (sr.getDBType() == FoodDeliverySR) {
+      FoodDeliveryServiceRequest s = (FoodDeliveryServiceRequest) sr;
+      d =
+          "Deliver "
+              + s.getFood()
+              + " to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == GiftAndFloralSR) {
+      GiftAndFloralServiceRequest s = (GiftAndFloralServiceRequest) sr;
+      d =
+          "Fulfil a Gift/Floral Service Request to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == LanguageInterpreterSR) {
+      LanguageInterpreterServiceRequest s = (LanguageInterpreterServiceRequest) sr;
+      d =
+          "Get a Language Interpreter that speaks "
+              + s.getLanguage().name()
+              + " to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == MedicalEquipmentSR) {
+      MedicalEquipmentServiceRequest s = (MedicalEquipmentServiceRequest) sr;
+      d = "Deliver equipment \"" + s.getEquipment().getName() + "\" to the requested location.";
+    } else if (sr.getDBType() == MedicineDeliverySR) {
+      MedicineDeliveryServiceRequest s = (MedicineDeliveryServiceRequest) sr;
+      d =
+          "Deliver medicine \""
+              + s.getMedicineName()
+              + "\" in quantity \""
+              + s.getMedicineQuantity()
+              + "\" to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == InternalPatientTransferSR) {
+      PatientTransportationServiceRequest s = (PatientTransportationServiceRequest) sr;
+      d =
+          "Transport patient \""
+              + s.getPatient().getName()
+              + "\" internally from location \""
+              + s.getLocation().getShortName()
+              + "\" to location \""
+              + s.getDestination().getShortName()
+              + "\".";
+      if (s.getEquipment() != null) {
+        d += "\nBring equipment: " + s.getEquipment().getName();
+      }
+    } else if (sr.getDBType() == ExternalPatientSR) {
+      PatientTransportationServiceRequest s = (PatientTransportationServiceRequest) sr;
+      d =
+          "Transport patient \""
+              + s.getPatient().getName()
+              + "\" externally from location \""
+              + s.getLocation().getShortName()
+              + "\" to location \""
+              + s.getDestination().getShortName()
+              + "\".";
+      if (s.getEquipment() != null) {
+        d += "\nBring equipment: " + s.getEquipment().getName();
+      }
+    } else if (sr.getDBType() == ReligiousSR) {
+      ReligiousServiceRequest s = (ReligiousServiceRequest) sr;
+      d =
+          "Get a religious official of religion \""
+              + s.getReligion()
+              + "\" to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    }
+
+    if (!sr.getAdditionalInfo().equals("")) {
+      d = sr.getAdditionalInfo();
+    }
+    if (d.equals("")) {
+      d = sr.getDBType().getDescription();
+    }
+
+    Text descriptionText = new Text(d);
     descriptionText.setFont(Font.font("Arial", 16));
     descriptionText.setFill(Color.BLACK);
     descriptionText.setTextAlignment(TextAlignment.CENTER);
