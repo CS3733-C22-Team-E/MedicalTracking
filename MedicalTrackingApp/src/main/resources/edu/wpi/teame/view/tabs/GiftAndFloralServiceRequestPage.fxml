@@ -114,14 +114,11 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <TextField fx:id="patientName" prefHeight="26.0" prefWidth="324.0" promptText="Enter patient name..." styleClass="text-box" GridPane.columnIndex="1" GridPane.rowIndex="4">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
-            </TextField>
+            <AutoCompleteTextField fx:id="patientName" promptText="Enter a location..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+                <GridPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
+                </GridPane.margin>
+            </AutoCompleteTextField>
         </children>
     </GridPane>
 </children>

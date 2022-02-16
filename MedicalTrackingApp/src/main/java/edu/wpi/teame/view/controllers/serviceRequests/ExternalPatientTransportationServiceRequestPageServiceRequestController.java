@@ -26,7 +26,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 
@@ -34,7 +33,7 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField destinationLocation;
   @FXML private AutoCompleteTextField assignee;
@@ -112,6 +111,13 @@ public class ExternalPatientTransportationServiceRequestPageServiceRequestContro
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
     List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getAll();
+
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
