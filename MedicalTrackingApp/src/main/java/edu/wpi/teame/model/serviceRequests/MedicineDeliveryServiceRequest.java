@@ -64,7 +64,8 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + "', "
         + patientID
         + ", '"
-        + medicineQuantity;
+        + medicineQuantity
+        + "'";
   }
 
   @Override
