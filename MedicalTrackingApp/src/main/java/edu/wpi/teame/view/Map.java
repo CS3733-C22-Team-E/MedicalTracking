@@ -223,8 +223,8 @@ public class Map {
     for (FloorType floorType : FloorType.values()) {
       comboBox.getItems().add(floorType.toString());
     }
-    comboBox.setTranslateX(290);
-    comboBox.setTranslateY(-400);
+    comboBox.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+    comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
     comboBox.setOnAction(event -> switchFloors(FloorType.valueOf(comboBox.getValue())));
     return comboBox;
@@ -235,12 +235,13 @@ public class Map {
   }
 
   private JFXButton createZoomInButton() {
+
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
     icon.setFitHeight(30);
     final JFXButton zoomInButton = new JFXButton("", icon);
-    zoomInButton.setTranslateX(570);
+    zoomInButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
     zoomInButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 60);
     zoomInButton.setOnAction(
         (event) -> {
@@ -273,12 +274,11 @@ public class Map {
       equipmentCheckBox.setSelected(true);
       equipmentCheckBox.setOnAction(event -> filter(currEquipment));
       retval.add(equipmentCheckBox);
-
-      equipmentCheckBox.setTranslateY(-30 * currEquipment.ordinal() - 280);
-      equipmentCheckBox.setTranslateX(450);
-
-      equipmentCheckBox.setPrefHeight((30));
-      equipmentCheckBox.setPrefWidth((30));
+      equipmentCheckBox.setPrefWidth(30);
+      equipmentCheckBox.setPrefHeight(30);
+      equipmentCheckBox.setTranslateY(
+          -30 * currEquipment.ordinal() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+      equipmentCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
     }
 
     JFXCheckBox locationsCheckBox = new JFXCheckBox("Location Dots");
@@ -291,13 +291,11 @@ public class Map {
           }
           showLocationNodes = !showLocationNodes;
         });
-
-    locationsCheckBox.setTranslateY(-400);
-    locationsCheckBox.setTranslateX(450);
-
-    locationsCheckBox.setPrefHeight((30));
-    locationsCheckBox.setPrefWidth((30));
-
+    locationsCheckBox.setPrefHeight(30);
+    locationsCheckBox.setPrefWidth(30);
+    locationsCheckBox.setTranslateY(
+        -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+    locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
     retval.add(locationsCheckBox);
 
     return retval;
@@ -309,8 +307,8 @@ public class Map {
     icon.setFitWidth(30);
     icon.setFitHeight(30);
     final JFXButton zoomOutButton = new JFXButton("", icon);
-    zoomOutButton.setTranslateX(570);
-    zoomOutButton.setTranslateY(-400);
+    zoomOutButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
+    zoomOutButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     zoomOutButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
