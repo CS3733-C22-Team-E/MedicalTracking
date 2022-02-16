@@ -81,10 +81,10 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
               validateSubmitButton();
             });
 
-    equipment.setOnMousePressed(
-        listener -> {
-          validateSubmitButton();
-        });
+    //    equipment.setOnMousePressed(
+    //        listener -> {
+    //          validateSubmitButton();
+    //        });
 
     destinationLocation.setOnMousePressed(
         listener -> {
@@ -184,7 +184,6 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             || assignee.getEntries() == null
             || priority.getValue() == null
             || status.getValue() == null
-            || equipment.getEntries() == null
             || destinationLocation.getEntries() == null
             || patientName.getText().isEmpty());
   }
