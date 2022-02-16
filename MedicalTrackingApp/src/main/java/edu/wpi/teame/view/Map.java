@@ -9,9 +9,12 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -56,6 +59,8 @@ public class Map {
   private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Point2D lastPressedPoint = new Point2D(0, 0);
+  private Location lastPressedLocation;
+  private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
 
@@ -116,8 +121,14 @@ public class Map {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-            // TODO handle adding MapIcon of type equiptype
-            // Given X,Y,EquipmentType,Floor
+            Equipment ToBeInserted =
+                new Equipment(0, lastPressedLocation, equiptype, equiptype.toString(), false, true);
+            try {
+              DBManager.getInstance().getEquipmentManager().insert(ToBeInserted);
+              addEquipmentToMap(ToBeInserted);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     return retval;
@@ -343,7 +354,6 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) {
-
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -498,12 +508,17 @@ public class Map {
             } catch (SQLException e) {
               e.printStackTrace();
             }
-            appController.mainTabPane.getSelectionModel().select(11);
+            appController.mainTabPane.getSelectionModel().select(12);
             // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO
             // Sorry Samay idk what's going on here
             // appController.test.equipmentNeeded.setValue(i.equipment.getType());
             // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-            // appController.test.datePicker.setValue(LocalDate.now());
+            // appController.test.datePicker.setValue(LocalDate.now
+            appController.test.requestDate.setValue(LocalDate.now());
+            appController.test.locationText.setText(location.getLongName());
+            appController.test.equipment.setText(i.getEquipment().getType().toString());
+            appController.test.status.setValue(ServiceRequestStatus.OPEN);
+            appController.test.priority.setValue(ServiceRequestPriority.High);
             System.out.println("Equipment location node updated.");
           }
           System.out.println("Done");
@@ -601,6 +616,16 @@ public class Map {
     Tooltip t = new Tooltip(location.getLongName());
     Tooltip.install(locationDot, t);
     updateLayoutChildren();
+    locationDot.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton() == MouseButton.SECONDARY) {
+              lastPressedLocation = location;
+              PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
+            }
+          }
+        });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) {
