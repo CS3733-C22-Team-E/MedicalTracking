@@ -75,7 +75,7 @@ public class ServiceRequestCard {
 
     createBookend(card, 40);
     card.getChildren().add(getDoneCheckbox());
-    createSpacer(card);
+    createBookend(card, 80);
 
     GridPane titleAndDescription = new GridPane();
     titleAndDescription.setAlignment(Pos.CENTER);
@@ -187,7 +187,7 @@ public class ServiceRequestCard {
               + "\" at the requested location.";
     } else if (sr.getDBType() == MedicalEquipmentSR) {
       MedicalEquipmentServiceRequest s = (MedicalEquipmentServiceRequest) sr;
-      d = "Deliver equipment \"" + s.getEquipment() + "\" to the requested location.";
+      d = "Deliver equipment \"" + s.getEquipment().getName() + "\" to the requested location.";
     } else if (sr.getDBType() == MedicineDeliverySR) {
       MedicineDeliveryServiceRequest s = (MedicineDeliveryServiceRequest) sr;
       d =
