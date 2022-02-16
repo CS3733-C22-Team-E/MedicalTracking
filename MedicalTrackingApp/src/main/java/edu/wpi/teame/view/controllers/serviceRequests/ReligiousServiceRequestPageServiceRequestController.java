@@ -34,7 +34,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private AutoCompleteTextField assignee;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
-  @FXML private TextField patientName;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private TextField religion;
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
@@ -103,6 +103,13 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
     List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
     List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+
+    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
