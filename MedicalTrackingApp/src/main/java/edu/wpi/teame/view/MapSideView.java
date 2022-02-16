@@ -15,6 +15,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -45,6 +46,7 @@ public class MapSideView {
     layout.getChildren().add(new ImageView(backgroundImage));
     ZoomableScrollPane scroll = createScrollPane(layout);
     StackPane staticWrapper = new StackPane();
+    AnchorPane buttons = new AnchorPane();
     staticWrapper.getChildren().add(scroll);
     layout.setOnMouseClicked(
         event -> {
@@ -124,8 +126,9 @@ public class MapSideView {
             }
           }
         });
-
-    layout.getChildren().addAll(Floor3, Floor1, LL1, newListview);
+    buttons.getChildren().add(newListview);
+    buttons.setMouseTransparent(true);
+    layout.getChildren().addAll(Floor3, Floor1, LL1, buttons);
     return staticWrapper;
   }
 
