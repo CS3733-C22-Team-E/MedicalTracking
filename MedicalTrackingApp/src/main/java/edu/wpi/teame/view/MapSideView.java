@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javax.swing.*;
 
 public class MapSideView {
   private final StackPane layout = new StackPane();
@@ -37,8 +37,8 @@ public class MapSideView {
     }
     backgroundImage =
         new Image(App.class.getResource("images/map/Tower - Side View.jpg").toString());
-    newListview.setPrefSize(200, 100);
-    newListview.setMaxSize(400, 100);
+    newListview.setPrefSize(600, 200);
+    newListview.setMaxSize(newListview.getPrefWidth(), newListview.getPrefHeight());
     newListview.getStyleClass().add("combo-box");
   }
 
@@ -46,7 +46,11 @@ public class MapSideView {
     layout.getChildren().add(new ImageView(backgroundImage));
     ZoomableScrollPane scroll = createScrollPane(layout);
     StackPane staticWrapper = new StackPane();
-    AnchorPane buttons = new AnchorPane();
+    GridPane Grid = new GridPane();
+    Grid.setMouseTransparent(true);
+    Grid.getChildren().add(newListview);
+    Grid.setVgrow(newListview, Priority.ALWAYS);
+    Grid.setAlignment(Pos.TOP_CENTER);
     staticWrapper.getChildren().add(scroll);
     layout.setOnMouseClicked(
         event -> {
@@ -126,9 +130,10 @@ public class MapSideView {
             }
           }
         });
-    buttons.getChildren().add(newListview);
-    buttons.setMouseTransparent(true);
-    layout.getChildren().addAll(Floor3, Floor1, LL1, buttons);
+
+    layout.getChildren().addAll(Floor3, Floor1, LL1);
+    staticWrapper.getChildren().add(Grid);
+    Grid.setColumnSpan(newListview, 3);
     return staticWrapper;
   }
 
