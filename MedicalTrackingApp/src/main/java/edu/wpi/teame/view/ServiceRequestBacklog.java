@@ -7,7 +7,6 @@ import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.scene.Parent;
@@ -70,13 +69,14 @@ public class ServiceRequestBacklog {
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();
-    serviceRequestsFromDB.sort( // TODO This sorts by DATE, not date and time. This should be fixed.
-        new Comparator<ServiceRequest>() {
-          @Override
-          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
-            return serviceRequest.getOpenDate().compareTo(t1.getOpenDate());
-          }
-        });
+    //    serviceRequestsFromDB.sort(
+    //        new Comparator<ServiceRequest>() {
+    //          @Override
+    //          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+    //            return
+    // serviceRequest.getOpenDate().toInstant().compareTo(t1.getOpenDate().toInstant());
+    //          }
+    //        });
     for (ServiceRequest sr : serviceRequestsFromDB) {
       if (sr.getStatus().equals(ServiceRequestStatus.CLOSED)
           || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {
