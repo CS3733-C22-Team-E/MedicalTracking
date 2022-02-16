@@ -111,10 +111,7 @@ public class MapSideView {
             } catch (SQLException var3) {
               var3.printStackTrace();
             }
-            for (int i = 0; i < 4; i++) {
-              cleanFields.get(i).setText(String.valueOf(EquipmentManagementArray[1][i]));
-              dirtyFields.get(i).setText(String.valueOf(EquipmentManagementArray[0][i]));
-            }
+            updateFieldsinGrid();
           }
         });
     Floor1.setOnMouseEntered(
@@ -142,10 +139,7 @@ public class MapSideView {
             } catch (SQLException var3) {
               var3.printStackTrace();
             }
-            for (int i = 0; i < 4; i++) {
-              cleanFields.get(i).setText(String.valueOf(EquipmentManagementArray[1][i]));
-              dirtyFields.get(i).setText(String.valueOf(EquipmentManagementArray[0][i]));
-            }
+            updateFieldsinGrid();
           }
         });
     Floor3.setOnMouseEntered(
@@ -173,10 +167,7 @@ public class MapSideView {
             } catch (SQLException var3) {
               var3.printStackTrace();
             }
-            for (int i = 0; i < 4; i++) {
-              cleanFields.get(i).setText(String.valueOf(EquipmentManagementArray[1][i]));
-              dirtyFields.get(i).setText(String.valueOf(EquipmentManagementArray[0][i]));
-            }
+            updateFieldsinGrid();
           }
         });
 
@@ -186,6 +177,13 @@ public class MapSideView {
     staticWrapper.getChildren().add(holder);
     Grid.setColumnSpan(AllEquipmentView, 3);
     return staticWrapper;
+  }
+
+  private void updateFieldsinGrid() {
+    for (int i = 0; i < 4; i++) {
+      cleanFields.get(i).setText(String.valueOf(EquipmentManagementArray[1][i]));
+      dirtyFields.get(i).setText(String.valueOf(EquipmentManagementArray[0][i]));
+    }
   }
 
   private ZoomableScrollPane createScrollPane(Pane layout) {
