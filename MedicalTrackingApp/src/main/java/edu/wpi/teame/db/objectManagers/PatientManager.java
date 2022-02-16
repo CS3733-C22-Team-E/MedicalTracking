@@ -2,7 +2,6 @@ package edu.wpi.teame.db.objectManagers;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.FileWriter;
