@@ -36,9 +36,10 @@ public class SettingsPageController implements Initializable {
       properties = new Properties();
       properties.load(reader);
 
-      dbSwitchComboBox.setItems(
-          FXCollections.observableArrayList(
-              new String[] {"Embedded Database", "Client/Server Database"}));
+      String[] dbOptions = new String[] {"Embedded Database", "Client/Server Database"};
+      dbSwitchComboBox.setItems(FXCollections.observableArrayList(dbOptions));
+
+      dbSwitchComboBox.setValue(dbOptions[DBManager.getInstance().isClientServer() ? 1 : 0]);
 
       languageComboBox.setItems(
           FXCollections.observableArrayList(

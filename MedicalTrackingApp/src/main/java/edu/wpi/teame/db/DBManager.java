@@ -10,27 +10,26 @@ import java.sql.*;
 import java.text.ParseException;
 
 public final class DBManager {
+  private boolean isClientServer = false;
   private static DBManager instance;
   private Connection connection;
   private Statement stmt;
 
   public static synchronized DBManager getInstance() {
     if (instance == null) {
-      try {
-        instance = new DBManager();
-      } catch (SQLException sqlException) {
-        sqlException.printStackTrace();
-      }
+      instance = new DBManager();
     }
     return instance;
   }
 
-  private DBManager() throws SQLException {
-    setupDB();
-  }
+  private DBManager() {}
 
   public Connection getConnection() {
     return connection;
+  }
+
+  public boolean isClientServer() {
+    return isClientServer;
   }
 
   private void createDBTables() throws SQLException {
@@ -335,7 +334,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSecuritySRTable);
-    System.out.println("MedicalEquipmentSR Table created");
+    System.out.println("SecuritySR Table created");
   }
 
   public void loadDBFromCSV()
@@ -393,13 +392,13 @@ public final class DBManager {
     String connectionString =
         "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin;";
     if (isClientServer) {
-      System.out.println("want client-server DB....");
       connectionString =
-          "jdbc:derby://localhost:1527/ClientServerE;create=true;username=admin;password=admin";
+          "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
     }
 
     connection = DriverManager.getConnection(connectionString);
     stmt = connection.createStatement();
+    this.isClientServer = isClientServer;
   }
 
   public void setupDB() throws SQLException {
@@ -420,8 +419,13 @@ public final class DBManager {
     }
 
     // Create connection to Client DB
-    switchConnection(true);
-    createDBTables();
+    try {
+      loadDBFromCSV();
+      switchConnection(true);
+      createDBTables();
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
 
     // Create connection to Embedded DB
     switchConnection(false);

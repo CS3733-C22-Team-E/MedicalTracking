@@ -1,6 +1,7 @@
 package edu.wpi.teame;
 
 import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.db.objectManagers.serviceRequests.*;
 import edu.wpi.teame.model.enums.*;
@@ -17,7 +18,7 @@ public class Main {
           NoSuchAlgorithmException {
 
     // Load Credentials
-    DBManager.getInstance().getCredentialManager().readCSV("Credentials.csv");
+    DBManager.getInstance().setupDB();
 
     // Launch App
     App.launch(App.class, args);
