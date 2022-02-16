@@ -13,6 +13,8 @@ import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
+import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
+import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -501,37 +503,39 @@ public class Map {
             node.setTranslateX(nearestLocation.getX() - MAPWIDTH / 2);
             node.setTranslateY(nearestLocation.getY() - MAPHEIGHT / 2);
             i.getEquipment().setLocation(nearestLocation);
+
             try {
               DBManager.getInstance().getEquipmentManager().update(i.getEquipment());
             } catch (SQLException e) {
               e.printStackTrace();
             }
-            appController.mainTabPane.getSelectionModel().select(12);
-            // appController.test.requestLocation.setText(nearestLocation.getLongName()); //TODO
-            // Sorry Samay idk what's going on here
-            // appController.test.equipmentNeeded.setValue(i.equipment.getType());
-            // appController.test.requestState.setValue(ServiceRequestStatus.OPEN);
-            // appController.test.datePicker.setValue(LocalDate.now
-            appController.test.requestDate.setValue(LocalDate.now());
-            appController.test.locationText.setText(location.getLongName());
-            appController.test.equipment.setText(i.getEquipment().getType().toString());
-            appController.test.status.setValue(ServiceRequestStatus.OPEN);
-            appController.test.priority.setValue(ServiceRequestPriority.High);
-            System.out.println("Equipment location node updated.");
-          }
-          System.out.println("Done");
-          node.setCursor(Cursor.DEFAULT);
 
-          if (!showLocationNodes) {
-            System.out.println("Hiding location nodes.");
-            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-              dot.getImageView().setVisible(false);
+            MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
+                medicalEquipmentSRController =
+                    (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
+                        ServiceRequestDirectoryPageController.medicalEquipmentSRTab.controller;
+
+            medicalEquipmentSRController.equipment.setText(i.getEquipment().getName());
+            medicalEquipmentSRController.requestDate.setValue(LocalDate.now());
+            medicalEquipmentSRController.locationText.setText(
+                i.getEquipment().getLocation().getLongName());
+            medicalEquipmentSRController.status.setValue(ServiceRequestStatus.OPEN);
+            medicalEquipmentSRController.priority.setValue(ServiceRequestPriority.Normal);
+
+            System.out.println("Done");
+            node.setCursor(Cursor.DEFAULT);
+
+            if (!showLocationNodes) {
+              System.out.println("Hiding location nodes.");
+              for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+                dot.getImageView().setVisible(false);
+              }
             }
-          }
-          updateLayoutChildren();
+            updateLayoutChildren();
 
-          for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
-            rm.hide();
+            for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {
+              rm.hide();
+            }
           }
         });
 

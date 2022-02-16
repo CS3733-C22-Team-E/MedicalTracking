@@ -1,13 +1,11 @@
 package edu.wpi.teame.view.controllers;
 
-import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.Map;
 import edu.wpi.teame.view.MapSideView;
 import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
-import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,9 +21,8 @@ import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
 public class LandingPageController implements Initializable {
-  @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
-  public MedicalEquipmentDeliveryServiceRequestPageServiceRequestController test;
+  @FXML public AnchorPane mainAnchorPane;
 
   @Override
   @SneakyThrows
@@ -46,6 +43,11 @@ public class LandingPageController implements Initializable {
 
     List<StyledTab> tabs = new ArrayList<>();
     tabs.add(new StyledTab("Home", SortOrder.First, "view/HomePage.fxml"));
+    tabs.add(
+        new StyledTab(
+            "Service Request Directory",
+            SortOrder.ByName,
+            "view/ServiceRequestDirectoryPage.fxml"));
 
     Map mapView = new Map(FloorType.ThirdFloor, this);
     StyledTab mapTab =
@@ -89,139 +91,9 @@ public class LandingPageController implements Initializable {
         });
     tabs.add(backlogTab);
 
-    tabs.add(
-        new StyledTab(
-            "Medical Equipment Delivery",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.MedicalEquipmentSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Food Delivery", SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR)));
-
-    tabs.add(
-        new StyledTab(
-            "Medicine Delivery",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.MedicineDeliverySR)));
-
-    tabs.add(
-        new StyledTab(
-            "Gift And Floral Delivery",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.GiftAndFloralSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Language Services",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.LanguageInterpreterSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Sanitation Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SanitationSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Laundry Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR)));
-
-    tabs.add(
-        new StyledTab(
-            "Religious Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ReligiousSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Internal Patient Transportation",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.InternalPatientTransferSR)));
-
-    tabs.add(
-        new StyledTab(
-            "External Patient Transportation",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.ExternalPatientSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Audio/Video Services",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.AudioVisualSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Computer Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR)));
-
-    tabs.add(
-        new StyledTab(
-            "Security Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR)));
-
-    tabs.add(
-        new StyledTab(
-            "Facilities Maintenance",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));
-
     tabs.add(new StyledTab("Settings", SortOrder.ByName, "view/tabs/SettingsPage.fxml"));
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
-    // test =
-    //    (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
-    //        tabs.ge//t(11).controller; //TODO again, sorry Samay. I need to get this running
-    test =
-        (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
-            tabs.get(12).controller;
-  }
-
-  private String getPageUrl(DataBaseObjectType t) {
-    String url = "view/tabs/";
-    switch (t) {
-      case LaundrySR:
-        url += "Laundry";
-        break;
-      case ComputerSR:
-        url += "Computer";
-        break;
-      case SecuritySR:
-        url += "Security";
-        break;
-      case ReligiousSR:
-        url += "Religious";
-        break;
-      case AudioVisualSR:
-        url += "AudioVisual";
-        break;
-      case FoodDeliverySR:
-        url += "FoodDelivery";
-        break;
-      case GiftAndFloralSR:
-        url += "GiftAndFloral";
-        break;
-      case MedicalEquipmentSR:
-        url += "MedicalEquipmentDelivery";
-        break;
-      case MedicineDeliverySR:
-        url += "MedicineDelivery";
-        break;
-      case LanguageInterpreterSR:
-        url += "LanguageInterpreter";
-        break;
-      case FacilitiesMaintenanceSR:
-        url += "FacilitiesMaintenance";
-        break;
-      case InternalPatientTransferSR:
-        url += "InternalPatientTransportation";
-        break;
-      case ExternalPatientSR:
-        url += "ExternalPatientTransportation";
-        break;
-      case SanitationSR:
-        url += "Sanitation";
-        break;
-      default:
-        return null;
-    }
-    url += "ServiceRequestPage.fxml";
-    return url;
   }
 }
