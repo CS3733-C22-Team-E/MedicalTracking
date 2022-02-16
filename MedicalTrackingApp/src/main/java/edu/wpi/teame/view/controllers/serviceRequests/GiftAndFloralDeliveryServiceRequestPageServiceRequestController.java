@@ -117,6 +117,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
         DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
 
     GiftAndFloralServiceRequest serviceRequest =
         new GiftAndFloralServiceRequest(
@@ -132,7 +133,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0,
-            new Patient(location, new Date(0), patientName.getText(), 0));
+            patient);
     DBManager.getInstance().getGiftAndFloralSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);

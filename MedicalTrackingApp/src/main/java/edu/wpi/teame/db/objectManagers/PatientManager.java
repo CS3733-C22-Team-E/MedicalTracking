@@ -2,6 +2,7 @@ package edu.wpi.teame.db.objectManagers;
 
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.FileWriter;
@@ -14,6 +15,10 @@ import java.util.List;
 public final class PatientManager extends ObjectManager<Patient> {
   public PatientManager() throws SQLException {
     super(DataBaseObjectType.Patient);
+  }
+
+  public Patient getByName(String name) throws SQLException {
+    return super.getBy("WHERE name = '" + name + "'").get(0);
   }
 
   @Override
