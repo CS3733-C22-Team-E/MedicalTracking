@@ -633,7 +633,7 @@ public class Map {
     double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
-    newIcon.startTimer(60);
+    newIcon.startTimer(20);
     updateLayoutChildren();
   }
 
