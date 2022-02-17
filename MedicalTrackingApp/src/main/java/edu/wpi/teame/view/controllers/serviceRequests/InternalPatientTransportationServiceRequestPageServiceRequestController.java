@@ -175,6 +175,7 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
     mainAnchorPane.getChildren().add(a.getStackPane());
     a.play();
+    clearText();
   }
 
   public void validateSubmitButton() {

@@ -128,6 +128,7 @@ public class ComputerServiceRequestPageServiceRequestController extends ServiceR
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
     mainAnchorPane.getChildren().add(a.getStackPane());
     a.play();
+    clearText();
   }
 
   public void validateSubmitButton() {
