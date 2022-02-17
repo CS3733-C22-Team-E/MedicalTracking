@@ -1,5 +1,6 @@
 package edu.wpi.teame.view.map.Astar.underground;
 
+import edu.wpi.teame.model.Location;
 import edu.wpi.teame.view.map.Astar.Scorer;
 
 public class EuclideanDistanceScorer implements Scorer<Location> {

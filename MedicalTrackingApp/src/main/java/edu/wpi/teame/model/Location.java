@@ -2,10 +2,12 @@ package edu.wpi.teame.model;
 
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.*;
+import edu.wpi.teame.view.map.Astar.GraphNode;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Location implements ISQLSerializable {
+public class Location implements ISQLSerializable, GraphNode {
   private LocationType type;
   private String shortName;
   private String longName;
