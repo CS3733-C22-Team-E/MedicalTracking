@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import javafx.scene.paint.Color;
 
 public enum DataBaseObjectType {
+  Location,
+  Equipment,
+  Patient,
+  Employee,
+
   AudioVisualSR,
   ComputerSR,
   FoodDeliverySR,
@@ -19,11 +24,7 @@ public enum DataBaseObjectType {
   MedicalEquipmentSR,
   MedicineDeliverySR,
   FacilitiesMaintenanceSR,
-  SanitationSR,
-  Location,
-  Equipment,
-  Patient,
-  Employee;
+  SanitationSR;
 
   @Override
   public String toString() {
