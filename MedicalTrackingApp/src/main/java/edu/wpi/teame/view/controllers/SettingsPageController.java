@@ -123,7 +123,7 @@ public class SettingsPageController implements Initializable {
       accessibilityComboBox.setItems(
           FXCollections.observableArrayList(new String[] {"None", "Color Blind Mode"}));
 
-      dbSwitchComboBox.setValue(properties.getProperty("dbConnection"));
+      // dbSwitchComboBox.setValue(properties.getProperty("dbConnection"));
       languageComboBox.setValue(properties.getProperty("language"));
       colorComboBox.setValue(properties.getProperty("color"));
       accessibilityComboBox.setValue(properties.getProperty("accessibility"));

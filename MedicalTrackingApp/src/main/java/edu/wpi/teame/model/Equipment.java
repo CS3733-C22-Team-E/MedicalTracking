@@ -41,7 +41,6 @@ public class Equipment implements ISQLSerializable {
     this.name = resultSet.getString("name");
     this.hasPatient = resultSet.getBoolean("hasPatient");
     this.isClean = resultSet.getBoolean("isClean");
-    System.out.println(location);
   }
 
   public int getId() {

@@ -223,6 +223,34 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   public String toString() {
-    return this.dbType + " id is " + id;
+    return "id = "
+        + id
+        + "locationID = "
+        + location.getId()
+        + ", "
+        + "assigneeID = "
+        + assignee.getId()
+        + ", "
+        + "openDate = '"
+        + dateToSQLString(openDate)
+        + "', "
+        + "closeDate = "
+        + closeDate.toString()
+        + ", "
+        + "status = "
+        + status.ordinal()
+        + ", "
+        + "title = '"
+        + title
+        + "', "
+        + "additionalInfo = '"
+        + additionalInfo
+        + "', "
+        + "priority = "
+        + priority.ordinal()
+        + ", "
+        + "requestDate = '"
+        + dateToSQLString(requestDate)
+        + "'";
   }
 }

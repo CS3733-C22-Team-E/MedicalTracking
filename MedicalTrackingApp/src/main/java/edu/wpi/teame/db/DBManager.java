@@ -468,8 +468,30 @@ public final class DBManager {
   }
 
   private void cleanDBTables() throws SQLException {
-    for (DataBaseObjectType dbTable : DataBaseObjectType.values()) {
-      stmt.executeUpdate("DELETE " + dbTable.toString());
+    DataBaseObjectType[] deleteOrder =
+        new DataBaseObjectType[] {
+          DataBaseObjectType.AudioVisualSR,
+          DataBaseObjectType.ComputerSR,
+          DataBaseObjectType.FoodDeliverySR,
+          DataBaseObjectType.GiftAndFloralSR,
+          DataBaseObjectType.InternalPatientTransferSR,
+          DataBaseObjectType.ExternalPatientSR,
+          DataBaseObjectType.LanguageInterpreterSR,
+          DataBaseObjectType.LaundrySR,
+          DataBaseObjectType.ReligiousSR,
+          DataBaseObjectType.SecuritySR,
+          DataBaseObjectType.MedicalEquipmentSR,
+          DataBaseObjectType.MedicineDeliverySR,
+          DataBaseObjectType.FacilitiesMaintenanceSR,
+          DataBaseObjectType.SanitationSR,
+          DataBaseObjectType.Patient,
+          DataBaseObjectType.Employee,
+          DataBaseObjectType.Equipment,
+          DataBaseObjectType.Location
+        };
+
+    for (DataBaseObjectType dbTable : deleteOrder) {
+      stmt.executeUpdate("DELETE FROM " + dbTable.toTableName());
     }
   }
 
