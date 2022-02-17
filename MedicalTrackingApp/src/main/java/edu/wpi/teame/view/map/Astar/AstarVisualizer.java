@@ -1,6 +1,5 @@
-package edu.wpi.teame.view.map.AstarVisualization;
+package edu.wpi.teame.view.map.Astar;
 
-import java.awt.*;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
