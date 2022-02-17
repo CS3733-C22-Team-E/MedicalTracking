@@ -56,13 +56,18 @@ public class AutoCompleteTextField extends TextField {
 
     focusedProperty()
         .addListener(
-            new ChangeListener<Boolean>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends Boolean> observableValue,
-                  Boolean aBoolean,
-                  Boolean aBoolean2) {
+            e -> {
+              if (!this.focusedProperty().getValue()) {
                 entriesPopup.hide();
+              } else {
+                LinkedList<String> searchResult = new LinkedList<>();
+                final List<String> filteredEntries =
+                    entries.stream()
+                        .filter(ev -> ev.toLowerCase().contains(getText().toLowerCase()))
+                        .collect(Collectors.toList());
+                searchResult.addAll(filteredEntries);
+                populatePopup(searchResult);
+                entriesPopup.show(AutoCompleteTextField.this, Side.BOTTOM, 0, 0);
               }
             });
   }
