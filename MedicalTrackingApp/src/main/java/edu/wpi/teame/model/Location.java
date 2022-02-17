@@ -3,7 +3,6 @@ package edu.wpi.teame.model;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.view.map.Astar.GraphNode;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

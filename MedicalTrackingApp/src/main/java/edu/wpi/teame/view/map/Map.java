@@ -240,6 +240,7 @@ public class Map {
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
+    comboBox.setValue(currFloor.toString());
     for (FloorType floorType : FloorType.values()) {
       comboBox.getItems().add(floorType.toString());
     }
