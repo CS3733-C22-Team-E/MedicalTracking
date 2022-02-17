@@ -15,6 +15,7 @@ import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
+import edu.wpi.teame.view.map.AstarVisualization.AstarVisualizer;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
 import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
@@ -108,6 +109,9 @@ public class Map {
     MAPHEIGHT = backgroundImage.getHeight();
     MAPWIDTH = backgroundImage.getWidth();
     updateLayoutChildren();
+    AstarVisualizer newVisualizer = new AstarVisualizer(layout);
+    newVisualizer.setMap(MAPWIDTH, MAPHEIGHT);
+    //newVisualizer.createConnection(new Point2D(1865, 1108), new Point2D(2213, 1247));
   }
 
   private boolean coordinateChecker(String X, String Y) {
@@ -726,4 +730,6 @@ public class Map {
     double x;
     double y;
   }
+
+
 }
