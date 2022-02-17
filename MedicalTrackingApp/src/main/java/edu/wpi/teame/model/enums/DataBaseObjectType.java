@@ -20,7 +20,6 @@ public enum DataBaseObjectType {
   MedicineDeliverySR,
   FacilitiesMaintenanceSR,
   SanitationSR,
-
   Location,
   Equipment,
   Patient,
@@ -63,6 +62,48 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+    }
+    return null;
+  }
+
+  public String toTableName() {
+    switch (this) {
+      case AudioVisualSR:
+        return "AudioVisualSR";
+      case ComputerSR:
+        return "ComputerSR";
+      case FoodDeliverySR:
+        return "FoodDeliverySR";
+      case GiftAndFloralSR:
+        return "GiftAndFloralSR";
+      case ExternalPatientSR:
+        return "ExternalPatientSR";
+      case LanguageInterpreterSR:
+        return "LanguageInterpreterSR";
+      case InternalPatientTransferSR:
+        return "InternalPatientTransferSR";
+      case LaundrySR:
+        return "LaundrySR";
+      case SecuritySR:
+        return "SecuritySR";
+      case ReligiousSR:
+        return "ReligiousSR";
+      case SanitationSR:
+        return "SanitationSR";
+      case MedicalEquipmentSR:
+        return "MedicalEquipmentSR";
+      case MedicineDeliverySR:
+        return "MedicineDeliverySR";
+      case FacilitiesMaintenanceSR:
+        return "FacilitiesMaintenanceSR";
+      case Employee:
+        return "Employee";
+      case Location:
+        return "Location";
+      case Equipment:
+        return "Equipment";
+      case Patient:
+        return "Patient";
     }
     return null;
   }
