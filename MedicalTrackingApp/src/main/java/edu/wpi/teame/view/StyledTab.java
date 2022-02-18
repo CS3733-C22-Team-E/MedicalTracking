@@ -90,7 +90,7 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
   private void setUpTab() {
     tabText = new Label(tabName);
     tabText.setTextAlignment(TextAlignment.CENTER);
-    tabText.setStyle("-fx-text-fill: -fx-text-color");
+    tabText.setStyle("-fx-text-fill: -fx-text-color; -fx-font-weight: bold;");
     tabText.setRotate(90.0);
 
     imageView = new ImageView();
