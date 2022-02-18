@@ -143,4 +143,8 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
   public ImageView getImageView() {
     return imageView;
   }
+
+  public Label getTabText() {
+    return tabText;
+  }
 }
