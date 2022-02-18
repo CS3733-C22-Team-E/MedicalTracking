@@ -4,6 +4,7 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.animations.TabHoverAnimation;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
 import edu.wpi.teame.view.map.MapSideView;
@@ -46,12 +47,14 @@ public class LandingPageController implements Initializable {
     mainTabPane.setRotateGraphic(true);
 
     List<StyledTab> tabs = new ArrayList<>();
-    tabs.add(
+    StyledTab homeTab =
         new StyledTab(
             "Home",
             SortOrder.First,
             "view/HomePage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/Home.png").toString())));
+            new Image(App.class.getResource("images/Icons/pageIcons/Home.png").toString()));
+    TabHoverAnimation.install(homeTab);
+    tabs.add(homeTab);
 
     StyledTab directoryTab =
         new StyledTab(
@@ -67,6 +70,7 @@ public class LandingPageController implements Initializable {
             System.out.println(shouldEnlarge);
           }
         });
+    TabHoverAnimation.install(directoryTab);
     tabs.add(directoryTab);
 
     Map mapView = new Map(FloorType.ThirdFloor, this);
@@ -87,6 +91,7 @@ public class LandingPageController implements Initializable {
             }
           }
         });
+    TabHoverAnimation.install(mapTab);
     tabs.add(mapTab);
 
     MapSideView mapSideView = new MapSideView();
@@ -96,6 +101,7 @@ public class LandingPageController implements Initializable {
             SortOrder.ByName,
             mapSideView.getMapScene(),
             new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
+    TabHoverAnimation.install(mapSideViewTab);
     tabs.add(mapSideViewTab);
 
     ServiceRequestBacklog backlogView =
@@ -118,16 +124,20 @@ public class LandingPageController implements Initializable {
             }
           }
         });
+    TabHoverAnimation.install(backlogTab);
     tabs.add(backlogTab);
 
-    tabs.add(
+    StyledTab settingsTab =
         new StyledTab(
             "Settings",
             SortOrder.ByName,
             "view/tabs/SettingsPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString())));
+            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
+    TabHoverAnimation.install(settingsTab);
+    tabs.add(settingsTab);
 
     tabs.sort(StyledTab::compareTo);
+
     mainTabPane.getTabs().setAll(tabs);
 
     shouldEnlarge = false;

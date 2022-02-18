@@ -1,4 +1,4 @@
-package edu.wpi.teame.view;
+package edu.wpi.teame.view.animations;
 
 import edu.wpi.teame.App;
 import java.util.Objects;
