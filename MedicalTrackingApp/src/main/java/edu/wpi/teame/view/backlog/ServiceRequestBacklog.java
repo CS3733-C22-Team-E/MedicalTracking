@@ -2,6 +2,7 @@ package edu.wpi.teame.view.backlog;
 
 import static javafx.application.Application.launch;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -90,12 +91,13 @@ public class ServiceRequestBacklog {
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
+    requestHolder.add(getRefreshButton(), 0, 0);
     return requestHolder;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
     HBox card = c.getCard(SCENEWIDTH / 1.5, 100);
-    g.add(card, 0, cardsDisplayed.size());
+    g.add(card, 0, cardsDisplayed.size() + 1);
     cardsDisplayed.add(c);
   }
 
@@ -110,5 +112,18 @@ public class ServiceRequestBacklog {
     ObjectManager m = sr.getDBType().getDBManagerInstance();
     m.remove(sr.getId());
     scrollWrapper.setContent(getRequestHolder());
+  }
+
+  public JFXButton getRefreshButton() {
+    JFXButton refreshButton = new JFXButton("Refresh");
+    refreshButton.setOnAction(
+        e -> {
+          try {
+            scrollWrapper.setContent(getRequestHolder());
+          } catch (SQLException ex) {
+            ex.printStackTrace();
+          }
+        });
+    return refreshButton;
   }
 }
