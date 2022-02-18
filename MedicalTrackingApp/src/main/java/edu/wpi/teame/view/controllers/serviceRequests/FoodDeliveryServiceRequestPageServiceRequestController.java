@@ -1,7 +1,5 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
-import static edu.wpi.teame.model.enums.DataBaseObjectType.Patient;
-
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
@@ -11,7 +9,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.FoodDeliveryServiceRequest;
-import edu.wpi.teame.view.SRSentAnimation;
+import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;

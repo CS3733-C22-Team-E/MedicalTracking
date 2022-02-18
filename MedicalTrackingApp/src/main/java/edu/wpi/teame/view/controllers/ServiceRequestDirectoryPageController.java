@@ -3,6 +3,7 @@ package edu.wpi.teame.view.controllers;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.animations.TabHoverAnimation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,76 +35,94 @@ public class ServiceRequestDirectoryPageController implements Initializable {
     List<StyledTab> tabs = new ArrayList<>();
     medicalEquipmentSRTab =
         new StyledTab(
-            "Medical Equipment Delivery",
+            "Equipment Delivery",
             SortOrder.ByName,
             getPageUrl(DataBaseObjectType.MedicalEquipmentSR));
+    TabHoverAnimation.install(medicalEquipmentSRTab);
     tabs.add(medicalEquipmentSRTab);
 
     tabs.add(
-        new StyledTab(
-            "Food Delivery", SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Food Delivery", SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR))));
 
     tabs.add(
-        new StyledTab(
-            "Medicine Delivery",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.MedicineDeliverySR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Medicine Delivery",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.MedicineDeliverySR))));
 
     tabs.add(
-        new StyledTab(
-            "Gift And Floral Delivery",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.GiftAndFloralSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Gift/Floral Delivery",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.GiftAndFloralSR))));
 
     tabs.add(
-        new StyledTab(
-            "Language Services",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.LanguageInterpreterSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Language Services",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.LanguageInterpreterSR))));
 
     tabs.add(
-        new StyledTab(
-            "Sanitation Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SanitationSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Sanitation Services",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.SanitationSR))));
 
     tabs.add(
-        new StyledTab(
-            "Laundry Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Laundry Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR))));
 
     tabs.add(
-        new StyledTab(
-            "Religious Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ReligiousSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Religious Services",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.ReligiousSR))));
 
     tabs.add(
-        new StyledTab(
-            "Internal Patient Transportation",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.InternalPatientTransferSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Internal Transportation",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.InternalPatientTransferSR))));
 
     tabs.add(
-        new StyledTab(
-            "External Patient Transportation",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.ExternalPatientSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "External Transportation",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.ExternalPatientSR))));
 
     tabs.add(
-        new StyledTab(
-            "Audio/Video Services",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.AudioVisualSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Audio/Video Services",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.AudioVisualSR))));
 
     tabs.add(
-        new StyledTab(
-            "Computer Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Computer Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR))));
 
     tabs.add(
-        new StyledTab(
-            "Security Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Security Services", SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR))));
 
     tabs.add(
-        new StyledTab(
-            "Facilities Maintenance",
-            SortOrder.ByName,
-            getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Facilities Maintenance",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR))));
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);

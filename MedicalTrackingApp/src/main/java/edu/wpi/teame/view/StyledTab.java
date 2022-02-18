@@ -135,4 +135,16 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     }
     return tabName.compareTo(o.tabName);
   }
+
+  public AnchorPane getAnchorPane() {
+    return anchorPane;
+  }
+
+  public ImageView getImageView() {
+    return imageView;
+  }
+
+  public Label getTabText() {
+    return tabText;
+  }
 }
