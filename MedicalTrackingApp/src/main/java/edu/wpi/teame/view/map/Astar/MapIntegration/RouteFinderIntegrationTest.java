@@ -1,8 +1,9 @@
-package edu.wpi.teame.view.map.Astar.underground;
+package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 // import static org.assertj.core.api.Assertions.assertThat;
 
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
 import java.util.HashMap;
@@ -25,7 +26,6 @@ public class RouteFinderIntegrationTest {
   public void setUp() throws Exception {
     Set<Location> locations = new HashSet<>();
     Map<Integer, Set<Integer>> connections = new HashMap<>();
-
     //    locations.add(new Location("1", "Acton Town", 51.5028, -0.2801));
     //    locations.add(new Location("2", "Aldgate", 51.5143, -0.0755));
     //    locations.add(new Location("3", "Aldgate East", 51.5154, -0.0726));
@@ -684,6 +684,8 @@ public class RouteFinderIntegrationTest {
         new RouteFinder<>(
             locationGraph, new EuclideanDistanceScorer(), new EuclideanDistanceScorer());
   }
+
+  public void getFromDB(FloorType currFloor) {}
 
   //  @Test
   //  public void findRoute() {

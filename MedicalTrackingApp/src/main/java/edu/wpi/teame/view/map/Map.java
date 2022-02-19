@@ -16,6 +16,7 @@ import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
+import edu.wpi.teame.view.map.Astar.MapIntegration.PathFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
 import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
@@ -69,6 +70,7 @@ public class Map {
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
+  private PathFinder Pather;
 
   public Map(FloorType floor, LandingPageController app) {
     appController = app;
@@ -335,6 +337,11 @@ public class Map {
           // double value zoomAmplifier is 1 for buttons
           zoomOut(1);
           try {
+            Pather.FindAndDrawRoute(97, 89);
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+          try {
             RefreshSRfromDB();
           } catch (SQLException e) {
             e.printStackTrace();
@@ -361,7 +368,7 @@ public class Map {
     }
   }
 
-  public Parent getMapScene(double height, double width) {
+  public Parent getMapScene(double height, double width) throws SQLException {
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -426,6 +433,7 @@ public class Map {
           }
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
+    Pather = new PathFinder(layout);
     System.out.println("Init Complete");
     return staticWrapper;
   }
@@ -591,6 +599,8 @@ public class Map {
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
+    Pather.SelectFloor(FloorType.ThirdFloor);
+    Pather.FindAndDrawRoute(97, 88);
   }
 
   public void RefreshSRfromDB() throws SQLException {

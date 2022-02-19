@@ -1,4 +1,4 @@
-package edu.wpi.teame.view.map.Astar.underground;
+package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.view.map.Astar.Scorer;
