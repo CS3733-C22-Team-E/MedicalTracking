@@ -15,7 +15,6 @@ import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
-import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.MapIntegration.PathFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
@@ -73,7 +72,7 @@ public class Map {
   private PathFinder Pather;
   private ArrayList<Location> PathFinding = new ArrayList<>();
 
-  public Map(FloorType floor, LandingPageController app) {
+  public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
     currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
@@ -106,15 +105,12 @@ public class Map {
     }
   }
 
-  private void switchFloors(FloorType floor) {
+  private void switchFloors(FloorType floor) throws SQLException {
     currFloor = floor;
     backgroundImage = Images.get(floor);
     MAPHEIGHT = backgroundImage.getHeight();
     MAPWIDTH = backgroundImage.getWidth();
     updateLayoutChildren();
-    AstarVisualizer newVisualizer = new AstarVisualizer(layout);
-    newVisualizer.setMap(MAPWIDTH, MAPHEIGHT);
-    // newVisualizer.createConnection(new Point2D(1865, 1108), new Point2D(2213, 1247));
   }
 
   private boolean coordinateChecker(String X, String Y) {
@@ -250,7 +246,14 @@ public class Map {
     comboBox.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
-    comboBox.setOnAction(event -> switchFloors(FloorType.valueOf(comboBox.getValue())));
+    comboBox.setOnAction(
+        event -> {
+          try {
+            switchFloors(FloorType.valueOf(comboBox.getValue()));
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        });
     return comboBox;
   }
 
@@ -338,11 +341,6 @@ public class Map {
           // double value zoomAmplifier is 1 for buttons
           zoomOut(1);
           try {
-            Pather.FindAndDrawRoute(97, 89);
-          } catch (SQLException e) {
-            e.printStackTrace();
-          }
-          try {
             RefreshSRfromDB();
           } catch (SQLException e) {
             e.printStackTrace();
@@ -370,6 +368,8 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) throws SQLException {
+    Pather = new PathFinder(layout);
+    Pather.SelectFloor(currFloor, MAPWIDTH, MAPHEIGHT);
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -383,7 +383,6 @@ public class Map {
               true));
     }
     System.out.println("Icons Graphics Load");
-
     // Creating OnClickPane Menu
     PaneMenu.getStyleClass().add("combo-box");
     for (EquipmentType currEquipment : EquipmentType.values()) {
@@ -434,8 +433,9 @@ public class Map {
           }
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
-    Pather = new PathFinder(layout);
     System.out.println("Init Complete");
+    Pather.SelectFloor(
+        FloorType.ThirdFloor, backgroundImage.getWidth(), backgroundImage.getHeight());
     return staticWrapper;
   }
 
@@ -600,8 +600,7 @@ public class Map {
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
-    Pather.SelectFloor(FloorType.ThirdFloor);
-    Pather.FindAndDrawRoute(97, 99);
+    Pather.refreshLocationsFromDB();
   }
 
   public void RefreshSRfromDB() throws SQLException {

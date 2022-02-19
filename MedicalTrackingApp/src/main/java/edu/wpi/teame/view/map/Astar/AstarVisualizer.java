@@ -1,22 +1,24 @@
 package edu.wpi.teame.view.map.Astar;
 
+import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 public class AstarVisualizer {
   StackPane layout;
-  private static final double MAPWIDTH = 5000;
-  private static final double MAPHEIGHT = 1650;
-  private static final double MapConnectionWidth = 6;
+  private double MAPWIDTH = 5000;
+  private double MAPHEIGHT = 1650;
+  private static final double MapConnectionWidth = 5;
+  private ArrayList<Rectangle> routeConnections = new ArrayList<>();
 
   public AstarVisualizer(StackPane VisualizationPane) {
     layout = VisualizationPane;
   }
 
   public void setMap(double MAPWIDTH_, double MAPHEIGHT_) {
-    //    MAPWIDTH = MAPWIDTH_;
-    //    MAPHEIGHT = MAPHEIGHT_;
+    MAPWIDTH = MAPWIDTH_;
+    MAPHEIGHT = MAPHEIGHT_;
   }
 
   public void createConnection(double StartX, double StartY, double EndX, double EndY) {
@@ -37,5 +39,16 @@ public class AstarVisualizer {
     connection.setTranslateY(ProjectY);
     connection.setRotate(Math.toDegrees(theta));
     layout.getChildren().add(connection);
+    routeConnections.add(connection);
+  }
+
+  public void clearConnections() {
+    layout.getChildren().stream()
+        .forEach(
+            Node -> {
+              if (routeConnections.contains(Node)) {
+                routeConnections.remove(Node);
+              }
+            });
   }
 }
