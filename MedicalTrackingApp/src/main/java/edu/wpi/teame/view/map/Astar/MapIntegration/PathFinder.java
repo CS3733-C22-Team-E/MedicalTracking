@@ -134,28 +134,32 @@ public class PathFinder {
                 locations.add(node);
                 System.out.print("Loading Nodes to Path: ");
                 System.out.println(node.getId());
-                if (node.getId() == 97) {
-                  startTest = node;
-                  System.out.println("Hit Start");
-                }
-                if (node.getId() == 90) {
-                  endTest = node;
-                  System.out.println("Hit End");
-                }
               }
             });
   }
 
   public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
+    // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
+    // returning null
+      // DBManager.getInstance().getLocationManager().get(StartID);
+    locations.stream()
+        .forEach(
+            node -> {
+              if (node.getId() == StartID) {
+                startTest = node;
+                System.out.println("Hit Start");
+              }
+              if (node.getId() == EndID) {
+                endTest = node;
+                System.out.println("Hit End");
+              }
+            });
     Location From = startTest;
     Location To = endTest;
     List<Location> route = routeFinder.findRoute(From, To);
     for (int i = 0; i < route.size(); i++) {
       System.out.println(route.get(i).getId());
-      //      Location initNode = route.get(i);
-      //      Location endNode = route.get(i + 1);
-      //      Visual.createConnection(initNode.getX(), initNode.getY(), endNode.getX(),
-      // endNode.getY());
+
     }
   }
 }

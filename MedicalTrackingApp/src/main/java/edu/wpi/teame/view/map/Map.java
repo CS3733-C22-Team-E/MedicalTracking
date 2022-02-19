@@ -600,7 +600,7 @@ public class Map {
       locationToMapElement(currLocation);
     }
     Pather.SelectFloor(FloorType.ThirdFloor);
-    Pather.FindAndDrawRoute(97, 88);
+    Pather.FindAndDrawRoute(97, 90);
   }
 
   public void RefreshSRfromDB() throws SQLException {
