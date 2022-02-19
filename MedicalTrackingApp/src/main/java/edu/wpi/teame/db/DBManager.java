@@ -469,7 +469,7 @@ public final class DBManager {
 
   private void cleanDBTables() throws SQLException {
     for (DataBaseObjectType dbTable : DataBaseObjectType.values()) {
-      stmt.executeUpdate("DELETE " + dbTable.toString());
+      stmt.executeUpdate("DELETE FROM " + dbTable.toTableName());
     }
   }
 

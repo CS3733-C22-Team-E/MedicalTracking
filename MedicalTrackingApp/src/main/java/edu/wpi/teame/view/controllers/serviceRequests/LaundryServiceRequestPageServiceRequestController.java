@@ -8,7 +8,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-import edu.wpi.teame.view.SRSentAnimation;
+import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -128,6 +128,7 @@ public class LaundryServiceRequestPageServiceRequestController extends ServiceRe
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
     mainAnchorPane.getChildren().add(a.getStackPane());
     a.play();
+    clearText();
   }
 
   public void validateSubmitButton() {
