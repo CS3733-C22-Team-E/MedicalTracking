@@ -26,6 +26,7 @@ public class PathFinder {
     System.out.println("Attempt");
     DrawPane = Draw;
     Visual = new AstarVisualizer(Draw);
+    //TODO add connections for our nodes that we placed on the map
     connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     connections.put(3, Stream.of(26).collect(Collectors.toSet()));
@@ -141,7 +142,7 @@ public class PathFinder {
   public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
-      // DBManager.getInstance().getLocationManager().get(StartID);
+    // DBManager.getInstance().getLocationManager().get(StartID);
     locations.stream()
         .forEach(
             node -> {
@@ -157,9 +158,11 @@ public class PathFinder {
     Location From = startTest;
     Location To = endTest;
     List<Location> route = routeFinder.findRoute(From, To);
-    for (int i = 0; i < route.size(); i++) {
-      System.out.println(route.get(i).getId());
 
+    for (int i = 1; i < route.size(); i++) {
+      Location initNode = route.get(i - 1);
+      Location endNode = route.get(i);
+      Visual.createConnection(initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY());
     }
   }
 }

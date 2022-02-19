@@ -71,6 +71,7 @@ public class Map {
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Pather;
+  private ArrayList<Location> PathFinding = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) {
     appController = app;
@@ -600,7 +601,6 @@ public class Map {
       locationToMapElement(currLocation);
     }
     Pather.SelectFloor(FloorType.ThirdFloor);
-    Pather.FindAndDrawRoute(97, 90);
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -643,6 +643,9 @@ public class Map {
             if (event.getButton() == MouseButton.SECONDARY) {
               lastPressedLocation = location;
               PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
+            }
+            else{
+
             }
           }
         });
