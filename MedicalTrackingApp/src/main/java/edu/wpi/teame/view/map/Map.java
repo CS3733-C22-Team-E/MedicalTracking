@@ -217,7 +217,7 @@ public class Map {
       layout.getChildren().add(icon.getButton());
     }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-      layout.getChildren().add(dot.getImageView());
+      layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
       layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
@@ -311,7 +311,7 @@ public class Map {
     locationsCheckBox.setOnAction(
         event -> {
           for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-            dot.getImageView().setVisible(!dot.getImageView().isVisible());
+            dot.getIcon().setVisible(!dot.getIcon().isVisible());
           }
           showLocationNodes = !showLocationNodes;
         });
@@ -494,7 +494,7 @@ public class Map {
           if (event.getButton() == MouseButton.PRIMARY) {
             System.out.println("Started drag");
             for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-              dot.getImageView().setVisible(true);
+              dot.getIcon().setVisible(true);
             }
             node.setCursor(Cursor.MOVE);
             // When a press event occurs, the location coordinates of the event are cached
@@ -545,7 +545,7 @@ public class Map {
             if (!showLocationNodes) {
               System.out.println("Hiding location nodes.");
               for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-                dot.getImageView().setVisible(false);
+                dot.getIcon().setVisible(false);
               }
             }
             updateLayoutChildren();
@@ -622,33 +622,34 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
-    ImageView locationDot = new ImageView();
-    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
-    locationDot.setFitWidth(10);
-    locationDot.setFitHeight(10);
+    //    ImageView locationDot = new ImageView();
+    //    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
+    //    locationDot.setFitWidth(10);
+    //    locationDot.setFitHeight(10);
     double x = location.getX() - MAPWIDTH / 2;
     double y = location.getY() - MAPHEIGHT / 2;
-    locationDot.setTranslateX(x);
-    locationDot.setTranslateY(y);
-    locationDot.setVisible(false);
-    MapLocationDot newDot = new MapLocationDot(locationDot, location);
+    //    locationDot.setTranslateX(x);
+    //    locationDot.setTranslateY(y);
+    //    locationDot.setVisible(false);
+    MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
-    Tooltip.install(locationDot, t);
+    Tooltip.install(newDot.getIcon(), t);
     updateLayoutChildren();
-    locationDot.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) {
-              lastPressedLocation = location;
-              PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
-            }
-            else{
-
-            }
-          }
-        });
+    newDot
+        .getIcon()
+        .setOnMouseClicked(
+            new EventHandler<MouseEvent>() {
+              @Override
+              public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY) {
+                  lastPressedLocation = location;
+                  PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
+                } else {
+                  newDot.getIcon().setFill(Color.CORAL);
+                }
+              }
+            });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) {

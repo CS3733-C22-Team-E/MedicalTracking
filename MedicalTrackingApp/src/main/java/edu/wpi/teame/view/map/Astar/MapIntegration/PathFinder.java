@@ -26,7 +26,7 @@ public class PathFinder {
     System.out.println("Attempt");
     DrawPane = Draw;
     Visual = new AstarVisualizer(Draw);
-    //TODO add connections for our nodes that we placed on the map
+    // TODO add connections for our nodes that we placed on the map
     connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     connections.put(3, Stream.of(26).collect(Collectors.toSet()));
