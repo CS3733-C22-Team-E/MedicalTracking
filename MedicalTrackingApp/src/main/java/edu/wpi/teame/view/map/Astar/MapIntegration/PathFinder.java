@@ -27,6 +27,7 @@ public class PathFinder {
     DrawPane = Draw;
     Visual = new AstarVisualizer(Draw);
     // TODO add connections for our nodes that we placed on the map
+    //TODO need to check for Nodal correctness
     connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     connections.put(3, Stream.of(26).collect(Collectors.toSet()));
@@ -83,8 +84,8 @@ public class PathFinder {
     connections.put(69, Stream.of(59).collect(Collectors.toSet()));
     connections.put(71, Stream.of(58).collect(Collectors.toSet()));
     connections.put(73, Stream.of(53).collect(Collectors.toSet()));
-    connections.put(76, Stream.of(60101).collect(Collectors.toSet()));
-    connections.put(77, Stream.of(69102).collect(Collectors.toSet()));
+    connections.put(76, Stream.of(60, 101).collect(Collectors.toSet()));
+    connections.put(77, Stream.of(69, 102).collect(Collectors.toSet()));
     connections.put(84, Stream.of(98).collect(Collectors.toSet()));
     connections.put(85, Stream.of(84, 83).collect(Collectors.toSet()));
     connections.put(86, Stream.of(85).collect(Collectors.toSet()));
@@ -108,14 +109,14 @@ public class PathFinder {
     connections.put(107, Stream.of(108).collect(Collectors.toSet()));
     connections.put(109, Stream.of(114).collect(Collectors.toSet()));
     connections.put(110, Stream.of(113).collect(Collectors.toSet()));
-    connections.put(111, Stream.of(106112).collect(Collectors.toSet()));
+    connections.put(111, Stream.of(106, 112).collect(Collectors.toSet()));
     connections.put(113, Stream.of(107).collect(Collectors.toSet()));
     connections.put(114, Stream.of(105, 56, 76, 101).collect(Collectors.toSet()));
     connections.put(115, Stream.of(110, 57, 77, 102).collect(Collectors.toSet()));
-    connections.put(116, Stream.of(117123).collect(Collectors.toSet()));
+    connections.put(116, Stream.of(117, 123).collect(Collectors.toSet()));
     connections.put(117, Stream.of(118).collect(Collectors.toSet()));
     connections.put(118, Stream.of(119).collect(Collectors.toSet()));
-    connections.put(119, Stream.of(120122).collect(Collectors.toSet()));
+    connections.put(119, Stream.of(120, 122).collect(Collectors.toSet()));
     connections.put(120, Stream.of(121).collect(Collectors.toSet()));
     connections.put(122, Stream.of(114, 56, 76, 101).collect(Collectors.toSet()));
     connections.put(123, Stream.of(115, 57, 77, 102).collect(Collectors.toSet()));
@@ -158,7 +159,9 @@ public class PathFinder {
     Location From = startTest;
     Location To = endTest;
     List<Location> route = routeFinder.findRoute(From, To);
-
+    for (Location location : route) {
+      System.out.println(location.getId());
+    }
     for (int i = 1; i < route.size(); i++) {
       Location initNode = route.get(i - 1);
       Location endNode = route.get(i);

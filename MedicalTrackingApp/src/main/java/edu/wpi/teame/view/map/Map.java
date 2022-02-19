@@ -601,6 +601,7 @@ public class Map {
       locationToMapElement(currLocation);
     }
     Pather.SelectFloor(FloorType.ThirdFloor);
+    Pather.FindAndDrawRoute(97, 99);
   }
 
   public void RefreshSRfromDB() throws SQLException {
