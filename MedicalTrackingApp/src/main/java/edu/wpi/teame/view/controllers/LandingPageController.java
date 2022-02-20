@@ -98,6 +98,7 @@ public class LandingPageController implements Initializable {
           }
         });
     TabHoverAnimation.install(mapTab);
+    tabs.add(mapTab);
 
     MapSideView mapSideView = new MapSideView();
     StyledTab mapSideViewTab =
