@@ -30,7 +30,6 @@ import lombok.SneakyThrows;
 public class LandingPageController implements Initializable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
-
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
 
@@ -100,7 +99,7 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(mapTab);
     tabs.add(mapTab);
 
-    MapSideView mapSideView = new MapSideView();
+    MapSideView mapSideView = new MapSideView(this, mapView);
     StyledTab mapSideViewTab =
         new StyledTab(
             "Hospital Map Side-View",

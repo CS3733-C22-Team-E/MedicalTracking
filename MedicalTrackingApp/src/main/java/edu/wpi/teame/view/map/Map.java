@@ -99,7 +99,7 @@ public class Map {
     }
   }
 
-  private void switchFloors(FloorType floor) {
+  public void switchFloors(FloorType floor) {
     currFloor = floor;
     backgroundImage = Images.get(floor);
     MAPHEIGHT = backgroundImage.getHeight();
@@ -528,7 +528,7 @@ public class Map {
             } catch (SQLException e) {
               e.printStackTrace();
             }
-
+            // AutoFill
             MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
                 medicalEquipmentSRController =
                     (MedicalEquipmentDeliveryServiceRequestPageServiceRequestController)
