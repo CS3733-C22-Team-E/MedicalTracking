@@ -549,7 +549,7 @@ public final class DBManager {
     return new StandardSRManager(DataBaseObjectType.SecuritySR);
   }
 
-  private ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
+  public ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
     switch (managerType) {
       case Location:
         return new LocationManager();
