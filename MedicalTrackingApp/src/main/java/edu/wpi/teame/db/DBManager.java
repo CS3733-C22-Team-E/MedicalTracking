@@ -548,4 +548,39 @@ public final class DBManager {
   public StandardSRManager getSecuritySRManager() throws SQLException {
     return new StandardSRManager(DataBaseObjectType.SecuritySR);
   }
+
+  private ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
+    switch (managerType) {
+      case Location:
+        return new LocationManager();
+      case Equipment:
+        return new EquipmentManager();
+      case Patient:
+        return new PatientManager();
+      case Employee:
+        return new EmployeeManager();
+      case GiftAndFloralSR:
+        return new GiftAndFloralSRManager();
+      case ExternalPatientSR:
+        return new PatientTransportationSRManager(false);
+      case InternalPatientTransferSR:
+        return new PatientTransportationSRManager(true);
+      case ReligiousSR:
+        return new ReligiousSRManager();
+      case MedicalEquipmentSR:
+        return new MedicalEquipmentSRManager();
+      case MedicineDeliverySR:
+        return new MedicineDeliverySRManager();
+      case LaundrySR:
+      case ComputerSR:
+      case SecuritySR:
+      case SanitationSR:
+      case AudioVisualSR:
+      case FoodDeliverySR:
+      case LanguageInterpreterSR:
+      case FacilitiesMaintenanceSR:
+        return new StandardSRManager(managerType);
+    }
+    return null;
+  }
 }
