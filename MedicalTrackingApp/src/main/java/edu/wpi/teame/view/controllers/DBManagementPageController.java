@@ -28,13 +28,18 @@ public class DBManagementPageController implements Initializable {
   @FXML
   public void switchTable() throws SQLException {
     String selectedText = tableComboBox.getValue().toString();
-    DataBaseObjectType selectedTable = DataBaseObjectType.valueOf(selectedText);
+    DataBaseObjectType selectedTable = DataBaseObjectType.getValue(selectedText);
     itemsList = DBManager.getInstance().getManager(selectedTable).getAll();
     searchTextBox.clear();
     updateListView();
   }
 
   private void updateListView() {
+    if (itemsList.isEmpty()) {
+      resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
+      return;
+    }
+
     String searchQuery = searchTextBox.getText().trim();
     List<Object> newItemsList = new ArrayList<>();
     for (Object item : itemsList) {

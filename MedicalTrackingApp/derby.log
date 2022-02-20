@@ -1,5 +1,5 @@
 ----------------------------------------------------------------
-Sat Feb 19 19:24:02 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-1483-8e96-00000ea05d20, [2] memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
+Sat Feb 19 19:40:25 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-1492-8d4a-00000ea846c8, [2] memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
 java.vendor=Microsoft
 java.runtime.version=11.0.12+7
 user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp

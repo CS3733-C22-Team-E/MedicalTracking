@@ -69,6 +69,48 @@ public enum DataBaseObjectType {
     return null;
   }
 
+  public static DataBaseObjectType getValue(String string) {
+    switch (string) {
+      case "Audio/Visual Service Request":
+        return AudioVisualSR;
+      case "Computer Service Request":
+        return ComputerSR;
+      case "Food Delivery Service Request":
+        return FoodDeliverySR;
+      case "Gift/Floral Delivery Service Request":
+        return GiftAndFloralSR;
+      case "External Patient Transportation Service Request":
+        return ExternalPatientSR;
+      case "Language Interpreter Service Request":
+        return LanguageInterpreterSR;
+      case "Internal Patient Transportation Service Request":
+        return InternalPatientTransferSR;
+      case "Laundry Service Request":
+        return LaundrySR;
+      case "Security Service Request":
+        return SecuritySR;
+      case "Religious Service Request":
+        return ReligiousSR;
+      case "Sanitation Service Request":
+        return SanitationSR;
+      case "Medical Equipment Delivery Service Request":
+        return MedicalEquipmentSR;
+      case "Medicine Delivery Service Request":
+        return MedicineDeliverySR;
+      case "Facilities Maintenance Service Request":
+        return FacilitiesMaintenanceSR;
+      case "Patient":
+        return Patient;
+      case "Employee":
+        return Employee;
+      case "Location":
+        return Location;
+      case "Equipment":
+        return Equipment;
+    }
+    return null;
+  }
+
   public String toTableName() {
     switch (this) {
       case AudioVisualSR:
