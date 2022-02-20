@@ -7,13 +7,15 @@ import javafx.scene.shape.Rectangle;
 
 public class AstarVisualizer {
   StackPane layout;
-  private double MAPWIDTH = 5000;
-  private double MAPHEIGHT = 1650;
+  private double MAPWIDTH;
+  private double MAPHEIGHT;
   private static final double MapConnectionWidth = 5;
   private ArrayList<Rectangle> routeConnections = new ArrayList<>();
 
-  public AstarVisualizer(StackPane VisualizationPane) {
+  public AstarVisualizer(StackPane VisualizationPane, double Width, double Height) {
     layout = VisualizationPane;
+    MAPWIDTH = Width;
+    MAPHEIGHT = Height;
   }
 
   public void setMap(double MAPWIDTH_, double MAPHEIGHT_) {

@@ -69,8 +69,7 @@ public class Map {
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
-  private PathFinder Pather;
-  private ArrayList<Location> PathFinding = new ArrayList<>();
+  private PathFinder Navigation;
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -273,11 +272,7 @@ public class Map {
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
-          try {
-            zoomIn(1);
-          } catch (SQLException e) {
-            e.printStackTrace();
-          }
+          zoomIn(1);
         });
     return zoomInButton;
   }
@@ -359,7 +354,7 @@ public class Map {
   }
 
   // Catch-all zoomIn method
-  private void zoomIn(double amp) throws SQLException {
+  private void zoomIn(double amp) {
     amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() < ZOOMINMAX) {
       layout.setScaleX(layout.getScaleX() * (1 + amp));
@@ -368,8 +363,6 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) throws SQLException {
-    Pather = new PathFinder(layout);
-    Pather.SelectFloor(currFloor, MAPWIDTH, MAPHEIGHT);
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -434,8 +427,8 @@ public class Map {
         });
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
-    Pather.SelectFloor(
-        FloorType.ThirdFloor, backgroundImage.getWidth(), backgroundImage.getHeight());
+    Navigation = new PathFinder(layout, backgroundImage.getWidth(), backgroundImage.getHeight());
+
     return staticWrapper;
   }
 
@@ -600,7 +593,8 @@ public class Map {
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
-    Pather.refreshLocationsFromDB();
+    Navigation.refreshLocationsFromDB();
+    Navigation.FindAndDrawRoute(97, 90);
   }
 
   public void RefreshSRfromDB() throws SQLException {

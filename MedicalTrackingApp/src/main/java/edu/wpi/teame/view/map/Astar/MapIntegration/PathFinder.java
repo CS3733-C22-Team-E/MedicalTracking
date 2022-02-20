@@ -22,10 +22,10 @@ public class PathFinder {
   private Location startTest;
   private Location endTest;
 
-  public PathFinder(StackPane Draw) throws SQLException {
+  public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {
     System.out.println("Attempt");
     DrawPane = Draw;
-    Visual = new AstarVisualizer(Draw);
+    Visual = new AstarVisualizer(Draw, MapWidth, MapHeight);
     createConnections();
     locationGraph = new Graph<>(locations, connections);
     routeFinder =
@@ -33,7 +33,9 @@ public class PathFinder {
             locationGraph, new EuclideanDistanceScorer(), new EuclideanDistanceScorer());
   }
 
-  public void refreshLocationsFromDB() throws SQLException {locations.addAll(DBManager.getInstance().getLocationManager().getAll());}
+  public void refreshLocationsFromDB() throws SQLException {
+    locations.addAll(DBManager.getInstance().getLocationManager().getAll());
+  }
 
   private void createConnections() {
     connections.put(1, Stream.of(22).collect(Collectors.toSet()));
@@ -135,151 +137,33 @@ public class PathFinder {
     connections.put(7, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(8, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(9, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(10, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(11, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(12, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(13, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(14, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(15, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(16, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(17, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(18, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(19, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(20, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(21, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(22, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(23, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(24, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(25, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(26, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(27, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(28, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(29, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(30, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(31, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(32, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(33, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(34, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(35, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(36, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(37, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(38, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(39, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(40, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(41, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(42, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(43, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(44, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(45, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(46, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(47, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(48, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(49, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(50, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(51, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(52, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(53, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(54, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(55, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(56, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(57, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(58, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(59, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(60, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(61, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(62, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(63, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(64, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(65, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(66, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(67, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(68, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(69, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(70, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(71, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(72, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(73, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(74, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(75, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(76, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(77, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(78, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(79, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(80, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(81, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(82, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(83, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(84, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(85, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(86, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(87, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(88, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(89, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(90, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(91, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(92, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(93, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(94, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(95, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(96, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(97, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(98, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(99, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(100, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(101, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(102, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(103, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(104, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(105, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(106, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(107, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(108, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(109, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(110, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(111, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(112, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(113, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(114, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(115, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(116, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(117, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(118, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(119, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(120, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
     connections.put(121, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(122, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(123, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(124, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(125, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(126, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(127, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(128, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(129, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(130, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(131, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(132, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(133, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(134, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(135, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(136, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(137, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(138, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(139, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(140, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(141, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(142, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(143, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(144, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(145, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(146, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(147, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(148, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(149, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(150, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(151, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(152, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(153, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
-    connections.put(154, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
   }
 
   public void SelectFloor(FloorType floor, double WIDTH, double HEIGHT) throws SQLException {
