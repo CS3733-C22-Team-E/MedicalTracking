@@ -255,7 +255,7 @@ public class Map {
     icon.setFitHeight(30);
     final JFXButton zoomInButton = new JFXButton("", icon);
     zoomInButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
-    zoomInButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 60);
+    zoomInButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 50);
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
@@ -337,7 +337,7 @@ public class Map {
     icon.setFitHeight(30);
     final JFXButton zoomOutButton = new JFXButton("", icon);
     zoomOutButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
-    zoomOutButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 100);
+    zoomOutButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 90);
     zoomOutButton.setOnAction(
         (event) -> {
           try {
