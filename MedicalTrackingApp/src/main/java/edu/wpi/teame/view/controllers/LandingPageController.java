@@ -127,6 +127,15 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(backlogTab);
     tabs.add(backlogTab);
 
+    StyledTab adminDBPage =
+        new StyledTab(
+            "DB Management",
+            SortOrder.ByName,
+            "view/tabs/DBManagementPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
+    TabHoverAnimation.install(adminDBPage);
+    tabs.add(adminDBPage);
+
     StyledTab settingsTab =
         new StyledTab(
             "Settings",

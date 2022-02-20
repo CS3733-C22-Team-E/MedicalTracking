@@ -57,6 +57,8 @@ public enum DataBaseObjectType {
         return "Medicine Delivery Service Request";
       case FacilitiesMaintenanceSR:
         return "Facilities Maintenance Service Request";
+      case Patient:
+        return "Patient";
       case Employee:
         return "Employee";
       case Location:
