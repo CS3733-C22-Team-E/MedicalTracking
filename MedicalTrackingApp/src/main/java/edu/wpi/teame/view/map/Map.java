@@ -7,10 +7,7 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.EquipmentType;
-import edu.wpi.teame.model.enums.FloorType;
-import edu.wpi.teame.model.enums.ServiceRequestPriority;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
@@ -329,6 +326,20 @@ public class Map {
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
           zoomOut(1);
+        });
+    return zoomOutButton;
+  }
+
+  private JFXButton createRefreshButton() {
+    Image zoomIcon = new Image(getImageResource("images/Icons/RefreshIcon.png"));
+    ImageView icon = new ImageView(zoomIcon);
+    icon.setFitWidth(30);
+    icon.setFitHeight(30);
+    final JFXButton zoomOutButton = new JFXButton("", icon);
+    zoomOutButton.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 1.45);
+    zoomOutButton.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 100);
+    zoomOutButton.setOnAction(
+        (event) -> {
           try {
             RefreshSRfromDB();
           } catch (SQLException e) {
@@ -405,7 +416,12 @@ public class Map {
         });
     staticWrapper
         .getChildren()
-        .setAll(scroll, createZoomInButton(), createZoomOutButton(), createFloorSwitcher());
+        .setAll(
+            scroll,
+            createZoomInButton(),
+            createZoomOutButton(),
+            createFloorSwitcher(),
+            createRefreshButton());
     staticWrapper.getChildren().addAll(createFilterCheckBoxes());
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
@@ -590,10 +606,34 @@ public class Map {
 
   public void RefreshSRfromDB() throws SQLException {
     ArrayList<ServiceRequest> serviceRequestsFromDB = new ArrayList<>();
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getSanitationSRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getSecuritySRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicineDeliverySRManager().getAll());
-    serviceRequestsFromDB.addAll(DBManager.getInstance().getMedicalEquipmentSRManager().getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.InternalPatientTransferSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.FacilitiesMaintenanceSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).getAll());
     serviceRequestsFromDB.stream()
         .forEach(
             serviceRequest -> {
