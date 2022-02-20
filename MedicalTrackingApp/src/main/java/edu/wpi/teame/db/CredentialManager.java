@@ -1,9 +1,8 @@
-package edu.wpi.teame.db.objectManagers;
+package edu.wpi.teame.db;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.enums.AccessLevel;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -14,13 +13,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.util.Objects;
 
 public final class CredentialManager {
+  private AccessLevel currentUserLevel = null;
+  private static CredentialManager instance;
   private MessageDigest messageDigest;
   private Connection connection;
   private Statement statement;
 
-  public CredentialManager() throws SQLException, NoSuchAlgorithmException {
+  public static synchronized CredentialManager getInstance()
+      throws SQLException, NoSuchAlgorithmException {
+    if (instance == null) {
+      instance = new CredentialManager();
+    }
+    return instance;
+  }
+
+  private CredentialManager() throws NoSuchAlgorithmException, SQLException {
     messageDigest = MessageDigest.getInstance("SHA-256");
     connection = DBManager.getInstance().getConnection();
     statement = connection.createStatement();
@@ -43,7 +53,16 @@ public final class CredentialManager {
             + hashPassword(password, stringToBytes(salt))
             + "'";
     ResultSet getQueryResultSet = statement.executeQuery(getQuery);
-    return getQueryResultSet.next();
+    if (!getQueryResultSet.next()) {
+      return false;
+    }
+
+    // TODO: load in the correct access level and fix the select above ^^
+    currentUserLevel =
+        Objects.equals(username, "admin")
+            ? AccessLevel.Admin
+            : AccessLevel.Staff; // AccessLevel.values()[getQueryResultSet.getInt(0)];
+    return true;
   }
 
   public void insert(String username, String password)
@@ -73,38 +92,6 @@ public final class CredentialManager {
     statement.executeUpdate(insertQuery);
   }
 
-  private String hashPassword(String password, byte[] salt) {
-    messageDigest.update(salt);
-    byte[] bytes = messageDigest.digest(password.getBytes());
-    messageDigest.reset();
-    return bytesToString(bytes);
-  }
-
-  private String bytesToString(byte[] bytes) {
-    StringBuilder sb = new StringBuilder();
-    for (byte aByte : bytes) {
-      sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-    }
-    return sb.toString();
-  }
-
-  public byte[] stringToBytes(String string) {
-    byte[] byteArr = new byte[string.length() / 2];
-    for (int i = 0; i < byteArr.length; i++) {
-      int index = i * 2;
-      int val = Integer.parseInt(string.substring(index, index + 2), 16);
-      byteArr[i] = (byte) val;
-    }
-    return byteArr;
-  }
-
-  private byte[] createSalt() {
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[4];
-    random.nextBytes(salt);
-    return salt;
-  }
-
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
@@ -122,5 +109,45 @@ public final class CredentialManager {
       String hashedPassword = lineData.getColumnString("password");
       insert(salt, username, hashedPassword);
     }
+  }
+
+  private String hashPassword(String password, byte[] salt) {
+    messageDigest.update(salt);
+    byte[] bytes = messageDigest.digest(password.getBytes());
+    messageDigest.reset();
+    return bytesToString(bytes);
+  }
+
+  private String bytesToString(byte[] bytes) {
+    StringBuilder sb = new StringBuilder();
+    for (byte aByte : bytes) {
+      sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+    }
+    return sb.toString();
+  }
+
+  private byte[] stringToBytes(String string) {
+    byte[] byteArr = new byte[string.length() / 2];
+    for (int i = 0; i < byteArr.length; i++) {
+      int index = i * 2;
+      int val = Integer.parseInt(string.substring(index, index + 2), 16);
+      byteArr[i] = (byte) val;
+    }
+    return byteArr;
+  }
+
+  private byte[] createSalt() {
+    SecureRandom random = new SecureRandom();
+    byte[] salt = new byte[4];
+    random.nextBytes(salt);
+    return salt;
+  }
+
+  public void logOut() {
+    currentUserLevel = null;
+  }
+
+  public AccessLevel getCurrentUserLevel() {
+    return currentUserLevel;
   }
 }

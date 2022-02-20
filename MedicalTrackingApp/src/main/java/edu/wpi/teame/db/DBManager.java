@@ -5,7 +5,6 @@ import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.db.objectManagers.serviceRequests.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.text.ParseException;
 
@@ -350,7 +349,7 @@ public final class DBManager {
     }
 
     try {
-      getCredentialManager().readCSV("backup/Credentials.csv");
+      CredentialManager.getInstance().readCSV("backup/Credentials.csv");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -471,11 +470,6 @@ public final class DBManager {
     for (DataBaseObjectType dbTable : DataBaseObjectType.values()) {
       stmt.executeUpdate("DELETE FROM " + dbTable.toTableName());
     }
-  }
-
-  @Deprecated
-  public CredentialManager getCredentialManager() throws SQLException, NoSuchAlgorithmException {
-    return new CredentialManager();
   }
 
   @Deprecated

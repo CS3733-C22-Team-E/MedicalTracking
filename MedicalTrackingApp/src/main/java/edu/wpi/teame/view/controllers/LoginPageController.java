@@ -4,7 +4,7 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.CredentialManager;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -51,10 +51,10 @@ public class LoginPageController implements Initializable {
   private Media loginSound = null;
 
   @FXML
-  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException {
+  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
     String username = usernameTextInput.getText();
     String password = passwordTextInput.getText();
-    boolean loggedIn = DBManager.getInstance().getCredentialManager().logIn(username, password);
+    boolean loggedIn = CredentialManager.getInstance().logIn(username, password);
 
     // Check if we were able to log in.
     if (!loggedIn) {
@@ -62,10 +62,9 @@ public class LoginPageController implements Initializable {
       return;
     }
 
-    if (loginSound != null) { // TODO find out why this couses null pointer
-      MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
-      mediaPlayer.setVolume(0.3);
-    }
+    // Load the sound
+    MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
+    mediaPlayer.setVolume(0.3);
 
     TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
     t2.setFromY(-50);
@@ -89,9 +88,10 @@ public class LoginPageController implements Initializable {
     t1.setFromY(0);
     t1.setToY(-50);
     t1.setOnFinished(e -> {});
+
+    mediaPlayer.play();
     t1.play();
     r.play();
-    // mediaPlayer.play(); //TODO uncomment when sounds play
   }
 
   private void loginFailedAnimation() {
@@ -252,10 +252,11 @@ public class LoginPageController implements Initializable {
           new Scene(
               FXMLLoader.load(
                   Objects.requireNonNull(App.class.getResource("view/LandingPage.fxml"))));
-      loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     usernameImage.setOnMousePressed(e -> checkFocus());
     passwordImage.setOnMousePressed(e -> checkFocus());
 
@@ -264,13 +265,6 @@ public class LoginPageController implements Initializable {
 
     passwordText.setScaleX(1.5);
     passwordText.setScaleY(1.5);
-
-    // Load the credentials before we show the log in page
-    try {
-      DBManager.getInstance().getCredentialManager().readCSV("Credentials.csv");
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
   }
 
   @FXML

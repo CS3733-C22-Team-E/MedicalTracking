@@ -1,6 +1,8 @@
 package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
@@ -9,6 +11,7 @@ import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
 import edu.wpi.teame.view.map.MapSideView;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,10 @@ import lombok.SneakyThrows;
 
 public class LandingPageController implements Initializable {
   @FXML public AnchorPane mainAnchorPane;
-  private boolean shouldEnlarge = true;
   @FXML public TabPane mainTabPane;
+
+  private boolean shouldEnlarge = true;
+  private StyledTab adminDBPage = null;
 
   @Override
   @SneakyThrows
@@ -35,6 +40,7 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
+
     // Get the tab content size using our init tab
     double tabContentHeight =
         mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();
@@ -92,7 +98,6 @@ public class LandingPageController implements Initializable {
           }
         });
     TabHoverAnimation.install(mapTab);
-    tabs.add(mapTab);
 
     MapSideView mapSideView = new MapSideView();
     StyledTab mapSideViewTab =
@@ -127,7 +132,8 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(backlogTab);
     tabs.add(backlogTab);
 
-    StyledTab adminDBPage =
+    // Only load the DB Management page on Admin log in
+    adminDBPage =
         new StyledTab(
             "DB Management",
             SortOrder.ByName,
@@ -154,7 +160,21 @@ public class LandingPageController implements Initializable {
   }
 
   @FXML
-  public void updateTabSize() {
+  public void toggleAdminDBPage() throws SQLException, NoSuchAlgorithmException {
+    AccessLevel currentAccess = CredentialManager.getInstance().getCurrentUserLevel();
+    switch (currentAccess) {
+      case Admin:
+        mainTabPane.getTabs().add(adminDBPage);
+        break;
+
+      default:
+      case Staff:
+        mainTabPane.getTabs().remove(adminDBPage);
+        break;
+    }
+  }
+
+  private void updateTabSize() {
     if (shouldEnlarge) {
       mainTabPane.setTabMaxHeight(StyledTab.Height);
       mainTabPane.setTabMinHeight(StyledTab.Height);
