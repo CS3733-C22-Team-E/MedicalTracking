@@ -427,15 +427,15 @@ public class Map {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    layout.setOnMouseReleased(
-        event -> {
-          if (event.getButton() == MouseButton.SECONDARY) {
-            // In Pixel Coordinates
-            lastPressedPoint = layout.sceneToLocal(event.getSceneX(), event.getSceneY());
-            scroll.setContextMenu(PaneMenu);
-            PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
-          }
-        });
+    //    layout.setOnMouseReleased(
+    //        event -> {
+    //          if (event.getButton() == MouseButton.SECONDARY) {
+    //            // In Pixel Coordinates
+    //            lastPressedPoint = layout.sceneToLocal(event.getSceneX(), event.getSceneY());
+    //            scroll.setContextMenu(PaneMenu);
+    //            PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
+    //          }
+    //        });
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
     return staticWrapper;
