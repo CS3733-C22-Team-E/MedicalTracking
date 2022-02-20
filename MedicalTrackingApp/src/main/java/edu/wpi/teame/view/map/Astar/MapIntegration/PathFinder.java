@@ -190,8 +190,12 @@ public class PathFinder {
             });
     Location From = startTest;
     Location To = endTest;
-
-    List<Location> route = routeFinder.findRoute(From, To);
+    List<Location> route;
+    try {
+      route = routeFinder.findRoute(From, To);
+    } catch (IllegalStateException e) {
+      route = routeFinder.findRoute(To, From);
+    }
     for (Location location : route) {
       System.out.println(location.getId());
     }

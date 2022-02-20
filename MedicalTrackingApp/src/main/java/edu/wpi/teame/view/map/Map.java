@@ -70,6 +70,7 @@ public class Map {
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation;
+  private ArrayList<Location> PathFindingLocations = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -594,7 +595,6 @@ public class Map {
       locationToMapElement(currLocation);
     }
     Navigation.refreshLocationsFromDB();
-    Navigation.FindAndDrawRoute(97, 90);
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -636,11 +636,22 @@ public class Map {
             new EventHandler<MouseEvent>() {
               @Override
               public void handle(MouseEvent event) {
+                System.out.println("Node Pressed: " + location.getId());
                 if (event.getButton() == MouseButton.SECONDARY) {
                   lastPressedLocation = location;
                   PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
-                } else {
+                } else if (PathFindingLocations.size() < 2) {
                   newDot.getIcon().setFill(Color.CORAL);
+                  PathFindingLocations.add(location);
+                  if (PathFindingLocations.size() == 2) {
+                    try {
+                      Navigation.FindAndDrawRoute(
+                          PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
+                      PathFindingLocations.clear();
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                    }
+                  }
                 }
               }
             });
