@@ -12,6 +12,7 @@ import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
+import edu.wpi.teame.view.map.Astar.MapIntegration.PathFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
 import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
@@ -65,8 +66,10 @@ public class Map {
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
+  private PathFinder Navigation;
+  private ArrayList<Location> PathFindingLocations = new ArrayList<>();
 
-  public Map(FloorType floor, LandingPageController app) {
+  public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
     currFloor = floor;
     for (FloorType currFloor : FloorType.values()) {
@@ -99,7 +102,7 @@ public class Map {
     }
   }
 
-  public void switchFloors(FloorType floor) {
+  private void switchFloors(FloorType floor) throws SQLException {
     currFloor = floor;
     backgroundImage = Images.get(floor);
     MAPHEIGHT = backgroundImage.getHeight();
@@ -207,7 +210,7 @@ public class Map {
       layout.getChildren().add(icon.getButton());
     }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-      layout.getChildren().add(dot.getImageView());
+      layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
       layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
@@ -233,13 +236,21 @@ public class Map {
   // init ComboBox
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
+    comboBox.setValue(currFloor.toString());
     for (FloorType floorType : FloorType.values()) {
       comboBox.getItems().add(floorType.toString());
     }
     comboBox.setTranslateX(Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     comboBox.setTranslateY(-Screen.getPrimary().getVisualBounds().getHeight() / 2 + 10);
     comboBox.setFocusColor(Color.rgb(0, 0, 255));
-    comboBox.setOnAction(event -> switchFloors(FloorType.valueOf(comboBox.getValue())));
+    comboBox.setOnAction(
+        event -> {
+          try {
+            switchFloors(FloorType.valueOf(comboBox.getValue()));
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        });
     return comboBox;
   }
 
@@ -259,11 +270,7 @@ public class Map {
     zoomInButton.setOnAction(
         (event) -> {
           // double value zoomAmplifier is 1 for buttons
-          try {
-            zoomIn(1);
-          } catch (SQLException e) {
-            e.printStackTrace();
-          }
+          zoomIn(1);
         });
     return zoomInButton;
   }
@@ -300,7 +307,7 @@ public class Map {
     locationsCheckBox.setOnAction(
         event -> {
           for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-            dot.getImageView().setVisible(!dot.getImageView().isVisible());
+            dot.getIcon().setVisible(!dot.getIcon().isVisible());
           }
           showLocationNodes = !showLocationNodes;
         });
@@ -359,7 +366,7 @@ public class Map {
   }
 
   // Catch-all zoomIn method
-  private void zoomIn(double amp) throws SQLException {
+  private void zoomIn(double amp) {
     amp /= 10; // amp must be low so that the image does not scale too far
     if (layout.getScaleX() < ZOOMINMAX) {
       layout.setScaleX(layout.getScaleX() * (1 + amp));
@@ -367,7 +374,7 @@ public class Map {
     }
   }
 
-  public Parent getMapScene(double height, double width) {
+  public Parent getMapScene(double height, double width) throws SQLException {
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -381,7 +388,6 @@ public class Map {
               true));
     }
     System.out.println("Icons Graphics Load");
-
     // Creating OnClickPane Menu
     PaneMenu.getStyleClass().add("combo-box");
     for (EquipmentType currEquipment : EquipmentType.values()) {
@@ -438,6 +444,8 @@ public class Map {
     //        });
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
+    Navigation = new PathFinder(layout, backgroundImage.getWidth(), backgroundImage.getHeight());
+
     return staticWrapper;
   }
 
@@ -496,7 +504,7 @@ public class Map {
           if (event.getButton() == MouseButton.PRIMARY) {
             System.out.println("Started drag");
             for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-              dot.getImageView().setVisible(true);
+              dot.getIcon().setVisible(true);
             }
             node.setCursor(Cursor.MOVE);
             // When a press event occurs, the location coordinates of the event are cached
@@ -547,7 +555,7 @@ public class Map {
             if (!showLocationNodes) {
               System.out.println("Hiding location nodes.");
               for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-                dot.getImageView().setVisible(false);
+                dot.getIcon().setVisible(false);
               }
             }
             updateLayoutChildren();
@@ -602,6 +610,7 @@ public class Map {
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
+    Navigation.refreshLocationsFromDB();
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -647,30 +656,45 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
-    ImageView locationDot = new ImageView();
-    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
-    locationDot.setFitWidth(10);
-    locationDot.setFitHeight(10);
+    //    ImageView locationDot = new ImageView();
+    //    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
+    //    locationDot.setFitWidth(10);
+    //    locationDot.setFitHeight(10);
     double x = location.getX() - MAPWIDTH / 2;
     double y = location.getY() - MAPHEIGHT / 2;
-    locationDot.setTranslateX(x);
-    locationDot.setTranslateY(y);
-    locationDot.setVisible(false);
-    MapLocationDot newDot = new MapLocationDot(locationDot, location);
+    //    locationDot.setTranslateX(x);
+    //    locationDot.setTranslateY(y);
+    //    locationDot.setVisible(false);
+    MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
-    Tooltip.install(locationDot, t);
+    Tooltip.install(newDot.getIcon(), t);
     updateLayoutChildren();
-    locationDot.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            if (event.getButton() == MouseButton.SECONDARY) {
-              lastPressedLocation = location;
-              PaneMenu.show(locationDot, event.getScreenX(), event.getScreenY());
-            }
-          }
-        });
+    newDot
+        .getIcon()
+        .setOnMouseClicked(
+            new EventHandler<MouseEvent>() {
+              @Override
+              public void handle(MouseEvent event) {
+                System.out.println("Node Pressed: " + location.getId());
+                if (event.getButton() == MouseButton.SECONDARY) {
+                  lastPressedLocation = location;
+                  PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
+                } else if (PathFindingLocations.size() < 2) {
+                  newDot.getIcon().setFill(Color.CORAL);
+                  PathFindingLocations.add(location);
+                  if (PathFindingLocations.size() == 2) {
+                    try {
+                      Navigation.FindAndDrawRoute(
+                          PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
+                      PathFindingLocations.clear();
+                    } catch (SQLException e) {
+                      e.printStackTrace();
+                    }
+                  }
+                }
+              }
+            });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) {
