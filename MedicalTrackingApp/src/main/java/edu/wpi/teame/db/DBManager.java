@@ -391,7 +391,7 @@ public final class DBManager {
 
   public void loadDBFromCSV(boolean fromBackup)
       throws CsvValidationException, SQLException, IOException, ParseException {
-    //TODO: add DeceasedBody, MentalHealth, PatientDischarge
+    // TODO: add DeceasedBody, MentalHealth, PatientDischarge
     String subFolder = "switchFiles/";
     if (fromBackup) {
       subFolder = "backup/";
@@ -428,7 +428,7 @@ public final class DBManager {
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
-    //TODO: add DeceasedBody, MentalHealth, PatientDischarge
+    // TODO: add DeceasedBody, MentalHealth, PatientDischarge
     String subFolder = "switchFiles/";
     if (isBackup) {
       subFolder = "backup/";

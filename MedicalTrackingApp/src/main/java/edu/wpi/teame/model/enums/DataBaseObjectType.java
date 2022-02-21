@@ -24,7 +24,6 @@ public enum DataBaseObjectType {
   SecuritySR,
   MedicalEquipmentSR,
   MedicineDeliverySR,
-  MentalHealthSR,
   PatientDischargeSR,
   FacilitiesMaintenanceSR,
   SanitationSR,
