@@ -123,7 +123,11 @@ public class MapSideView {
           @Override
           public void handle(MouseEvent event) {
             Tabber.mainTabPane.getSelectionModel().select(2);
-            MapView.switchFloors(FloorType.LowerLevel1);
+            try {
+              MapView.switchFloors(FloorType.LowerLevel1);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     Floor1.setOnMouseEntered(
@@ -159,7 +163,11 @@ public class MapSideView {
           @Override
           public void handle(MouseEvent event) {
             Tabber.mainTabPane.getSelectionModel().select(2);
-            MapView.switchFloors(FloorType.FirstFloor);
+            try {
+              MapView.switchFloors(FloorType.FirstFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     Floor3.setOnMouseEntered(
@@ -195,7 +203,11 @@ public class MapSideView {
           @Override
           public void handle(MouseEvent event) {
             Tabber.mainTabPane.getSelectionModel().select(2);
-            MapView.switchFloors(FloorType.ThirdFloor);
+            try {
+              MapView.switchFloors(FloorType.ThirdFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     layout.getChildren().addAll(Floor3, Floor1, LL1);

@@ -102,7 +102,7 @@ public class Map {
     }
   }
 
-  private void switchFloors(FloorType floor) throws SQLException {
+  public void switchFloors(FloorType floor) throws SQLException {
     currFloor = floor;
     backgroundImage = Images.get(floor);
     MAPHEIGHT = backgroundImage.getHeight();
