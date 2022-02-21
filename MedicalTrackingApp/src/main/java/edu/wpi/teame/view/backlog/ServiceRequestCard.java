@@ -93,7 +93,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 2, 1);
     detailsGrid.add(generateDetailText("Location: "), 2, 2);
     detailsGrid.add(getSeparatorH(), 2, 3);
-    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
+    detailsGrid.add(generateDetailText("Priority: "), 2, 4);
     detailsGrid.add(getSeparatorH(), 2, 5);
     detailsGrid.add(generateDetailText("Status: "), 2, 6);
     detailsGrid.add(getSeparatorH(), 2, 7);
@@ -102,7 +102,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 1);
     detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
     detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
+    detailsGrid.add(generateDetailText(sr.getPriority().name()), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
     detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
