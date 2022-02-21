@@ -61,8 +61,6 @@ public final class LocationManager extends ObjectManager<Location> {
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
     String filePath = App.class.getResource("csv/" + outputFileName).getPath();
-    // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
-
     FileWriter outputFile = new FileWriter(filePath);
     CSVWriter writer =
         new CSVWriter(
