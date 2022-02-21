@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 
 public class PathFinder {
   private Graph<Location> locationGraph;
@@ -21,6 +22,7 @@ public class PathFinder {
   private StackPane DrawPane;
   private Location startTest;
   private Location endTest;
+  private ArrayList<Rectangle> routeVisual = new ArrayList<>();
 
   public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {
     System.out.println("Attempt");
@@ -171,6 +173,11 @@ public class PathFinder {
     Visual.setMap(WIDTH, HEIGHT);
   }
 
+  public void RemoveRoute() {
+    DrawPane.getChildren().removeAll(routeVisual);
+    routeVisual.clear();
+  }
+
   public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
@@ -202,7 +209,9 @@ public class PathFinder {
     for (int i = 1; i < route.size(); i++) {
       Location initNode = route.get(i - 1);
       Location endNode = route.get(i);
-      Visual.createConnection(initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY());
+      routeVisual.add(
+          Visual.createConnection(
+              initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
     }
   }
 }
