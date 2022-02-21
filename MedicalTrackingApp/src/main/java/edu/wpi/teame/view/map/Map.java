@@ -656,15 +656,8 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
-    //    ImageView locationDot = new ImageView();
-    //    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
-    //    locationDot.setFitWidth(10);
-    //    locationDot.setFitHeight(10);
     double x = location.getX() - MAPWIDTH / 2;
     double y = location.getY() - MAPHEIGHT / 2;
-    //    locationDot.setTranslateX(x);
-    //    locationDot.setTranslateY(y);
-    //    locationDot.setVisible(false);
     MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName());
@@ -685,6 +678,7 @@ public class Map {
                   PathFindingLocations.add(location);
                   if (PathFindingLocations.size() == 2) {
                     try {
+                      Navigation.RemoveRoute();
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
                       PathFindingLocations.clear();

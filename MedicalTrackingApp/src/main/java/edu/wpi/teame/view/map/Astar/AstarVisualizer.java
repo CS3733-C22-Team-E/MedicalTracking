@@ -23,7 +23,7 @@ public class AstarVisualizer {
     MAPHEIGHT = MAPHEIGHT_;
   }
 
-  public void createConnection(double StartX, double StartY, double EndX, double EndY) {
+  public Rectangle createConnection(double StartX, double StartY, double EndX, double EndY) {
     Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);
     double distance =
         Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));
@@ -42,6 +42,7 @@ public class AstarVisualizer {
     connection.setRotate(Math.toDegrees(theta));
     layout.getChildren().add(connection);
     routeConnections.add(connection);
+    return connection;
   }
 
   public void clearConnections() {
