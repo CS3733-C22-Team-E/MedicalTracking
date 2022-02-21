@@ -685,6 +685,8 @@ public class Map {
                   PathFindingLocations.add(newDot);
                   if (PathFindingLocations.size() == 2) {
                     try {
+                      PathFindingLocations.get(0).getIcon().setFill(Color.YELLOW);
+                      PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getLocation().getId(),
                           PathFindingLocations.get(1).getLocation().getId());
@@ -693,6 +695,8 @@ public class Map {
                       e.printStackTrace();
                     } catch (IllegalStateException e) {
                       try {
+                        PathFindingLocations.get(1).getIcon().setFill(Color.YELLOW);
+                        PathFindingLocations.get(0).getIcon().setFill(Color.GREEN);
                         Navigation.FindAndDrawRoute(
                             PathFindingLocations.get(1).getLocation().getId(),
                             PathFindingLocations.get(0).getLocation().getId());
