@@ -28,10 +28,8 @@ public class AstarVisualizer {
     double distance =
         Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));
     double theta = Math.atan2(distancePoint.getY(), distancePoint.getX());
-    System.out.println(theta);
     double ProjectX = StartX + Math.cos(theta) * distance / 2;
     double ProjectY = StartY + Math.sin(theta) * distance / 2;
-    System.out.println(ProjectX + " " + ProjectY);
     ProjectX = ProjectX - MAPWIDTH / 2;
     ProjectY = ProjectY - MAPHEIGHT / 2;
     Rectangle connection = new Rectangle();
