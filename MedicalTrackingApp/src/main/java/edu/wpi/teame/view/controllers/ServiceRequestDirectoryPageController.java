@@ -124,6 +124,13 @@ public class ServiceRequestDirectoryPageController implements Initializable {
                 SortOrder.ByName,
                 getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR))));
 
+    tabs.add(
+        TabHoverAnimation.install(
+            new StyledTab(
+                "Mental Health Services",
+                SortOrder.ByName,
+                getPageUrl(DataBaseObjectType.MentalHealthSR))));
+
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
   }
@@ -172,6 +179,9 @@ public class ServiceRequestDirectoryPageController implements Initializable {
         break;
       case SanitationSR:
         url += "Sanitation";
+        break;
+      case MentalHealthSR:
+        url += "Mental Health";
         break;
       default:
         return null;
