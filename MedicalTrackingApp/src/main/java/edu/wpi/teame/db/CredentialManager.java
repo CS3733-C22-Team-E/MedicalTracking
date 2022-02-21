@@ -98,14 +98,7 @@ public final class CredentialManager {
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
 
-    //    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-    //    InputStream is =
-    //        classloader.getResourceAsStream("../../../../../resources/csv/backup/" +
-    // inputFileName);
-    //    System.out.println(is);
     InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
-    System.out.println(filePath);
-    // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 

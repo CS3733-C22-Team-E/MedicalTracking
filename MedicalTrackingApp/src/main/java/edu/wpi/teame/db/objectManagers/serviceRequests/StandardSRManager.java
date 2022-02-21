@@ -31,7 +31,6 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
   public void readCSV(String inputFileName)
       throws IOException, ParseException, CsvValidationException, SQLException {
     InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
-    // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
