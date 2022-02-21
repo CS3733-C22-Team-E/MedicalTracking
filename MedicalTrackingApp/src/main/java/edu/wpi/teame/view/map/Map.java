@@ -66,7 +66,7 @@ public class Map {
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
-  private PathFinder Navigation;
+  private PathFinder Navigation = null;
   private ArrayList<Location> PathFindingLocations = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
@@ -108,6 +108,11 @@ public class Map {
     MAPHEIGHT = backgroundImage.getHeight();
     MAPWIDTH = backgroundImage.getWidth();
     updateLayoutChildren();
+    if (Navigation != null) {
+      Navigation.RemoveRoute();
+      Navigation.SelectFloor(MAPWIDTH, MAPHEIGHT);
+      System.out.println(MAPWIDTH + " " + MAPHEIGHT);
+    }
   }
 
   private boolean coordinateChecker(String X, String Y) {
@@ -656,11 +661,13 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
-    double x = location.getX() - MAPWIDTH / 2;
-    double y = location.getY() - MAPHEIGHT / 2;
+    double mapWidthTest = Images.get(location.getFloor()).getWidth();
+    double mapHeightTest = Images.get(location.getFloor()).getHeight();
+    double x = location.getX() - mapWidthTest / 2;
+    double y = location.getY() - mapHeightTest / 2;
     MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
-    Tooltip t = new Tooltip(location.getLongName());
+    Tooltip t = new Tooltip(location.getLongName() + x + y);
     Tooltip.install(newDot.getIcon(), t);
     updateLayoutChildren();
     newDot

@@ -2,7 +2,6 @@ package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
@@ -25,14 +24,13 @@ public class PathFinder {
   private ArrayList<Rectangle> routeVisual = new ArrayList<>();
 
   public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {
-    System.out.println("Attempt");
     DrawPane = Draw;
     Visual = new AstarVisualizer(Draw, MapWidth, MapHeight);
     createConnections();
     locationGraph = new Graph<>(locations, connections);
     routeFinder =
         new RouteFinder<>(
-            locationGraph, new EuclideanDistanceScorer(), new EuclideanDistanceScorer());
+            locationGraph, new EuclideanDistanceHeuristic(), new EuclideanDistanceHeuristic());
   }
 
   public void refreshLocationsFromDB() throws SQLException {
@@ -168,7 +166,7 @@ public class PathFinder {
     connections.put(121, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
   }
 
-  public void SelectFloor(FloorType floor, double WIDTH, double HEIGHT) throws SQLException {
+  public void SelectFloor(double WIDTH, double HEIGHT) throws SQLException {
     Visual.clearConnections();
     Visual.setMap(WIDTH, HEIGHT);
   }
@@ -209,6 +207,7 @@ public class PathFinder {
     for (int i = 1; i < route.size(); i++) {
       Location initNode = route.get(i - 1);
       Location endNode = route.get(i);
+      System.out.println(initNode.getX() + " " + initNode.getY());
       routeVisual.add(
           Visual.createConnection(
               initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
