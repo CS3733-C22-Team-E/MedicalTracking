@@ -13,6 +13,7 @@ public enum DataBaseObjectType {
 
   AudioVisualSR,
   ComputerSR,
+  DeceasedBodySR,
   FoodDeliverySR,
   GiftAndFloralSR,
   InternalPatientTransferSR,
@@ -23,6 +24,8 @@ public enum DataBaseObjectType {
   SecuritySR,
   MedicalEquipmentSR,
   MedicineDeliverySR,
+  MentalHealthSR,
+  PatientDischargeSR,
   FacilitiesMaintenanceSR,
   SanitationSR;
 

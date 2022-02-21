@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-Sat Feb 19 22:02:42 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-1514-cfd5-00000eb09a68, [2] memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
+Sat Feb 19 23:05:37 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-154e-727f-0000072063d0, [2] memory:/Users/brindavenkataraman/Documents/GitHub/MedicalTracking/MedicalTrackingApp/EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@6fffcba5, [4] file:/Users/brindavenkataraman/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
 java.vendor=Microsoft
-java.runtime.version=11.0.12+7
-user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp
-os.name=Windows 10
-os.arch=amd64
-os.version=10.0
+java.runtime.version=11.0.13+8-LTS
+user.dir=/Users/brindavenkataraman/Documents/GitHub/MedicalTracking/MedicalTrackingApp
+os.name=Mac OS X
+os.arch=x86_64
+os.version=11.5.2
 derby.system.home=null
 C005 : [0] 

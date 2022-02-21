@@ -93,6 +93,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     switch (objectType) {
       case AudioVisualSR:
       case ComputerSR:
+      case DeceasedBodySR:
       case FacilitiesMaintenanceSR:
       case LaundrySR:
       case SanitationSR:
@@ -112,6 +113,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
+      case MentalHealthSR:
+      case PatientDischargeSR:
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(resultSet);
       case Location:
