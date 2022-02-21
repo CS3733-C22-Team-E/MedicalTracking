@@ -167,7 +167,8 @@ public class ServiceRequestBacklog {
     return refreshBar;
   }
 
-  private LinkedList<ServiceRequest> sortServiceRequestsFromDB(List<ServiceRequest> l) { // DB Sees all SR as critical
+  private LinkedList<ServiceRequest> sortServiceRequestsFromDB(
+      List<ServiceRequest> l) { // DB Sees all SR as critical
     LinkedList<ServiceRequest> p1 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p2 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p3 = new LinkedList<ServiceRequest>();

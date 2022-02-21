@@ -51,7 +51,7 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   public ServiceRequest(ResultSet resultSet, DataBaseObjectType type) throws SQLException {
-    this.priority = ServiceRequestPriority.values()[resultSet.getInt("status")];
+    this.priority = ServiceRequestPriority.values()[resultSet.getInt("priority")];
     this.location =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
     this.assignee =
