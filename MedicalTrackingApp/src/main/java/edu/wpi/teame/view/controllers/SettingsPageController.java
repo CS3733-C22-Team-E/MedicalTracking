@@ -5,9 +5,7 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.enums.LanguageType;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -29,13 +27,13 @@ public class SettingsPageController implements Initializable {
 
   private boolean dialogConfirmed = false;
   private Properties properties;
-  private String settingsPath =
-      System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame//settings.properties";
+  private InputStream settingsPath = App.class.getResourceAsStream("settings.properties");;
+  // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame//settings.properties";
 
   @Override
   @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
-    FileReader reader = new FileReader(settingsPath);
+    InputStreamReader reader = new InputStreamReader(settingsPath);
     properties = new Properties();
     properties.load(reader);
 
@@ -60,71 +58,74 @@ public class SettingsPageController implements Initializable {
         .valueProperty()
         .addListener(
             listen -> {
-              try {
-                properties.setProperty("dbConnection", dbSwitchComboBox.getValue().toString());
-                FileWriter writer = new FileWriter(settingsPath);
-                properties.store(writer, "App Settings");
-                changeDBConnection();
-                writer.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not write to settings.properties");
-              } catch (CsvValidationException e) {
-                e.printStackTrace();
-              } catch (SQLException e) {
-                e.printStackTrace();
-              } catch (ParseException e) {
-                e.printStackTrace();
-              }
+              //              try {
+              //                properties.setProperty("dbConnection",
+              // dbSwitchComboBox.getValue().toString());
+              //                FileWriter writer = new FileWriter(settingsPath);
+              //                properties.store(writer, "App Settings");
+              //                changeDBConnection();
+              //                writer.close();
+              //              } catch (IOException e) {
+              //                e.printStackTrace();
+              //                System.out.println("Could not write to settings.properties");
+              //              } catch (CsvValidationException e) {
+              //                e.printStackTrace();
+              //              } catch (SQLException e) {
+              //                e.printStackTrace();
+              //              } catch (ParseException e) {
+              //                e.printStackTrace();
+              //              }
             });
 
     languageComboBox
         .valueProperty()
         .addListener(
             listen -> {
-              try {
-                properties.setProperty("language", languageComboBox.getValue().toString());
-                FileWriter writer = new FileWriter(settingsPath);
-                properties.store(writer, "App Settings");
-                changeLanguage();
-                writer.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not write to settings.properties");
-              }
+              //              try {
+              //                properties.setProperty("language",
+              // languageComboBox.getValue().toString());
+              //                FileWriter writer = new FileWriter(settingsPath);
+              //                properties.store(writer, "App Settings");
+              //                changeLanguage();
+              //                writer.close();
+              //              } catch (IOException e) {
+              //                e.printStackTrace();
+              //                System.out.println("Could not write to settings.properties");
+              //              }
             });
 
     colorComboBox
         .valueProperty()
         .addListener(
             listen -> {
-              try {
-                properties.setProperty("color", colorComboBox.getValue().toString());
-                FileWriter writer = new FileWriter(settingsPath);
-                properties.store(writer, "App Settings");
-                changeColor();
-                writer.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not write to settings.properties");
-              }
+              //              try {
+              //                properties.setProperty("color",
+              // colorComboBox.getValue().toString());
+              //                FileWriter writer = new FileWriter(settingsPath);
+              //                properties.store(writer, "App Settings");
+              //                changeColor();
+              //                writer.close();
+              //              } catch (IOException e) {
+              //                e.printStackTrace();
+              //                System.out.println("Could not write to settings.properties");
+              //              }
             });
 
     accessibilityComboBox
         .valueProperty()
         .addListener(
             listen -> {
-              try {
-                properties.setProperty(
-                    "accessibility", accessibilityComboBox.getValue().toString());
-                FileWriter writer = new FileWriter(settingsPath);
-                properties.store(writer, "App Settings");
-                changeAccessibility();
-                writer.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Could not write to settings.properties");
-              }
+              //              try {
+              //                properties.setProperty(
+              //                    "accessibility", accessibilityComboBox.getValue().toString());
+              //                FileWriter writer = new FileWriter(settingsPath);
+              //                properties.store(writer, "App Settings");
+              //                changeAccessibility();
+              //                writer.close();
+              //              } catch (IOException e) {
+              //                e.printStackTrace();
+              //                System.out.println("Could not write to settings.properties");
+              //              }
             });
   }
 

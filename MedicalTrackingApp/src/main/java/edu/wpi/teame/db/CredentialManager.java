@@ -2,9 +2,11 @@ package edu.wpi.teame.db;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.App;
 import edu.wpi.teame.model.enums.AccessLevel;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -95,9 +97,16 @@ public final class CredentialManager {
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
-    String filePath =
-        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
-    CSVReader csvReader = new CSVReader(new FileReader(filePath));
+
+    //    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+    //    InputStream is =
+    //        classloader.getResourceAsStream("../../../../../resources/csv/backup/" +
+    // inputFileName);
+    //    System.out.println(is);
+    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
+    System.out.println(filePath);
+    // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
+    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
     String[] record;
