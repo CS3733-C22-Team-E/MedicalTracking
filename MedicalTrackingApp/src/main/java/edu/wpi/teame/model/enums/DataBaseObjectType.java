@@ -26,8 +26,7 @@ public enum DataBaseObjectType {
   MedicineDeliverySR,
   PatientDischargeSR,
   FacilitiesMaintenanceSR,
-  SanitationSR,
-  MentalHealthSR;
+  SanitationSR;
 
   @Override
   public String toString() {
