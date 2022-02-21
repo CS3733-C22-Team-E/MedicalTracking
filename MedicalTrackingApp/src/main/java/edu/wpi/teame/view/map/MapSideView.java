@@ -4,6 +4,7 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,12 @@ public class MapSideView {
   GridPane holder = new GridPane();
   public ArrayList<TextField> cleanFields = new ArrayList<TextField>();
   public ArrayList<TextField> dirtyFields = new ArrayList<TextField>();
+  private LandingPageController Tabber;
+  private Map MapView;
 
-  public MapSideView() {
+  public MapSideView(LandingPageController Tab, Map mapView) {
+    Tabber = Tab;
+    MapView = mapView;
     for (int i = 0; i < 4; ++i) {
       for (byte j = 0; i < 2; ++i) {
         this.EquipmentManagementArray[i][j] = 0;
@@ -113,6 +118,18 @@ public class MapSideView {
             updateFieldsinGrid();
           }
         });
+    LL1.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            Tabber.mainTabPane.getSelectionModel().select(2);
+            try {
+              MapView.switchFloors(FloorType.LowerLevel1);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          }
+        });
     Floor1.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
           public void handle(MouseEvent event) {
@@ -139,6 +156,18 @@ public class MapSideView {
               var3.printStackTrace();
             }
             updateFieldsinGrid();
+          }
+        });
+    Floor1.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            Tabber.mainTabPane.getSelectionModel().select(2);
+            try {
+              MapView.switchFloors(FloorType.FirstFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
         });
     Floor3.setOnMouseEntered(
@@ -169,7 +198,18 @@ public class MapSideView {
             updateFieldsinGrid();
           }
         });
-
+    Floor3.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            Tabber.mainTabPane.getSelectionModel().select(2);
+            try {
+              MapView.switchFloors(FloorType.ThirdFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          }
+        });
     layout.getChildren().addAll(Floor3, Floor1, LL1);
     holder.setMouseTransparent(true);
     holder.getStyleClass().add("combo-box");
@@ -215,4 +255,6 @@ public class MapSideView {
     }
     return equipmentList;
   }
+
+  private void SwitchToMapView(FloorType floor) {}
 }

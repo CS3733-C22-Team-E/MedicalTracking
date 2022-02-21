@@ -30,7 +30,6 @@ import lombok.SneakyThrows;
 public class LandingPageController implements Initializable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
-
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
 
@@ -98,8 +97,9 @@ public class LandingPageController implements Initializable {
           }
         });
     TabHoverAnimation.install(mapTab);
+    tabs.add(mapTab);
 
-    MapSideView mapSideView = new MapSideView();
+    MapSideView mapSideView = new MapSideView(this, mapView);
     StyledTab mapSideViewTab =
         new StyledTab(
             "Hospital Map Side-View",
@@ -150,6 +150,22 @@ public class LandingPageController implements Initializable {
             new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
+
+    tabs.sort(StyledTab::compareTo);
+
+    mainTabPane.getTabs().setAll(tabs);
+
+    shouldEnlarge = false;
+    updateTabSize();
+
+    StyledTab aboutPage =
+        new StyledTab(
+            "About Page",
+            SortOrder.ByName,
+            "view/tabs/AboutPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
+    TabHoverAnimation.install(aboutPage);
+    tabs.add(aboutPage);
 
     tabs.sort(StyledTab::compareTo);
 

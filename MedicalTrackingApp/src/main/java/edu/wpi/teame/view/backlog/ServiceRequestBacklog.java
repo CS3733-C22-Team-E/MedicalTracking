@@ -6,13 +6,20 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javafx.animation.ScaleTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class ServiceRequestBacklog {
 
@@ -20,6 +27,7 @@ public class ServiceRequestBacklog {
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
   private final double VGAP = 3;
+  private double CARDWIDTH;
 
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<>();
   private List<ServiceRequestCard> cardsDisplayed = new LinkedList<>();
@@ -30,6 +38,7 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
+    CARDWIDTH = SCENEWIDTH / 1.5;
   }
 
   public static void main(String[] args) {
@@ -90,12 +99,13 @@ public class ServiceRequestBacklog {
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
+    requestHolder.add(getRefreshBar(), 0, 0);
     return requestHolder;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
-    HBox card = c.getCard(SCENEWIDTH / 1.5, 100);
-    g.add(card, 0, cardsDisplayed.size());
+    HBox card = c.getCard(CARDWIDTH, 100);
+    g.add(card, 0, cardsDisplayed.size() + 1);
     cardsDisplayed.add(c);
   }
 
@@ -110,5 +120,51 @@ public class ServiceRequestBacklog {
     ObjectManager m = sr.getDBType().getDBManagerInstance();
     m.remove(sr.getId());
     scrollWrapper.setContent(getRequestHolder());
+  }
+
+  public HBox getRefreshBar() {
+    HBox refreshBar = new HBox();
+    refreshBar.setPrefSize(CARDWIDTH, 50);
+    Text refreshText = new Text("Click to refresh.");
+    refreshText.setFont(Font.font(24));
+    refreshBar.getChildren().add(refreshText);
+    refreshBar.setAlignment(Pos.CENTER);
+    Background noHoverBG =
+        new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+    refreshBar.setBackground(noHoverBG);
+    Background hoverBG =
+        new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+    refreshBar.setOnMouseExited(
+        e -> {
+          refreshBar.setBackground(noHoverBG);
+        });
+    refreshBar.setOnMouseEntered(
+        e -> {
+          refreshBar.setBackground(hoverBG);
+        });
+    refreshBar.setOnMouseClicked(
+        e -> {
+          ((Text) refreshBar.getChildren().get(0)).setText("Refreshing...");
+          // I'm trying to get this done quickly and have no idea how to make a timer
+          // so I'm gonna do something really stupid but I know it'll work.
+          ScaleTransition wait2 = new ScaleTransition(new Duration(200), refreshText);
+          wait2.setOnFinished(
+              ev -> {
+                try {
+                  scrollWrapper.setContent(getRequestHolder());
+                } catch (SQLException ex) {
+                  ex.printStackTrace();
+                }
+              });
+          ScaleTransition wait1 = new ScaleTransition(new Duration(500), refreshText);
+          wait1.setOnFinished(
+              ev -> {
+                ((Text) refreshBar.getChildren().get(0)).setText("Done!");
+                wait2.play();
+              });
+          wait1.play();
+          // lol
+        });
+    return refreshBar;
   }
 }

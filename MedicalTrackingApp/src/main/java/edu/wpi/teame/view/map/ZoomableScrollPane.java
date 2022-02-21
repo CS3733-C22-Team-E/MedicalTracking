@@ -13,8 +13,6 @@ public class ZoomableScrollPane extends ScrollPane {
   private double zoomIntensity = 0.02;
   public Node target;
   public Node zoomNode;
-  private double MaxPixels = 800;
-  private double MinPixels = 5000;
 
   public ZoomableScrollPane(Node target) {
     super();
@@ -55,12 +53,6 @@ public class ZoomableScrollPane extends ScrollPane {
 
     Bounds innerBounds = zoomNode.getLayoutBounds();
     Bounds viewportBounds = getViewportBounds();
-    // TODO figure this out
-    if (innerBounds.getHeight() < MaxPixels && wheelDelta < 0) {
-      return;
-    } else if (innerBounds.getHeight() > MinPixels && wheelDelta > 0) {
-      return;
-    }
     // calculate pixel offsets from [0, 1] range
     double valX = this.getHvalue() * (innerBounds.getWidth() - viewportBounds.getWidth());
     double valY = this.getVvalue() * (innerBounds.getHeight() - viewportBounds.getHeight());

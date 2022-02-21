@@ -121,7 +121,6 @@ public class StyledTab extends Tab implements Comparable<StyledTab> {
     columnConstraints.setHgrow(Priority.ALWAYS);
     rowConstraints.setValignment(VPos.CENTER);
     rowConstraints.setVgrow(Priority.ALWAYS);
-
     gridPane.getColumnConstraints().add(columnConstraints);
     gridPane.getRowConstraints().add(rowConstraints);
     return gridPane;

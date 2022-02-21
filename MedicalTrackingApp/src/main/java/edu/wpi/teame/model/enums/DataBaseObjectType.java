@@ -27,7 +27,8 @@ public enum DataBaseObjectType {
   MentalHealthSR,
   PatientDischargeSR,
   FacilitiesMaintenanceSR,
-  SanitationSR;
+  SanitationSR,
+  MentalHealthSR;
 
   @Override
   public String toString() {
@@ -60,6 +61,8 @@ public enum DataBaseObjectType {
         return "Medicine Delivery Service Request";
       case FacilitiesMaintenanceSR:
         return "Facilities Maintenance Service Request";
+      case MentalHealthSR:
+        return "Mental Health Service Request";
       case Patient:
         return "Patient";
       case Employee:
@@ -102,6 +105,8 @@ public enum DataBaseObjectType {
         return MedicineDeliverySR;
       case "Facilities Maintenance Service Request":
         return FacilitiesMaintenanceSR;
+      case "Mental Health Service Request":
+        return MentalHealthSR;
       case "Patient":
         return Patient;
       case "Employee":
@@ -144,6 +149,8 @@ public enum DataBaseObjectType {
         return "MedicineDeliverySR";
       case FacilitiesMaintenanceSR:
         return "FacilitiesMaintenanceSR";
+      case MentalHealthSR:
+        return "MentalHealthSR";
       case Employee:
         return "Employee";
       case Location:
@@ -187,6 +194,8 @@ public enum DataBaseObjectType {
         return Color.TOMATO;
       case FacilitiesMaintenanceSR:
         return Color.THISTLE;
+      case MentalHealthSR:
+        return Color.RED;
       case Employee:
         return Color.BLUE;
       case Location:
@@ -225,6 +234,8 @@ public enum DataBaseObjectType {
         return "Medicine Delivery";
       case FacilitiesMaintenanceSR:
         return "Facilities Maintenance";
+      case MentalHealthSR:
+        return "Mental Health";
       case Employee:
         return "Employee";
       case Location:
@@ -279,6 +290,9 @@ public enum DataBaseObjectType {
         break;
       case FacilitiesMaintenanceSR:
         s += " Facilities Maintenance Service Request";
+        break;
+      case MentalHealthSR:
+        s += " Mental Health Service Request";
         break;
       case Employee:
         return "This is an employee.";
