@@ -97,7 +97,6 @@ public final class CredentialManager {
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
-
     InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
