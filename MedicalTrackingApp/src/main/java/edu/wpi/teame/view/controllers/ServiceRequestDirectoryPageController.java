@@ -181,7 +181,7 @@ public class ServiceRequestDirectoryPageController implements Initializable {
         url += "Sanitation";
         break;
       case MentalHealthSR:
-        url += "Mental Health";
+        url += "MentalHealth";
         break;
       default:
         return null;
