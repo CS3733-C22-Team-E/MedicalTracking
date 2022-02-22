@@ -9,9 +9,6 @@ import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -139,10 +136,6 @@ public class ServiceRequestCard {
             new BackgroundFill(sr.getPriority().getColor(), new CornerRadii(10), Insets.EMPTY)));
     pBox.setAlignment(Pos.CENTER);
     pBox.setMaxWidth(70);
-    Text openDateText =
-        new Text(" Opened: " + sr.getOpenDate() + " @ " + sr.getOpenDate().getTime());
-    openDateText.setFont(Font.font(12));
-    pBox.getChildren().add(openDateText);
     return pBox;
   }
 
