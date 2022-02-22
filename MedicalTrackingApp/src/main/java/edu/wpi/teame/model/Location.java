@@ -122,21 +122,21 @@ public class Location implements ISQLSerializable, GraphNode {
   @Override
   public String[] toCSVData() {
     return new String[] {
-            Integer.toString(id),
-            Integer.toString(x),
-            Integer.toString(y),
-            Integer.toString(floor.ordinal()),
-            building.toString(),
-            type.toString(),
-            longName,
-            shortName
+      Integer.toString(id),
+      Integer.toString(x),
+      Integer.toString(y),
+      Integer.toString(floor.ordinal()),
+      building.toString(),
+      type.toString(),
+      longName,
+      shortName
     };
   }
 
   @Override
   public String[] getCSVHeaders() {
     return new String[] {
-            "nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName"
+      "nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName"
     };
   }
 

@@ -67,10 +67,10 @@ public class Employee implements ISQLSerializable {
   @Override
   public String[] toCSVData() {
     return new String[] {
-            Integer.toString(id),
-            Integer.toString(department.ordinal()),
-            name,
-            Integer.toString(type.ordinal())
+      Integer.toString(id),
+      Integer.toString(department.ordinal()),
+      name,
+      Integer.toString(type.ordinal())
     };
   }
 

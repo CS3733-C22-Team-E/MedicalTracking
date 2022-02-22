@@ -190,32 +190,32 @@ public class ServiceRequest implements ISQLSerializable {
   @Override
   public String[] toCSVData() {
     return new String[] {
-            Integer.toString(id),
-            Integer.toString(location.getId()),
-            assignee == null ? "" : Integer.toString(assignee.getId()),
-            openDate.toString(),
-            closeDate == null ? "" : closeDate.toString(),
-            Integer.toString(status.ordinal()),
-            title,
-            additionalInfo,
-            Integer.toString(priority.ordinal()),
-            requestDate.toString()
+      Integer.toString(id),
+      Integer.toString(location.getId()),
+      assignee == null ? "" : Integer.toString(assignee.getId()),
+      openDate.toString(),
+      closeDate == null ? "" : closeDate.toString(),
+      Integer.toString(status.ordinal()),
+      title,
+      additionalInfo,
+      Integer.toString(priority.ordinal()),
+      requestDate.toString()
     };
   }
 
   @Override
   public String[] getCSVHeaders() {
     return new String[] {
-            "id",
-            "locationID",
-            "assigneeID",
-            "openDate",
-            "closeDate",
-            "status",
-            "title",
-            "additionalInfo",
-            "priority",
-            "requestDate"
+      "id",
+      "locationID",
+      "assigneeID",
+      "openDate",
+      "closeDate",
+      "status",
+      "title",
+      "additionalInfo",
+      "priority",
+      "requestDate"
     };
   }
 

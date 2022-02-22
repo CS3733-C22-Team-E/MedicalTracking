@@ -1,5 +1,9 @@
 package edu.wpi.teame.db.objectManagers;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -9,8 +13,13 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,6 +104,45 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder restoreQuery = new StringBuilder("UPDATE ");
     restoreQuery.append(objectType.toTableName()).append(" SET isDeleted = 0");
     statement.executeUpdate(restoreQuery.toString());
+  }
+
+  @Override
+  public void readCSV(String inputFileName)
+      throws IOException, SQLException, CsvValidationException, ParseException {
+    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
+    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
+    CSVLineData lineData = new CSVLineData(csvReader);
+
+    while (lineData.readNext()) {
+      insert(getCastedType(lineData));
+    }
+  }
+
+  @Override
+  public void writeToCSV(String outputFileName) throws IOException, SQLException {
+    String filePath = App.class.getResource("csv/" + outputFileName).getPath();
+    FileWriter outputFile = new FileWriter(filePath);
+    CSVWriter writer =
+        new CSVWriter(
+            outputFile,
+            ',',
+            CSVWriter.NO_QUOTE_CHARACTER,
+            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+            CSVWriter.DEFAULT_LINE_END);
+
+    List<T> dbObjectList = getAll();
+    List<String[]> data = new ArrayList<String[]>();
+
+    if (dbObjectList.isEmpty()) {
+      return;
+    }
+
+    data.add(dbObjectList.get(0).getCSVHeaders());
+    for (T dbObject : dbObjectList) {
+      data.add(dbObject.toCSVData());
+    }
+    writer.writeAll(data);
+    writer.close();
   }
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
