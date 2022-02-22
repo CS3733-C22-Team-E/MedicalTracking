@@ -1,7 +1,7 @@
 package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;

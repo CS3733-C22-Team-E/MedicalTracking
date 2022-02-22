@@ -1,8 +1,8 @@
 package edu.wpi.teame;
 
 import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.db.CredentialManager;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;

@@ -3,7 +3,7 @@ package edu.wpi.teame.view.controllers;
 // import com.opencsv.exceptions.CsvValidationException;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
