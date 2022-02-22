@@ -6,7 +6,6 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.*;
 import java.io.*;
@@ -30,16 +29,8 @@ public final class EmployeeManager extends ObjectManager<Employee> {
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      String name = lineData.getColumnString("name");
-      EmployeeType type = EmployeeType.values()[(lineData.getColumnInt("type"))];
-      DepartmentType departmentType =
-          DepartmentType.values()[(lineData.getColumnInt("department"))];
-      Employee newEmployee = new Employee(0, departmentType, name, type);
-      DBManager.getInstance().getEmployeeManager().insert(newEmployee);
+    while (lineData.readNext()) {
+      insert(new Employee(lineData));
     }
   }
 
@@ -61,13 +52,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
     data.add(new String[] {"employeeID", "department", "name", "type"});
 
     for (Employee employee : listOfEmployees) {
-      data.add(
-          new String[] {
-            Integer.toString(employee.getId()),
-            Integer.toString(employee.getDepartment().ordinal()),
-            employee.getName(),
-            Integer.toString(employee.getType().ordinal())
-          });
+      data.add(employee.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

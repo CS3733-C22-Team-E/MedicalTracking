@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class CSVLineData {
   private List<String> headers = null;
@@ -20,40 +19,49 @@ public class CSVLineData {
     this.csvReader = reader;
   }
 
-  public String getColumnString(String columnName) {
-    return parsedData[headers.indexOf(columnName)];
-  }
-
   public Date getColumnDate(String columnName) throws ParseException {
-    String dateString = parsedData[headers.indexOf(columnName)];
-    if (dateString.equals("")) {
+    String columnString = getSanitizedString(columnName);
+    if (columnString == null) {
       return null;
     }
-    long time = new SimpleDateFormat("yyyy-MM-dd").parse(dateString).getTime();
+
+    long time = new SimpleDateFormat("yyyy-MM-dd").parse(columnString).getTime();
     return new Date(time);
   }
 
   public boolean getColumnBoolean(String columnName) {
-    return Boolean.parseBoolean(parsedData[headers.indexOf(columnName)]);
+    String columnString = getSanitizedString(columnName);
+    if (columnString == null) {
+      return false;
+    }
+    return Boolean.parseBoolean(columnString);
   }
 
   public int getColumnInt(String columnName) {
-    int colIndex = headers.indexOf(columnName);
-    if (Objects.equals(parsedData[colIndex], "")) {
+    String columnString = getSanitizedString(columnName);
+    if (columnString == null) {
       return 0;
     }
-    return Integer.parseInt(parsedData[colIndex].replace(" ", ""));
+    return Integer.parseInt(columnString);
   }
 
-  public List<String> getHeaders() {
-    return headers;
+  public boolean readNext() throws CsvValidationException, IOException {
+    parsedData = csvReader.readNext();
+    if (parsedData == null) {
+      return false;
+    }
+    return parsedData.length != 0;
   }
 
-  public String[] getParsedData() {
-    return parsedData;
+  public String getColumnString(String columnName) {
+    return getSanitizedString(columnName);
   }
 
-  public void setParsedData(String[] parsedData) {
-    this.parsedData = parsedData;
+  private String getSanitizedString(String columnName) {
+    String columnString = parsedData[headers.indexOf(columnName)].trim();
+    if (columnString.isEmpty() || columnString.isBlank()) {
+      return null;
+    }
+    return columnString;
   }
 }

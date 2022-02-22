@@ -27,7 +27,7 @@ nodeID,locationNodeID,nodeType,longName,hasPatient,isClean
 26,131,1,Infusion Pump 6,0,0
 27,131,1,Infusion Pump 7,0,0
 28,131,1,Infusion Pump 8,0,0
-29,131,1,Infusion Pump 9 ,0,0
+29,131,1,Infusion Pump 9,0,0
 30,131,1,Infusion Pump 10,0,0
 31,132,1,Infusion Pump 11,0,0
 32,132,1,Infusion Pump 12,0,0
@@ -39,7 +39,7 @@ nodeID,locationNodeID,nodeType,longName,hasPatient,isClean
 38,125,1,Infusion Pump 18,0,0
 39,125,1,Infusion Pump 19,0,0
 40,125,1,Infusion Pump 20,0,0
-41,133,2,X-Ray ,0,0
+41,133,2,X-Ray,0,0
 42,83,3,Recliner 1,0,0
 43,84,3,Recliner 2,0,0
 44,85,3,Recliner 3,0,0

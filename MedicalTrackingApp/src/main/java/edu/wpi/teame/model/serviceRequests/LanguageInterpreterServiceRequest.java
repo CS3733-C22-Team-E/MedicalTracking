@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -11,6 +12,9 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   private LanguageType language;
@@ -47,13 +51,20 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
 
   public LanguageInterpreterServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.LanguageInterpreterSR);
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.language = LanguageType.values()[resultSet.getInt("language")];
   }
 
-  @Override
-  public String getSQLInsertString() {
-    return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
+  public LanguageInterpreterServiceRequest(CSVLineData lineData)
+      throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.LanguageInterpreterSR);
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
+    this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 
   @Override
@@ -70,10 +81,34 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(language.ordinal()));
+    csvData.add(Integer.toString(patient.getId()));
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("language");
+    csvHeaders.add("patientID");
+    return (String[]) csvHeaders.toArray();
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, language, patientID)";
   }
 
+  // Getters and Setters
   public LanguageType getLanguage() {
     return language;
   }

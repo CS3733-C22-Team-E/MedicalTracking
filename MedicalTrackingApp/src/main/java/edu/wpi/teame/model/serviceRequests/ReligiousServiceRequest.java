@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -10,6 +11,9 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ReligiousServiceRequest extends ServiceRequest {
   private Patient patient;
@@ -46,13 +50,19 @@ public final class ReligiousServiceRequest extends ServiceRequest {
 
   public ReligiousServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.ReligiousSR);
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
     this.religion = resultSet.getString("religion");
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
   }
 
-  @Override
-  public String getSQLInsertString() {
-    return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "'";
+  public ReligiousServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.ReligiousSR);
+    this.religion = lineData.getColumnString("religion");
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
   }
 
   @Override
@@ -70,10 +80,34 @@ public final class ReligiousServiceRequest extends ServiceRequest {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "'";
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(religion);
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("patientID");
+    csvHeaders.add("religion");
+    return (String[]) csvHeaders.toArray();
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, religion)";
   }
 
+  // Getters and Setters
   public Patient getPatient() {
     return patient;
   }

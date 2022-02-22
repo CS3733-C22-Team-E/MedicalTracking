@@ -7,10 +7,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.CSVManager;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
-import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import java.io.*;
 import java.sql.SQLException;
@@ -37,21 +34,8 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      String nodeId = lineData.getColumnString("nodeID");
-      String name = lineData.getColumnString("longName");
-      boolean isClean = lineData.getColumnBoolean("isClean");
-      boolean hasPatient = lineData.getColumnBoolean("hasPatient");
-      EquipmentType equipmentType = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
-
-      String locationNodeID = lineData.getColumnString("locationNodeID");
-      Location location = CSVManager.getInstance().locationIDMap.get(locationNodeID);
-
-      Equipment newEquipment = new Equipment(0, location, equipmentType, name, hasPatient, isClean);
-      DBManager.getInstance().getEquipmentManager().insert(newEquipment);
+    while (lineData.readNext()) {
+      insert(new Equipment(lineData));
     }
   }
 
@@ -74,15 +58,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
         new String[] {"nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"});
 
     for (Equipment equipment : listOfEquipment) {
-      data.add(
-          new String[] {
-            Integer.toString(equipment.getId()),
-            Integer.toString(equipment.getLocation().getId()),
-            Integer.toString(equipment.getType().ordinal()),
-            equipment.getName(),
-            equipment.isHasPatient() ? "1" : "0",
-            equipment.isClean() ? "1" : "0"
-          });
+      data.add(equipment.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

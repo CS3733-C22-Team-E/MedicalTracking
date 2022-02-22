@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -10,6 +11,9 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineQuantity;
@@ -50,22 +54,21 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.MedicineDeliverySR);
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.medicineQuantity = resultSet.getString("medicineQuantity");
     this.medicineName = resultSet.getString("medicineName");
   }
 
-  @Override
-  public String getSQLInsertString() {
-    String patientID = patient == null ? "NULL" : Integer.toString(patient.getId());
-    return super.getSQLInsertString()
-        + ", '"
-        + medicineName
-        + "', "
-        + patientID
-        + ", '"
-        + medicineQuantity
-        + "'";
+  public MedicineDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.MedicineDeliverySR);
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
+    this.medicineQuantity = lineData.getColumnString("medicineQuantity");
+    this.medicineName = lineData.getColumnString("medicineName");
   }
 
   @Override
@@ -86,11 +89,45 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   }
 
   @Override
+  public String getSQLInsertString() {
+    String patientID = patient == null ? "NULL" : Integer.toString(patient.getId());
+    return super.getSQLInsertString()
+        + ", '"
+        + medicineName
+        + "', "
+        + patientID
+        + ", '"
+        + medicineQuantity
+        + "'";
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(medicineName);
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(medicineQuantity);
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("medicineName");
+    csvHeaders.add("patientID");
+    csvHeaders.add("medicineQuantity");
+    return (String[]) csvHeaders.toArray();
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate"
         + ", medicineName, patientID, medicineQuantity)";
   }
 
+  // Getters and Setters
   public String getMedicineQuantity() {
     return medicineQuantity;
   }

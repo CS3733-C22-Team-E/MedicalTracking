@@ -1,7 +1,8 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import java.sql.ResultSet;
@@ -11,10 +12,10 @@ public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
   private EquipmentType type;
   private Location location;
+  private boolean isDeleted;
   private boolean isClean;
   private String name;
   private int id;
-  private boolean isDeleted;
 
   public Equipment(
       int ID,
@@ -34,18 +35,106 @@ public class Equipment implements ISQLSerializable {
 
   public Equipment(ResultSet resultSet) throws SQLException {
     this.id = resultSet.getInt("id");
-    this.location =
-        new LocationManager()
-            .get(
-                resultSet.getInt(
-                    "locationID")); // DBManager.getInstance().get(resultSet.getString("location"));
-    this.type = EquipmentType.values()[resultSet.getInt("type")];
-    this.name = resultSet.getString("name");
     this.hasPatient = resultSet.getBoolean("hasPatient");
-    this.isClean = resultSet.getBoolean("isClean");
+    this.type = EquipmentType.values()[resultSet.getInt("type")];
     this.isDeleted = resultSet.getBoolean("isDeleted");
+    this.isClean = resultSet.getBoolean("isClean");
+    this.name = resultSet.getString("name");
+    this.location =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("locationID"));
   }
 
+  public Equipment(CSVLineData lineData) throws SQLException {
+    this.id = lineData.getColumnInt("nodeID");
+    this.name = lineData.getColumnString("longName");
+    this.isClean = lineData.getColumnBoolean("isClean");
+    this.hasPatient = lineData.getColumnBoolean("hasPatient");
+    this.type = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
+    this.location =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(lineData.getColumnInt("locationNodeID"));
+  }
+
+  @Override
+  public String toString() {
+    String locId = location == null ? "" : "" + location.getId();
+    return "id: "
+        + id
+        + ", location: "
+        + locId
+        + ", type: "
+        + type
+        + ", name: "
+        + name
+        + ", hasPatient: "
+        + hasPatient
+        + ", isClean: "
+        + isClean;
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
+    return "locationID = "
+        + location.getId()
+        + ", name = '"
+        + name
+        + "', type = "
+        + type.ordinal()
+        + ", isClean = "
+        + isCleanInt
+        + ", hasPatient = "
+        + hasPatientInt
+        + " WHERE id = "
+        + id;
+  }
+
+  @Override
+  public String getSQLInsertString() {
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
+    return location.getId()
+        + ", '"
+        + name
+        + "', "
+        + type.ordinal()
+        + ", "
+        + isCleanInt
+        + ", "
+        + hasPatientInt;
+  }
+
+  @Override
+  public String[] toCSVData() {
+    return new String[] {
+            Integer.toString(id),
+            Integer.toString(location.getId()),
+            Integer.toString(type.ordinal()),
+            name,
+            hasPatient ? "1" : "0",
+            isClean ? "1" : "0"
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    return new String[] {"nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"};
+  }
+
+  @Override
+  public String getTableColumns() {
+    return "(locationID, name, type, isClean, hasPatient)";
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.Equipment;
+  }
+
+  // Getters and Setters
   public int getId() {
     return id;
   }
@@ -92,65 +181,5 @@ public class Equipment implements ISQLSerializable {
 
   public void setClean(boolean clean) {
     isClean = clean;
-  }
-
-  @Override
-  public String toString() {
-    String locId = location == null ? "" : "" + location.getId();
-    return "id: "
-        + id
-        + ", location: "
-        + locId
-        + ", type: "
-        + type
-        + ", name: "
-        + name
-        + ", hasPatient: "
-        + hasPatient
-        + ", isClean: "
-        + isClean;
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.Equipment;
-  }
-
-  @Override
-  public String getSQLInsertString() {
-    int isCleanInt = isClean ? 1 : 0;
-    int hasPatientInt = hasPatient ? 1 : 0;
-    return location.getId()
-        + ", '"
-        + name
-        + "', "
-        + type.ordinal()
-        + ", "
-        + isCleanInt
-        + ", "
-        + hasPatientInt;
-  }
-
-  @Override
-  public String getSQLUpdateString() {
-    int isCleanInt = isClean ? 1 : 0;
-    int hasPatientInt = hasPatient ? 1 : 0;
-    return "locationID = "
-        + location.getId()
-        + ", name = '"
-        + name
-        + "', type = "
-        + type.ordinal()
-        + ", isClean = "
-        + isCleanInt
-        + ", hasPatient = "
-        + hasPatientInt
-        + " WHERE id = "
-        + id;
-  }
-
-  @Override
-  public String getTableColumns() {
-    return "(locationID, name, type, isClean, hasPatient)";
   }
 }

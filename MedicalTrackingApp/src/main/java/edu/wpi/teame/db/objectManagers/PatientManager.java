@@ -3,14 +3,12 @@ package edu.wpi.teame.db.objectManagers;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import java.io.*;
-import java.sql.Date;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -28,29 +26,21 @@ public final class PatientManager extends ObjectManager<Patient> {
   @Override
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException {
-    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
-    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
+    String filePath =
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
+    CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      String name = lineData.getColumnString("name");
-      Date dateOfBirth = (lineData.getColumnDate("dateOfBirth"));
-      Location currentLocation =
-          DBManager.getInstance()
-              .getLocationManager()
-              .get(lineData.getColumnInt("currentLocation"));
-
-      Patient newPatient = new Patient(currentLocation, dateOfBirth, name, 0);
-      DBManager.getInstance().getPatientManager().insert(newPatient);
+    while (lineData.readNext()) {
+      insert(new Patient(lineData));
     }
   }
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
-    String filePath = App.class.getResource("csv/" + outputFileName).getPath();
+    String filePath =
+        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
+
     FileWriter outputFile = new FileWriter(filePath);
     CSVWriter writer =
         new CSVWriter(
@@ -61,18 +51,11 @@ public final class PatientManager extends ObjectManager<Patient> {
             CSVWriter.DEFAULT_LINE_END);
 
     List<Patient> listOfPatients = this.getAll();
-
     List<String[]> data = new ArrayList<String[]>();
     data.add(new String[] {"name", "dateOfBirth", "currentLocation", "id"});
 
     for (Patient patient : listOfPatients) {
-      data.add(
-          new String[] {
-            patient.getName(),
-            patient.getDateOfBirth().toString(),
-            Integer.toString(patient.getCurrentLocation().getId()),
-            Integer.toString(patient.getId())
-          });
+      data.add(patient.toCSVData());
     }
     writer.writeAll(data);
     writer.close();
