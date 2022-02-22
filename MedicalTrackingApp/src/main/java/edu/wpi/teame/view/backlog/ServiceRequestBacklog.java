@@ -8,6 +8,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.animation.ScaleTransition;
@@ -68,6 +69,9 @@ public class ServiceRequestBacklog {
         DBManager.getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
     serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.LaundrySR).getAll());
     serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ReligiousSR).getAll());
+    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.DeceasedBodySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getManager(DataBaseObjectType.PatientDischargeSR).getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -191,6 +195,46 @@ public class ServiceRequestBacklog {
           break;
       }
     }
+    p1.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p2.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p3.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p4.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
     retList.addAll(p1);
     retList.addAll(p2);
     retList.addAll(p3);
