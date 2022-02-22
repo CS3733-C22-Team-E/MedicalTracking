@@ -426,40 +426,9 @@ public final class DBManager {
       ex.printStackTrace();
     }
 
-    getManager(DataBaseObjectType.Location).readCSV(subFolder + "TowerLocationsE.csv");
-    getManager(DataBaseObjectType.Equipment).readCSV(subFolder + "EquipmentE.csv");
-    getManager(DataBaseObjectType.Employee).readCSV(subFolder + "EmployeesE.csv");
-    getManager(DataBaseObjectType.Patient).readCSV(subFolder + "Patient.csv");
-
-    getManager(DataBaseObjectType.AudioVisualSR)
-        .readCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getManager(DataBaseObjectType.ComputerSR).readCSV(subFolder + "ComputerServiceRequest.csv");
-    getManager(DataBaseObjectType.DeceasedBodySR)
-        .readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getManager(DataBaseObjectType.ExternalPatientSR)
-        .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
-        .readCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getManager(DataBaseObjectType.FoodDeliverySR)
-        .readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.GiftAndFloralSR)
-        .readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getManager(DataBaseObjectType.InternalPatientTransferSR)
-        .readCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getManager(DataBaseObjectType.LanguageInterpreterSR)
-        .readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getManager(DataBaseObjectType.LaundrySR).readCSV(subFolder + "LaundryServiceRequest.csv");
-    getManager(DataBaseObjectType.MedicalEquipmentSR)
-        .readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getManager(DataBaseObjectType.MedicineDeliverySR)
-        .readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.MentalHealthSR)
-        .readCSV(subFolder + "MentalHealthServiceRequest.csv");
-    getManager(DataBaseObjectType.PatientDischargeSR)
-        .readCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getManager(DataBaseObjectType.ReligiousSR).readCSV(subFolder + "ReligiousServiceRequest.csv");
-    getManager(DataBaseObjectType.SanitationSR).readCSV(subFolder + "SanitationServiceRequest.csv");
-    getManager(DataBaseObjectType.SecuritySR).readCSV(subFolder + "SecurityServiceRequest.csv");
+    for (DataBaseObjectType type : DataBaseObjectType.values()) {
+      getManager(type).readCSV(subFolder + type.toTableName() + ".csv");
+    }
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
