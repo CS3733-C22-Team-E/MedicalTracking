@@ -417,6 +417,7 @@ public final class DBManager {
       throws CsvValidationException, SQLException, IOException, ParseException {
     String subFolder = "switchFiles/";
     if (fromBackup) {
+      cleanDBTables(); // Erase the tables in the DB to restore from CSV
       subFolder = "backup/";
     }
 
