@@ -412,6 +412,7 @@ public final class DBManager {
     stmt.execute(createSecuritySRTable);
     System.out.println("SecuritySR Table created");
   }
+
   public void loadDBFromCSV(boolean fromBackup)
       throws CsvValidationException, SQLException, IOException, ParseException {
     String subFolder = "switchFiles/";

@@ -40,7 +40,7 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.DeceasedSR.getColor()));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.DeceasedBodySR.getColor()));
     priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
@@ -110,7 +110,7 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
 
     ServiceRequest serviceRequest =
         new ServiceRequest(
-            DataBaseObjectType.DeceasedSR,
+            DataBaseObjectType.DeceasedBodySR,
             ServiceRequestPriority.valueOf(priority.getValue().toString()),
             ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
