@@ -56,7 +56,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getDeleted() throws SQLException {
-    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = true";
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = 1";
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -84,11 +84,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public void remove(int id) throws SQLException {
-    /*
-    StringBuilder removeQuery = new StringBuilder("DELETE FROM ");
-    removeQuery.append(getTableName()).append(" WHERE id = ").append(id);
-    statement.executeUpdate(removeQuery.toString());
-     */
     StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
     markIsDeleted
         .append(objectType.toTableName())
@@ -103,13 +98,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder updateQuery = new StringBuilder("UPDATE ");
     updateQuery.append(objectType.toTableName()).append(" SET ");
     updateQuery.append(updatedObject.getSQLUpdateString());
-    System.out.println(updateQuery.toString());
-
     statement.executeUpdate(updateQuery.toString());
   }
 
   @Override
-  public void restore() throws SQLException { // sets isDeleted = false for all tuples in the table
+  public void restore() throws SQLException {
     StringBuilder restoreQuery = new StringBuilder("UPDATE ");
     restoreQuery.append(objectType.toTableName()).append(" SET isDeleted = 0");
     statement.executeUpdate(restoreQuery.toString());
@@ -118,18 +111,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case ComputerSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case DeceasedBodySR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case FacilitiesMaintenanceSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case LaundrySR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case SanitationSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case SecuritySR:
+      case MentalHealthSR:
+      case PatientDischargeSR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
         return (T) new PatientTransportationServiceRequest(false, resultSet);
@@ -145,10 +134,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
-      case MentalHealthSR:
-        return (T) new ServiceRequest(resultSet, objectType);
-      case PatientDischargeSR:
-        return (T) new ServiceRequest(resultSet, objectType);
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(resultSet);
       case Location:
