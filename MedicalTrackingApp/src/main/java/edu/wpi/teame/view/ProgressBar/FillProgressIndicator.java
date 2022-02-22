@@ -16,17 +16,23 @@
 package edu.wpi.teame.view.ProgressBar;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import javafx.scene.control.Skin;
 
-/**
- * Progress indicator showing a circle that fills
- *
- * @author Andrea Vacondio
- */
 public class FillProgressIndicator extends ProgressCircleIndicator {
 
   public FillProgressIndicator() {
-    this.getStylesheets().add(App.class.getResource("css/fillprogress.css").toString());
+    this.getStylesheets().add(App.class.getResource("css/fillprogress1.css").toString());
+    this.getStyleClass().add("fillindicator");
+    this.setInnerCircleRadius(20);
+  }
+
+  public FillProgressIndicator(ServiceRequestPriority priority) {
+    this.getStylesheets()
+        .add(
+            App.class
+                .getResource("css/fillprogress" + String.valueOf(priority.ordinal()) + ".css")
+                .toString());
     this.getStyleClass().add("fillindicator");
     this.setInnerCircleRadius(20);
   }

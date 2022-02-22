@@ -4,6 +4,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.LanguageType;
 import java.io.*;
 import java.net.URL;
@@ -37,10 +38,8 @@ public class SettingsPageController implements Initializable {
     properties = new Properties();
     properties.load(reader);
 
-    String[] dbOptions = new String[] {"Embedded Database", "Client/Server Database"};
-    dbSwitchComboBox.setItems(FXCollections.observableArrayList(dbOptions));
-
-    dbSwitchComboBox.setValue(dbOptions[DBManager.getInstance().isClientServer() ? 1 : 0]);
+    dbSwitchComboBox.setItems(FXCollections.observableArrayList(DBType.values()));
+    dbSwitchComboBox.setValue(DBType.values()[DBManager.getInstance().getCurrentType().ordinal()]);
 
     languageComboBox.setItems(FXCollections.observableArrayList(LanguageType.values()));
 
@@ -132,10 +131,8 @@ public class SettingsPageController implements Initializable {
   @FXML
   private void changeDBConnection()
       throws SQLException, IOException, CsvValidationException, ParseException {
-
-    // switch DB type
-    boolean isClientServer = dbSwitchComboBox.getValue().toString().contains("Client/Server");
-    DBManager.getInstance().switchConnection(isClientServer);
+    DBType dbType = DBType.valueOf(dbSwitchComboBox.getValue().toString());
+    DBManager.getInstance().switchConnection(dbType);
   }
 
   @FXML

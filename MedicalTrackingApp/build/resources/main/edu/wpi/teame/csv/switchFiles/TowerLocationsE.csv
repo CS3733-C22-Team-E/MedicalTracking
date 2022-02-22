@@ -69,7 +69,7 @@ nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
 68,1740,1280,4,Tower,HALL,Hallway Connector 9 Floor 2,Hallway H00902
 69,2055,1280,4,Tower,HALL,Hallway Connector 10 Floor 2,Hallway H01002
 70,1935,860,4,Tower,RETL,Garden Cafe,Garden Cafe
-71,1615,1025,4,Tower,RETL,Vending Machine Floor 2?,Vending Machine
+71,1615,1025,4,Tower,RETL,Vending Machine Floor 2,Vending Machine
 72,1825,1080,4,Tower,RETL,Gift Shop Tower Floor 2,Gift Shop
 73,2060,880,4,Tower,STAI,Stairwell 1 Floor 2,Stairwell 0102
 74,1695,1165,4,Tower,STAI,Stairwell 2 Tower Floor 2,Stairwell 0202
@@ -123,32 +123,32 @@ nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
 122,1785,924,0,Tower,ELEV,Elevator L Floor L2,Elevator LL2
 123,1820,1280,0,Tower,ELEV,Elevator M Floor L2,Elevator ML2
 124,1745,1524,0,Tower,HALL,Hallway Connector 1 Floor L2,Hallway W01L2
-125,1512,929,3,Tower,STOR,West Plaza,
-126,1525,1085,5,Tower,STOR,In-Patient Storage Unit 1 Floor 3,
-127,1525,776,5,Tower,STOR,In-Patient Storage Unit 2 Floor 3,
-128,1681,810,5,Tower,STOR,Bed Park 1 Floor 3,
-129,1681,1042,5,Tower,STOR,Bed Park 2 Floor 3,
-130,1504,1064,5,Tower,STOR,Clean Infusion Pumps 1 Floor 3,
-131,1513,785,5,Tower,STOR,Clean Infusion Pumps 2 Floor 3,
-132,1533,928,5,Tower,DIRT,Dirty Infusion Pumps Floor 3,
-133,1634,756,5,Tower,PATI,Patient Room 1 Floor 3,
-134,1606,703,5,Tower,PATI,Patient Room 2 Floor 3,
-135,1565,679,5,Tower,PATI,Patient Room 3 Floor 3,
-136,1512,678,5,Tower,PATI,Patient Room 4 Floor 3,
-137,1480,691,5,Tower,PATI,Patient Room 5 Floor 3,
-138,1443,726,5,Tower,PATI,Patient Room 6 Floor 3,
-139,1432,756,5,Tower,PATI,Patient Room 7 Floor 3,
-140,1437,809,5,Tower,PATI,Patient Room 8 Floor 3,
-141,1456,843,5,Tower,PATI,Patient Room 9 Floor 3,
-142,1510,872,5,Tower,PATI,Patient Room 10 Floor 3,
-143,1511,983,5,Tower,PATI,Patient Room 11 Floor 3,
-144,1464,1014,5,Tower,PATI,Patient Room 12 Floor 3,
-145,1439,1045,5,Tower,PATI,Patient Room 13 Floor 3,
-146,1434,1097,5,Tower,PATI,Patient Room 14 Floor 3,
-147,1443,1125,5,Tower,PATI,Patient Room 15 Floor 3,
-148,1479,1165,5,Tower,PATI,Patient Room 16 Floor 3,
-149,1505,1176,5,Tower,PATI,Patient Room 17 Floor 3,
-150,1562,1170,5,Tower,PATI,Patient Room 18 Floor 3,
-151,1598,1149,5,Tower,PATI,Patient Room 19 Floor 3,
-152,1630,1100,5,Tower,PATI,Patient Room 20 Floor 3,
-153,1670,849,1,Tower,STOR,OR Bed Park,
+125,1512,929,3,Tower,STOR,West Plaza,0
+126,1525,1085,5,Tower,STOR,In-Patient Storage Unit 1 Floor 3,0
+127,1525,776,5,Tower,STOR,In-Patient Storage Unit 2 Floor 3,0
+128,1681,810,5,Tower,STOR,Bed Park 1 Floor 3,0
+129,1681,1042,5,Tower,STOR,Bed Park 2 Floor 3,0
+130,1504,1064,5,Tower,STOR,Clean Infusion Pumps 1 Floor 3,0
+131,1513,785,5,Tower,STOR,Clean Infusion Pumps 2 Floor 3,0
+132,1533,928,5,Tower,DIRT,Dirty Infusion Pumps Floor 3,0
+133,1634,756,5,Tower,PATI,Patient Room 1 Floor 3,0
+134,1606,703,5,Tower,PATI,Patient Room 2 Floor 3,0
+135,1565,679,5,Tower,PATI,Patient Room 3 Floor 3,0
+136,1512,678,5,Tower,PATI,Patient Room 4 Floor 3,0
+137,1480,691,5,Tower,PATI,Patient Room 5 Floor 3,0
+138,1443,726,5,Tower,PATI,Patient Room 6 Floor 3,0
+139,1432,756,5,Tower,PATI,Patient Room 7 Floor 3,0
+140,1437,809,5,Tower,PATI,Patient Room 8 Floor 3,0
+141,1456,843,5,Tower,PATI,Patient Room 9 Floor 3,0
+142,1510,872,5,Tower,PATI,Patient Room 10 Floor 3,0
+143,1511,983,5,Tower,PATI,Patient Room 11 Floor 3,0
+144,1464,1014,5,Tower,PATI,Patient Room 12 Floor 3,0
+145,1439,1045,5,Tower,PATI,Patient Room 13 Floor 3,0
+146,1434,1097,5,Tower,PATI,Patient Room 14 Floor 3,0
+147,1443,1125,5,Tower,PATI,Patient Room 15 Floor 3,0
+148,1479,1165,5,Tower,PATI,Patient Room 16 Floor 3,0
+149,1505,1176,5,Tower,PATI,Patient Room 17 Floor 3,0
+150,1562,1170,5,Tower,PATI,Patient Room 18 Floor 3,0
+151,1598,1149,5,Tower,PATI,Patient Room 19 Floor 3,0
+152,1630,1100,5,Tower,PATI,Patient Room 20 Floor 3,0
+153,1670,849,1,Tower,STOR,OR Bed Park,0

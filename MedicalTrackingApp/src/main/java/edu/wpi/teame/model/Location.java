@@ -17,6 +17,8 @@ public class Location implements ISQLSerializable, GraphNode {
   private int x;
   private int y;
 
+  private boolean isDeleted;
+
   public Location(
       int id,
       String longName,
@@ -34,6 +36,7 @@ public class Location implements ISQLSerializable, GraphNode {
     this.x = x;
     this.y = y;
     this.shortName = shortName;
+    this.isDeleted = false;
   }
 
   public Location(ResultSet resultSet) throws SQLException {
@@ -45,6 +48,7 @@ public class Location implements ISQLSerializable, GraphNode {
     this.floor = FloorType.values()[resultSet.getInt("floor")];
     this.type = LocationType.values()[resultSet.getInt("locationType")];
     this.building = BuildingType.values()[resultSet.getInt("building")];
+    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   public int getId() {
