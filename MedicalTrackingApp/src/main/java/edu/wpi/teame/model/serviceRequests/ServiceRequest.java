@@ -1,5 +1,3 @@
-package edu.wpi.teame.model.serviceRequests;
-
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -13,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.ZoneId;
+import java.time.LocalTime;
 
 public class ServiceRequest implements ISQLSerializable {
   protected DataBaseObjectType dbType;
@@ -230,8 +229,9 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   protected String dateToSQLString(Date date) {
-    String dateAsString =
-        openDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toString();
+    LocalTime localTime = LocalTime.now();
+    String dateAsString = openDate.toLocalDate().atTime(localTime).toString();
+    dateAsString = dateAsString.substring(0, dateAsString.indexOf('.'));
     return dateAsString.replace("T", " ").replace("Z", "");
   }
 

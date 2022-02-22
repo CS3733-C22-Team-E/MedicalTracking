@@ -7,7 +7,9 @@ import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javafx.animation.ScaleTransition;
@@ -19,6 +21,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class ServiceRequestBacklog {
@@ -68,12 +71,28 @@ public class ServiceRequestBacklog {
         DBManager.getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
     serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.LaundrySR).getAll());
     serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ReligiousSR).getAll());
+    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.DeceasedBodySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getManager(DataBaseObjectType.PatientDischargeSR).getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
     serviceRequestsFromDB.clear();
     scrollWrapper.setContent(getRequestHolder());
     return scrollWrapper;
+  }
+
+  public HBox getTitle() throws SQLException {
+
+    HBox tBox = new HBox();
+    Text title = new Text("Request Backlog");
+    title.setFont(Font.font(56));
+    title.setTextAlignment(TextAlignment.CENTER);
+    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); // TODO Fix
+    tBox.getChildren().add(title);
+    tBox.setAlignment(Pos.CENTER);
+
+    return tBox;
   }
 
   public GridPane getRequestHolder() throws SQLException {
@@ -98,13 +117,16 @@ public class ServiceRequestBacklog {
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
-    requestHolder.add(getRefreshBar(), 0, 0);
+    requestHolder.add(getTitle(), 0, 0);
+    requestHolder.add(getRefreshBar(), 0, 1);
+    //    GridPane titleGridPane = new GridPane();
+    //    titleGridPane.set
     return requestHolder;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
     HBox card = c.getCard(CARDWIDTH, 100);
-    g.add(card, 0, cardsDisplayed.size() + 1);
+    g.add(card, 0, cardsDisplayed.size() + 2);
     cardsDisplayed.add(c);
   }
 
@@ -191,6 +213,46 @@ public class ServiceRequestBacklog {
           break;
       }
     }
+    p1.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p2.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p3.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
+    p4.sort(
+        new Comparator<ServiceRequest>() {
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+              return 0;
+            }
+            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+          }
+        });
     retList.addAll(p1);
     retList.addAll(p2);
     retList.addAll(p3);
