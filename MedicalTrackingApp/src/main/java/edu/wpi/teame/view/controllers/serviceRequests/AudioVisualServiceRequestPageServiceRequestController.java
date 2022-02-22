@@ -108,6 +108,8 @@ public class AudioVisualServiceRequestPageServiceRequestController
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
+    Date d = new Date(new java.util.Date().getTime());
+
     ServiceRequest serviceRequest =
         new ServiceRequest(
             DataBaseObjectType.AudioVisualSR,
@@ -120,7 +122,7 @@ public class AudioVisualServiceRequestPageServiceRequestController
                 Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .getTime()),
             new Date(0),
-            new Date(new java.util.Date().getTime()),
+            d,
             "",
             0);
     DBManager.getInstance().getAudioVisualSRManager().insert(serviceRequest);
