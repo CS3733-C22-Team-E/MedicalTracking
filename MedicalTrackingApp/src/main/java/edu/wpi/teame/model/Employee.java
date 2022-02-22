@@ -12,12 +12,14 @@ public class Employee implements ISQLSerializable {
   private EmployeeType type;
   private String name;
   private int id;
+  private boolean isDeleted;
 
   public Employee(int id, DepartmentType dept, String name, EmployeeType type) {
     this.department = dept;
     this.type = type;
     this.name = name;
     this.id = id;
+    this.isDeleted = false;
   }
 
   public Employee(ResultSet resultSet) throws SQLException {
@@ -25,6 +27,7 @@ public class Employee implements ISQLSerializable {
     this.department = DepartmentType.values()[resultSet.getInt("department")];
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
+    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   public String toString() {
@@ -67,6 +70,14 @@ public class Employee implements ISQLSerializable {
 
   public void setType(EmployeeType type) {
     this.type = type;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 
   @Override

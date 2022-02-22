@@ -47,7 +47,7 @@ public final class DBManager {
             + "floor int, "
             + "x int, "
             + "y int, "
-            + "isDeleted int)"; //TODO: add isDeleted. Done
+            + "isDeleted int DEFAULT 0)";
     stmt.execute(createLocationsTable);
     System.out.println("Location Table created");
 
@@ -58,8 +58,8 @@ public final class DBManager {
             + "type int, "
             + "isClean int, "
             + "hasPatient int, "
-            + "isDeleted int, "
-            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))"; //TODO: add isDeleted. Done
+            + "isDeleted int DEFAULT 0, "
+            + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
     stmt.execute(createEquipmentTable);
     System.out.println("Equipment Table created");
 
@@ -68,7 +68,7 @@ public final class DBManager {
             + "department int, "
             + "name VARCHAR(100), "
             + "type int, "
-            + "isDeleted int)"; //TODO: add isDeleted. Done
+            + "isDeleted int DEFAULT 0)";
     stmt.execute(createEmployeeTable);
     System.out.println("Employee Table created");
 
@@ -77,8 +77,8 @@ public final class DBManager {
             + "name VARCHAR(100), "
             + "dateOfBirth DATE, "
             + "currentLocationID int,"
-            + "isDeleted int, "
-            + "FOREIGN KEY (currentLocationID) REFERENCES LOCATION(id))"; //TODO: add isDeleted. Done
+            + "isDeleted int DEFAULT 0, "
+            + "FOREIGN KEY (currentLocationID) REFERENCES LOCATION(id))";
     stmt.execute(createPatientTable);
     System.out.println("Patient Table created");
 
@@ -102,9 +102,9 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createAudioVisualSRTable);
     System.out.println("AudioVisualSR Table created");
 
@@ -119,9 +119,9 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createComputerSRTable);
     System.out.println("ComputerSR Table created");
 
@@ -136,6 +136,7 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createDeceasedBodyRemovalSRTable);
@@ -155,12 +156,12 @@ public final class DBManager {
             + "destinationID int, "
             + "patientID int, "
             + "equipmentID int, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (destinationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createExternalPatientSRTable);
     System.out.println("ExternalPatientSR Table created");
 
@@ -175,9 +176,9 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createFacilitiesMaintenanceSRTable);
     System.out.println("FacilitiesMaintenanceSR Table created");
 
@@ -194,10 +195,10 @@ public final class DBManager {
             + "requestDate DATE, "
             + "patientID int, "
             + "food VARCHAR(250), "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createFoodDeliverySRTable);
     System.out.println("FoodDeliverySR Table created");
 
@@ -213,10 +214,10 @@ public final class DBManager {
             + "priority int, "
             + "requestDate DATE, "
             + "patientID int, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createGiftAndFloralSRTable);
     System.out.println("GiftAndFloralSR Table created");
 
@@ -234,12 +235,12 @@ public final class DBManager {
             + "destinationID int, "
             + "patientID int, "
             + "equipmentID int, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (destinationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createInternalPatientSRTable);
     System.out.println("InternalPatientSR Table created");
 
@@ -256,10 +257,10 @@ public final class DBManager {
             + "requestDate DATE, "
             + "language int, "
             + "patientID int, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createLanguageSRTable);
     System.out.println("LanguageInterpreterSR Table created");
 
@@ -274,9 +275,9 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createLaundrySRTable);
     System.out.println("LaundrySR Table created");
 
@@ -292,10 +293,10 @@ public final class DBManager {
             + "priority int, "
             + "requestDate DATE, "
             + "equipmentID int, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createEquipmentDeliverySRTable);
     System.out.println("MedicalEquipmentSR Table created");
 
@@ -313,10 +314,10 @@ public final class DBManager {
             + "medicineName VARCHAR(200), "
             + "patientID int, "
             + "medicineQuantity VARCHAR(200), "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createMedicineDeliverySRTable);
     System.out.println("MedicineDeliverySR Table created");
 
@@ -331,6 +332,7 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createMentalHealthSRTable);
@@ -347,6 +349,7 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createPatientDischargeSRTable);
@@ -365,10 +368,10 @@ public final class DBManager {
             + "requestDate DATE, "
             + "patientID int, "
             + "religion VARCHAR(200), "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createReligionSR);
     System.out.println("ReligiousSR Table created");
 
@@ -383,9 +386,9 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate Date, " // change to timestamp
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSanitationSRTable);
     System.out.println("SanitationSR Table created");
 
@@ -400,16 +403,15 @@ public final class DBManager {
             + "additionalInfo VARCHAR(2500), "
             + "priority int, "
             + "requestDate DATE, "
-            + "isDeleted int, "
+            + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
-            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))"; //TODO: add isDeleted. Done
+            + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
     stmt.execute(createSecuritySRTable);
     System.out.println("SecuritySR Table created");
   }
 
   public void loadDBFromCSV(boolean fromBackup)
       throws CsvValidationException, SQLException, IOException, ParseException {
-    // TODO: add DeceasedBody, MentalHealth, PatientDischarge. Done
     String subFolder = "switchFiles/";
     if (fromBackup) {
       subFolder = "backup/";
@@ -428,7 +430,8 @@ public final class DBManager {
 
     getAudioVisualSRManager().readCSV(subFolder + "AudioVisualServiceRequest.csv");
     getComputerSRManager().readCSV(subFolder + "ComputerServiceRequest.csv");
-    getManager(DataBaseObjectType.DeceasedBodySR).readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
+    getManager(DataBaseObjectType.DeceasedBodySR)
+        .readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
     getExternalPatientSRManager()
         .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
     getFacilitiesMaintenanceSRManager()
@@ -441,15 +444,16 @@ public final class DBManager {
     getLaundrySRManager().readCSV(subFolder + "LaundryServiceRequest.csv");
     getMedicalEquipmentSRManager().readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.MentalHealthSR).readCSV(subFolder + "MentalHealthServiceRequest.csv");
-    getManager(DataBaseObjectType.PatientDischargeSR).readCSV(subFolder + "PatientDischargeServiceRequest.csv");
+    getManager(DataBaseObjectType.MentalHealthSR)
+        .readCSV(subFolder + "MentalHealthServiceRequest.csv");
+    getManager(DataBaseObjectType.PatientDischargeSR)
+        .readCSV(subFolder + "PatientDischargeServiceRequest.csv");
     getReligiousSRManager().readCSV(subFolder + "ReligiousServiceRequest.csv");
     getSanitationSRManager().readCSV(subFolder + "SanitationServiceRequest.csv");
     getSecuritySRManager().readCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
-    // TODO: add DeceasedBody, MentalHealth, PatientDischarge. Done
     String subFolder = "switchFiles/";
     if (isBackup) {
       subFolder = "backup/";
@@ -462,7 +466,8 @@ public final class DBManager {
 
     getAudioVisualSRManager().writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
     getComputerSRManager().writeToCSV(subFolder + "ComputerServiceRequest.csv");
-    getManager(DataBaseObjectType.DeceasedBodySR).writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
+    getManager(DataBaseObjectType.DeceasedBodySR)
+        .writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
     getExternalPatientSRManager()
         .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
     getFacilitiesMaintenanceSRManager()
@@ -476,8 +481,10 @@ public final class DBManager {
     getMedicalEquipmentSRManager()
         .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.MentalHealthSR).writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
-    getManager(DataBaseObjectType.PatientDischargeSR).writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
+    getManager(DataBaseObjectType.MentalHealthSR)
+        .writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
+    getManager(DataBaseObjectType.PatientDischargeSR)
+        .writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
     getReligiousSRManager().writeToCSV(subFolder + "ReligiousServiceRequest.csv");
     getSanitationSRManager().writeToCSV(subFolder + "SanitationServiceRequest.csv");
     getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
@@ -501,14 +508,14 @@ public final class DBManager {
     }
 
     // Connect to Client/Server... that DB may already have the tables
-    try {
-      connection = DriverManager.getConnection(ClientServerConnectionString);
-      stmt = connection.createStatement();
-      isClientServer = true;
-      createDBTables();
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-    }
+    //    try {
+    //      connection = DriverManager.getConnection(ClientServerConnectionString);
+    //      stmt = connection.createStatement();
+    //      isClientServer = true;
+    //      createDBTables();
+    //    } catch (SQLException ex) {
+    //      ex.printStackTrace();
+    //    }
 
     // Default connect to Embedded Server
     connection = DriverManager.getConnection(EmbeddedConnectionString);
