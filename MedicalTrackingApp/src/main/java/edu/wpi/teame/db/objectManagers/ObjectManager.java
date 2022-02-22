@@ -46,7 +46,18 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getAll() throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName();
+    String getQuery = "SELECT * FROM " + getTableName() + " WHERE isDeleted = 0";
+    ResultSet resultSet = statement.executeQuery(getQuery);
+    List<T> listResult = new LinkedList<>();
+    while (resultSet.next()) {
+      listResult.add(getCastedType(resultSet));
+    }
+    return listResult;
+  }
+
+  @Override
+  public List<T> getDeleted() throws SQLException {
+    String getQuery = "SELECT * FROM " + getTableName() + " WHERE isDeleted = true";
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -74,9 +85,18 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public void remove(int id) throws SQLException {
+    /*
     StringBuilder removeQuery = new StringBuilder("DELETE FROM ");
     removeQuery.append(getTableName()).append(" WHERE id = ").append(id);
     statement.executeUpdate(removeQuery.toString());
+     */
+    StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
+    markIsDeleted
+        .append(getTableName())
+        .append(" SET isDeleted = 1")
+        .append(" WHERE id = ")
+        .append(id);
+    statement.executeUpdate(markIsDeleted.toString());
   }
 
   @Override
@@ -87,6 +107,13 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     System.out.println(updateQuery.toString());
 
     statement.executeUpdate(updateQuery.toString());
+  }
+
+  @Override
+  public void restore() throws SQLException { // sets isDeleted = false for all tuples in the table
+    StringBuilder restoreQuery = new StringBuilder("UPDATE ");
+    restoreQuery.append(getTableName()).append(" SET isDeleted = 0");
+    statement.executeUpdate(restoreQuery.toString());
   }
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
