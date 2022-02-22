@@ -136,7 +136,7 @@ public class ServiceRequestDirectoryPageController implements Initializable {
             new StyledTab(
                 "Deceased Body Removal",
                 SortOrder.ByName,
-                getPageUrl(DataBaseObjectType.DeceasedSR))));
+                getPageUrl(DataBaseObjectType.DeceasedBodySR))));
 
     tabs.add(
         TabHoverAnimation.install(
@@ -197,7 +197,7 @@ public class ServiceRequestDirectoryPageController implements Initializable {
       case MentalHealthSR:
         url += "MentalHealth";
         break;
-      case DeceasedSR:
+      case DeceasedBodySR:
         url += "DeceasedBodyRemoval";
         break;
       case PatientDischargeSR:
