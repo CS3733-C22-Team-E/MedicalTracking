@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
@@ -741,15 +743,13 @@ public class Map {
     AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();
     CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);
     CustomMenuItem Location = new CustomMenuItem(LocationField);
-    DBManager.getInstance()
-        .getLocationManager()
+    ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
         .getAll()
         .forEach(
             location -> {
               LocationField.getEntries().add(location.getLongName());
             });
-    DBManager.getInstance()
-        .getEmployeeManager()
+    ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
         .getAll()
         .forEach(
             employee -> {
@@ -762,10 +762,10 @@ public class Map {
           public void handle(ActionEvent event) {
             try {
               Location newLocation =
-                  DBManager.getInstance().getLocationManager().getByName(LocationField.getText());
+                  ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+                      .getByName(LocationField.getText());
               Employee newEmployee =
-                  DBManager.getInstance()
-                      .getEmployeeManager()
+                  ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
                       .getByAssignee(AssigneeServiceRequest.getText());
               if (newLocation != null) {
                 SR.setLocation(newLocation);

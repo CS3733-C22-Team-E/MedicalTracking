@@ -1,3 +1,5 @@
+package edu.wpi.teame.model.serviceRequests;
+
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -10,7 +12,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.ZoneId;
 import java.time.LocalTime;
 
 public class ServiceRequest implements ISQLSerializable {

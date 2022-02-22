@@ -42,12 +42,12 @@ public class CSVLineData {
     if (columnString == null) {
       return null;
     }
-    
+
     long time;
-    if (dateString.length() > 11) {
-      time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString).getTime();
+    if (columnString.length() > 11) {
+      time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(columnString).getTime();
     } else {
-      time = new SimpleDateFormat("yyyy-MM-dd").parse(dateString).getTime();
+      time = new SimpleDateFormat("yyyy-MM-dd").parse(columnString).getTime();
     }
     return new Date(time);
   }
