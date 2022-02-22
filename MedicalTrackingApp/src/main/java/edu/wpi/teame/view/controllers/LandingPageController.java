@@ -170,7 +170,6 @@ public class LandingPageController implements Initializable {
     tabs.add(aboutPageTab);
 
     tabs.sort(StyledTab::compareTo);
-
     mainTabPane.getTabs().setAll(tabs);
 
     shouldEnlarge = false;

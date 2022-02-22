@@ -5,6 +5,7 @@ import static edu.wpi.teame.model.enums.DataBaseObjectType.*;
 import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.sql.SQLException;
@@ -93,7 +94,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 2, 1);
     detailsGrid.add(generateDetailText("Location: "), 2, 2);
     detailsGrid.add(getSeparatorH(), 2, 3);
-    detailsGrid.add(generateDetailText("Floor: "), 2, 4);
+    detailsGrid.add(generateDetailText("Priority: "), 2, 4);
     detailsGrid.add(getSeparatorH(), 2, 5);
     detailsGrid.add(generateDetailText("Status: "), 2, 6);
     detailsGrid.add(getSeparatorH(), 2, 7);
@@ -102,7 +103,7 @@ public class ServiceRequestCard {
     detailsGrid.add(getSeparatorH(), 3, 1);
     detailsGrid.add(generateDetailText(location.getLongName()), 3, 2);
     detailsGrid.add(getSeparatorH(), 3, 3);
-    detailsGrid.add(generateDetailText(location.getFloor().name()), 3, 4);
+    detailsGrid.add(generatePriorityText(sr.getPriority().name()), 3, 4);
     detailsGrid.add(getSeparatorH(), 3, 5);
     detailsGrid.add(generateDetailText(sr.getStatus().name()), 3, 6);
     detailsGrid.add(getSeparatorH(), 3, 7);
@@ -116,6 +117,26 @@ public class ServiceRequestCard {
       setHoverStyling(card);
     }
     return card;
+  }
+
+  private HBox generatePriorityText(String text) {
+    HBox pBox = new HBox();
+    Text priorityText = new Text(text);
+    priorityText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+    if (sr.getPriority() == ServiceRequestPriority.Low
+        || sr.getPriority() == ServiceRequestPriority.Normal) {
+      priorityText.setFill(Color.BLACK);
+    } else {
+      priorityText.setFill(Color.WHITE);
+    }
+    priorityText.setTextAlignment(TextAlignment.RIGHT);
+    pBox.getChildren().add(priorityText);
+    pBox.setBackground(
+        new Background(
+            new BackgroundFill(sr.getPriority().getColor(), new CornerRadii(10), Insets.EMPTY)));
+    pBox.setAlignment(Pos.CENTER);
+    pBox.setMaxWidth(70);
+    return pBox;
   }
 
   private Text generateDetailText(String text) {
@@ -156,8 +177,15 @@ public class ServiceRequestCard {
             e.printStackTrace();
           }
         }));
-    Tooltip t = new Tooltip("Click to delete");
+    Tooltip t = new Tooltip("Click to mark as done.");
     Tooltip.install(doneBox, t);
+    ;
+    if (isDead) {
+      t.setText("Click to delete.");
+      doneBox.setSelected(true);
+    }
+    Tooltip.install(doneBox, t);
+    ;
     return doneBox;
   }
 

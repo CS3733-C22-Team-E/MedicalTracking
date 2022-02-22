@@ -10,7 +10,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
+import java.time.LocalTime;
 
 public class ServiceRequest implements ISQLSerializable {
   protected DataBaseObjectType dbType;
@@ -24,6 +24,7 @@ public class ServiceRequest implements ISQLSerializable {
   protected Date openDate;
   protected String title;
   protected int id;
+  protected boolean isDeleted;
 
   public ServiceRequest(
       DataBaseObjectType type,
@@ -48,10 +49,11 @@ public class ServiceRequest implements ISQLSerializable {
     this.openDate = openDate;
     this.title = title;
     this.id = id;
+    this.isDeleted = false;
   }
 
   public ServiceRequest(ResultSet resultSet, DataBaseObjectType type) throws SQLException {
-    this.priority = ServiceRequestPriority.values()[resultSet.getInt("status")];
+    this.priority = ServiceRequestPriority.values()[resultSet.getInt("priority")];
     this.location =
         DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
     this.assignee =
@@ -64,6 +66,7 @@ public class ServiceRequest implements ISQLSerializable {
     this.title = resultSet.getString("title");
     this.id = resultSet.getInt("id");
     this.dbType = type;
+    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   @Override
@@ -137,8 +140,9 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   protected String dateToSQLString(Date date) {
-    String dateAsString =
-        openDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toString();
+    LocalTime localTime = LocalTime.now();
+    String dateAsString = openDate.toLocalDate().atTime(localTime).toString();
+    dateAsString = dateAsString.substring(0, dateAsString.indexOf('.'));
     return dateAsString.replace("T", " ").replace("Z", "");
   }
 

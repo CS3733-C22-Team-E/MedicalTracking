@@ -5,10 +5,12 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
@@ -67,7 +69,7 @@ public class Map {
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation = null;
-  private ArrayList<Location> PathFindingLocations = new ArrayList<>();
+  private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -655,7 +657,11 @@ public class Map {
                 serviceRequestsFromDB.remove(serviceRequest);
               } else {
                 oldSR.add(serviceRequest);
-                ServiceRequestToMapElement(serviceRequest);
+                try {
+                  ServiceRequestToMapElement(serviceRequest);
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                }
               }
             });
   }
@@ -681,30 +687,134 @@ public class Map {
                   lastPressedLocation = location;
                   PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
                 } else if (PathFindingLocations.size() < 2) {
-                  newDot.getIcon().setFill(Color.CORAL);
-                  PathFindingLocations.add(location);
+                  newDot.getIcon().setFill(Color.BLUE);
+                  PathFindingLocations.add(newDot);
                   if (PathFindingLocations.size() == 2) {
                     try {
-                      Navigation.RemoveRoute();
+                      PathFindingLocations.get(0).getIcon().setFill(Color.YELLOW);
+                      PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
-                          PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
-                      PathFindingLocations.clear();
+                          PathFindingLocations.get(0).getLocation().getId(),
+                          PathFindingLocations.get(1).getLocation().getId());
+
                     } catch (SQLException e) {
                       e.printStackTrace();
+                    } catch (IllegalStateException e) {
+                      try {
+                        PathFindingLocations.get(1).getIcon().setFill(Color.YELLOW);
+                        PathFindingLocations.get(0).getIcon().setFill(Color.GREEN);
+                        Navigation.FindAndDrawRoute(
+                            PathFindingLocations.get(1).getLocation().getId(),
+                            PathFindingLocations.get(0).getLocation().getId());
+                      } catch (SQLException ex) {
+                        ex.printStackTrace();
+                      }
                     }
                   }
+                } else if (PathFindingLocations.size() == 2) {
+                  Navigation.RemoveRoute();
+                  PathFindingLocations.stream()
+                      .forEach(
+                          LocationDot -> {
+                            LocationDot.getIcon().setFill(Color.BLACK);
+                          });
+                  PathFindingLocations.clear();
+                  PathFindingLocations.add(newDot);
+                  newDot.getIcon().setFill(Color.BLUE);
                 }
               }
             });
   }
 
-  private void ServiceRequestToMapElement(ServiceRequest SR) {
+  private void ServiceRequestToMapElement(ServiceRequest SR) throws SQLException {
     double X = SR.getLocation().getX() - MAPWIDTH / 2;
     double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
     newIcon.startTimer(20);
     updateLayoutChildren();
+
+    ContextMenu ServiceRequestMenu = new ContextMenu();
+    RadioMenuItem CompleteServiceRequest = new RadioMenuItem("Complete Service Request");
+    RadioMenuItem UpdateServiceRequest = new RadioMenuItem("Update Service Request");
+    AutoCompleteTextField LocationField = new AutoCompleteTextField();
+    AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();
+    CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);
+    CustomMenuItem Location = new CustomMenuItem(LocationField);
+    DBManager.getInstance()
+        .getLocationManager()
+        .getAll()
+        .forEach(
+            location -> {
+              LocationField.getEntries().add(location.getLongName());
+            });
+    DBManager.getInstance()
+        .getEmployeeManager()
+        .getAll()
+        .forEach(
+            employee -> {
+              AssigneeServiceRequest.getEntries().add(employee.getName());
+            });
+    UpdateServiceRequest.setSelected(false);
+    UpdateServiceRequest.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            try {
+              Location newLocation =
+                  DBManager.getInstance().getLocationManager().getByName(LocationField.getText());
+              Employee newEmployee =
+                  DBManager.getInstance()
+                      .getEmployeeManager()
+                      .getByAssignee(AssigneeServiceRequest.getText());
+              if (newLocation != null) {
+                SR.setLocation(newLocation);
+                newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
+                newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
+                newIcon.progressIndicator.setTranslateX(newIcon.Icon.getTranslateX());
+                newIcon.progressIndicator.setTranslateY(newIcon.Icon.getTranslateY());
+                System.out.println(
+                    "Updated Service Request Location to:" + SR.getLocation().getLongName());
+              }
+              if (newEmployee != null) {
+                SR.setAssignee(newEmployee);
+                System.out.println(
+                    "Updated Service Request Assignee to: " + SR.getAssignee().getName());
+              }
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+
+            try {
+              DBManager.getManager(SR.getDBType()).update(SR);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          }
+        });
+    CompleteServiceRequest.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            newIcon.cancelTimer();
+            CompleteServiceRequest.setSelected(true);
+          }
+        });
+    Location.setHideOnClick(false);
+    Assignee.setHideOnClick(false);
+    CompleteServiceRequest.setSelected(false);
+    ServiceRequestMenu.getItems().add(Assignee);
+    ServiceRequestMenu.getItems().add(Location);
+    ServiceRequestMenu.getItems().add(CompleteServiceRequest);
+    ServiceRequestMenu.getItems().add(UpdateServiceRequest);
+
+    newIcon.progressIndicator.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            ServiceRequestMenu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());
+          }
+        });
   }
 
   private void createNewRadialMenus() {
