@@ -94,6 +94,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     statement.executeUpdate(updateQuery.toString());
   }
 
+  @Override
+  public void restore() throws SQLException { //sets isDeleted = false for all tuples in the table
+    //TODO: restore function. Done
+    StringBuilder restoreQuery = new StringBuilder("UPDATE ");
+    restoreQuery.append(getTableName()).append(" SET isDeleted = false");
+    statement.executeUpdate(restoreQuery.toString());
+  }
+
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:

@@ -19,6 +19,8 @@ public interface IManager<T extends ISQLSerializable> {
 
   public void update(T updatedObject) throws SQLException;
 
+  public void restore() throws SQLException;
+
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException;
 
