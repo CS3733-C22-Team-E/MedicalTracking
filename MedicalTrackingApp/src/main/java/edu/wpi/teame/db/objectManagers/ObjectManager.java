@@ -73,10 +73,15 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   @Override
-  public void remove(int id) throws SQLException {
+  public void remove(int id) throws SQLException { //TODO: update remove with isDeleted. Done
+    /*
     StringBuilder removeQuery = new StringBuilder("DELETE FROM ");
     removeQuery.append(getTableName()).append(" WHERE id = ").append(id);
     statement.executeUpdate(removeQuery.toString());
+     */
+    StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
+    markIsDeleted.append(getTableName()).append(" SET isDeleted = true").append(" WHERE id = ").append(id);
+    statement.executeUpdate(markIsDeleted.toString());
   }
 
   @Override
