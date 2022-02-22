@@ -151,8 +151,16 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
 
-    tabs.sort(StyledTab::compareTo);
+    StyledTab aboutPage =
+        new StyledTab(
+            "About Page",
+            SortOrder.ByName,
+            "view/tabs/AboutPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
+    TabHoverAnimation.install(aboutPage);
+    tabs.add(aboutPage);
 
+    tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
 
     shouldEnlarge = false;

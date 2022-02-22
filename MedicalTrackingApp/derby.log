@@ -1,8 +1,8 @@
 ----------------------------------------------------------------
-Sat Feb 19 22:02:42 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-1514-cfd5-00000eb09a68, [2] memory:C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/aberf/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
+Mon Feb 21 23:16:28 EST 2022D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017f-1fa5-1a39-00000e684928, [2] memory:C:\Users\samay\OneDrive\Documents\School\Computer Science\CS 3733\MedicalTrackingApp\EmbeddedE, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@725bef66, [4] file:/C:/Users/samay/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.15.2.0/b64da6681994f33ba5783ffae55cdb44885b9e70/derby-10.15.2.0.jar
 java.vendor=Microsoft
-java.runtime.version=11.0.12+7
-user.dir=C:\Users\aberf\Documents\GitHub\MedicalTracking\MedicalTrackingApp
+java.runtime.version=11.0.13+8-LTS
+user.dir=C:\Users\samay\OneDrive\Documents\School\Computer Science\CS 3733\MedicalTrackingApp
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

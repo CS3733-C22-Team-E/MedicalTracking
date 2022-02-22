@@ -12,12 +12,14 @@ public class Patient implements ISQLSerializable {
   private Date dateOfBirth;
   private String name;
   private int id;
+  private boolean isDeleted;
 
   public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {
     this.currentLocation = currentLocation;
     this.dateOfBirth = dateOfBirth;
     this.name = name;
     this.id = id;
+    this.isDeleted = false;
   }
 
   public Patient(ResultSet resultSet) throws SQLException {
@@ -26,6 +28,7 @@ public class Patient implements ISQLSerializable {
     this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
+    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   @Override

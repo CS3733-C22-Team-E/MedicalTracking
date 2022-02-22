@@ -66,8 +66,8 @@ public class Map {
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
-  private PathFinder Navigation;
-  private ArrayList<Location> PathFindingLocations = new ArrayList<>();
+  private PathFinder Navigation = null;
+  private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -108,6 +108,11 @@ public class Map {
     MAPHEIGHT = backgroundImage.getHeight();
     MAPWIDTH = backgroundImage.getWidth();
     updateLayoutChildren();
+    if (Navigation != null) {
+      Navigation.RemoveRoute();
+      Navigation.SelectFloor(MAPWIDTH, MAPHEIGHT);
+      System.out.println(MAPWIDTH + " " + MAPHEIGHT);
+    }
   }
 
   private boolean coordinateChecker(String X, String Y) {
@@ -656,18 +661,13 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
-    //    ImageView locationDot = new ImageView();
-    //    locationDot.setImage(new Image(getImageResource("images/Icons/LocationDot.png")));
-    //    locationDot.setFitWidth(10);
-    //    locationDot.setFitHeight(10);
-    double x = location.getX() - MAPWIDTH / 2;
-    double y = location.getY() - MAPHEIGHT / 2;
-    //    locationDot.setTranslateX(x);
-    //    locationDot.setTranslateY(y);
-    //    locationDot.setVisible(false);
+    double mapWidthTest = Images.get(location.getFloor()).getWidth();
+    double mapHeightTest = Images.get(location.getFloor()).getHeight();
+    double x = location.getX() - mapWidthTest / 2;
+    double y = location.getY() - mapHeightTest / 2;
     MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
-    Tooltip t = new Tooltip(location.getLongName());
+    Tooltip t = new Tooltip(location.getLongName() + x + y);
     Tooltip.install(newDot.getIcon(), t);
     updateLayoutChildren();
     newDot
@@ -681,17 +681,40 @@ public class Map {
                   lastPressedLocation = location;
                   PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
                 } else if (PathFindingLocations.size() < 2) {
-                  newDot.getIcon().setFill(Color.CORAL);
-                  PathFindingLocations.add(location);
+                  newDot.getIcon().setFill(Color.BLUE);
+                  PathFindingLocations.add(newDot);
                   if (PathFindingLocations.size() == 2) {
                     try {
+                      PathFindingLocations.get(0).getIcon().setFill(Color.YELLOW);
+                      PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
-                          PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
-                      PathFindingLocations.clear();
+                          PathFindingLocations.get(0).getLocation().getId(),
+                          PathFindingLocations.get(1).getLocation().getId());
+
                     } catch (SQLException e) {
                       e.printStackTrace();
+                    } catch (IllegalStateException e) {
+                      try {
+                        PathFindingLocations.get(1).getIcon().setFill(Color.YELLOW);
+                        PathFindingLocations.get(0).getIcon().setFill(Color.GREEN);
+                        Navigation.FindAndDrawRoute(
+                            PathFindingLocations.get(1).getLocation().getId(),
+                            PathFindingLocations.get(0).getLocation().getId());
+                      } catch (SQLException ex) {
+                        ex.printStackTrace();
+                      }
                     }
                   }
+                } else if (PathFindingLocations.size() == 2) {
+                  Navigation.RemoveRoute();
+                  PathFindingLocations.stream()
+                      .forEach(
+                          LocationDot -> {
+                            LocationDot.getIcon().setFill(Color.BLACK);
+                          });
+                  PathFindingLocations.clear();
+                  PathFindingLocations.add(newDot);
+                  newDot.getIcon().setFill(Color.BLUE);
                 }
               }
             });

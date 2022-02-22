@@ -682,7 +682,7 @@ public class RouteFinderIntegrationTest {
     locationGraph = new Graph<>(locations, connections);
     routeFinder =
         new RouteFinder<>(
-            locationGraph, new EuclideanDistanceScorer(), new EuclideanDistanceScorer());
+            locationGraph, new EuclideanDistanceHeuristic(), new EuclideanDistanceHeuristic());
   }
 
   public void getFromDB(FloorType currFloor) {}
