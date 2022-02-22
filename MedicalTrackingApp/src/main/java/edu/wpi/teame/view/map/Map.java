@@ -67,7 +67,7 @@ public class Map {
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation = null;
-  private ArrayList<Location> PathFindingLocations = new ArrayList<>();
+  private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -681,18 +681,40 @@ public class Map {
                   lastPressedLocation = location;
                   PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
                 } else if (PathFindingLocations.size() < 2) {
-                  newDot.getIcon().setFill(Color.CORAL);
-                  PathFindingLocations.add(location);
+                  newDot.getIcon().setFill(Color.BLUE);
+                  PathFindingLocations.add(newDot);
                   if (PathFindingLocations.size() == 2) {
                     try {
-                      Navigation.RemoveRoute();
+                      PathFindingLocations.get(0).getIcon().setFill(Color.YELLOW);
+                      PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
-                          PathFindingLocations.get(0).getId(), PathFindingLocations.get(1).getId());
-                      PathFindingLocations.clear();
+                          PathFindingLocations.get(0).getLocation().getId(),
+                          PathFindingLocations.get(1).getLocation().getId());
+
                     } catch (SQLException e) {
                       e.printStackTrace();
+                    } catch (IllegalStateException e) {
+                      try {
+                        PathFindingLocations.get(1).getIcon().setFill(Color.YELLOW);
+                        PathFindingLocations.get(0).getIcon().setFill(Color.GREEN);
+                        Navigation.FindAndDrawRoute(
+                            PathFindingLocations.get(1).getLocation().getId(),
+                            PathFindingLocations.get(0).getLocation().getId());
+                      } catch (SQLException ex) {
+                        ex.printStackTrace();
+                      }
                     }
                   }
+                } else if (PathFindingLocations.size() == 2) {
+                  Navigation.RemoveRoute();
+                  PathFindingLocations.stream()
+                      .forEach(
+                          LocationDot -> {
+                            LocationDot.getIcon().setFill(Color.BLACK);
+                          });
+                  PathFindingLocations.clear();
+                  PathFindingLocations.add(newDot);
+                  newDot.getIcon().setFill(Color.BLUE);
                 }
               }
             });

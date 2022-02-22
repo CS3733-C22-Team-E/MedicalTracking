@@ -100,7 +100,7 @@ public class PathFinder {
     connections.put(85, Stream.of(84, 83).collect(Collectors.toSet()));
     connections.put(86, Stream.of(85).collect(Collectors.toSet()));
     connections.put(87, Stream.of(100, 86).collect(Collectors.toSet()));
-    connections.put(88, Stream.of(89).collect(Collectors.toSet()));
+    connections.put(88, Stream.of(89, 101).collect(Collectors.toSet()));
     connections.put(89, Stream.of(81, 90).collect(Collectors.toSet()));
     connections.put(90, Stream.of(99, 91).collect(Collectors.toSet()));
     connections.put(91, Stream.of(92, 93).collect(Collectors.toSet()));
@@ -109,7 +109,7 @@ public class PathFinder {
     connections.put(94, Stream.of(95).collect(Collectors.toSet()));
     connections.put(95, Stream.of(96).collect(Collectors.toSet()));
     connections.put(96, Stream.of(97).collect(Collectors.toSet()));
-    connections.put(97, Stream.of(80, 88).collect(Collectors.toSet()));
+    connections.put(97, Stream.of(80, 88, 96).collect(Collectors.toSet()));
     connections.put(101, Stream.of(88).collect(Collectors.toSet()));
     connections.put(102, Stream.of(87).collect(Collectors.toSet()));
     connections.put(103, Stream.of(104).collect(Collectors.toSet()));
@@ -132,37 +132,40 @@ public class PathFinder {
     connections.put(123, Stream.of(115, 57, 77, 102).collect(Collectors.toSet()));
     connections.put(124, Stream.of(116).collect(Collectors.toSet()));
     connections.put(125, Stream.of(21).collect(Collectors.toSet()));
-    connections.put(126, Stream.of(130,143,144,145,146,147,148,149,150,151,152,95).collect(Collectors.toSet()));
-    connections.put(127, Stream.of(131,133,134,135,136,137,138,139,140,141,142,94).collect(Collectors.toSet()));
-    connections.put(128, Stream.of(93,94,91).collect(Collectors.toSet()));
-    connections.put(129, Stream.of(95,96).collect(Collectors.toSet()));
-//    connections.put(130, Stream.of(126).collect(Collectors.toSet()));
-//    connections.put(131, Stream.of(127).collect(Collectors.toSet()));
-    connections.put(132, Stream.of(94,95).collect(Collectors.toSet()));
-//    connections.put(133, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(134, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(135, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(136, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(137, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(138, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(139, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(140, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(141, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(142, Stream.of(127,94).collect(Collectors.toSet()));
-//    connections.put(143, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(144, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(145, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(146, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(147, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(148, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(149, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(150, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(151, Stream.of(126,95).collect(Collectors.toSet()));
-//    connections.put(152, Stream.of(126,95).collect(Collectors.toSet()));
+    connections.put(
+        126,
+        Stream.of(130, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 95)
+            .collect(Collectors.toSet()));
+    connections.put(
+        127,
+        Stream.of(131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 94)
+            .collect(Collectors.toSet()));
+    connections.put(128, Stream.of(93, 94, 91).collect(Collectors.toSet()));
+    connections.put(129, Stream.of(95, 96).collect(Collectors.toSet()));
+    //    connections.put(130, Stream.of(126).collect(Collectors.toSet()));
+    //    connections.put(131, Stream.of(127).collect(Collectors.toSet()));
+    connections.put(132, Stream.of(94, 95).collect(Collectors.toSet()));
+    //    connections.put(133, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(134, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(135, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(136, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(137, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(138, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(139, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(140, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(141, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(142, Stream.of(127,94).collect(Collectors.toSet()));
+    //    connections.put(143, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(144, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(145, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(146, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(147, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(148, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(149, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(150, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(151, Stream.of(126,95).collect(Collectors.toSet()));
+    //    connections.put(152, Stream.of(126,95).collect(Collectors.toSet()));
     connections.put(153, Stream.of(105).collect(Collectors.toSet()));
-
-
-
 
     // Temporary Empty Connections
     connections.put(6, new ArrayList<Integer>().stream().collect(Collectors.toSet()));
