@@ -14,6 +14,7 @@ public class Equipment implements ISQLSerializable {
   private boolean isClean;
   private String name;
   private int id;
+  private boolean isDeleted;
 
   public Equipment(
       int ID,
@@ -28,6 +29,7 @@ public class Equipment implements ISQLSerializable {
     this.name = name;
     this.hasPatient = hasPatient;
     this.isClean = isClean;
+    this.isDeleted = false;
   }
 
   public Equipment(ResultSet resultSet) throws SQLException {
@@ -41,6 +43,7 @@ public class Equipment implements ISQLSerializable {
     this.name = resultSet.getString("name");
     this.hasPatient = resultSet.getBoolean("hasPatient");
     this.isClean = resultSet.getBoolean("isClean");
+    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   public int getId() {

@@ -13,11 +13,15 @@ public interface IManager<T extends ISQLSerializable> {
 
   public List<T> getAll() throws SQLException;
 
+  public List<T> getDeleted() throws SQLException;
+
   public T insert(T newObject) throws SQLException;
 
   void remove(int id) throws SQLException;
 
   public void update(T updatedObject) throws SQLException;
+
+  public void restore() throws SQLException;
 
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException;
