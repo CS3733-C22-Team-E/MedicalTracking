@@ -7,6 +7,7 @@ import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class ServiceRequestBacklog {
@@ -76,6 +78,16 @@ public class ServiceRequestBacklog {
     return scrollWrapper;
   }
 
+  public Text getTitle() throws SQLException {
+
+    Text title = new Text("Request Backlog");
+    title.setFont(Font.font(56));
+    title.setTextAlignment(TextAlignment.CENTER);
+    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); //TODO Fix
+
+    return title;
+  }
+
   public GridPane getRequestHolder() throws SQLException {
     System.out.println("g");
     getSecurityRequests();
@@ -98,7 +110,10 @@ public class ServiceRequestBacklog {
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
-    requestHolder.add(getRefreshBar(), 0, 0);
+    requestHolder.add(getRefreshBar(), 1, 0);
+    //    GridPane titleGridPane = new GridPane();
+    //    titleGridPane.set
+    requestHolder.add(getTitle(), 0, 0);
     return requestHolder;
   }
 
