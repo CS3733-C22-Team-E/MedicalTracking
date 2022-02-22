@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
@@ -732,33 +733,53 @@ public class Map {
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
     newIcon.startTimer(20);
     updateLayoutChildren();
-    ContextMenu menu = new ContextMenu();
-    RadioMenuItem Completed = new RadioMenuItem("Complete Service Request");
-    RadioMenuItem Send = new RadioMenuItem("Update Service Request");
-    AutoCompleteTextField testField = new AutoCompleteTextField();
-    CustomMenuItem test = new CustomMenuItem(testField);
+
+    ContextMenu ServiceRequestMenu = new ContextMenu();
+    RadioMenuItem CompleteServiceRequest = new RadioMenuItem("Complete Service Request");
+    RadioMenuItem UpdateServiceRequest = new RadioMenuItem("Update Service Request");
+    AutoCompleteTextField LocationField = new AutoCompleteTextField();
+    AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();
+    CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);
+    CustomMenuItem Location = new CustomMenuItem(LocationField);
     DBManager.getInstance()
         .getLocationManager()
         .getAll()
         .forEach(
             location -> {
-              testField.getEntries().add(location.getLongName());
+              LocationField.getEntries().add(location.getLongName());
             });
-    Send.setSelected(false);
-    Send.setOnAction(
+    DBManager.getInstance()
+        .getEmployeeManager()
+        .getAll()
+        .forEach(
+            employee -> {
+              AssigneeServiceRequest.getEntries().add(employee.getName());
+            });
+    UpdateServiceRequest.setSelected(false);
+    UpdateServiceRequest.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
             try {
               Location newLocation =
-                  DBManager.getInstance().getLocationManager().getByName(testField.getText());
-              SR.setLocation(newLocation);
-              newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
-              newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
-              newIcon.progressIndicator.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
-              newIcon.progressIndicator.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
-              System.out.println(
-                  "Updated Service Request Location to:" + SR.getLocation().getLongName());
+                  DBManager.getInstance().getLocationManager().getByName(LocationField.getText());
+              Employee newEmployee =
+                  DBManager.getInstance()
+                      .getEmployeeManager()
+                      .getByAssignee(AssigneeServiceRequest.getText());
+              if (newLocation != null) {
+                SR.setLocation(newLocation);
+                newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
+                newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
+                newIcon.progressIndicator.setTranslateX(newIcon.Icon.getTranslateX());
+                newIcon.progressIndicator.setTranslateY(newIcon.Icon.getTranslateY());
+                System.out.println(
+                    "Updated Service Request Location to:" + SR.getLocation().getLongName());
+              }
+              if (newEmployee != null) {
+                SR.setAssignee(newEmployee);
+                System.out.println("Updated Service Request Assignee to: "+ SR.getAssignee().getName());
+              }
             } catch (SQLException e) {
               e.printStackTrace();
             }
@@ -770,37 +791,29 @@ public class Map {
             }
           }
         });
-    test.setHideOnClick(false);
-    Completed.setSelected(false);
-    menu.getItems().add(Completed);
-    menu.getItems().add(test);
-    menu.getItems().add(Send);
-    Completed.setOnAction(
+    CompleteServiceRequest.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
-            System.out.println("Here");
             newIcon.cancelTimer();
-            Completed.setSelected(true);
+            CompleteServiceRequest.setSelected(true);
           }
         });
+    Location.setHideOnClick(false);
+    Assignee.setHideOnClick(false);
+    CompleteServiceRequest.setSelected(false);
+    ServiceRequestMenu.getItems().add(Assignee);
+    ServiceRequestMenu.getItems().add(Location);
+    ServiceRequestMenu.getItems().add(CompleteServiceRequest);
+    ServiceRequestMenu.getItems().add(UpdateServiceRequest);
+
     newIcon.progressIndicator.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            System.out.println("Clicked");
-            menu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());
+            ServiceRequestMenu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());
           }
         });
-    //    menu.setOnCloseRequest(
-    //        new EventHandler<WindowEvent>() {
-    //          @Override
-    //          public void handle(WindowEvent event) {
-    //            if (event.getEventType().equals(KeyEvent.ANY)) {
-    //              System.out.println("Instead");
-    //            }
-    //          }
-    //        });
   }
 
   private void createNewRadialMenus() {
