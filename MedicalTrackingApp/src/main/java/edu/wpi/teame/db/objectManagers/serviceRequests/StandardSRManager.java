@@ -81,7 +81,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
               openDate,
               title,
               id);
-      getManager().insert(newSR);
+      insert(newSR);
     }
   }
 
@@ -99,8 +99,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-    List<ServiceRequest> listOfSerReq = this.getAll();
-
+    List<ServiceRequest> listOfSerReq = getAll();
     List<String[]> data = new ArrayList<String[]>();
     data.add(
         new String[] {

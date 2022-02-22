@@ -3,18 +3,20 @@ package edu.wpi.teame.db;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.db.objectManagers.serviceRequests.*;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 
 public final class DBManager {
-  private final String ClientServerConnectionString =
+  private final String AzureCloudServerConnectionString =
       "jdbc:sqlserver://cs3733hospitalapp.database.windows.net:1433;database=hospitalappdb;user=medicaltracking@cs3733hospitalapp;password=u@$YK=$A5A*<\"g$$;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+  private final String ClientServerConnectionString = "";
   private final String EmbeddedConnectionString =
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
-  private boolean isClientServer = false;
+  private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
   private Statement stmt;
@@ -32,8 +34,8 @@ public final class DBManager {
     return connection;
   }
 
-  public boolean isClientServer() {
-    return isClientServer;
+  public DBType getCurrentType() {
+    return currentType;
   }
 
   private void createDBTables() throws SQLException {
@@ -508,43 +510,50 @@ public final class DBManager {
     }
 
     // Connect to Client/Server... that DB may already have the tables
-    //    try {
-    //      connection = DriverManager.getConnection(ClientServerConnectionString);
-    //      stmt = connection.createStatement();
-    //      isClientServer = true;
-    //      createDBTables();
-    //    } catch (SQLException ex) {
-    //      ex.printStackTrace();
-    //    }
+    try {
+      connection = DriverManager.getConnection(ClientServerConnectionString);
+      stmt = connection.createStatement();
+      createDBTables();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
 
     // Default connect to Embedded Server
     connection = DriverManager.getConnection(EmbeddedConnectionString);
     stmt = connection.createStatement();
-    isClientServer = false;
     createDBTables();
   }
 
-  public void switchConnection(boolean isClientServer)
+  public void switchConnection(DBType type)
       throws SQLException, IOException, CsvValidationException, ParseException {
-    // Write DB to CSV
+
+    // Write to CSV
     DBManager.getInstance().writeDBToCSV(false);
 
-    // Clean the current dB table
-    cleanDBTables();
-
-    // Switch to the connection
-    String connectionString = EmbeddedConnectionString;
-    if (isClientServer) {
-      connectionString = ClientServerConnectionString;
+    // Switch Connection
+    String connectionString = "";
+    switch (type) {
+      case AzureCloud:
+        connectionString = AzureCloudServerConnectionString;
+        break;
+      case ClientServer:
+        connectionString = ClientServerConnectionString;
+        break;
+      case Embedded:
+        connectionString = EmbeddedConnectionString;
+        break;
     }
 
     // Create Connection
     connection = DriverManager.getConnection(connectionString);
-    this.isClientServer = isClientServer;
     stmt = connection.createStatement();
+    currentType = type;
 
-    // Load DB from CSV
-    DBManager.getInstance().loadDBFromCSV(false);
+    // Check if we should transfer data
+    if (currentType != DBType.AzureCloud) {
+      cleanDBTables();
+      DBManager.getInstance().loadDBFromCSV(false);
+    }
   }
 
   private void cleanDBTables() throws SQLException {

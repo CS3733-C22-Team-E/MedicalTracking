@@ -151,13 +151,6 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
 
-    tabs.sort(StyledTab::compareTo);
-
-    mainTabPane.getTabs().setAll(tabs);
-
-    shouldEnlarge = false;
-    updateTabSize();
-
     StyledTab aboutPage =
         new StyledTab(
             "About Page",
@@ -168,7 +161,6 @@ public class LandingPageController implements Initializable {
     tabs.add(aboutPage);
 
     tabs.sort(StyledTab::compareTo);
-
     mainTabPane.getTabs().setAll(tabs);
 
     shouldEnlarge = false;
