@@ -1,1 +1,1 @@
-﻿id,locationID,assigneeID,openDate,closeDate,status,title,additionalInfo,priority,requestDate,language,patientID
+﻿id,locationID,assigneeID,openDate,closeDate,status,title,additionalInfo,priority,requestDate,language,patientID,isDeleted
