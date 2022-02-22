@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-import java.util.Objects;
 
 public final class CredentialManager {
   private AccessLevel currentUserLevel = null;
@@ -47,21 +46,20 @@ public final class CredentialManager {
 
     // Check credential log in
     String getQuery =
-        "SELECT id FROM Credential WHERE username = '"
+        "SELECT accessLevel FROM Credential WHERE username = '"
             + username
             + "' AND password = '"
             + hashPassword(password, stringToBytes(salt))
             + "'";
     ResultSet getQueryResultSet = statement.executeQuery(getQuery);
+
     if (!getQueryResultSet.next()) {
       return false;
     }
 
-    // TODO: load in the correct access level and fix the select above ^^
-    currentUserLevel =
-        Objects.equals(username, "admin")
-            ? AccessLevel.Admin
-            : AccessLevel.Staff; // AccessLevel.values()[getQueryResultSet.getInt(0)];
+    // TODO: load in the correct access level and fix the select above ^^. Done
+    currentUserLevel = AccessLevel.values()[getQueryResultSet.getInt("accessLevel")];
+    //        Objects.equals(username, "admin") ? AccessLevel.Admin : AccessLevel.Staff;
     return true;
   }
 
