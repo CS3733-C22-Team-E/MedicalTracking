@@ -221,6 +221,59 @@ public class MapServiceRequestIcon {
 
   public void cancelTimer() {
     timer.cancel();
+    progressIndicator.setVisible(false);
+    Icon.setVisible(false);
+    attachedTo.remove(this);
+    try {
+      switch (SR.getDBType()) {
+        case AudioVisualSR:
+          DBManager.getInstance().getAudioVisualSRManager().remove(SR.getId());
+          break;
+        case ComputerSR:
+          DBManager.getInstance().getComputerSRManager().remove(SR.getId());
+          break;
+        case FoodDeliverySR:
+          DBManager.getInstance().getFoodDeliverySRManager().remove(SR.getId());
+          break;
+        case GiftAndFloralSR:
+          DBManager.getInstance().getGiftAndFloralSRManager().remove(SR.getId());
+          break;
+        case InternalPatientTransferSR:
+          DBManager.getInstance().getInternalPatientSRManager().remove(SR.getId());
+          break;
+        case ExternalPatientSR:
+          DBManager.getInstance().getExternalPatientSRManager().remove(SR.getId());
+          break;
+        case LanguageInterpreterSR:
+          DBManager.getInstance().getLanguageSRManager().remove(SR.getId());
+          break;
+        case LaundrySR:
+          DBManager.getInstance().getLaundrySRManager().remove(SR.getId());
+          break;
+        case ReligiousSR:
+          DBManager.getInstance().getReligiousSRManager().remove(SR.getId());
+          break;
+        case SecuritySR:
+          DBManager.getInstance().getSecuritySRManager().remove(SR.getId());
+          break;
+        case MedicalEquipmentSR:
+          DBManager.getInstance().getMedicalEquipmentSRManager().remove(SR.getId());
+          break;
+        case MedicineDeliverySR:
+          DBManager.getInstance().getMedicineDeliverySRManager().remove(SR.getId());
+          break;
+        case FacilitiesMaintenanceSR:
+          DBManager.getInstance().getFacilitiesMaintenanceSRManager().remove(SR.getId());
+          break;
+        case SanitationSR:
+          DBManager.getInstance().getSanitationSRManager().remove(SR.getId());
+          break;
+        default:
+          System.out.println("THERE IS A BIG PROBLEM HERE!!");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public void addToList(ArrayList<MapServiceRequestIcon> SRList) {

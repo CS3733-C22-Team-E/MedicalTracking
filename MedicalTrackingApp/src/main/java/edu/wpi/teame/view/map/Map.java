@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import edu.wpi.teame.view.controllers.ServiceRequestDirectoryPageController;
 import edu.wpi.teame.view.controllers.serviceRequests.MedicalEquipmentDeliveryServiceRequestPageServiceRequestController;
@@ -727,6 +728,32 @@ public class Map {
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
     newIcon.startTimer(20);
     updateLayoutChildren();
+    ContextMenu menu = new ContextMenu();
+    RadioMenuItem Completed = new RadioMenuItem("Complete Service Request");
+    AutoCompleteTextField testField = new AutoCompleteTextField();
+    testField.getEntries().add("Your");
+    testField.getEntries().add("Kour");
+    CustomMenuItem test = new CustomMenuItem(testField);
+    test.setHideOnClick(false);
+    Completed.setSelected(false);
+    menu.getItems().add(Completed);
+    menu.getItems().add(test);
+    Completed.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            newIcon.cancelTimer();
+            Completed.setSelected(true);
+          }
+        });
+
+    newIcon.progressIndicator.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            System.out.println("Clicked");
+            menu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());
+          }
+        });
   }
 
   private void createNewRadialMenus() {
