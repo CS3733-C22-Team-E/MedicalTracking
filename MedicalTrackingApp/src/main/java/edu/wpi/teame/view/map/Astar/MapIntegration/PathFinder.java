@@ -162,7 +162,6 @@ public class PathFinder {
     connections.put(122, Stream.of(114, 56, 76, 101, 119).collect(Collectors.toSet()));
     connections.put(123, Stream.of(115, 57, 77, 102, 116).collect(Collectors.toSet()));
     connections.put(124, Stream.of(116).collect(Collectors.toSet()));
-
     //    connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     //    connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     //    connections.put(3, Stream.of(26).collect(Collectors.toSet()));
@@ -355,11 +354,11 @@ public class PathFinder {
             });
     Location From = startTest;
     Location To = endTest;
-    List<Location> route;
+    List<Location> route = null;
     try {
       route = routeFinder.findRoute(From, To);
     } catch (IllegalStateException e) {
-      route = routeFinder.findRoute(To, From);
+      System.out.println("No Valid Route From " + From.getId() + " To" + To.getId());
     }
     for (Location location : route) {
       System.out.println(location.getId());
