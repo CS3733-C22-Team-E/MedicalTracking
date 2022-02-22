@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.DepartmentType;
@@ -28,6 +29,12 @@ public class Employee implements ISQLSerializable {
     this.isDeleted = resultSet.getBoolean("isDeleted");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
+  }
+
+  public Employee(CSVLineData lineData) throws SQLException {
+    this.department = DepartmentType.values()[(lineData.getColumnInt("department"))];
+    this.type = EmployeeType.values()[(lineData.getColumnInt("type"))];
+    this.name = lineData.getColumnString("name");
   }
 
   @Override

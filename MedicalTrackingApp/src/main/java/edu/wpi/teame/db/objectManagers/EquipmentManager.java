@@ -7,6 +7,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
@@ -38,20 +39,8 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      String nodeId = lineData.getColumnString("nodeID");
-      String name = lineData.getColumnString("longName");
-      boolean isClean = lineData.getColumnBoolean("isClean");
-      boolean hasPatient = lineData.getColumnBoolean("hasPatient");
-      EquipmentType equipmentType = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
-      Location location =
-          DBManager.getInstance().getLocationManager().get(lineData.getColumnInt("locationNodeID"));
-
-      Equipment newEquipment = new Equipment(0, location, equipmentType, name, hasPatient, isClean);
-      DBManager.getInstance().getEquipmentManager().insert(newEquipment);
+    while (lineData.readNext()) {
+      insert(new Equipment(lineData));
     }
   }
 

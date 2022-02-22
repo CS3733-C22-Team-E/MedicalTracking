@@ -14,6 +14,8 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,68 +42,8 @@ public final class PatientTransportationSRManager
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      ServiceRequestPriority priority =
-          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
-      ServiceRequestStatus requestStatus =
-          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      String additionalInfo = lineData.getColumnString("additionalInfo");
-      Integer assignee =
-          lineData.getColumnString("assigneeID").equals("")
-              ? -1
-              : lineData.getColumnInt("assigneeID");
-      int location = lineData.getColumnInt("locationID");
-      Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate =
-          lineData.getColumnString("closeDate").equals("")
-              ? null
-              : lineData.getColumnDate("closeDate");
-      Date openDate = lineData.getColumnDate("openDate");
-      String title = lineData.getColumnString("title");
-      int id = lineData.getColumnInt("id");
-      int destination = lineData.getColumnInt("destinationID");
-      int equipment = lineData.getColumnInt("equipmentID");
-      int patient = lineData.getColumnInt("patientID");
-
-      // select assignee where id = assignee
-      EmployeeManager employeeManager = new EmployeeManager();
-      Employee newEmployee = employeeManager.get(assignee);
-      // select location where id = locationID, select destination where id = destination
-      LocationManager locationManager = new LocationManager();
-      Location newLocation = locationManager.get(location);
-      Location newDestination = locationManager.get(destination);
-      // select equipment where id = equipment
-      EquipmentManager equipmentManager = new EquipmentManager();
-      Equipment newEquipment = equipmentManager.get(equipment);
-      // select patient where id = patient
-      PatientManager patientManager = new PatientManager();
-      Patient newPatient = patientManager.get(patient);
-
-      // new ServiceRequest
-      PatientTransportationServiceRequest newSR =
-          new PatientTransportationServiceRequest(
-              getInternalBool(),
-              priority,
-              requestStatus,
-              additionalInfo,
-              newEmployee,
-              newLocation,
-              requestDate,
-              closeDate,
-              openDate,
-              title,
-              id,
-              newDestination,
-              newEquipment,
-              newPatient);
-      if (getInternalBool()) {
-        DBManager.getInstance().getInternalPatientSRManager().insert(newSR);
-      } else {
-        DBManager.getInstance().getExternalPatientSRManager().insert(newSR);
-      }
+    while (lineData.readNext()) {
+      insert(new PatientTransportationServiceRequest(lineData, objectType.equals(DataBaseObjectType.InternalPatientTransferSR)));
     }
   }
 

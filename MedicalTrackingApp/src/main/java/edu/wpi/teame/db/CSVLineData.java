@@ -45,8 +45,9 @@ public class CSVLineData {
     return Integer.parseInt(columnString);
   }
 
-  public void readNext() throws CsvValidationException, IOException {
+  public boolean readNext() throws CsvValidationException, IOException {
     parsedData = csvReader.readNext();
+    return parsedData.length != 0;
   }
 
   public String getColumnString(String columnName) {

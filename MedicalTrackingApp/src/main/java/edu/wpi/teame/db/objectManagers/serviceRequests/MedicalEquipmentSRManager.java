@@ -16,6 +16,8 @@ import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,50 +40,8 @@ public final class MedicalEquipmentSRManager extends ObjectManager<MedicalEquipm
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    csvReader.readNext();
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      ServiceRequestPriority priority =
-          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
-      ServiceRequestStatus requestStatus =
-          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      String additionalInfo = lineData.getColumnString("additionalInfo");
-      int assignee = lineData.getColumnInt("assigneeID");
-      int location = lineData.getColumnInt("locationID");
-      Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate = lineData.getColumnDate("closeDate");
-      Date openDate = lineData.getColumnDate("openDate");
-      String title = lineData.getColumnString("title");
-      int id = lineData.getColumnInt("id");
-      int equipment = lineData.getColumnInt("equipmentID");
-
-      // select assignee where id = employeeID
-      EmployeeManager employeeManager = new EmployeeManager();
-      Employee newEmployee = employeeManager.get(assignee);
-      // select location where id = locationID
-      LocationManager locationManager = new LocationManager();
-      Location newLocation = locationManager.get(location);
-      // select equipment where id = equipment
-      EquipmentManager equipmentManager = new EquipmentManager();
-      Equipment newEquipment = equipmentManager.get(equipment);
-
-      // new ServiceRequest
-      MedicalEquipmentServiceRequest newSR =
-          new MedicalEquipmentServiceRequest(
-              priority,
-              requestStatus,
-              additionalInfo,
-              newEmployee,
-              newLocation,
-              requestDate,
-              closeDate,
-              openDate,
-              title,
-              id,
-              newEquipment);
-      DBManager.getInstance().getMedicalEquipmentSRManager().insert(newSR);
+    while (lineData.readNext()) {
+      insert(new MedicalEquipmentServiceRequest(lineData));
     }
   }
 

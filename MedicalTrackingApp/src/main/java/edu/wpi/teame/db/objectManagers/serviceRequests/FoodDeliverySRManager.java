@@ -16,6 +16,8 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.FoodDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,57 +40,8 @@ public final class FoodDeliverySRManager extends ObjectManager<FoodDeliveryServi
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      ServiceRequestPriority priority =
-          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
-      ServiceRequestStatus requestStatus =
-          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      String additionalInfo = lineData.getColumnString("additionalInfo");
-      Integer assignee =
-          lineData.getColumnString("assigneeID").equals("")
-              ? -1
-              : lineData.getColumnInt("assigneeID");
-      int location = lineData.getColumnInt("locationID");
-      Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate =
-          lineData.getColumnString("closeDate").equals("")
-              ? null
-              : lineData.getColumnDate("closeDate");
-      Date openDate = lineData.getColumnDate("openDate");
-      String title = lineData.getColumnString("title");
-      int id = lineData.getColumnInt("id");
-      int patient = lineData.getColumnInt("patientID");
-      String food = lineData.getColumnString("food");
-
-      // select assignee where id = assignee
-      EmployeeManager employeeManager = new EmployeeManager();
-      Employee newEmployee = employeeManager.get(assignee);
-      // select location where id = location
-      LocationManager locationManager = new LocationManager();
-      Location newLocation = locationManager.get(location);
-      // select patient where id = patient
-      PatientManager patientManager = new PatientManager();
-      Patient newPatient = patientManager.get(patient);
-
-      // new ServiceRequest
-      FoodDeliveryServiceRequest newSR =
-          new FoodDeliveryServiceRequest(
-              priority,
-              requestStatus,
-              additionalInfo,
-              newEmployee,
-              newLocation,
-              requestDate,
-              closeDate,
-              openDate,
-              title,
-              id,
-              newPatient,
-              food);
-      DBManager.getInstance().getFoodDeliverySRManager().insert(newSR);
+    while (lineData.readNext()) {
+      insert(new FoodDeliveryServiceRequest(lineData));
     }
   }
 

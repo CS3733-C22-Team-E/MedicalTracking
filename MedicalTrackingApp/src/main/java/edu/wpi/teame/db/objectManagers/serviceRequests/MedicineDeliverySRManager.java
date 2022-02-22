@@ -16,6 +16,8 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,53 +40,8 @@ public final class MedicineDeliverySRManager extends ObjectManager<MedicineDeliv
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      ServiceRequestPriority priority =
-          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
-      ServiceRequestStatus requestStatus =
-          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      String additionalInfo = lineData.getColumnString("additionalInfo");
-      int assignee = lineData.getColumnInt("assigneeID");
-      int location = lineData.getColumnInt("locationID");
-      Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate = lineData.getColumnDate("closeDate");
-      Date openDate = lineData.getColumnDate("openDate");
-      String title = lineData.getColumnString("title");
-      int id = lineData.getColumnInt("id");
-      String medicineQuantity = lineData.getColumnString("medicineQuantity");
-      String medicineName = lineData.getColumnString("medicineName");
-      int patient = lineData.getColumnInt("patientID");
-
-      // select assignee where id = employeeID
-      EmployeeManager employeeManager = new EmployeeManager();
-      Employee newEmployee = employeeManager.get(assignee);
-      // select location where id = locationID
-      LocationManager locationManager = new LocationManager();
-      Location newLocation = locationManager.get(location);
-      // select patient where id = patient
-      PatientManager patientManager = new PatientManager();
-      Patient newPatient = patientManager.get(patient);
-
-      // new ServiceRequest
-      MedicineDeliveryServiceRequest newSR =
-          new MedicineDeliveryServiceRequest(
-              priority,
-              requestStatus,
-              additionalInfo,
-              newEmployee,
-              newLocation,
-              requestDate,
-              closeDate,
-              openDate,
-              title,
-              id,
-              medicineQuantity,
-              medicineName,
-              newPatient);
-      DBManager.getInstance().getMedicineDeliverySRManager().insert(newSR);
+    while (lineData.readNext()) {
+      insert(new MedicineDeliveryServiceRequest(lineData));
     }
   }
 

@@ -35,52 +35,8 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      ServiceRequestPriority priority =
-          ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
-      ServiceRequestStatus requestStatus =
-          ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-      String additionalInfo = lineData.getColumnString("additionalInfo");
-      Integer assignee =
-          lineData.getColumnString("assigneeID").equals("")
-              ? -1
-              : lineData.getColumnInt("assigneeID");
-      int location = lineData.getColumnInt("locationID");
-      Date requestDate = lineData.getColumnDate("requestDate");
-      Date closeDate =
-          lineData.getColumnString("closeDate").equals("")
-              ? null
-              : lineData.getColumnDate("closeDate");
-      Date openDate = lineData.getColumnDate("openDate");
-      String title = lineData.getColumnString("title");
-      int id = lineData.getColumnInt("id");
-      DataBaseObjectType dbType = super.objectType;
-
-      // select assignee where id = employeeID
-      EmployeeManager employeeManager = new EmployeeManager();
-      Employee newEmployee = employeeManager.get(assignee);
-      // select location where id = locationID
-      LocationManager locationManager = new LocationManager();
-      Location newLocation = locationManager.get(location);
-
-      // new ServiceRequest
-      ServiceRequest newSR =
-          new ServiceRequest(
-              dbType,
-              priority,
-              requestStatus,
-              additionalInfo,
-              newEmployee,
-              newLocation,
-              requestDate,
-              closeDate,
-              openDate,
-              title,
-              id);
-      insert(newSR);
+    while (lineData.readNext()) {
+      insert(new ServiceRequest(lineData, objectType));
     }
   }
 

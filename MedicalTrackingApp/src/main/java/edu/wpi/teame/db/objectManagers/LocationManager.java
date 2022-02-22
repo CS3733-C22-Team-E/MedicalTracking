@@ -8,6 +8,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.BuildingType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -37,22 +38,8 @@ public final class LocationManager extends ObjectManager<Location> {
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      int x = lineData.getColumnInt("xcoord");
-      int y = lineData.getColumnInt("ycoord");
-      String nodeId = lineData.getColumnString("nodeID");
-      String longName = lineData.getColumnString("longName");
-      String shortName = lineData.getColumnString("shortName");
-      FloorType floor = FloorType.values()[lineData.getColumnInt("floor")];
-      BuildingType building = BuildingType.valueOf(lineData.getColumnString("building"));
-      LocationType locationType = LocationType.valueOf(lineData.getColumnString("nodeType"));
-
-      Location newLocation =
-          new Location(0, longName, x, y, floor, building, locationType, shortName);
-      newLocation = DBManager.getInstance().getLocationManager().insert(newLocation);
+    while (lineData.readNext()) {
+      insert(new Location(lineData));
     }
   }
 

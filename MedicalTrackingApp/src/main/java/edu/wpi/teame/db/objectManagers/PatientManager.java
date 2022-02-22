@@ -5,6 +5,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -34,19 +35,8 @@ public final class PatientManager extends ObjectManager<Patient> {
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
-      String name = lineData.getColumnString("name");
-      Date dateOfBirth = lineData.getColumnDate("dateOfBirth");
-      Location currentLocation =
-          DBManager.getInstance()
-              .getLocationManager()
-              .get(lineData.getColumnInt("currentLocation"));
-
-      Patient newPatient = new Patient(currentLocation, dateOfBirth, name, 0);
-      DBManager.getInstance().getPatientManager().insert(newPatient);
+    while (lineData.readNext()) {
+      insert(new Patient(lineData));
     }
   }
 

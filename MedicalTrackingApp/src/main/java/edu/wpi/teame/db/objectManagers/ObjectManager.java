@@ -1,5 +1,6 @@
 package edu.wpi.teame.db.objectManagers;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
@@ -9,6 +10,7 @@ import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.sql.*;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -131,6 +133,46 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Employee(resultSet);
       case Patient:
         return (T) new Patient(resultSet);
+    }
+    return null;
+  }
+
+  private T getCastedType(CSVLineData lineData) throws SQLException, ParseException {
+    switch (objectType) {
+      case AudioVisualSR:
+      case ComputerSR:
+      case DeceasedBodySR:
+      case FacilitiesMaintenanceSR:
+      case LaundrySR:
+      case SanitationSR:
+      case SecuritySR:
+      case MentalHealthSR:
+      case PatientDischargeSR:
+        return (T) new ServiceRequest(lineData, objectType);
+      case ExternalPatientSR:
+        return (T) new PatientTransportationServiceRequest(lineData, false);
+      case FoodDeliverySR:
+        return (T) new FoodDeliveryServiceRequest(lineData);
+      case GiftAndFloralSR:
+        return (T) new GiftAndFloralServiceRequest(lineData);
+      case InternalPatientTransferSR:
+        return (T) new PatientTransportationServiceRequest(lineData, true);
+      case LanguageInterpreterSR:
+        return (T) new LanguageInterpreterServiceRequest(lineData);
+      case MedicalEquipmentSR:
+        return (T) new MedicalEquipmentServiceRequest(lineData);
+      case MedicineDeliverySR:
+        return (T) new MedicineDeliveryServiceRequest(lineData);
+      case ReligiousSR:
+        return (T) new ReligiousServiceRequest(lineData);
+      case Location:
+        return (T) new Location(lineData);
+      case Equipment:
+        return (T) new Equipment(lineData);
+      case Employee:
+        return (T) new Employee(lineData);
+      case Patient:
+        return (T) new Patient(lineData);
     }
     return null;
   }
