@@ -25,7 +25,9 @@ public enum DataBaseObjectType {
   MedicineDeliverySR,
   FacilitiesMaintenanceSR,
   SanitationSR,
-  MentalHealthSR;
+  MentalHealthSR,
+  DeceasedSR,
+  PatientDischargeSR;
 
   @Override
   public String toString() {
@@ -60,6 +62,10 @@ public enum DataBaseObjectType {
         return "Facilities Maintenance Service Request";
       case MentalHealthSR:
         return "Mental Health Service Request";
+      case DeceasedSR:
+        return "Deceased Body Removal Service Request";
+      case PatientDischargeSR:
+        return "Patient Discharge Service Request";
       case Patient:
         return "Patient";
       case Employee:
@@ -104,6 +110,10 @@ public enum DataBaseObjectType {
         return FacilitiesMaintenanceSR;
       case "Mental Health Service Request":
         return MentalHealthSR;
+      case "Deceased Body Removal Service Request":
+        return DeceasedSR;
+      case "Patient Discharge Service Request":
+        return PatientDischargeSR;
       case "Patient":
         return Patient;
       case "Employee":
@@ -148,6 +158,10 @@ public enum DataBaseObjectType {
         return "FacilitiesMaintenanceSR";
       case MentalHealthSR:
         return "MentalHealthSR";
+      case DeceasedSR:
+        return "DeceasedSR";
+      case PatientDischargeSR:
+        return "PatientDischargeSR";
       case Employee:
         return "Employee";
       case Location:
@@ -193,6 +207,10 @@ public enum DataBaseObjectType {
         return Color.THISTLE;
       case MentalHealthSR:
         return Color.RED;
+      case DeceasedSR:
+        return Color.BLACK;
+      case PatientDischargeSR:
+        return Color.YELLOW;
       case Employee:
         return Color.BLUE;
       case Location:
@@ -233,6 +251,10 @@ public enum DataBaseObjectType {
         return "Facilities Maintenance";
       case MentalHealthSR:
         return "Mental Health";
+      case DeceasedSR:
+        return "Deceased";
+      case PatientDischargeSR:
+        return "Patient Discharge";
       case Employee:
         return "Employee";
       case Location:
@@ -290,6 +312,12 @@ public enum DataBaseObjectType {
         break;
       case MentalHealthSR:
         s += " Mental Health Service Request";
+        break;
+      case DeceasedSR:
+        s += " Deceased Body Removal Service Request";
+        break;
+      case PatientDischargeSR:
+        s += " Patient Discharge Service Request";
         break;
       case Employee:
         return "This is an employee.";
