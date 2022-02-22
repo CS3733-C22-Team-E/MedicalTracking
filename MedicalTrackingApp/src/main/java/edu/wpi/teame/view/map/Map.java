@@ -134,7 +134,7 @@ public class Map {
             Equipment ToBeInserted =
                 new Equipment(0, lastPressedLocation, equiptype, equiptype.toString(), false, true);
             try {
-              DBManager.getInstance().getEquipmentManager().insert(ToBeInserted);
+              DBManager.getManager(DataBaseObjectType.Equipment).insert(ToBeInserted);
               addEquipmentToMap(ToBeInserted);
             } catch (SQLException e) {
               e.printStackTrace();
@@ -537,7 +537,7 @@ public class Map {
             i.getEquipment().setLocation(nearestLocation);
 
             try {
-              DBManager.getInstance().getEquipmentManager().update(i.getEquipment());
+              DBManager.getManager(DataBaseObjectType.Equipment).update(i.getEquipment());
             } catch (SQLException e) {
               e.printStackTrace();
             }
@@ -604,14 +604,14 @@ public class Map {
   }
 
   public void getFromDB() throws SQLException {
-    List<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipment = DBManager.getManager(DataBaseObjectType.Equipment).getAll();
     mapIconsByFloor.get(currFloor).clear();
     locationsByFloor.get(currFloor).clear();
     for (Equipment currEquipment : equipment) {
       addEquipmentToMap(currEquipment);
     }
 
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }

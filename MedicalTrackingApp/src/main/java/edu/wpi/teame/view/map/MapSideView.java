@@ -2,7 +2,9 @@ package edu.wpi.teame.view.map;
 
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
 import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
@@ -248,7 +250,8 @@ public class MapSideView {
 
   private List<Equipment> getEquipmentByFloorFromDB(FloorType floor) throws SQLException {
     List<Equipment> equipmentList = new ArrayList();
-    for (Equipment equipment : DBManager.getInstance().getEquipmentManager().getAll()) {
+    for (Equipment equipment :
+        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getAll()) {
       if (equipment.getLocation().getFloor() == floor) {
         equipmentList.add(equipment);
       }

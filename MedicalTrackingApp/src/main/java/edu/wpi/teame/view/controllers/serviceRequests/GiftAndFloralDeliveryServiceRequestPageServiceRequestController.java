@@ -2,6 +2,9 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
@@ -93,10 +96,10 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
 
-    List<Patient> patients = DBManager.getInstance().getPatientManager().getAll();
+    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -120,10 +123,14 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+            .getByAssignee(assignee.getText());
     Location location =
-        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
-    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());
+        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+            .getByName(locationText.getText());
+    Patient patient =
+        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+            .getByName(patientName.getText());
 
     GiftAndFloralServiceRequest serviceRequest =
         new GiftAndFloralServiceRequest(
@@ -140,7 +147,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             "",
             0,
             patient);
-    DBManager.getInstance().getGiftAndFloralSRManager().insert(serviceRequest);
+    DBManager.getManager(DataBaseObjectType.GiftAndFloralSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

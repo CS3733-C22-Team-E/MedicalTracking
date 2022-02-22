@@ -2,7 +2,6 @@ package edu.wpi.teame.db;
 
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.objectManagers.*;
-import edu.wpi.teame.db.objectManagers.serviceRequests.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
@@ -513,96 +512,6 @@ public final class DBManager {
     }
   }
 
-  @Deprecated
-  public EquipmentManager getEquipmentManager() throws SQLException {
-    return new EquipmentManager();
-  }
-
-  @Deprecated
-  public LocationManager getLocationManager() throws SQLException {
-    return new LocationManager();
-  }
-
-  @Deprecated
-  public EmployeeManager getEmployeeManager() throws SQLException {
-    return new EmployeeManager();
-  }
-
-  @Deprecated
-  public PatientManager getPatientManager() throws SQLException {
-    return new PatientManager();
-  }
-
-  @Deprecated
-  public StandardSRManager getAudioVisualSRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.AudioVisualSR);
-  }
-
-  @Deprecated
-  public StandardSRManager getComputerSRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.ComputerSR);
-  }
-
-  @Deprecated
-  public PatientTransportationSRManager getExternalPatientSRManager() throws SQLException {
-    return new PatientTransportationSRManager(false);
-  }
-
-  @Deprecated
-  public StandardSRManager getFacilitiesMaintenanceSRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.FacilitiesMaintenanceSR);
-  }
-
-  @Deprecated
-  public FoodDeliverySRManager getFoodDeliverySRManager() throws SQLException {
-    return new FoodDeliverySRManager();
-  }
-
-  @Deprecated
-  public GiftAndFloralSRManager getGiftAndFloralSRManager() throws SQLException {
-    return new GiftAndFloralSRManager();
-  }
-
-  @Deprecated
-  public PatientTransportationSRManager getInternalPatientSRManager() throws SQLException {
-    return new PatientTransportationSRManager(true);
-  }
-
-  @Deprecated
-  public StandardSRManager getLanguageSRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.LanguageInterpreterSR);
-  }
-
-  @Deprecated
-  public StandardSRManager getLaundrySRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.LaundrySR);
-  }
-
-  @Deprecated
-  public MedicalEquipmentSRManager getMedicalEquipmentSRManager() throws SQLException {
-    return new MedicalEquipmentSRManager();
-  }
-
-  @Deprecated
-  public MedicineDeliverySRManager getMedicineDeliverySRManager() throws SQLException {
-    return new MedicineDeliverySRManager();
-  }
-
-  @Deprecated
-  public ReligiousSRManager getReligiousSRManager() throws SQLException {
-    return new ReligiousSRManager();
-  }
-
-  @Deprecated
-  public StandardSRManager getSanitationSRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.SanitationSR);
-  }
-
-  @Deprecated
-  public StandardSRManager getSecuritySRManager() throws SQLException {
-    return new StandardSRManager(DataBaseObjectType.SecuritySR);
-  }
-
   public static ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
     switch (managerType) {
       case Location:
@@ -613,30 +522,24 @@ public final class DBManager {
         return new PatientManager();
       case Employee:
         return new EmployeeManager();
-      case GiftAndFloralSR:
-        return new GiftAndFloralSRManager();
-      case ExternalPatientSR:
-        return new PatientTransportationSRManager(false);
-      case InternalPatientTransferSR:
-        return new PatientTransportationSRManager(true);
-      case ReligiousSR:
-        return new ReligiousSRManager();
-      case MedicalEquipmentSR:
-        return new MedicalEquipmentSRManager();
-      case MedicineDeliverySR:
-        return new MedicineDeliverySRManager();
       case LaundrySR:
       case ComputerSR:
-      case DeceasedBodySR:
-      case MentalHealthSR:
-      case PatientDischargeSR:
       case SecuritySR:
+      case ReligiousSR:
       case SanitationSR:
       case AudioVisualSR:
       case FoodDeliverySR:
+      case DeceasedBodySR:
+      case MentalHealthSR:
+      case GiftAndFloralSR:
+      case ExternalPatientSR:
+      case PatientDischargeSR:
+      case MedicalEquipmentSR:
+      case MedicineDeliverySR:
       case LanguageInterpreterSR:
       case FacilitiesMaintenanceSR:
-        return new StandardSRManager(managerType);
+      case InternalPatientTransferSR:
+        return new ServiceRequestManager(managerType);
     }
     return null;
   }

@@ -2,6 +2,9 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
@@ -92,9 +95,10 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
-    List<Equipment> equipments = DBManager.getInstance().getEquipmentManager().getByAllAvailable();
+    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Equipment> equipments =
+        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getByAllAvailable();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -121,16 +125,13 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     String roomNum = (String) locationText.getText();
     String emp = (String) assignee.getText();
 
-    List<MedicalEquipmentServiceRequest> allSerReq =
-        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();
-    for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {
-      System.out.println(serviceReq);
-    }
-
-    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(emp);
-    Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);
+    Employee employee =
+        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee)).getByAssignee(emp);
+    Location location =
+        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location)).getByName(roomNum);
     Equipment equipmentNeeded =
-        DBManager.getInstance().getEquipmentManager().getByName(equipment.getText());
+        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment))
+            .getByName(equipment.getText());
 
     MedicalEquipmentServiceRequest serviceRequest =
         new MedicalEquipmentServiceRequest(
@@ -147,7 +148,7 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             "",
             0,
             equipmentNeeded);
-    DBManager.getInstance().getMedicalEquipmentSRManager().insert(serviceRequest);
+    DBManager.getManager(DataBaseObjectType.MedicalEquipmentSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

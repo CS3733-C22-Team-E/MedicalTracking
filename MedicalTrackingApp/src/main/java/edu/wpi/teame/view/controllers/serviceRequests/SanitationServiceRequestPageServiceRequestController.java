@@ -2,6 +2,8 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -83,8 +85,8 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
-    List<Employee> employees = DBManager.getInstance().getEmployeeManager().getAll();
+    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -103,9 +105,11 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        DBManager.getInstance().getEmployeeManager().getByAssignee(assignee.getText());
+        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+            .getByAssignee(assignee.getText());
     Location location =
-        DBManager.getInstance().getLocationManager().getByName(locationText.getText());
+        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+            .getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
         new ServiceRequest(
@@ -122,7 +126,7 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
             new Date(new java.util.Date().getTime()),
             "",
             0);
-    DBManager.getInstance().getSanitationSRManager().insert(serviceRequest);
+    DBManager.getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

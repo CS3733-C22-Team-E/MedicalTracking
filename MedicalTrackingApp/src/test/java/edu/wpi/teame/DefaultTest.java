@@ -154,7 +154,7 @@ public class DefaultTest {
   // SanitationServiceRequest sanReq3 =
   //     new SanitationServiceRequest(ServiceRequestStatus.CLOSED, emp3, loc3, date, date, 3);
 
-  // StandardSRManager sanReqManager = new StandardSRManager();
+  // ServiceRequestManager sanReqManager = new ServiceRequestManager();
   // sanReqManager.insert(sanReq1);
   // sanReqManager.insert(sanReq2);
   // sanReqManager.insert(sanReq3);

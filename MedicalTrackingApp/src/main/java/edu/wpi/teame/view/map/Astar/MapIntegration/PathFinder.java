@@ -2,6 +2,7 @@ package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
@@ -34,7 +35,7 @@ public class PathFinder {
   }
 
   public void refreshLocationsFromDB() throws SQLException {
-    locations.addAll(DBManager.getInstance().getLocationManager().getAll());
+    locations.addAll(DBManager.getManager(DataBaseObjectType.Location).getAll());
   }
 
   private void createConnections() {
@@ -216,7 +217,7 @@ public class PathFinder {
   public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
-    // DBManager.getInstance().getLocationManager().get(StartID);
+    // DBManager.getManager(DataBaseObjectType.Location).get(StartID);
     Visual.clearConnections();
     locations.stream()
         .forEach(
