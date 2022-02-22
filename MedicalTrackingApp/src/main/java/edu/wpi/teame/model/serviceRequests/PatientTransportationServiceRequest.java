@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class PatientTransportationServiceRequest extends ServiceRequest {
   private Location destination;
@@ -118,6 +120,26 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
         + equipment.getId()
         + ", "
         + patient.getId();
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(destination.getId()));
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(Integer.toString(equipment.getId()));
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("destinationID");
+    csvHeaders.add("patientID");
+    csvHeaders.add("equipmentID");
+    return (String[]) csvHeaders.toArray();
   }
 
   @Override

@@ -62,15 +62,7 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
         new String[] {"nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"});
 
     for (Equipment equipment : listOfEquipment) {
-      data.add(
-          new String[] {
-            Integer.toString(equipment.getId()),
-            Integer.toString(equipment.getLocation().getId()),
-            Integer.toString(equipment.getType().ordinal()),
-            equipment.getName(),
-            equipment.isHasPatient() ? "1" : "0",
-            equipment.isClean() ? "1" : "0"
-          });
+      data.add(equipment.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

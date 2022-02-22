@@ -51,18 +51,11 @@ public final class PatientManager extends ObjectManager<Patient> {
             CSVWriter.DEFAULT_LINE_END);
 
     List<Patient> listOfPatients = this.getAll();
-
     List<String[]> data = new ArrayList<String[]>();
     data.add(new String[] {"name", "dateOfBirth", "currentLocation", "id"});
 
     for (Patient patient : listOfPatients) {
-      data.add(
-          new String[] {
-            patient.getName(),
-            patient.getDateOfBirth().toString(),
-            Integer.toString(patient.getCurrentLocation().getId()),
-            Integer.toString(patient.getId())
-          });
+      data.add(patient.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

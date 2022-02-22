@@ -68,22 +68,7 @@ public final class MedicineDeliverySRManager extends ObjectManager<MedicineDeliv
         });
 
     for (MedicineDeliveryServiceRequest serReq : listOfSerReq) {
-      data.add(
-          new String[] {
-            Integer.toString(serReq.getId()),
-            Integer.toString(serReq.getLocation().getId()),
-            serReq.getAssignee() == null ? "" : Integer.toString(serReq.getAssignee().getId()),
-            serReq.getOpenDate().toString(),
-            serReq.getCloseDate() == null ? "" : serReq.getCloseDate().toString(),
-            Integer.toString(serReq.getStatus().ordinal()),
-            serReq.getTitle(),
-            serReq.getAdditionalInfo(),
-            Integer.toString(serReq.getPriority().ordinal()),
-            serReq.getRequestDate().toString(),
-            serReq.getMedicineName(),
-            Integer.toString(serReq.getPatient().getId()),
-            serReq.getMedicineQuantity()
-          });
+      data.add(serReq.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

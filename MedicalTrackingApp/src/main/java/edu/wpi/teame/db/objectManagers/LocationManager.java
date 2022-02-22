@@ -61,17 +61,7 @@ public final class LocationManager extends ObjectManager<Location> {
         });
 
     for (Location location : listOfLocation) {
-      data.add(
-          new String[] {
-            Integer.toString(location.getId()),
-            Integer.toString(location.getX()),
-            Integer.toString(location.getY()),
-            Integer.toString(location.getFloor().ordinal()),
-            location.getBuilding().toString(),
-            location.getType().toString(),
-            location.getLongName(),
-            location.getShortName()
-          });
+      data.add(location.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

@@ -65,6 +65,21 @@ public class Employee implements ISQLSerializable {
   }
 
   @Override
+  public String[] toCSVData() {
+    return new String[] {
+            Integer.toString(id),
+            Integer.toString(department.ordinal()),
+            name,
+            Integer.toString(type.ordinal())
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    return new String[] {"employeeID", "department", "name", "type"};
+  }
+
+  @Override
   public String getTableColumns() {
     return "(department, name, type)";
   }

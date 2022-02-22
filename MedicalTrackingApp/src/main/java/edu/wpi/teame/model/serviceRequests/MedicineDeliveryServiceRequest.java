@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineQuantity;
@@ -97,6 +99,26 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + ", '"
         + medicineQuantity
         + "'";
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(medicineName);
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(medicineQuantity);
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("medicineName");
+    csvHeaders.add("patientID");
+    csvHeaders.add("medicineQuantity");
+    return (String[]) csvHeaders.toArray();
   }
 
   @Override

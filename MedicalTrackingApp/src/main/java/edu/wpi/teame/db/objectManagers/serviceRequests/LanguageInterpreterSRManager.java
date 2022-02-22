@@ -68,21 +68,7 @@ public final class LanguageInterpreterSRManager
         });
 
     for (LanguageInterpreterServiceRequest serReq : listOfSerReq) {
-      data.add(
-          new String[] {
-            Integer.toString(serReq.getId()),
-            Integer.toString(serReq.getLocation().getId()),
-            Integer.toString(serReq.getAssignee().getId()),
-            serReq.getOpenDate().toString(),
-            serReq.getCloseDate().toString(),
-            serReq.getStatus().toString(),
-            serReq.getTitle(),
-            serReq.getAdditionalInfo(),
-            Integer.toString(serReq.getPriority().ordinal()),
-            serReq.getRequestDate().toString(),
-            Integer.toString(serReq.getLanguage().ordinal()),
-            Integer.toString(serReq.getPatient().getId())
-          });
+      data.add(serReq.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

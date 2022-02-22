@@ -12,6 +12,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ReligiousServiceRequest extends ServiceRequest {
   private Patient patient;
@@ -80,6 +82,24 @@ public final class ReligiousServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + patient.getId() + ", '" + religion + "'";
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(religion);
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("patientID");
+    csvHeaders.add("religion");
+    return (String[]) csvHeaders.toArray();
   }
 
   @Override

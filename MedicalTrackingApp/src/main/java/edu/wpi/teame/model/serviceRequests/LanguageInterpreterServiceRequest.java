@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   private LanguageType language;
@@ -81,6 +83,24 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(language.ordinal()));
+    csvData.add(Integer.toString(patient.getId()));
+    return (String[]) csvData.toArray();
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.add("language");
+    csvHeaders.add("patientID");
+    return (String[]) csvHeaders.toArray();
   }
 
   @Override

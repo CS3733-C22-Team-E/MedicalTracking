@@ -108,6 +108,23 @@ public class Equipment implements ISQLSerializable {
   }
 
   @Override
+  public String[] toCSVData() {
+    return new String[] {
+            Integer.toString(id),
+            Integer.toString(location.getId()),
+            Integer.toString(type.ordinal()),
+            name,
+            hasPatient ? "1" : "0",
+            isClean ? "1" : "0"
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    return new String[] {"nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"};
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, name, type, isClean, hasPatient)";
   }

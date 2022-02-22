@@ -56,13 +56,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
     data.add(new String[] {"employeeID", "department", "name", "type"});
 
     for (Employee employee : listOfEmployees) {
-      data.add(
-          new String[] {
-            Integer.toString(employee.getId()),
-            Integer.toString(employee.getDepartment().ordinal()),
-            employee.getName(),
-            Integer.toString(employee.getType().ordinal())
-          });
+      data.add(employee.toCSVData());
     }
     writer.writeAll(data);
     writer.close();

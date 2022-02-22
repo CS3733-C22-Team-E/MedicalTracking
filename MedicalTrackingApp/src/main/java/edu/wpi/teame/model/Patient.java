@@ -63,6 +63,21 @@ public class Patient implements ISQLSerializable {
   }
 
   @Override
+  public String[] toCSVData() {
+    return new String[] {
+      name,
+      dateOfBirth.toString(),
+      Integer.toString(currentLocation.getId()),
+      Integer.toString(id)
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    return new String[] {"name", "dateOfBirth", "currentLocation", "id"};
+  }
+
+  @Override
   public String getTableColumns() {
     return "(name, dateOfBirth, currentLocationID)";
   }
