@@ -199,7 +199,7 @@ public class MapServiceRequestIcon {
 
   public MapServiceRequestIcon(ServiceRequest SR_, double TranslateX, double TranslateY) {
     timer = new Timer();
-    progressIndicator = new FillProgressIndicator();
+    progressIndicator = new FillProgressIndicator(SR_.getPriority());
     Icon = Graphics.get(SR_.getDBType());
     SR = SR_;
     this.setTranslateXandY(TranslateX, TranslateY);
