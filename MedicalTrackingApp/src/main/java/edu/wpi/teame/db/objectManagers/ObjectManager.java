@@ -105,10 +105,17 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case ComputerSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+      case DeceasedBodySR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case FacilitiesMaintenanceSR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case LaundrySR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case SanitationSR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case SecuritySR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
@@ -125,6 +132,10 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicalEquipmentServiceRequest(resultSet);
       case MedicineDeliverySR:
         return (T) new MedicineDeliveryServiceRequest(resultSet);
+      case MentalHealthSR:
+        return (T) new ServiceRequest(resultSet, objectType);
+      case PatientDischargeSR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(resultSet);
       case Location:
