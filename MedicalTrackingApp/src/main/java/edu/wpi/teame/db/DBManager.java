@@ -425,34 +425,40 @@ public final class DBManager {
       ex.printStackTrace();
     }
 
-    getLocationManager().readCSV(subFolder + "TowerLocationsE.csv");
-    getEquipmentManager().readCSV(subFolder + "EquipmentE.csv");
-    getEmployeeManager().readCSV(subFolder + "EmployeesE.csv");
-    getPatientManager().readCSV(subFolder + "Patient.csv");
+    getManager(DataBaseObjectType.Location).readCSV(subFolder + "TowerLocationsE.csv");
+    getManager(DataBaseObjectType.Equipment).readCSV(subFolder + "EquipmentE.csv");
+    getManager(DataBaseObjectType.Employee).readCSV(subFolder + "EmployeesE.csv");
+    getManager(DataBaseObjectType.Patient).readCSV(subFolder + "Patient.csv");
 
-    getAudioVisualSRManager().readCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getComputerSRManager().readCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.AudioVisualSR)
+        .readCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getManager(DataBaseObjectType.ComputerSR).readCSV(subFolder + "ComputerServiceRequest.csv");
     getManager(DataBaseObjectType.DeceasedBodySR)
         .readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getExternalPatientSRManager()
+    getManager(DataBaseObjectType.ExternalPatientSR)
         .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager()
+    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
         .readCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager()
+    getManager(DataBaseObjectType.FoodDeliverySR)
+        .readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.GiftAndFloralSR)
+        .readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getManager(DataBaseObjectType.InternalPatientTransferSR)
         .readCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().readCSV(subFolder + "LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager().readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.LanguageInterpreterSR)
+        .readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getManager(DataBaseObjectType.LaundrySR).readCSV(subFolder + "LaundryServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicalEquipmentSR)
+        .readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicineDeliverySR)
+        .readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
     getManager(DataBaseObjectType.MentalHealthSR)
         .readCSV(subFolder + "MentalHealthServiceRequest.csv");
     getManager(DataBaseObjectType.PatientDischargeSR)
         .readCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getReligiousSRManager().readCSV(subFolder + "ReligiousServiceRequest.csv");
-    getSanitationSRManager().readCSV(subFolder + "SanitationServiceRequest.csv");
-    getSecuritySRManager().readCSV(subFolder + "SecurityServiceRequest.csv");
+    getManager(DataBaseObjectType.ReligiousSR).readCSV(subFolder + "ReligiousServiceRequest.csv");
+    getManager(DataBaseObjectType.SanitationSR).readCSV(subFolder + "SanitationServiceRequest.csv");
+    getManager(DataBaseObjectType.SecuritySR).readCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
@@ -461,35 +467,40 @@ public final class DBManager {
       subFolder = "backup/";
     }
 
-    getLocationManager().writeToCSV(subFolder + "TowerLocationsE.csv");
-    getEquipmentManager().writeToCSV(subFolder + "EquipmentE.csv");
-    getEmployeeManager().writeToCSV(subFolder + "EmployeesE.csv");
-    getPatientManager().writeToCSV(subFolder + "Patient.csv");
+    getManager(DataBaseObjectType.Location).writeToCSV(subFolder + "TowerLocationsE.csv");
+    getManager(DataBaseObjectType.Equipment).writeToCSV(subFolder + "EquipmentE.csv");
+    getManager(DataBaseObjectType.Employee).writeToCSV(subFolder + "EmployeesE.csv");
+    getManager(DataBaseObjectType.Patient).writeToCSV(subFolder + "Patient.csv");
 
-    getAudioVisualSRManager().writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getComputerSRManager().writeToCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.AudioVisualSR)
+            .writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getManager(DataBaseObjectType.ComputerSR).writeToCSV(subFolder + "ComputerServiceRequest.csv");
     getManager(DataBaseObjectType.DeceasedBodySR)
-        .writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getExternalPatientSRManager()
-        .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager()
-        .writeToCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager()
-        .writeToCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().writeToCSV(subFolder + "LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager()
-        .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+            .writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
+    getManager(DataBaseObjectType.ExternalPatientSR)
+            .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
+    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
+            .writeToCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
+    getManager(DataBaseObjectType.FoodDeliverySR)
+            .writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.GiftAndFloralSR)
+            .writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getManager(DataBaseObjectType.InternalPatientTransferSR)
+            .writeToCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
+    getManager(DataBaseObjectType.LanguageInterpreterSR)
+            .writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getManager(DataBaseObjectType.LaundrySR).writeToCSV(subFolder + "LaundryServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicalEquipmentSR)
+            .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicineDeliverySR)
+            .writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
     getManager(DataBaseObjectType.MentalHealthSR)
-        .writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
+            .writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
     getManager(DataBaseObjectType.PatientDischargeSR)
-        .writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getReligiousSRManager().writeToCSV(subFolder + "ReligiousServiceRequest.csv");
-    getSanitationSRManager().writeToCSV(subFolder + "SanitationServiceRequest.csv");
-    getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
+            .writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
+    getManager(DataBaseObjectType.ReligiousSR).writeToCSV(subFolder + "ReligiousServiceRequest.csv");
+    getManager(DataBaseObjectType.SanitationSR).writeToCSV(subFolder + "SanitationServiceRequest.csv");
+    getManager(DataBaseObjectType.SecuritySR).writeToCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
