@@ -150,7 +150,7 @@ public class PathFinder {
     connections.put(108, Stream.of(107).collect(Collectors.toSet()));
     connections.put(109, Stream.of(114, 104).collect(Collectors.toSet()));
     connections.put(110, Stream.of(113, 115).collect(Collectors.toSet()));
-    
+
     connections.put(111, Stream.of(106, 112).collect(Collectors.toSet()));
     connections.put(112, Stream.of(105, 111).collect(Collectors.toSet()));
     connections.put(113, Stream.of(107, 110).collect(Collectors.toSet()));
@@ -165,16 +165,10 @@ public class PathFinder {
     connections.put(122, Stream.of(114, 56, 76, 101, 119).collect(Collectors.toSet()));
     connections.put(123, Stream.of(115, 57, 77, 102, 116).collect(Collectors.toSet()));
     connections.put(124, Stream.of(116).collect(Collectors.toSet()));
-    
+
     connections.put(125, Stream.of(21).collect(Collectors.toSet()));
-    connections.put(
-        126,
-        Stream.of(130, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 95)
-            .collect(Collectors.toSet()));
-    connections.put(
-        127,
-        Stream.of(131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 94)
-            .collect(Collectors.toSet()));
+    connections.put(126, Stream.of(130, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 95).collect(Collectors.toSet()));
+    connections.put(127, Stream.of(131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 94).collect(Collectors.toSet()));
     connections.put(128, Stream.of(93, 94, 91).collect(Collectors.toSet()));
     connections.put(129, Stream.of(95, 96).collect(Collectors.toSet()));
     connections.put(130, Stream.of(126).collect(Collectors.toSet()));
