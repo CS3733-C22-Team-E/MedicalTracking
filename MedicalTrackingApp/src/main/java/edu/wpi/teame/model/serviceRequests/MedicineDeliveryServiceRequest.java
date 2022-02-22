@@ -108,7 +108,9 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     csvData.add(medicineName);
     csvData.add(Integer.toString(patient.getId()));
     csvData.add(medicineQuantity);
-    return (String[]) csvData.toArray();
+
+    String[] retArr = new String[csvData.size()];
+    return csvData.toArray(retArr);
   }
 
   @Override
@@ -118,7 +120,9 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     csvHeaders.add("medicineName");
     csvHeaders.add("patientID");
     csvHeaders.add("medicineQuantity");
-    return (String[]) csvHeaders.toArray();
+
+    String[] retArr = new String[csvHeaders.size()];
+    return csvHeaders.toArray(retArr);
   }
 
   @Override

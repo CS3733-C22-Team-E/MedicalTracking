@@ -74,8 +74,9 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
   public String[] toCSVData() {
     List<String> csvData = new ArrayList<>();
     csvData.addAll(List.of(super.toCSVData()));
-    csvData.add(Integer.toString(patient.getId()));
-    return (String[]) csvData.toArray();
+
+    String[] retArr = new String[csvData.size()];
+    return csvData.toArray(retArr);
   }
 
   @Override

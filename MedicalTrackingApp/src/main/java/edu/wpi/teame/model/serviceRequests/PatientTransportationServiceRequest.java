@@ -129,7 +129,9 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     csvData.add(Integer.toString(destination.getId()));
     csvData.add(Integer.toString(patient.getId()));
     csvData.add(Integer.toString(equipment.getId()));
-    return (String[]) csvData.toArray();
+
+    String[] retArr = new String[csvData.size()];
+    return csvData.toArray(retArr);
   }
 
   @Override
@@ -139,7 +141,9 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     csvHeaders.add("destinationID");
     csvHeaders.add("patientID");
     csvHeaders.add("equipmentID");
-    return (String[]) csvHeaders.toArray();
+
+    String[] retArr = new String[csvHeaders.size()];
+    return csvHeaders.toArray(retArr);
   }
 
   @Override

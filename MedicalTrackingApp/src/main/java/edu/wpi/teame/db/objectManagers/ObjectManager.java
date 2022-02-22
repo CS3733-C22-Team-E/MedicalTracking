@@ -138,7 +138,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     }
 
     data.add(dbObjectList.get(0).getCSVHeaders());
-    for (T dbObject : dbObjectList) {
+     for (T dbObject : dbObjectList) {
       data.add(dbObject.toCSVData());
     }
     writer.writeAll(data);

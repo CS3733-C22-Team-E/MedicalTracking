@@ -89,7 +89,9 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     csvData.addAll(List.of(super.toCSVData()));
     csvData.add(Integer.toString(patient.getId()));
     csvData.add(food);
-    return (String[]) csvData.toArray();
+
+    String[] retArr = new String[csvData.size()];
+    return csvData.toArray(retArr);
   }
 
   @Override
@@ -98,7 +100,9 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     csvHeaders.addAll(List.of(super.toCSVData()));
     csvHeaders.add("patientID");
     csvHeaders.add("food");
-    return (String[]) csvHeaders.toArray();
+
+    String[] retArr = new String[csvHeaders.size()];
+    return csvHeaders.toArray(retArr);
   }
 
   @Override

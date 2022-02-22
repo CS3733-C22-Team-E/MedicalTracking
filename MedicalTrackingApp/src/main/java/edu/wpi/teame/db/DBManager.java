@@ -506,7 +506,7 @@ public final class DBManager {
     getManager(DataBaseObjectType.SecuritySR).writeToCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
-  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
+  public void setupDB() throws SQLException {
     // add embedded driver
     try {
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
