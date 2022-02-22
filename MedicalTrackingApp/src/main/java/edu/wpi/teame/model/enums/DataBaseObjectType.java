@@ -315,6 +315,7 @@ public enum DataBaseObjectType {
     return s + " at the requested location.";
   }
 
+  @Deprecated
   public ObjectManager getDBManagerInstance() throws SQLException {
     switch (this) {
       case AudioVisualSR:
