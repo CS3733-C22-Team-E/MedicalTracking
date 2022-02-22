@@ -10,7 +10,7 @@
 .fillindicator-filler-circle {
 	-fx-opacity: 0.75;
 	-fx-stroke-width: 0.0px;
-	-fx-fill: #001893;
+	-fx-fill: #ffffff;
 }
 .fillindicator-filler-cover {
 	-fx-fill: -fx-background;
