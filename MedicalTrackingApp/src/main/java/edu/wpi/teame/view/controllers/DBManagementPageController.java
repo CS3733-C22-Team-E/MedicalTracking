@@ -30,6 +30,7 @@ public class DBManagementPageController implements Initializable {
     String selectedText = tableComboBox.getValue().toString();
     DataBaseObjectType selectedTable = DataBaseObjectType.getValue(selectedText);
     itemsList = DBManager.getInstance().getManager(selectedTable).getAll();
+    itemsList.addAll(DBManager.getInstance().getManager(selectedTable).getDeleted());
     searchTextBox.clear();
     updateListView();
   }

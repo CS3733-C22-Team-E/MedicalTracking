@@ -3,18 +3,21 @@ package edu.wpi.teame.db;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.db.objectManagers.serviceRequests.*;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 
 public final class DBManager {
+  private final String AzureCloudServerConnectionString =
+      "jdbc:sqlserver://cs3733hospitalapp.database.windows.net:1433;database=hospitalappdb;user=medicaltracking@cs3733hospitalapp;password=u@$YK=$A5A*<\"g$$;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
   private final String ClientServerConnectionString =
       "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
   private final String EmbeddedConnectionString =
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
-  private boolean isClientServer = false;
+  private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
   private Statement stmt;
@@ -32,8 +35,8 @@ public final class DBManager {
     return connection;
   }
 
-  public boolean isClientServer() {
-    return isClientServer;
+  public DBType getCurrentType() {
+    return currentType;
   }
 
   private void createDBTables() throws SQLException {
@@ -415,6 +418,7 @@ public final class DBManager {
       throws CsvValidationException, SQLException, IOException, ParseException {
     String subFolder = "switchFiles/";
     if (fromBackup) {
+      cleanDBTables(); // Erase the tables in the DB to restore from CSV
       subFolder = "backup/";
     }
 
@@ -424,34 +428,40 @@ public final class DBManager {
       ex.printStackTrace();
     }
 
-    getLocationManager().readCSV(subFolder + "TowerLocationsE.csv");
-    getEquipmentManager().readCSV(subFolder + "EquipmentE.csv");
-    getEmployeeManager().readCSV(subFolder + "EmployeesE.csv");
-    getPatientManager().readCSV(subFolder + "Patient.csv");
+    getManager(DataBaseObjectType.Location).readCSV(subFolder + "TowerLocationsE.csv");
+    getManager(DataBaseObjectType.Equipment).readCSV(subFolder + "EquipmentE.csv");
+    getManager(DataBaseObjectType.Employee).readCSV(subFolder + "EmployeesE.csv");
+    getManager(DataBaseObjectType.Patient).readCSV(subFolder + "Patient.csv");
 
-    getAudioVisualSRManager().readCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getComputerSRManager().readCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.AudioVisualSR)
+        .readCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getManager(DataBaseObjectType.ComputerSR).readCSV(subFolder + "ComputerServiceRequest.csv");
     getManager(DataBaseObjectType.DeceasedBodySR)
         .readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getExternalPatientSRManager()
+    getManager(DataBaseObjectType.ExternalPatientSR)
         .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager()
+    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
         .readCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager()
+    getManager(DataBaseObjectType.FoodDeliverySR)
+        .readCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.GiftAndFloralSR)
+        .readCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getManager(DataBaseObjectType.InternalPatientTransferSR)
         .readCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().readCSV(subFolder + "LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager().readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.LanguageInterpreterSR)
+        .readCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getManager(DataBaseObjectType.LaundrySR).readCSV(subFolder + "LaundryServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicalEquipmentSR)
+        .readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicineDeliverySR)
+        .readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
     getManager(DataBaseObjectType.MentalHealthSR)
         .readCSV(subFolder + "MentalHealthServiceRequest.csv");
     getManager(DataBaseObjectType.PatientDischargeSR)
         .readCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getReligiousSRManager().readCSV(subFolder + "ReligiousServiceRequest.csv");
-    getSanitationSRManager().readCSV(subFolder + "SanitationServiceRequest.csv");
-    getSecuritySRManager().readCSV(subFolder + "SecurityServiceRequest.csv");
+    getManager(DataBaseObjectType.ReligiousSR).readCSV(subFolder + "ReligiousServiceRequest.csv");
+    getManager(DataBaseObjectType.SanitationSR).readCSV(subFolder + "SanitationServiceRequest.csv");
+    getManager(DataBaseObjectType.SecuritySR).readCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
@@ -460,35 +470,42 @@ public final class DBManager {
       subFolder = "backup/";
     }
 
-    getLocationManager().writeToCSV(subFolder + "TowerLocationsE.csv");
-    getEquipmentManager().writeToCSV(subFolder + "EquipmentE.csv");
-    getEmployeeManager().writeToCSV(subFolder + "EmployeesE.csv");
-    getPatientManager().writeToCSV(subFolder + "Patient.csv");
+    getManager(DataBaseObjectType.Location).writeToCSV(subFolder + "TowerLocationsE.csv");
+    getManager(DataBaseObjectType.Equipment).writeToCSV(subFolder + "EquipmentE.csv");
+    getManager(DataBaseObjectType.Employee).writeToCSV(subFolder + "EmployeesE.csv");
+    getManager(DataBaseObjectType.Patient).writeToCSV(subFolder + "Patient.csv");
 
-    getAudioVisualSRManager().writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getComputerSRManager().writeToCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.AudioVisualSR)
+        .writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
+    getManager(DataBaseObjectType.ComputerSR).writeToCSV(subFolder + "ComputerServiceRequest.csv");
     getManager(DataBaseObjectType.DeceasedBodySR)
         .writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getExternalPatientSRManager()
+    getManager(DataBaseObjectType.ExternalPatientSR)
         .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getFacilitiesMaintenanceSRManager()
+    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
         .writeToCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getFoodDeliverySRManager().writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getGiftAndFloralSRManager().writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getInternalPatientSRManager()
+    getManager(DataBaseObjectType.FoodDeliverySR)
+        .writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.GiftAndFloralSR)
+        .writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
+    getManager(DataBaseObjectType.InternalPatientTransferSR)
         .writeToCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getLanguageSRManager().writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getLaundrySRManager().writeToCSV(subFolder + "LaundryServiceRequest.csv");
-    getMedicalEquipmentSRManager()
+    getManager(DataBaseObjectType.LanguageInterpreterSR)
+        .writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
+    getManager(DataBaseObjectType.LaundrySR).writeToCSV(subFolder + "LaundryServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicalEquipmentSR)
         .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getMedicineDeliverySRManager().writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.MedicineDeliverySR)
+        .writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
     getManager(DataBaseObjectType.MentalHealthSR)
         .writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
     getManager(DataBaseObjectType.PatientDischargeSR)
         .writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getReligiousSRManager().writeToCSV(subFolder + "ReligiousServiceRequest.csv");
-    getSanitationSRManager().writeToCSV(subFolder + "SanitationServiceRequest.csv");
-    getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
+    getManager(DataBaseObjectType.ReligiousSR)
+        .writeToCSV(subFolder + "ReligiousServiceRequest.csv");
+    getManager(DataBaseObjectType.SanitationSR)
+        .writeToCSV(subFolder + "SanitationServiceRequest.csv");
+    getManager(DataBaseObjectType.SecuritySR).writeToCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
@@ -509,43 +526,50 @@ public final class DBManager {
     }
 
     // Connect to Client/Server... that DB may already have the tables
-    //    try {
-    //      connection = DriverManager.getConnection(ClientServerConnectionString);
-    //      stmt = connection.createStatement();
-    //      isClientServer = true;
-    //      createDBTables();
-    //    } catch (SQLException ex) {
-    //      ex.printStackTrace();
-    //    }
+    try {
+      connection = DriverManager.getConnection(ClientServerConnectionString);
+      stmt = connection.createStatement();
+      createDBTables();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
 
     // Default connect to Embedded Server
     connection = DriverManager.getConnection(EmbeddedConnectionString);
     stmt = connection.createStatement();
-    isClientServer = false;
     createDBTables();
   }
 
-  public void switchConnection(boolean isClientServer)
+  public void switchConnection(DBType type)
       throws SQLException, IOException, CsvValidationException, ParseException {
-    // Write DB to CSV
+
+    // Write to CSV
     DBManager.getInstance().writeDBToCSV(false);
 
-    // Clean the current dB table
-    cleanDBTables();
-
-    // Switch to the connection
-    String connectionString = EmbeddedConnectionString;
-    if (isClientServer) {
-      connectionString = ClientServerConnectionString;
+    // Switch Connection
+    String connectionString = "";
+    switch (type) {
+      case AzureCloud:
+        connectionString = AzureCloudServerConnectionString;
+        break;
+      case ClientServer:
+        connectionString = ClientServerConnectionString;
+        break;
+      case Embedded:
+        connectionString = EmbeddedConnectionString;
+        break;
     }
 
     // Create Connection
     connection = DriverManager.getConnection(connectionString);
-    this.isClientServer = isClientServer;
     stmt = connection.createStatement();
+    currentType = type;
 
-    // Load DB from CSV
-    DBManager.getInstance().loadDBFromCSV(false);
+    // Check if we should transfer data
+    if (currentType != DBType.AzureCloud) {
+      cleanDBTables();
+      DBManager.getInstance().loadDBFromCSV(false);
+    }
   }
 
   private void cleanDBTables() throws SQLException {

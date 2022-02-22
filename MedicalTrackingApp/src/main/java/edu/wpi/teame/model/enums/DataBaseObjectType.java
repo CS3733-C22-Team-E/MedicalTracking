@@ -36,6 +36,8 @@ public enum DataBaseObjectType {
         return "Audio/Visual Service Request";
       case ComputerSR:
         return "Computer Service Request";
+      case DeceasedBodySR:
+        return "Deceased Body Removal Service Request";
       case FoodDeliverySR:
         return "Food Delivery Service Request";
       case GiftAndFloralSR:
@@ -58,6 +60,8 @@ public enum DataBaseObjectType {
         return "Medical Equipment Delivery Service Request";
       case MedicineDeliverySR:
         return "Medicine Delivery Service Request";
+      case PatientDischargeSR:
+        return "Patient Discharge Service Request";
       case FacilitiesMaintenanceSR:
         return "Facilities Maintenance Service Request";
       case MentalHealthSR:
@@ -80,6 +84,8 @@ public enum DataBaseObjectType {
         return AudioVisualSR;
       case "Computer Service Request":
         return ComputerSR;
+      case "Deceased Body Removal Service Request":
+        return DeceasedBodySR;
       case "Food Delivery Service Request":
         return FoodDeliverySR;
       case "Gift/Floral Delivery Service Request":
@@ -104,6 +110,8 @@ public enum DataBaseObjectType {
         return MedicineDeliverySR;
       case "Facilities Maintenance Service Request":
         return FacilitiesMaintenanceSR;
+      case "Patient Discharge Service Request":
+        return PatientDischargeSR;
       case "Mental Health Service Request":
         return MentalHealthSR;
       case "Patient":
@@ -124,6 +132,8 @@ public enum DataBaseObjectType {
         return "AudioVisualSR";
       case ComputerSR:
         return "ComputerSR";
+      case DeceasedBodySR:
+        return "DeceasedBodyRemovalSR";
       case FoodDeliverySR:
         return "FoodDeliverySR";
       case GiftAndFloralSR:
@@ -146,6 +156,8 @@ public enum DataBaseObjectType {
         return "MedicalEquipmentSR";
       case MedicineDeliverySR:
         return "MedicineDeliverySR";
+      case PatientDischargeSR:
+        return "PatientDischargeSR";
       case FacilitiesMaintenanceSR:
         return "FacilitiesMaintenanceSR";
       case MentalHealthSR:
@@ -195,6 +207,10 @@ public enum DataBaseObjectType {
         return Color.THISTLE;
       case MentalHealthSR:
         return Color.RED;
+      case DeceasedBodySR:
+        return Color.BLACK;
+      case PatientDischargeSR:
+        return Color.YELLOW;
       case Employee:
         return Color.BLUE;
       case Location:
@@ -235,6 +251,10 @@ public enum DataBaseObjectType {
         return "Facilities Maintenance";
       case MentalHealthSR:
         return "Mental Health";
+      case DeceasedBodySR:
+        return "Deceased Body";
+      case PatientDischargeSR:
+        return "Patient Discharge";
       case Employee:
         return "Employee";
       case Location:
@@ -293,6 +313,12 @@ public enum DataBaseObjectType {
       case MentalHealthSR:
         s += " Mental Health Service Request";
         break;
+      case DeceasedBodySR:
+        s += " Deceased Body Removal Service Request";
+        break;
+      case PatientDischargeSR:
+        s += " Patient Discharge Service Request";
+        break;
       case Employee:
         return "This is an employee.";
       case Location:
@@ -303,6 +329,7 @@ public enum DataBaseObjectType {
     return s + " at the requested location.";
   }
 
+  @Deprecated
   public ObjectManager getDBManagerInstance() throws SQLException {
     switch (this) {
       case AudioVisualSR:
