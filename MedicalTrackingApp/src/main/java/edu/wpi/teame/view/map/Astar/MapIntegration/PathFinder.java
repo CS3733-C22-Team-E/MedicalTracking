@@ -54,7 +54,7 @@ public class PathFinder {
     connections.put(18, Stream.of(17, 22).collect(Collectors.toSet()));
     connections.put(19, Stream.of(22).collect(Collectors.toSet()));
     connections.put(20, Stream.of(18).collect(Collectors.toSet()));
-    connections.put(21, Stream.of(20).collect(Collectors.toSet()));
+    connections.put(21, Stream.of(20, 125).collect(Collectors.toSet()));
     connections.put(23, Stream.of(20, 49).collect(Collectors.toSet()));
     connections.put(24, Stream.of(23).collect(Collectors.toSet()));
     connections.put(25, Stream.of(24).collect(Collectors.toSet()));
@@ -103,18 +103,18 @@ public class PathFinder {
     connections.put(88, Stream.of(89, 101).collect(Collectors.toSet()));
     connections.put(89, Stream.of(81, 90).collect(Collectors.toSet()));
     connections.put(90, Stream.of(99, 91).collect(Collectors.toSet()));
-    connections.put(91, Stream.of(92, 93).collect(Collectors.toSet()));
+    connections.put(91, Stream.of(92, 93, 128).collect(Collectors.toSet()));
     connections.put(92, Stream.of(79).collect(Collectors.toSet()));
-    connections.put(93, Stream.of(82, 94).collect(Collectors.toSet()));
-    connections.put(94, Stream.of(95).collect(Collectors.toSet()));
-    connections.put(95, Stream.of(96).collect(Collectors.toSet()));
-    connections.put(96, Stream.of(97).collect(Collectors.toSet()));
+    connections.put(93, Stream.of(82, 94, 128).collect(Collectors.toSet()));
+    connections.put(94, Stream.of(95, 127, 128, 132).collect(Collectors.toSet()));
+    connections.put(95, Stream.of(96, 126, 129, 132).collect(Collectors.toSet()));
+    connections.put(96, Stream.of(97, 129).collect(Collectors.toSet()));
     connections.put(97, Stream.of(80, 88, 96).collect(Collectors.toSet()));
     connections.put(101, Stream.of(88).collect(Collectors.toSet()));
     connections.put(102, Stream.of(87).collect(Collectors.toSet()));
     connections.put(103, Stream.of(104).collect(Collectors.toSet()));
     connections.put(104, Stream.of(109).collect(Collectors.toSet()));
-    connections.put(105, Stream.of(112).collect(Collectors.toSet()));
+    connections.put(105, Stream.of(112, 153).collect(Collectors.toSet()));
     connections.put(106, Stream.of(115).collect(Collectors.toSet()));
     connections.put(107, Stream.of(108).collect(Collectors.toSet()));
     connections.put(109, Stream.of(114).collect(Collectors.toSet()));
@@ -142,29 +142,29 @@ public class PathFinder {
             .collect(Collectors.toSet()));
     connections.put(128, Stream.of(93, 94, 91).collect(Collectors.toSet()));
     connections.put(129, Stream.of(95, 96).collect(Collectors.toSet()));
-    //    connections.put(130, Stream.of(126).collect(Collectors.toSet()));
-    //    connections.put(131, Stream.of(127).collect(Collectors.toSet()));
+    connections.put(130, Stream.of(126).collect(Collectors.toSet()));
+    connections.put(131, Stream.of(127).collect(Collectors.toSet()));
     connections.put(132, Stream.of(94, 95).collect(Collectors.toSet()));
-    //    connections.put(133, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(134, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(135, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(136, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(137, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(138, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(139, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(140, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(141, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(142, Stream.of(127,94).collect(Collectors.toSet()));
-    //    connections.put(143, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(144, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(145, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(146, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(147, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(148, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(149, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(150, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(151, Stream.of(126,95).collect(Collectors.toSet()));
-    //    connections.put(152, Stream.of(126,95).collect(Collectors.toSet()));
+    connections.put(133, Stream.of(127, 94, 134).collect(Collectors.toSet())); // Patient Bed Start
+    connections.put(134, Stream.of(127, 94, 133, 135).collect(Collectors.toSet()));
+    connections.put(135, Stream.of(127, 94, 134, 136).collect(Collectors.toSet()));
+    connections.put(136, Stream.of(127, 94, 135, 137).collect(Collectors.toSet()));
+    connections.put(137, Stream.of(127, 94, 136, 138).collect(Collectors.toSet()));
+    connections.put(138, Stream.of(127, 94, 137, 139).collect(Collectors.toSet()));
+    connections.put(139, Stream.of(127, 94, 138, 140).collect(Collectors.toSet()));
+    connections.put(140, Stream.of(127, 94, 139, 141).collect(Collectors.toSet()));
+    connections.put(141, Stream.of(127, 94, 140, 142).collect(Collectors.toSet()));
+    connections.put(142, Stream.of(127, 94, 141).collect(Collectors.toSet()));
+    connections.put(143, Stream.of(126, 95, 144).collect(Collectors.toSet())); // Next Pod
+    connections.put(144, Stream.of(126, 95, 143, 145).collect(Collectors.toSet()));
+    connections.put(145, Stream.of(126, 95, 144, 146).collect(Collectors.toSet()));
+    connections.put(146, Stream.of(126, 95, 145, 147).collect(Collectors.toSet()));
+    connections.put(147, Stream.of(126, 95, 146, 148).collect(Collectors.toSet()));
+    connections.put(148, Stream.of(126, 95, 147, 149).collect(Collectors.toSet()));
+    connections.put(149, Stream.of(126, 95, 148, 150).collect(Collectors.toSet()));
+    connections.put(150, Stream.of(126, 95, 149, 151).collect(Collectors.toSet()));
+    connections.put(151, Stream.of(126, 95, 150, 152).collect(Collectors.toSet()));
+    connections.put(152, Stream.of(126, 95, 151).collect(Collectors.toSet())); // Patient Bed End
     connections.put(153, Stream.of(105).collect(Collectors.toSet()));
 
     // Temporary Empty Connections
