@@ -27,11 +27,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-/**
- * Skin for the {@link FillProgressIndicator} that represents progress and a circle that fills
- *
- * @author Andrea Vacondio
- */
 public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
   private final FillProgressIndicator indicator;
   private final StackPane container = new StackPane();
