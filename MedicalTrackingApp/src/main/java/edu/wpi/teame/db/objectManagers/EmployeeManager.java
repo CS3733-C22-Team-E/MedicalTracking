@@ -4,12 +4,11 @@ package edu.wpi.teame.db.objectManagers;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,8 @@ public final class EmployeeManager extends ObjectManager<Employee> {
   @Override
   public void readCSV(String inputFileName)
       throws IOException, CsvValidationException, SQLException {
-    String filePath =
-        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
-    CSVReader csvReader = new CSVReader(new FileReader(filePath));
+    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
+    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
     while (lineData.readNext()) {
@@ -38,9 +36,7 @@ public final class EmployeeManager extends ObjectManager<Employee> {
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
-    String filePath =
-        System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + outputFileName;
-
+    String filePath = App.class.getResource("csv/" + outputFileName).getPath();
     FileWriter outputFile = new FileWriter(filePath);
     CSVWriter writer =
         new CSVWriter(
