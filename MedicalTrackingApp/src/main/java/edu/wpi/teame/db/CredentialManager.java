@@ -79,8 +79,7 @@ public final class CredentialManager {
     statement.executeUpdate(insertQuery);
   }
 
-  private void insert(String salt, String username, String hashedPassword)
-      throws SQLException, NoSuchAlgorithmException {
+  private void insert(String salt, String username, String hashedPassword) throws SQLException {
     String insertQuery =
         "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"
             + salt
@@ -100,10 +99,7 @@ public final class CredentialManager {
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
-    String[] record;
-    while ((record = csvReader.readNext()) != null) {
-      lineData.setParsedData(record);
-
+    while (lineData.readNext()) {
       String salt = lineData.getColumnString("salt");
       String username = lineData.getColumnString("username");
       String hashedPassword = lineData.getColumnString("password");

@@ -4,22 +4,12 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
-import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
-import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-import edu.wpi.teame.model.enums.ServiceRequestPriority;
-import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -43,7 +33,9 @@ public final class PatientTransportationSRManager
     CSVLineData lineData = new CSVLineData(csvReader);
 
     while (lineData.readNext()) {
-      insert(new PatientTransportationServiceRequest(lineData, objectType.equals(DataBaseObjectType.InternalPatientTransferSR)));
+      insert(
+          new PatientTransportationServiceRequest(
+              lineData, objectType.equals(DataBaseObjectType.InternalPatientTransferSR)));
     }
   }
 

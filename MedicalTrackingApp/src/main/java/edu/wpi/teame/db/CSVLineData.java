@@ -47,6 +47,9 @@ public class CSVLineData {
 
   public boolean readNext() throws CsvValidationException, IOException {
     parsedData = csvReader.readNext();
+    if (parsedData == null) {
+      return false;
+    }
     return parsedData.length != 0;
   }
 
@@ -60,10 +63,5 @@ public class CSVLineData {
       return null;
     }
     return columnString;
-  }
-
-  @Deprecated
-  public void setParsedData(String[] parsedData) {
-    this.parsedData = parsedData;
   }
 }

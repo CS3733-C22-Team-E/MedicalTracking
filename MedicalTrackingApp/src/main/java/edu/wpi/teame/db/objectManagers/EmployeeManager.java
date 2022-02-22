@@ -5,7 +5,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.*;
 import java.io.FileReader;
@@ -31,7 +30,6 @@ public final class EmployeeManager extends ObjectManager<Employee> {
         System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame/csv/" + inputFileName;
     CSVReader csvReader = new CSVReader(new FileReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
-
 
     while (lineData.readNext()) {
       insert(new Employee(lineData));
