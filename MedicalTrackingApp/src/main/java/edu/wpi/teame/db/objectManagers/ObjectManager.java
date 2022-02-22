@@ -11,7 +11,6 @@ import edu.wpi.teame.model.serviceRequests.*;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   protected DataBaseObjectType objectType;
@@ -25,7 +24,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   protected List<T> getBy(String whereClause) throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " " + whereClause;
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " " + whereClause;
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -36,7 +35,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public T get(int id) throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " WHERE ID = " + id;
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE ID = " + id;
     ResultSet resultSet = statement.executeQuery(getQuery);
     if (resultSet.next()) {
       return getCastedType(resultSet);
@@ -46,7 +45,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getAll() throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " WHERE isDeleted = 0";
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = 0";
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -57,7 +56,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getDeleted() throws SQLException {
-    String getQuery = "SELECT * FROM " + getTableName() + " WHERE isDeleted = true";
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = true";
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -69,7 +68,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public T insert(T newObject) throws SQLException {
     StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
-    insertQuery.append(getTableName()).append(newObject.getTableColumns());
+    insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());
     insertQuery.append(" VALUES(");
     insertQuery.append(newObject.getSQLInsertString()).append(")");
     System.out.println(insertQuery);
@@ -92,7 +91,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
      */
     StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
     markIsDeleted
-        .append(getTableName())
+        .append(objectType.toTableName())
         .append(" SET isDeleted = 1")
         .append(" WHERE id = ")
         .append(id);
@@ -102,7 +101,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void update(T updatedObject) throws SQLException {
     StringBuilder updateQuery = new StringBuilder("UPDATE ");
-    updateQuery.append(getTableName()).append(" SET ");
+    updateQuery.append(objectType.toTableName()).append(" SET ");
     updateQuery.append(updatedObject.getSQLUpdateString());
     System.out.println(updateQuery.toString());
 
@@ -112,7 +111,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void restore() throws SQLException { // sets isDeleted = false for all tuples in the table
     StringBuilder restoreQuery = new StringBuilder("UPDATE ");
-    restoreQuery.append(getTableName()).append(" SET isDeleted = 0");
+    restoreQuery.append(objectType.toTableName()).append(" SET isDeleted = 0");
     statement.executeUpdate(restoreQuery.toString());
   }
 
@@ -162,9 +161,5 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Patient(resultSet);
     }
     return null;
-  }
-
-  private String getTableName() {
-    return objectType.name().toUpperCase(Locale.ROOT);
   }
 }

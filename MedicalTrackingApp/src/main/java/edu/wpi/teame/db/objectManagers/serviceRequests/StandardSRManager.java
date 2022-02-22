@@ -4,7 +4,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
@@ -81,7 +80,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
               openDate,
               title,
               id);
-      getManager().insert(newSR);
+      insert(newSR);
     }
   }
 
@@ -99,8 +98,7 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-    List<ServiceRequest> listOfSerReq = this.getAll();
-
+    List<ServiceRequest> listOfSerReq = getAll();
     List<String[]> data = new ArrayList<String[]>();
     data.add(
         new String[] {
@@ -133,40 +131,5 @@ public final class StandardSRManager extends ObjectManager<ServiceRequest> {
     }
     writer.writeAll(data);
     writer.close();
-  }
-
-  private ObjectManager getManager() throws SQLException {
-    switch (super.objectType) {
-      case AudioVisualSR:
-        return DBManager.getInstance().getAudioVisualSRManager();
-      case ComputerSR:
-        return DBManager.getInstance().getComputerSRManager();
-      case FoodDeliverySR:
-        return DBManager.getInstance().getFoodDeliverySRManager();
-      case GiftAndFloralSR:
-        return DBManager.getInstance().getGiftAndFloralSRManager();
-      case InternalPatientTransferSR:
-        return DBManager.getInstance().getInternalPatientSRManager();
-      case ExternalPatientSR:
-        return DBManager.getInstance().getExternalPatientSRManager();
-      case LanguageInterpreterSR:
-        return DBManager.getInstance().getLanguageSRManager();
-      case LaundrySR:
-        return DBManager.getInstance().getLaundrySRManager();
-      case ReligiousSR:
-        return DBManager.getInstance().getReligiousSRManager();
-      case SecuritySR:
-        return DBManager.getInstance().getSecuritySRManager();
-      case MedicalEquipmentSR:
-        return DBManager.getInstance().getMedicalEquipmentSRManager();
-      case MedicineDeliverySR:
-        return DBManager.getInstance().getMedicineDeliverySRManager();
-      case FacilitiesMaintenanceSR:
-        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();
-      case SanitationSR:
-        return DBManager.getInstance().getSanitationSRManager();
-      default:
-        return null;
-    }
   }
 }
