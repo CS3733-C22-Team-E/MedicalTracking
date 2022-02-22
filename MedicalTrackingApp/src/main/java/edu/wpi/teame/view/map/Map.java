@@ -778,7 +778,8 @@ public class Map {
               }
               if (newEmployee != null) {
                 SR.setAssignee(newEmployee);
-                System.out.println("Updated Service Request Assignee to: "+ SR.getAssignee().getName());
+                System.out.println(
+                    "Updated Service Request Assignee to: " + SR.getAssignee().getName());
               }
             } catch (SQLException e) {
               e.printStackTrace();

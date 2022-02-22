@@ -177,8 +177,15 @@ public class ServiceRequestCard {
             e.printStackTrace();
           }
         }));
-    Tooltip t = new Tooltip("Click to delete");
+    Tooltip t = new Tooltip("Click to mark as done.");
     Tooltip.install(doneBox, t);
+    ;
+    if (isDead) {
+      t.setText("Click to delete.");
+      doneBox.setSelected(true);
+    }
+    Tooltip.install(doneBox, t);
+    ;
     return doneBox;
   }
 
