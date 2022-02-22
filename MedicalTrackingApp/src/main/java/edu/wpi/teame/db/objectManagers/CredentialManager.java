@@ -72,7 +72,7 @@ public final class CredentialManager {
     if (hasUsername(username)) {
       return;
     }
-    
+
     byte[] salt = createSalt();
     String insertQuery =
         "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"

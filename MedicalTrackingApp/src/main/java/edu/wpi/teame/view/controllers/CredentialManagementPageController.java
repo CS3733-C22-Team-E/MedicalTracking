@@ -2,7 +2,7 @@ package edu.wpi.teame.view.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
