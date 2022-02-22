@@ -391,7 +391,7 @@ public final class DBManager {
 
   public void loadDBFromCSV(boolean fromBackup)
       throws CsvValidationException, SQLException, IOException, ParseException {
-    // TODO: add DeceasedBody, MentalHealth, PatientDischarge
+    // TODO: add DeceasedBody, MentalHealth, PatientDischarge. Done
     String subFolder = "switchFiles/";
     if (fromBackup) {
       subFolder = "backup/";
@@ -410,6 +410,7 @@ public final class DBManager {
 
     getAudioVisualSRManager().readCSV(subFolder + "AudioVisualServiceRequest.csv");
     getComputerSRManager().readCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.DeceasedBodySR).readCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
     getExternalPatientSRManager()
         .readCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
     getFacilitiesMaintenanceSRManager()
@@ -422,13 +423,15 @@ public final class DBManager {
     getLaundrySRManager().readCSV(subFolder + "LaundryServiceRequest.csv");
     getMedicalEquipmentSRManager().readCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().readCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.MentalHealthSR).readCSV(subFolder + "MentalHealthServiceRequest.csv");
+    getManager(DataBaseObjectType.PatientDischargeSR).readCSV(subFolder + "PatientDischargeServiceRequest.csv");
     getReligiousSRManager().readCSV(subFolder + "ReligiousServiceRequest.csv");
     getSanitationSRManager().readCSV(subFolder + "SanitationServiceRequest.csv");
     getSecuritySRManager().readCSV(subFolder + "SecurityServiceRequest.csv");
   }
 
   public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
-    // TODO: add DeceasedBody, MentalHealth, PatientDischarge
+    // TODO: add DeceasedBody, MentalHealth, PatientDischarge. Done
     String subFolder = "switchFiles/";
     if (isBackup) {
       subFolder = "backup/";
@@ -441,6 +444,7 @@ public final class DBManager {
 
     getAudioVisualSRManager().writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
     getComputerSRManager().writeToCSV(subFolder + "ComputerServiceRequest.csv");
+    getManager(DataBaseObjectType.DeceasedBodySR).writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
     getExternalPatientSRManager()
         .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
     getFacilitiesMaintenanceSRManager()
@@ -454,6 +458,8 @@ public final class DBManager {
     getMedicalEquipmentSRManager()
         .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
     getMedicineDeliverySRManager().writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
+    getManager(DataBaseObjectType.MentalHealthSR).writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
+    getManager(DataBaseObjectType.PatientDischargeSR).writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
     getReligiousSRManager().writeToCSV(subFolder + "ReligiousServiceRequest.csv");
     getSanitationSRManager().writeToCSV(subFolder + "SanitationServiceRequest.csv");
     getSecuritySRManager().writeToCSV(subFolder + "SecurityServiceRequest.csv");
@@ -636,6 +642,9 @@ public final class DBManager {
         return new MedicineDeliverySRManager();
       case LaundrySR:
       case ComputerSR:
+      case DeceasedBodySR:
+      case MentalHealthSR:
+      case PatientDischargeSR:
       case SecuritySR:
       case SanitationSR:
       case AudioVisualSR:
