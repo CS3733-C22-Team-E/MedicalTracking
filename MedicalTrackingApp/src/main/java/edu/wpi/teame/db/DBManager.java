@@ -468,42 +468,9 @@ public final class DBManager {
       subFolder = "backup/";
     }
 
-    getManager(DataBaseObjectType.Location).writeToCSV(subFolder + "TowerLocationsE.csv");
-    getManager(DataBaseObjectType.Equipment).writeToCSV(subFolder + "EquipmentE.csv");
-    getManager(DataBaseObjectType.Employee).writeToCSV(subFolder + "EmployeesE.csv");
-    getManager(DataBaseObjectType.Patient).writeToCSV(subFolder + "Patient.csv");
-
-    getManager(DataBaseObjectType.AudioVisualSR)
-        .writeToCSV(subFolder + "AudioVisualServiceRequest.csv");
-    getManager(DataBaseObjectType.ComputerSR).writeToCSV(subFolder + "ComputerServiceRequest.csv");
-    getManager(DataBaseObjectType.DeceasedBodySR)
-        .writeToCSV(subFolder + "DeceasedBodyRemovalServiceRequest.csv");
-    getManager(DataBaseObjectType.ExternalPatientSR)
-        .writeToCSV(subFolder + "ExternalPatientTransportationServiceRequest.csv");
-    getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
-        .writeToCSV(subFolder + "FacilitiesMaintenanceServiceRequest.csv");
-    getManager(DataBaseObjectType.FoodDeliverySR)
-        .writeToCSV(subFolder + "FoodDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.GiftAndFloralSR)
-        .writeToCSV(subFolder + "GiftAndFloralServiceRequest.csv");
-    getManager(DataBaseObjectType.InternalPatientTransferSR)
-        .writeToCSV(subFolder + "InternalPatientTransportationServiceRequest.csv");
-    getManager(DataBaseObjectType.LanguageInterpreterSR)
-        .writeToCSV(subFolder + "LanguageInterpreterServiceRequest.csv");
-    getManager(DataBaseObjectType.LaundrySR).writeToCSV(subFolder + "LaundryServiceRequest.csv");
-    getManager(DataBaseObjectType.MedicalEquipmentSR)
-        .writeToCSV(subFolder + "MedicalEquipmentDeliverServiceRequest.csv");
-    getManager(DataBaseObjectType.MedicineDeliverySR)
-        .writeToCSV(subFolder + "MedicineDeliveryServiceRequest.csv");
-    getManager(DataBaseObjectType.MentalHealthSR)
-        .writeToCSV(subFolder + "MentalHealthServiceRequest.csv");
-    getManager(DataBaseObjectType.PatientDischargeSR)
-        .writeToCSV(subFolder + "PatientDischargeServiceRequest.csv");
-    getManager(DataBaseObjectType.ReligiousSR)
-        .writeToCSV(subFolder + "ReligiousServiceRequest.csv");
-    getManager(DataBaseObjectType.SanitationSR)
-        .writeToCSV(subFolder + "SanitationServiceRequest.csv");
-    getManager(DataBaseObjectType.SecuritySR).writeToCSV(subFolder + "SecurityServiceRequest.csv");
+    for (DataBaseObjectType type : DataBaseObjectType.values()) {
+      getManager(type).writeToCSV(subFolder + type.toTableName() + ".csv");
+    }
   }
 
   public void setupDB() throws SQLException {
