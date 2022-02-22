@@ -1,11 +1,13 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
@@ -17,28 +19,30 @@ public class Patient implements ISQLSerializable {
   public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {
     this.currentLocation = currentLocation;
     this.dateOfBirth = dateOfBirth;
+    this.isDeleted = false;
     this.name = name;
     this.id = id;
-    this.isDeleted = false;
   }
 
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
-            (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("currentLocationID"));
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("currentLocationID"));
     this.isDeleted = resultSet.getBoolean("isDeleted");
     this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
   }
 
-  @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.Patient;
-  }
-
-  @Override
-  public String getSQLInsertString() {
-    return "'" + name + "', '" + dateOfBirth.toString() + "', " + currentLocation.getId();
+  public Patient(CSVLineData lineData) throws SQLException, ParseException {
+    this.isDeleted = false;
+    this.name = lineData.getColumnString("name");
+    this.dateOfBirth = lineData.getColumnDate("dateOfBirth");
+    this.currentLocation =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(lineData.getColumnInt("currentLocation"));
   }
 
   @Override
@@ -54,10 +58,21 @@ public class Patient implements ISQLSerializable {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return "'" + name + "', '" + dateOfBirth.toString() + "', " + currentLocation.getId();
+  }
+
+  @Override
   public String getTableColumns() {
     return "(name, dateOfBirth, currentLocationID)";
   }
 
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.Patient;
+  }
+
+  // Getters and Setters
   public Location getCurrentLocation() {
     return currentLocation;
   }

@@ -1,5 +1,7 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EquipmentManager;
 import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -8,6 +10,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   private Equipment equipment;
@@ -41,12 +44,12 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   public MedicalEquipmentServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.MedicalEquipmentSR);
-    this.equipment = new EquipmentManager().get(resultSet.getInt("equipmentID"));
+    this.equipment = (Equipment) DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
   }
 
-  @Override
-  public String getSQLInsertString() {
-    return super.getSQLInsertString() + ", " + equipment.getId();
+  public MedicalEquipmentServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.MedicalEquipmentSR);
+    this.equipment = (Equipment) DBManager.getManager(DataBaseObjectType.Equipment).get(lineData.getColumnInt("equipmentID"));
   }
 
   @Override
@@ -55,10 +58,16 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return super.getSQLInsertString() + ", " + equipment.getId();
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, equipmentID)";
   }
 
+  //Getters and Setters
   public Equipment getEquipment() {
     return equipment;
   }

@@ -108,13 +108,13 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case PatientDischargeSR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
-        return (T) new PatientTransportationServiceRequest(false, resultSet);
+        return (T) new PatientTransportationServiceRequest(resultSet, false);
       case FoodDeliverySR:
         return (T) new FoodDeliveryServiceRequest(resultSet);
       case GiftAndFloralSR:
         return (T) new GiftAndFloralServiceRequest(resultSet);
       case InternalPatientTransferSR:
-        return (T) new PatientTransportationServiceRequest(true, resultSet);
+        return (T) new PatientTransportationServiceRequest(resultSet, true);
       case LanguageInterpreterSR:
         return (T) new LanguageInterpreterServiceRequest(resultSet);
       case MedicalEquipmentSR:

@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
@@ -10,6 +11,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.ZoneId;
 
 public class ServiceRequest implements ISQLSerializable {
@@ -55,18 +57,74 @@ public class ServiceRequest implements ISQLSerializable {
   public ServiceRequest(ResultSet resultSet, DataBaseObjectType type) throws SQLException {
     this.priority = ServiceRequestPriority.values()[resultSet.getInt("priority")];
     this.location =
-        DBManager.getInstance().getLocationManager().get(resultSet.getInt("locationID"));
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("locationID"));
     this.assignee =
-        DBManager.getInstance().getEmployeeManager().get(resultSet.getInt("assigneeID"));
+        (Employee)
+            DBManager.getManager(DataBaseObjectType.Employee).get(resultSet.getInt("assigneeID"));
     this.status = ServiceRequestStatus.values()[resultSet.getInt("status")];
     this.additionalInfo = resultSet.getString("additionalInfo");
     this.requestDate = resultSet.getDate("requestDate");
+    this.isDeleted = resultSet.getBoolean("isDeleted");
     this.closeDate = resultSet.getDate("closeDate");
     this.openDate = resultSet.getDate("openDate");
     this.title = resultSet.getString("title");
     this.id = resultSet.getInt("id");
     this.dbType = type;
-    this.isDeleted = resultSet.getBoolean("isDeleted");
+  }
+
+  public ServiceRequest(CSVLineData lineData, DataBaseObjectType type)
+      throws SQLException, ParseException {
+    this.priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
+    this.status = ServiceRequestStatus.values()[lineData.getColumnInt("status")];
+    this.assignee =
+        (Employee)
+            DBManager.getManager(DataBaseObjectType.Employee)
+                .get(lineData.getColumnInt("assigneeID"));
+    this.location =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(lineData.getColumnInt("locationID"));
+    this.additionalInfo = lineData.getColumnString("additionalInfo");
+    this.requestDate = lineData.getColumnDate("requestDate");
+    this.closeDate = lineData.getColumnDate("closeDate");
+    this.openDate = lineData.getColumnDate("openDate");
+    this.title = lineData.getColumnString("title");
+    this.id = lineData.getColumnInt("id");
+    this.dbType = type;
+  }
+
+  @Override
+  public String toString() {
+    return "id = "
+        + id
+        + "locationID = "
+        + location.getId()
+        + ", "
+        + "assigneeID = "
+        + assignee.getId()
+        + ", "
+        + "openDate = '"
+        + dateToSQLString(openDate)
+        + "', "
+        + "closeDate = "
+        + closeDate.toString()
+        + ", "
+        + "status = "
+        + status.ordinal()
+        + ", "
+        + "title = '"
+        + title
+        + "', "
+        + "additionalInfo = '"
+        + additionalInfo
+        + "', "
+        + "priority = "
+        + priority.ordinal()
+        + ", "
+        + "requestDate = '"
+        + dateToSQLString(requestDate)
+        + "'";
   }
 
   @Override
@@ -96,16 +154,6 @@ public class ServiceRequest implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + " WHERE id = " + id;
-  }
-
-  @Override
-  public String getTableColumns() {
-    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)";
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return dbType;
   }
 
   protected String getRawUpdateString() {
@@ -139,12 +187,23 @@ public class ServiceRequest implements ISQLSerializable {
         + "'";
   }
 
+  @Override
+  public String getTableColumns() {
+    return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)";
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return dbType;
+  }
+
   protected String dateToSQLString(Date date) {
     String dateAsString =
         openDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toString();
     return dateAsString.replace("T", " ").replace("Z", "");
   }
 
+  // Getters and Setters
   public ServiceRequestPriority getPriority() {
     return priority;
   }
@@ -223,37 +282,5 @@ public class ServiceRequest implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public String toString() {
-    return "id = "
-        + id
-        + "locationID = "
-        + location.getId()
-        + ", "
-        + "assigneeID = "
-        + assignee.getId()
-        + ", "
-        + "openDate = '"
-        + dateToSQLString(openDate)
-        + "', "
-        + "closeDate = "
-        + closeDate.toString()
-        + ", "
-        + "status = "
-        + status.ordinal()
-        + ", "
-        + "title = '"
-        + title
-        + "', "
-        + "additionalInfo = '"
-        + additionalInfo
-        + "', "
-        + "priority = "
-        + priority.ordinal()
-        + ", "
-        + "requestDate = '"
-        + dateToSQLString(requestDate)
-        + "'";
   }
 }

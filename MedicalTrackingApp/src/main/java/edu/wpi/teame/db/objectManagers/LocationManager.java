@@ -7,7 +7,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.BuildingType;
@@ -54,9 +53,6 @@ public final class LocationManager extends ObjectManager<Location> {
       Location newLocation =
           new Location(0, longName, x, y, floor, building, locationType, shortName);
       newLocation = DBManager.getInstance().getLocationManager().insert(newLocation);
-
-      // Add the locationID to the HashMap
-      CSVManager.getInstance().locationIDMap.put(nodeId, newLocation);
     }
   }
 

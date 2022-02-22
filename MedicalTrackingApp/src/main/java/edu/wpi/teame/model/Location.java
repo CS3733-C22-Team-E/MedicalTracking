@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.view.map.Astar.GraphNode;
@@ -50,6 +51,89 @@ public class Location implements ISQLSerializable, GraphNode {
     this.building = BuildingType.values()[resultSet.getInt("building")];
   }
 
+  public Location(CSVLineData lineData) throws SQLException {
+    this.x = lineData.getColumnInt("xcoord");
+    this.y = lineData.getColumnInt("ycoord");
+    this.id = lineData.getColumnInt("nodeID");
+    this.longName = lineData.getColumnString("longName");
+    this.shortName = lineData.getColumnString("shortName");
+    this.floor = FloorType.values()[lineData.getColumnInt("floor")];
+    this.type = LocationType.valueOf(lineData.getColumnString("nodeType"));
+    this.building = BuildingType.valueOf(lineData.getColumnString("building"));
+  }
+
+  @Override
+  public String toString() {
+    return "nodeID: "
+        + id
+        + ", xcoord: "
+        + x
+        + ", ycoord: "
+        + y
+        + ", floor: "
+        + floor
+        + ", building: "
+        + building
+        + ", nodeType: "
+        + type
+        + ", longName: "
+        + longName
+        + ", shortName: "
+        + shortName;
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+    return "locationType = "
+        + type.ordinal()
+        + ", shortName = '"
+        + shortName
+        + "', longName = '"
+        + longName
+        + "', building = "
+        + building.ordinal()
+        + ", floor = "
+        + floor.ordinal()
+        + ", x = "
+        + x
+        + ", y = "
+        + y
+        + " WHERE id = "
+        + id;
+  }
+
+  @Override
+  public String getSQLInsertString() {
+    return type.ordinal()
+        + ", '"
+        + shortName
+        + "', '"
+        + longName
+        + "', "
+        + building.ordinal()
+        + ", "
+        + floor.ordinal()
+        + ", "
+        + x
+        + ", "
+        + y;
+  }
+
+  @Override
+  public String getTableColumns() {
+    return " (locationType, shortName, longName, building, floor, x, y)";
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.Location;
+  }
+
+  public boolean equalsByName(Location other) {
+    return longName.equals(other.longName);
+  }
+
+  // Getters and Setters
   public int getId() {
     return id;
   }
@@ -112,75 +196,5 @@ public class Location implements ISQLSerializable, GraphNode {
 
   public void setY(int y) {
     this.y = y;
-  }
-
-  public String toString() {
-    return "nodeID: "
-        + id
-        + ", xcoord: "
-        + x
-        + ", ycoord: "
-        + y
-        + ", floor: "
-        + floor
-        + ", building: "
-        + building
-        + ", nodeType: "
-        + type
-        + ", longName: "
-        + longName
-        + ", shortName: "
-        + shortName;
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.Location;
-  }
-
-  @Override
-  public String getSQLInsertString() {
-    return type.ordinal()
-        + ", '"
-        + shortName
-        + "', '"
-        + longName
-        + "', "
-        + building.ordinal()
-        + ", "
-        + floor.ordinal()
-        + ", "
-        + x
-        + ", "
-        + y;
-  }
-
-  @Override
-  public String getSQLUpdateString() {
-    return "locationType = "
-        + type.ordinal()
-        + ", shortName = '"
-        + shortName
-        + "', longName = '"
-        + longName
-        + "', building = "
-        + building.ordinal()
-        + ", floor = "
-        + floor.ordinal()
-        + ", x = "
-        + x
-        + ", y = "
-        + y
-        + " WHERE id = "
-        + id;
-  }
-
-  @Override
-  public String getTableColumns() {
-    return " (locationType, shortName, longName, building, floor, x, y)";
-  }
-
-  public boolean equalsByName(Location l) {
-    return this.getLongName().equals(l.getLongName());
   }
 }

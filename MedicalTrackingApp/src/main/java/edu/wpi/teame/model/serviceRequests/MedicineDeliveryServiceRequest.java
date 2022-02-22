@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -10,6 +11,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineQuantity;
@@ -50,9 +52,33 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.MedicineDeliverySR);
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
+    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.medicineQuantity = resultSet.getString("medicineQuantity");
     this.medicineName = resultSet.getString("medicineName");
+  }
+
+  public MedicineDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.MedicineDeliverySR);
+    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.medicineQuantity = lineData.getColumnString("medicineQuantity");
+    this.medicineName = lineData.getColumnString("medicineName");
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+    return getRawUpdateString()
+            + ", "
+            + "medicineName = '"
+            + medicineName
+            + "', "
+            + "patientID = "
+            + patient.getId()
+            + ", "
+            + "medicineQuantity = '"
+            + medicineQuantity
+            + "' "
+            + "WHERE id = "
+            + id;
   }
 
   @Override
@@ -69,28 +95,12 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   }
 
   @Override
-  public String getSQLUpdateString() {
-    return getRawUpdateString()
-        + ", "
-        + "medicineName = '"
-        + medicineName
-        + "', "
-        + "patientID = "
-        + patient.getId()
-        + ", "
-        + "medicineQuantity = '"
-        + medicineQuantity
-        + "' "
-        + "WHERE id = "
-        + id;
-  }
-
-  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate"
         + ", medicineName, patientID, medicineQuantity)";
   }
 
+  //Getters and Setters
   public String getMedicineQuantity() {
     return medicineQuantity;
   }

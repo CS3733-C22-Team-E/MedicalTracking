@@ -6,7 +6,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
@@ -48,9 +47,8 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
       boolean isClean = lineData.getColumnBoolean("isClean");
       boolean hasPatient = lineData.getColumnBoolean("hasPatient");
       EquipmentType equipmentType = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
-
-      String locationNodeID = lineData.getColumnString("locationNodeID");
-      Location location = CSVManager.getInstance().locationIDMap.get(locationNodeID);
+      Location location =
+          DBManager.getInstance().getLocationManager().get(lineData.getColumnInt("locationNodeID"));
 
       Equipment newEquipment = new Equipment(0, location, equipmentType, name, hasPatient, isClean);
       DBManager.getInstance().getEquipmentManager().insert(newEquipment);

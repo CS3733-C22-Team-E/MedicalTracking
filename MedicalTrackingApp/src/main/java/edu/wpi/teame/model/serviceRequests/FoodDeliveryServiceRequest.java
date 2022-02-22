@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
@@ -10,6 +11,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public final class FoodDeliveryServiceRequest extends ServiceRequest {
   private Patient patient;
@@ -46,8 +48,27 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
 
   public FoodDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.FoodDeliverySR);
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
+    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.food = resultSet.getString("food");
+  }
+
+  public FoodDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+    super(lineData, DataBaseObjectType.FoodDeliverySR);
+    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.food = lineData.getColumnString("food");
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+    return getRawUpdateString()
+            + ", "
+            + "patientID = "
+            + patient.getId()
+            + ", "
+            + "food = '"
+            + food
+            + "' WHERE id = "
+            + id;
   }
 
   @Override
@@ -56,23 +77,11 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
   }
 
   @Override
-  public String getSQLUpdateString() {
-    return getRawUpdateString()
-        + ", "
-        + "patientID = "
-        + patient.getId()
-        + ", "
-        + "food = '"
-        + food
-        + "' WHERE id = "
-        + id;
-  }
-
-  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, food)";
   }
 
+  //Getters and Setters
   public Patient getPatient() {
     return patient;
   }

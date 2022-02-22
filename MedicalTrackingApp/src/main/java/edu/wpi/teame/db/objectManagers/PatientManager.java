@@ -39,7 +39,7 @@ public final class PatientManager extends ObjectManager<Patient> {
       lineData.setParsedData(record);
 
       String name = lineData.getColumnString("name");
-      Date dateOfBirth = (lineData.getColumnDate("dateOfBirth"));
+      Date dateOfBirth = lineData.getColumnDate("dateOfBirth");
       Location currentLocation =
           DBManager.getInstance()
               .getLocationManager()

@@ -43,13 +43,13 @@ public class Employee implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return "department = "
-            + department.ordinal()
-            + ", name = '"
-            + name
-            + "', type = "
-            + type.ordinal()
-            + " WHERE id = "
-            + id;
+        + department.ordinal()
+        + ", name = '"
+        + name
+        + "', type = "
+        + type.ordinal()
+        + " WHERE id = "
+        + id;
   }
 
   @Override
@@ -61,7 +61,7 @@ public class Employee implements ISQLSerializable {
   public String getTableColumns() {
     return "(department, name, type)";
   }
-  
+
   @Override
   public DataBaseObjectType getDBType() {
     return DataBaseObjectType.Employee;
