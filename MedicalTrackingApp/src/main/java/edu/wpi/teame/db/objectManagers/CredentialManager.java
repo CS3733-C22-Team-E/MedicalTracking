@@ -69,6 +69,10 @@ public final class CredentialManager {
 
   public void insert(String username, String password)
       throws SQLException, NoSuchAlgorithmException {
+    if (hasUsername(username)) {
+      return;
+    }
+    
     byte[] salt = createSalt();
     String insertQuery =
         "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"
@@ -81,7 +85,12 @@ public final class CredentialManager {
     statement.executeUpdate(insertQuery);
   }
 
-  private void insert(String salt, String username, String hashedPassword) throws SQLException {
+  private void insert(String salt, String username, String hashedPassword)
+      throws SQLException, NoSuchAlgorithmException {
+    if (hasUsername(username)) {
+      return;
+    }
+
     String insertQuery =
         "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"
             + salt
@@ -91,6 +100,17 @@ public final class CredentialManager {
             + hashedPassword
             + "')";
     statement.executeUpdate(insertQuery);
+  }
+
+  public void remove(String oldUsername) throws SQLException, NoSuchAlgorithmException {
+    String insertQuery = "DELETE FROM CREDENTIAL WHERE username = '" + oldUsername + "'";
+    statement.executeUpdate(insertQuery);
+  }
+
+  public boolean hasUsername(String username) throws SQLException, NoSuchAlgorithmException {
+    String hasUsernameQuery = "SELECT Salt FROM CREDENTIAL WHERE username = '" + username + "'";
+    ResultSet resultSet = statement.executeQuery(hasUsernameQuery);
+    return resultSet.next();
   }
 
   public void readCSV(String inputFileName)
