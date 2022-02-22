@@ -656,7 +656,11 @@ public class Map {
                 serviceRequestsFromDB.remove(serviceRequest);
               } else {
                 oldSR.add(serviceRequest);
-                ServiceRequestToMapElement(serviceRequest);
+                try {
+                  ServiceRequestToMapElement(serviceRequest);
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                }
               }
             });
   }
@@ -721,7 +725,7 @@ public class Map {
             });
   }
 
-  private void ServiceRequestToMapElement(ServiceRequest SR) {
+  private void ServiceRequestToMapElement(ServiceRequest SR) throws SQLException {
     double X = SR.getLocation().getX() - MAPWIDTH / 2;
     double Y = SR.getLocation().getY() - MAPHEIGHT / 2;
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
@@ -730,22 +734,56 @@ public class Map {
     updateLayoutChildren();
     ContextMenu menu = new ContextMenu();
     RadioMenuItem Completed = new RadioMenuItem("Complete Service Request");
+    RadioMenuItem Send = new RadioMenuItem("Update Service Request");
     AutoCompleteTextField testField = new AutoCompleteTextField();
-    testField.getEntries().add("Your");
-    testField.getEntries().add("Kour");
     CustomMenuItem test = new CustomMenuItem(testField);
+    DBManager.getInstance()
+        .getLocationManager()
+        .getAll()
+        .forEach(
+            location -> {
+              testField.getEntries().add(location.getLongName());
+            });
+    Send.setSelected(false);
+    Send.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent event) {
+            try {
+              Location newLocation =
+                  DBManager.getInstance().getLocationManager().getByName(testField.getText());
+              SR.setLocation(newLocation);
+              newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
+              newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
+              newIcon.progressIndicator.setTranslateX(newLocation.getX() - MAPWIDTH / 2);
+              newIcon.progressIndicator.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);
+              System.out.println(
+                  "Updated Service Request Location to:" + SR.getLocation().getLongName());
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+
+            try {
+              DBManager.getManager(SR.getDBType()).update(SR);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          }
+        });
     test.setHideOnClick(false);
     Completed.setSelected(false);
     menu.getItems().add(Completed);
     menu.getItems().add(test);
-    Completed.setOnAction(new EventHandler<ActionEvent>() {
+    menu.getItems().add(Send);
+    Completed.setOnAction(
+        new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent event) {
+            System.out.println("Here");
             newIcon.cancelTimer();
             Completed.setSelected(true);
           }
         });
-
     newIcon.progressIndicator.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
           @Override
@@ -754,6 +792,15 @@ public class Map {
             menu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());
           }
         });
+    //    menu.setOnCloseRequest(
+    //        new EventHandler<WindowEvent>() {
+    //          @Override
+    //          public void handle(WindowEvent event) {
+    //            if (event.getEventType().equals(KeyEvent.ANY)) {
+    //              System.out.println("Instead");
+    //            }
+    //          }
+    //        });
   }
 
   private void createNewRadialMenus() {
