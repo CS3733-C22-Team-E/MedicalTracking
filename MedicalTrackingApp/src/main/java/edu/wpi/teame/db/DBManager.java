@@ -573,8 +573,14 @@ public final class DBManager {
   }
 
   private void cleanDBTables() throws SQLException {
-    for (DataBaseObjectType dbTable : DataBaseObjectType.values()) {
-      stmt.executeUpdate("DELETE FROM " + dbTable.toTableName());
+    String deleteQuery = "DELETE FROM ";
+    if (currentType == DBType.AzureCloud) {
+      deleteQuery = "DELETE ";
+    }
+
+    DataBaseObjectType[] dbTables = DataBaseObjectType.values();
+    for (int i = dbTables.length - 1; i > 0; i--) {
+      stmt.executeUpdate(deleteQuery + dbTables[i].toTableName());
     }
   }
 
