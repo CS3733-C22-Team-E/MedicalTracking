@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CSVLineData {
@@ -15,8 +15,26 @@ public class CSVLineData {
   private String[] parsedData = null;
 
   public CSVLineData(CSVReader reader) throws IOException, CsvValidationException {
-    headers = Arrays.asList(reader.readNext());
+    String[] headerStrings = reader.readNext();
+    if (headerStrings == null || headerStrings.length == 0) {
+      return;
+    }
+
+    this.headers = new ArrayList<String>();
+    this.headers.addAll(List.of(headerStrings));
     this.csvReader = reader;
+  }
+
+  public boolean readNext() throws CsvValidationException, IOException {
+    parsedData = csvReader.readNext();
+    if (parsedData == null) {
+      return false;
+    }
+    return parsedData.length != 0;
+  }
+
+  public boolean readHeaders() {
+    return headers != null && headers.size() > 0;
   }
 
   public Date getColumnDate(String columnName) throws ParseException {
@@ -43,14 +61,6 @@ public class CSVLineData {
       return 0;
     }
     return Integer.parseInt(columnString);
-  }
-
-  public boolean readNext() throws CsvValidationException, IOException {
-    parsedData = csvReader.readNext();
-    if (parsedData == null) {
-      return false;
-    }
-    return parsedData.length != 0;
   }
 
   public String getColumnString(String columnName) {

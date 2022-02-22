@@ -97,7 +97,7 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String[] getCSVHeaders() {
     List<String> csvHeaders = new ArrayList<>();
-    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.addAll(List.of(super.getCSVHeaders()));
     csvHeaders.add("patientID");
     csvHeaders.add("food");
 

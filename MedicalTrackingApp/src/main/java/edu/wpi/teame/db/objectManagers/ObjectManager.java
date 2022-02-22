@@ -113,6 +113,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
+    // Check if we found anything in the CSV file
+    if (!lineData.readHeaders()) {
+      return;
+    }
+
     while (lineData.readNext()) {
       insert(getCastedType(lineData));
     }
@@ -138,7 +143,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     }
 
     data.add(dbObjectList.get(0).getCSVHeaders());
-     for (T dbObject : dbObjectList) {
+    for (T dbObject : dbObjectList) {
       data.add(dbObject.toCSVData());
     }
     writer.writeAll(data);

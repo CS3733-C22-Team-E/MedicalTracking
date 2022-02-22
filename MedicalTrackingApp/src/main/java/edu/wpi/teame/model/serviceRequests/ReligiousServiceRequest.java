@@ -90,7 +90,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
     csvData.addAll(List.of(super.toCSVData()));
     csvData.add(Integer.toString(patient.getId()));
     csvData.add(religion);
-    
+
     String[] retArr = new String[csvData.size()];
     return csvData.toArray(retArr);
   }
@@ -98,7 +98,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
   @Override
   public String[] getCSVHeaders() {
     List<String> csvHeaders = new ArrayList<>();
-    csvHeaders.addAll(List.of(super.toCSVData()));
+    csvHeaders.addAll(List.of(super.getCSVHeaders()));
     csvHeaders.add("patientID");
     csvHeaders.add("religion");
 
