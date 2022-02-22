@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -11,10 +12,10 @@ public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
   private EquipmentType type;
   private Location location;
+  private boolean isDeleted;
   private boolean isClean;
   private String name;
   private int id;
-  private boolean isDeleted;
 
   public Equipment(
       int ID,
@@ -34,16 +35,13 @@ public class Equipment implements ISQLSerializable {
 
   public Equipment(ResultSet resultSet) throws SQLException {
     this.id = resultSet.getInt("id");
-    this.location =
-        new LocationManager()
-            .get(
-                resultSet.getInt(
-                    "locationID")); // DBManager.getInstance().get(resultSet.getString("location"));
-    this.type = EquipmentType.values()[resultSet.getInt("type")];
-    this.name = resultSet.getString("name");
     this.hasPatient = resultSet.getBoolean("hasPatient");
-    this.isClean = resultSet.getBoolean("isClean");
+    this.type = EquipmentType.values()[resultSet.getInt("type")];
     this.isDeleted = resultSet.getBoolean("isDeleted");
+    this.isClean = resultSet.getBoolean("isClean");
+    this.name = resultSet.getString("name");
+
+    this.location = (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("locationID"));
   }
 
   public int getId() {

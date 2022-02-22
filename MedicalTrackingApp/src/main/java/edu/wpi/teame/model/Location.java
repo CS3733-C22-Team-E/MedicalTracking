@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 public class Location implements ISQLSerializable, GraphNode {
   private LocationType type;
+  private boolean isDeleted;
   private String shortName;
   private String longName;
   private int id;
@@ -16,8 +17,6 @@ public class Location implements ISQLSerializable, GraphNode {
   private FloorType floor;
   private int x;
   private int y;
-
-  private boolean isDeleted;
 
   public Location(
       int id,
@@ -45,10 +44,10 @@ public class Location implements ISQLSerializable, GraphNode {
     this.id = resultSet.getInt("id");
     this.longName = resultSet.getString("longName");
     this.shortName = resultSet.getString("shortName");
+    this.isDeleted = resultSet.getBoolean("isDeleted");
     this.floor = FloorType.values()[resultSet.getInt("floor")];
     this.type = LocationType.values()[resultSet.getInt("locationType")];
     this.building = BuildingType.values()[resultSet.getInt("building")];
-    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   public int getId() {

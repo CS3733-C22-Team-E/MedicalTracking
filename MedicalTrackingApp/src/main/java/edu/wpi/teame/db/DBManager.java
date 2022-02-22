@@ -12,7 +12,8 @@ import java.text.ParseException;
 public final class DBManager {
   private final String AzureCloudServerConnectionString =
       "jdbc:sqlserver://cs3733hospitalapp.database.windows.net:1433;database=hospitalappdb;user=medicaltracking@cs3733hospitalapp;password=u@$YK=$A5A*<\"g$$;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-  private final String ClientServerConnectionString = "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
+  private final String ClientServerConnectionString =
+      "jdbc:derby://localhost:1527/ClientServer;create=true;username=admin;password=admin";
   private final String EmbeddedConnectionString =
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 

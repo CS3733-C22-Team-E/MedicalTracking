@@ -23,40 +23,27 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     this.objectType = objectType;
   }
 
-  protected List<T> getBy(String whereClause) throws SQLException {
-    String getQuery = "SELECT * FROM " + objectType.toTableName() + " " + whereClause;
-    ResultSet resultSet = statement.executeQuery(getQuery);
-    List<T> listResult = new LinkedList<>();
-    while (resultSet.next()) {
-      listResult.add(getCastedType(resultSet));
-    }
-    return listResult;
-  }
-
-  @Override
-  public T get(int id) throws SQLException {
-    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE ID = " + id;
-    ResultSet resultSet = statement.executeQuery(getQuery);
-    if (resultSet.next()) {
-      return getCastedType(resultSet);
-    }
-    return null;
-  }
-
   @Override
   public List<T> getAll() throws SQLException {
-    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = 0";
-    ResultSet resultSet = statement.executeQuery(getQuery);
-    List<T> listResult = new LinkedList<>();
-    while (resultSet.next()) {
-      listResult.add(getCastedType(resultSet));
-    }
-    return listResult;
+    return getBy(" WHERE isDeleted = 0");
   }
 
   @Override
   public List<T> getDeleted() throws SQLException {
-    String getQuery = "SELECT * FROM " + objectType.toTableName() + " WHERE isDeleted = 1";
+    return getBy(" WHERE isDeleted = 1");
+  }
+
+  @Override
+  public T get(int id) throws SQLException {
+    List<T> results = getBy(" WHERE ID = " + id);
+    if (results.isEmpty()) {
+      return null;
+    }
+    return results.get(0);
+  }
+
+  protected List<T> getBy(String whereClause) throws SQLException {
+    String getQuery = "SELECT * FROM " + objectType.toTableName() + " " + whereClause;
     ResultSet resultSet = statement.executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
@@ -83,6 +70,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   @Override
+  public void update(T updatedObject) throws SQLException {
+    StringBuilder updateQuery = new StringBuilder("UPDATE ");
+    updateQuery.append(objectType.toTableName()).append(" SET ");
+    updateQuery.append(updatedObject.getSQLUpdateString());
+    statement.executeUpdate(updateQuery.toString());
+  }
+
+  @Override
   public void remove(int id) throws SQLException {
     StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
     markIsDeleted
@@ -91,14 +86,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         .append(" WHERE id = ")
         .append(id);
     statement.executeUpdate(markIsDeleted.toString());
-  }
-
-  @Override
-  public void update(T updatedObject) throws SQLException {
-    StringBuilder updateQuery = new StringBuilder("UPDATE ");
-    updateQuery.append(objectType.toTableName()).append(" SET ");
-    updateQuery.append(updatedObject.getSQLUpdateString());
-    statement.executeUpdate(updateQuery.toString());
   }
 
   @Override

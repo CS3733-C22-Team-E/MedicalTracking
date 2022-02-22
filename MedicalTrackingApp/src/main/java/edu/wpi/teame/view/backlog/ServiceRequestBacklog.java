@@ -110,13 +110,13 @@ public class ServiceRequestBacklog {
 
   public void killServiceRequest(ServiceRequest sr) throws SQLException {
     sr.setStatus(ServiceRequestStatus.CLOSED);
-    ObjectManager m = sr.getDBType().getDBManagerInstance();
+    ObjectManager m = DBManager.getManager(sr.getDBType());
     m.update(sr);
     scrollWrapper.setContent(getRequestHolder());
   }
 
   public void removeServiceRequest(ServiceRequest sr) throws SQLException {
-    ObjectManager m = sr.getDBType().getDBManagerInstance();
+    ObjectManager m = DBManager.getManager(sr.getDBType());
     m.remove(sr.getId());
     scrollWrapper.setContent(getRequestHolder());
   }

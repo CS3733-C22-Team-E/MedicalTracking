@@ -10,9 +10,9 @@ import java.sql.SQLException;
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
   private Date dateOfBirth;
+  private boolean isDeleted;
   private String name;
   private int id;
-  private boolean isDeleted;
 
   public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {
     this.currentLocation = currentLocation;
@@ -24,11 +24,11 @@ public class Patient implements ISQLSerializable {
 
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
-        DBManager.getInstance().getLocationManager().get(resultSet.getInt("currentLocationID"));
+            (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("currentLocationID"));
+    this.isDeleted = resultSet.getBoolean("isDeleted");
     this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
-    this.isDeleted = resultSet.getBoolean("isDeleted");
   }
 
   @Override
