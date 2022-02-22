@@ -25,7 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 
-public class AudioVisualServiceRequestPageServiceRequestController
+public class PatientDischargeServiceRequestPageServiceRequestController
     extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
@@ -40,7 +40,7 @@ public class AudioVisualServiceRequestPageServiceRequestController
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.AudioVisualSR.getColor()));
+    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.PatientDischargeSR.getColor()));
     priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));
     status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));
 
@@ -108,11 +108,9 @@ public class AudioVisualServiceRequestPageServiceRequestController
     Location location =
         DBManager.getInstance().getLocationManager().getByName(locationText.getText());
 
-    Date d = new Date(new java.util.Date().getTime());
-
     ServiceRequest serviceRequest =
         new ServiceRequest(
-            DataBaseObjectType.AudioVisualSR,
+            DataBaseObjectType.PatientDischargeSR,
             ServiceRequestPriority.valueOf(priority.getValue().toString()),
             ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
@@ -122,10 +120,10 @@ public class AudioVisualServiceRequestPageServiceRequestController
                 Date.from(requestDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant())
                     .getTime()),
             new Date(0),
-            d,
+            new Date(new java.util.Date().getTime()),
             "",
             0);
-    DBManager.getInstance().getAudioVisualSRManager().insert(serviceRequest);
+    DBManager.getInstance().getFacilitiesMaintenanceSRManager().insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

@@ -28,6 +28,7 @@ public class FillProgressIndicator extends ProgressCircleIndicator {
   }
 
   public FillProgressIndicator(ServiceRequestPriority priority) {
+    System.out.println("css/fillprogress" + String.valueOf(priority.ordinal()) + ".css");
     this.getStylesheets()
         .add(
             App.class

@@ -10,7 +10,7 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.ZoneId;
+import java.time.LocalTime;
 
 public class ServiceRequest implements ISQLSerializable {
   protected DataBaseObjectType dbType;
@@ -140,8 +140,9 @@ public class ServiceRequest implements ISQLSerializable {
   }
 
   protected String dateToSQLString(Date date) {
-    String dateAsString =
-        openDate.toLocalDate().atStartOfDay(ZoneId.systemDefault()).toInstant().toString();
+    LocalTime localTime = LocalTime.now();
+    String dateAsString = openDate.toLocalDate().atTime(localTime).toString();
+    dateAsString = dateAsString.substring(0, dateAsString.indexOf('.'));
     return dateAsString.replace("T", " ").replace("Z", "");
   }
 
