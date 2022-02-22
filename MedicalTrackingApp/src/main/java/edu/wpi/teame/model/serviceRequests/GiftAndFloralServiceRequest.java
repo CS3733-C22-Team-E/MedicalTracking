@@ -45,12 +45,17 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
 
   public GiftAndFloralServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.GiftAndFloralSR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
   }
 
   public GiftAndFloralServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.GiftAndFloralSR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
   }
 
   @Override
@@ -68,7 +73,7 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public Patient getPatient() {
     return patient;
   }

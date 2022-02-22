@@ -49,27 +49,33 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
 
   public LanguageInterpreterServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.LanguageInterpreterSR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.language = LanguageType.values()[resultSet.getInt("language")];
   }
 
-  public LanguageInterpreterServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
+  public LanguageInterpreterServiceRequest(CSVLineData lineData)
+      throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.LanguageInterpreterSR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
     this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
-            + ", "
-            + "language = "
-            + language.ordinal()
-            + ", "
-            + "patientID = "
-            + patient.getId()
-            + " WHERE id = "
-            + id;
+        + ", "
+        + "language = "
+        + language.ordinal()
+        + ", "
+        + "patientID = "
+        + patient.getId()
+        + " WHERE id = "
+        + id;
   }
 
   @Override
@@ -82,7 +88,7 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, language, patientID)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public LanguageType getLanguage() {
     return language;
   }

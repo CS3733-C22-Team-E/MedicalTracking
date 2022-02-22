@@ -61,36 +61,52 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
             ? DataBaseObjectType.InternalPatientTransferSR
             : DataBaseObjectType.ExternalPatientSR);
     this.destination =
-            (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("destinationID"));
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("destinationID"));
     this.equipment =
-            (Equipment) DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+        (Equipment)
+            DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
   }
 
   public PatientTransportationServiceRequest(CSVLineData lineData, boolean isInternal)
-          throws SQLException, ParseException {
-    super(lineData, isInternal
-                    ? DataBaseObjectType.InternalPatientTransferSR
-                    : DataBaseObjectType.ExternalPatientSR);
-    this.destination = (Location) DBManager.getManager(DataBaseObjectType.Location).get(lineData.getColumnInt("destinationID"));
-    this.equipment = (Equipment) DBManager.getManager(DataBaseObjectType.Equipment).get(lineData.getColumnInt("equipmentID"));
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+      throws SQLException, ParseException {
+    super(
+        lineData,
+        isInternal
+            ? DataBaseObjectType.InternalPatientTransferSR
+            : DataBaseObjectType.ExternalPatientSR);
+    this.destination =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(lineData.getColumnInt("destinationID"));
+    this.equipment =
+        (Equipment)
+            DBManager.getManager(DataBaseObjectType.Equipment)
+                .get(lineData.getColumnInt("equipmentID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
   }
 
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
-            + ", "
-            + "destinationID = "
-            + destination.getId()
-            + ", "
-            + "equipmentID = "
-            + equipment.getId()
-            + ", "
-            + "patientID = "
-            + patient.getId()
-            + " WHERE id = "
-            + id;
+        + ", "
+        + "destinationID = "
+        + destination.getId()
+        + ", "
+        + "equipmentID = "
+        + equipment.getId()
+        + ", "
+        + "patientID = "
+        + patient.getId()
+        + " WHERE id = "
+        + id;
   }
 
   @Override
@@ -109,7 +125,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public Location getDestination() {
     return destination;
   }

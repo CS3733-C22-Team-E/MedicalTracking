@@ -48,27 +48,32 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
 
   public FoodDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.FoodDeliverySR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.food = resultSet.getString("food");
   }
 
   public FoodDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.FoodDeliverySR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
     this.food = lineData.getColumnString("food");
   }
 
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
-            + ", "
-            + "patientID = "
-            + patient.getId()
-            + ", "
-            + "food = '"
-            + food
-            + "' WHERE id = "
-            + id;
+        + ", "
+        + "patientID = "
+        + patient.getId()
+        + ", "
+        + "food = '"
+        + food
+        + "' WHERE id = "
+        + id;
   }
 
   @Override
@@ -81,7 +86,7 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, food)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public Patient getPatient() {
     return patient;
   }

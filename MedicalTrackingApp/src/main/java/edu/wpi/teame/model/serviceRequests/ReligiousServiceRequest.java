@@ -49,27 +49,32 @@ public final class ReligiousServiceRequest extends ServiceRequest {
   public ReligiousServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.ReligiousSR);
     this.religion = resultSet.getString("religion");
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
   }
 
   public ReligiousServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.ReligiousSR);
     this.religion = lineData.getColumnString("religion");
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
   }
 
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
-            + ", "
-            + "patientID = "
-            + patient.getId()
-            + ", "
-            + "religion = '"
-            + religion
-            + "'"
-            + " WHERE id = "
-            + id;
+        + ", "
+        + "patientID = "
+        + patient.getId()
+        + ", "
+        + "religion = '"
+        + religion
+        + "'"
+        + " WHERE id = "
+        + id;
   }
 
   @Override
@@ -82,7 +87,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID, religion)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public Patient getPatient() {
     return patient;
   }

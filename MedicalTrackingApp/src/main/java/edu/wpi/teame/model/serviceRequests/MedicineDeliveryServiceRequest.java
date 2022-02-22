@@ -52,14 +52,19 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.MedicineDeliverySR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
     this.medicineQuantity = resultSet.getString("medicineQuantity");
     this.medicineName = resultSet.getString("medicineName");
   }
 
   public MedicineDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.MedicineDeliverySR);
-    this.patient = (Patient) DBManager.getManager(DataBaseObjectType.Patient).get(lineData.getColumnInt("patientID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient)
+                .get(lineData.getColumnInt("patientID"));
     this.medicineQuantity = lineData.getColumnString("medicineQuantity");
     this.medicineName = lineData.getColumnString("medicineName");
   }
@@ -67,18 +72,18 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
-            + ", "
-            + "medicineName = '"
-            + medicineName
-            + "', "
-            + "patientID = "
-            + patient.getId()
-            + ", "
-            + "medicineQuantity = '"
-            + medicineQuantity
-            + "' "
-            + "WHERE id = "
-            + id;
+        + ", "
+        + "medicineName = '"
+        + medicineName
+        + "', "
+        + "patientID = "
+        + patient.getId()
+        + ", "
+        + "medicineQuantity = '"
+        + medicineQuantity
+        + "' "
+        + "WHERE id = "
+        + id;
   }
 
   @Override
@@ -100,7 +105,7 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + ", medicineName, patientID, medicineQuantity)";
   }
 
-  //Getters and Setters
+  // Getters and Setters
   public String getMedicineQuantity() {
     return medicineQuantity;
   }
