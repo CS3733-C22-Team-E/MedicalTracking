@@ -78,14 +78,17 @@ public class ServiceRequestBacklog {
     return scrollWrapper;
   }
 
-  public Text getTitle() throws SQLException {
+  public HBox getTitle() throws SQLException {
 
+    HBox tBox = new HBox();
     Text title = new Text("Request Backlog");
     title.setFont(Font.font(56));
     title.setTextAlignment(TextAlignment.CENTER);
-    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); //TODO Fix
+    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); // TODO Fix
+    tBox.getChildren().add(title);
+    tBox.setAlignment(Pos.CENTER);
 
-    return title;
+    return tBox;
   }
 
   public GridPane getRequestHolder() throws SQLException {
@@ -110,16 +113,16 @@ public class ServiceRequestBacklog {
       ServiceRequestCard card = new ServiceRequestCard(sr, this, true);
       addServiceRequestCard(card, requestHolder);
     }
-    requestHolder.add(getRefreshBar(), 1, 0);
+    requestHolder.add(getTitle(), 0, 0);
+    requestHolder.add(getRefreshBar(), 0, 1);
     //    GridPane titleGridPane = new GridPane();
     //    titleGridPane.set
-    requestHolder.add(getTitle(), 0, 0);
     return requestHolder;
   }
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
     HBox card = c.getCard(CARDWIDTH, 100);
-    g.add(card, 0, cardsDisplayed.size() + 1);
+    g.add(card, 0, cardsDisplayed.size() + 2);
     cardsDisplayed.add(c);
   }
 
