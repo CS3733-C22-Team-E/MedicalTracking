@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Graph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Astar</a> &gt; <span class="el_source">Graph.java</span></div><h1>Graph.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Astar;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Graph&lt;T extends GraphNode&gt; {
+  private final Set&lt;T&gt; nodes;
+
+  private final Map&lt;Integer, Set&lt;Integer&gt;&gt; connections;
+
+<span class="nc" id="L12">  public Graph(Set&lt;T&gt; nodes, Map&lt;Integer, Set&lt;Integer&gt;&gt; connections) {</span>
+<span class="nc" id="L13">    this.nodes = nodes;</span>
+<span class="nc" id="L14">    this.connections = connections;</span>
+<span class="nc" id="L15">  }</span>
+
+  public T getNode(int id) {
+<span class="nc" id="L18">    return nodes.stream()</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">        .filter(node -&gt; node.getId() == id)</span>
+<span class="nc" id="L20">        .findFirst()</span>
+<span class="nc" id="L21">        .orElseThrow(() -&gt; new IllegalArgumentException(&quot;No node found with ID&quot;));</span>
+  }
+
+  public Set&lt;T&gt; getConnections(T node) {
+<span class="nc" id="L25">    return connections.get(node.getId()).stream().map(this::getNode).collect(Collectors.toSet());</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

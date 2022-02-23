@@ -1,80 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db.objectManagers</a> &gt; <span class="el_source">EmployeeManager.java</span></div><h1>EmployeeManager.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db.objectManagers;
 
-// import com.opencsv.exceptions.CsvValidationException;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.db.CSVLineData;
-import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.*;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class EmployeeManager extends ObjectManager&lt;Employee&gt; {
   public EmployeeManager() throws SQLException {
-<span class="nc" id="L20">    super(DataBaseObjectType.Employee);</span>
-<span class="nc" id="L21">  }</span>
+<span class="nc" id="L10">    super(DataBaseObjectType.Employee);</span>
+<span class="nc" id="L11">  }</span>
 
   public Employee getByAssignee(String assignee) throws SQLException {
-<span class="nc" id="L24">    return super.getBy(&quot;WHERE name = '&quot; + assignee + &quot;'&quot;).get(0);</span>
+<span class="nc" id="L14">    return super.getBy(&quot;WHERE name = '&quot; + assignee + &quot;'&quot;).get(0);</span>
   }
-
-  @Override
-  public void readCSV(String inputFileName)
-      throws IOException, CsvValidationException, SQLException {
-<span class="nc" id="L30">    String filePath =</span>
-<span class="nc" id="L31">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + inputFileName;</span>
-<span class="nc" id="L32">    CSVReader csvReader = new CSVReader(new FileReader(filePath));</span>
-<span class="nc" id="L33">    CSVLineData lineData = new CSVLineData(csvReader);</span>
-
-    String[] record;
-<span class="nc bnc" id="L36" title="All 2 branches missed.">    while ((record = csvReader.readNext()) != null) {</span>
-<span class="nc" id="L37">      lineData.setParsedData(record);</span>
-
-<span class="nc" id="L39">      String name = lineData.getColumnString(&quot;name&quot;);</span>
-<span class="nc" id="L40">      EmployeeType type = EmployeeType.values()[(lineData.getColumnInt(&quot;type&quot;))];</span>
-      DepartmentType departmentType =
-<span class="nc" id="L42">          DepartmentType.values()[(lineData.getColumnInt(&quot;department&quot;))];</span>
-<span class="nc" id="L43">      Employee newEmployee = new Employee(0, departmentType, name, type);</span>
-<span class="nc" id="L44">      DBManager.getInstance().getEmployeeManager().insert(newEmployee);</span>
-<span class="nc" id="L45">    }</span>
-<span class="nc" id="L46">  }</span>
-
-  @Override
-  public void writeToCSV(String outputFileName) throws IOException, SQLException {
-<span class="nc" id="L50">    String filePath =</span>
-<span class="nc" id="L51">        System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/edu/wpi/teame/csv/&quot; + outputFileName;</span>
-
-<span class="nc" id="L53">    FileWriter outputFile = new FileWriter(filePath);</span>
-<span class="nc" id="L54">    CSVWriter writer =</span>
-        new CSVWriter(
-            outputFile,
-            ',',
-            CSVWriter.NO_QUOTE_CHARACTER,
-            CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-            CSVWriter.DEFAULT_LINE_END);
-
-<span class="nc" id="L62">    List&lt;Employee&gt; listOfEmployees = this.getAll();</span>
-
-<span class="nc" id="L64">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
-<span class="nc" id="L65">    data.add(new String[] {&quot;employeeID&quot;, &quot;department&quot;, &quot;name&quot;, &quot;type&quot;});</span>
-
-<span class="nc bnc" id="L67" title="All 2 branches missed.">    for (Employee employee : listOfEmployees) {</span>
-<span class="nc" id="L68">      data.add(</span>
-          new String[] {
-<span class="nc" id="L70">            Integer.toString(employee.getId()),</span>
-<span class="nc" id="L71">            Integer.toString(employee.getDepartment().ordinal()),</span>
-<span class="nc" id="L72">            employee.getName(),</span>
-<span class="nc" id="L73">            Integer.toString(employee.getType().ordinal())</span>
-          });
-<span class="nc" id="L75">    }</span>
-<span class="nc" id="L76">    writer.writeAll(data);</span>
-<span class="nc" id="L77">    writer.close();</span>
-<span class="nc" id="L78">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

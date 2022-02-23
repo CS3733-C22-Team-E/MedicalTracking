@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
@@ -83,7 +85,7 @@ public class Map {
       radialMenusByFloor.put(currFloor, new ArrayList<>());
       ActiveSRByFloor.put(currFloor, new ArrayList<>());
     }
-    System.out.println("Loaded Maps");
+    System.out.println("Loa\nded Maps");
     switchFloors(floor);
   }
 
@@ -138,7 +140,7 @@ public class Map {
             Equipment ToBeInserted =
                 new Equipment(0, lastPressedLocation, equiptype, equiptype.toString(), false, true);
             try {
-              DBManager.getInstance().getEquipmentManager().insert(ToBeInserted);
+              DBManager.getManager(DataBaseObjectType.Equipment).insert(ToBeInserted);
               addEquipmentToMap(ToBeInserted);
             } catch (SQLException e) {
               e.printStackTrace();
@@ -473,7 +475,6 @@ public class Map {
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
     Navigation = new PathFinder(layout, backgroundImage.getWidth(), backgroundImage.getHeight());
-
     return staticWrapper;
   }
 
@@ -560,7 +561,7 @@ public class Map {
             i.getEquipment().setLocation(nearestLocation);
 
             try {
-              DBManager.getInstance().getEquipmentManager().update(i.getEquipment());
+              DBManager.getManager(DataBaseObjectType.Equipment).update(i.getEquipment());
             } catch (SQLException e) {
               e.printStackTrace();
             }
@@ -627,18 +628,19 @@ public class Map {
   }
 
   public void getFromDB() throws SQLException {
-    List<Equipment> equipment = DBManager.getInstance().getEquipmentManager().getAll();
+    List<Equipment> equipment = DBManager.getManager(DataBaseObjectType.Equipment).getAll();
     mapIconsByFloor.get(currFloor).clear();
     locationsByFloor.get(currFloor).clear();
     for (Equipment currEquipment : equipment) {
       addEquipmentToMap(currEquipment);
     }
 
-    List<Location> locations = DBManager.getInstance().getLocationManager().getAll();
+    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
     Navigation.refreshLocationsFromDB();
+    Navigation.createConnections();
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -686,7 +688,8 @@ public class Map {
                     List<Location> routeSnap =
                         Navigation.FindAndDrawRoute(
                             newSr.getEquipment().getLocation().getId(),
-                            newSr.getLocation().getId());
+                            newSr.getLocation().getId(),
+                            Color.BLUE);
                     Timer newTimer = new Timer();
                     mapIconsByFloor
                         .get(newSr.getLocation().getFloor())
@@ -843,15 +846,13 @@ public class Map {
     AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();
     CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);
     CustomMenuItem Location = new CustomMenuItem(LocationField);
-    DBManager.getInstance()
-        .getLocationManager()
+    ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
         .getAll()
         .forEach(
             location -> {
               LocationField.getEntries().add(location.getLongName());
             });
-    DBManager.getInstance()
-        .getEmployeeManager()
+    ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
         .getAll()
         .forEach(
             employee -> {
@@ -864,10 +865,10 @@ public class Map {
           public void handle(ActionEvent event) {
             try {
               Location newLocation =
-                  DBManager.getInstance().getLocationManager().getByName(LocationField.getText());
+                  ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+                      .getByName(LocationField.getText());
               Employee newEmployee =
-                  DBManager.getInstance()
-                      .getEmployeeManager()
+                  ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
                       .getByAssignee(AssigneeServiceRequest.getText());
               if (newLocation != null) {
                 SR.setLocation(newLocation);

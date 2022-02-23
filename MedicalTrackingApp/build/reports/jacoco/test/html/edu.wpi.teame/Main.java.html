@@ -2,27 +2,24 @@
 
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.objectManagers.*;
-import edu.wpi.teame.db.objectManagers.serviceRequests.*;
-import edu.wpi.teame.model.enums.*;
-import edu.wpi.teame.model.serviceRequests.*;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-<span class="nc" id="L14">public class Main {</span>
+<span class="nc" id="L11">public class Main {</span>
 
   public static void main(String[] args)
       throws IOException, SQLException, CsvValidationException, ParseException,
           NoSuchAlgorithmException {
 
     // Setup the DB
-<span class="nc" id="L21">    DBManager.getInstance().setupDB();</span>
-<span class="nc" id="L22">    DBManager.getInstance().getCredentialManager().readCSV(&quot;backup/Credentials.csv&quot;);</span>
+<span class="nc" id="L18">    DBManager.getInstance().setupDB();</span>
+<span class="nc" id="L19">    CredentialManager.getInstance().readCSV(&quot;backup/Credentials.csv&quot;);</span>
 
     // Launch App
-<span class="nc" id="L25">    App.launch(App.class, args);</span>
-<span class="nc" id="L26">  }</span>
+<span class="nc" id="L22">    App.launch(App.class, args);</span>
+<span class="nc" id="L23">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

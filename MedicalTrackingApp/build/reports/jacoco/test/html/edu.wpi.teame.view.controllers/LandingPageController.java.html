@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LandingPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers</a> &gt; <span class="el_source">LandingPageController.java</span></div><h1>LandingPageController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers;
 
+import edu.wpi.teame.App;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
+import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.Map;
-import edu.wpi.teame.view.MapSideView;
-import edu.wpi.teame.view.ServiceRequestBacklog;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.animations.TabHoverAnimation;
+import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
+import edu.wpi.teame.view.map.Map;
+import edu.wpi.teame.view.map.MapSideView;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,86 +20,201 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
-<span class="nc" id="L23">public class LandingPageController implements Initializable {</span>
-  @FXML public TabPane mainTabPane;
+<span class="nc" id="L30">public class LandingPageController implements Initializable {</span>
   @FXML public AnchorPane mainAnchorPane;
+  @FXML public TabPane mainTabPane;
+
+<span class="nc" id="L34">  private StyledTab credentialManagementPage = null;</span>
+<span class="nc" id="L35">  private boolean shouldEnlarge = true;</span>
+<span class="nc" id="L36">  private StyledTab adminDBPage = null;</span>
+<span class="nc" id="L37">  public StyledTab mapTabPage = null;</span>
 
   @Override
-<span class="nc" id="L28">  @SneakyThrows</span>
+<span class="nc" id="L40">  @SneakyThrows</span>
   public void initialize(URL location, ResourceBundle resources) {
-<span class="nc" id="L30">    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());</span>
-<span class="nc" id="L31">    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());</span>
-<span class="nc" id="L32">    mainAnchorPane.autosize();</span>
+<span class="nc" id="L42">    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());</span>
+<span class="nc" id="L43">    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());</span>
+<span class="nc" id="L44">    mainAnchorPane.autosize();</span>
+
     // Get the tab content size using our init tab
-<span class="nc" id="L34">    double tabContentHeight =</span>
-<span class="nc" id="L35">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();</span>
-<span class="nc" id="L36">    double tabContentWidth =</span>
-<span class="nc" id="L37">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getWidth();</span>
-<span class="nc" id="L38">    mainTabPane.getTabs().clear();</span>
+<span class="nc" id="L47">    double tabContentHeight =</span>
+<span class="nc" id="L48">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getHeight();</span>
+<span class="nc" id="L49">    double tabContentWidth =</span>
+<span class="nc" id="L50">        mainTabPane.getTabs().get(0).getContent().getBoundsInParent().getWidth();</span>
+<span class="nc" id="L51">    mainTabPane.getTabs().clear();</span>
 
-<span class="nc" id="L40">    mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
-<span class="nc" id="L41">    mainTabPane.setMaxWidth(StyledTab.Width);</span>
-<span class="nc" id="L42">    mainTabPane.setRotateGraphic(true);</span>
+<span class="nc" id="L53">    mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
+<span class="nc" id="L54">    mainTabPane.setMaxWidth(StyledTab.Width);</span>
+<span class="nc" id="L55">    mainTabPane.setRotateGraphic(true);</span>
 
-<span class="nc" id="L44">    List&lt;StyledTab&gt; tabs = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L45">    tabs.add(new StyledTab(&quot;Home&quot;, SortOrder.First, &quot;view/HomePage.fxml&quot;));</span>
-<span class="nc" id="L46">    tabs.add(</span>
+<span class="nc" id="L57">    List&lt;StyledTab&gt; tabs = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L58">    StyledTab homeTab =</span>
+        new StyledTab(
+            &quot;Home&quot;,
+            SortOrder.First,
+            &quot;view/HomePage.fxml&quot;,
+<span class="nc" id="L63">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/Home.png&quot;).toString()));</span>
+<span class="nc" id="L64">    TabHoverAnimation.install(homeTab);</span>
+<span class="nc" id="L65">    tabs.add(homeTab);</span>
+
+<span class="nc" id="L67">    StyledTab directoryTab =</span>
         new StyledTab(
             &quot;Service Request Directory&quot;,
             SortOrder.ByName,
-            &quot;view/ServiceRequestDirectoryPage.fxml&quot;));
+            &quot;view/ServiceRequestDirectoryPage.fxml&quot;,
+<span class="nc" id="L72">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/SRDirectory.png&quot;).toString()));</span>
+<span class="nc" id="L73">    directoryTab.setOnSelectionChanged(</span>
+<span class="nc" id="L74">        new EventHandler&lt;Event&gt;() {</span>
+          @Override
+          public void handle(Event event) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            shouldEnlarge = !shouldEnlarge;</span>
+<span class="nc" id="L78">            System.out.println(shouldEnlarge);</span>
+<span class="nc" id="L79">          }</span>
+        });
+<span class="nc" id="L81">    TabHoverAnimation.install(directoryTab);</span>
+<span class="nc" id="L82">    tabs.add(directoryTab);</span>
 
-<span class="nc" id="L52">    Map mapView = new Map(FloorType.ThirdFloor, this);</span>
-<span class="nc" id="L53">    StyledTab mapTab =</span>
+<span class="nc" id="L84">    Map mapView = new Map(FloorType.ThirdFloor, this);</span>
+<span class="nc" id="L85">    mapTabPage =</span>
         new StyledTab(
             &quot;Hospital Map&quot;,
             SortOrder.ByName,
-<span class="nc" id="L57">            mapView.getMapScene(tabContentHeight, tabContentWidth));</span>
-<span class="nc" id="L58">    mapTab.setOnSelectionChanged(</span>
-<span class="nc" id="L59">        new EventHandler&lt;Event&gt;() {</span>
+<span class="nc" id="L89">            mapView.getMapScene(tabContentHeight, tabContentWidth),</span>
+<span class="nc" id="L90">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/MapView.png&quot;).toString()));</span>
+<span class="nc" id="L91">    mapTabPage.setOnSelectionChanged(</span>
+<span class="nc" id="L92">        new EventHandler&lt;Event&gt;() {</span>
           @Override
           public void handle(Event event) {
             try {
-<span class="nc" id="L63">              mapView.getFromDB();</span>
-<span class="nc" id="L64">            } catch (SQLException e) {</span>
-<span class="nc" id="L65">              e.printStackTrace();</span>
-<span class="nc" id="L66">            }</span>
-<span class="nc" id="L67">          }</span>
+<span class="nc" id="L96">              mapView.getFromDB();</span>
+<span class="nc" id="L97">            } catch (SQLException e) {</span>
+<span class="nc" id="L98">              e.printStackTrace();</span>
+<span class="nc" id="L99">            }</span>
+<span class="nc" id="L100">          }</span>
         });
-<span class="nc" id="L69">    tabs.add(mapTab);</span>
+<span class="nc" id="L102">    TabHoverAnimation.install(mapTabPage);</span>
+<span class="nc" id="L103">    tabs.add(mapTabPage);</span>
 
-<span class="nc" id="L71">    MapSideView mapSideView = new MapSideView();</span>
-<span class="nc" id="L72">    StyledTab mapSideViewTab =</span>
-<span class="nc" id="L73">        new StyledTab(&quot;Hospital Map Side-View&quot;, SortOrder.ByName, mapSideView.getMapScene());</span>
-<span class="nc" id="L74">    tabs.add(mapSideViewTab);</span>
+<span class="nc" id="L105">    MapSideView mapSideView = new MapSideView(this, mapView);</span>
+<span class="nc" id="L106">    StyledTab mapSideViewTab =</span>
+        new StyledTab(
+            &quot;Hospital Map Side-View&quot;,
+            SortOrder.ByName,
+<span class="nc" id="L110">            mapSideView.getMapScene(),</span>
+<span class="nc" id="L111">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/SideView.png&quot;).toString()));</span>
+<span class="nc" id="L112">    TabHoverAnimation.install(mapSideViewTab);</span>
+<span class="nc" id="L113">    tabs.add(mapSideViewTab);</span>
 
-<span class="nc" id="L76">    ServiceRequestBacklog backlogView =</span>
+<span class="nc" id="L115">    ServiceRequestBacklog backlogView =</span>
         new ServiceRequestBacklog(
-<span class="nc" id="L78">            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,</span>
-<span class="nc" id="L79">            Screen.getPrimary().getBounds().getHeight());</span>
-<span class="nc" id="L80">    StyledTab backlogTab =</span>
-<span class="nc" id="L81">        new StyledTab(&quot;Service Request Backlog&quot;, SortOrder.ByName, backlogView.getBacklogScene());</span>
-<span class="nc" id="L82">    backlogTab.setOnSelectionChanged(</span>
+<span class="nc" id="L117">            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,</span>
+<span class="nc" id="L118">            Screen.getPrimary().getBounds().getHeight());</span>
+<span class="nc" id="L119">    StyledTab backlogTab =</span>
+        new StyledTab(
+            &quot;Service Request Backlog&quot;,
+            SortOrder.ByName,
+<span class="nc" id="L123">            backlogView.getBacklogScene(),</span>
+<span class="nc" id="L124">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/SRBacklog.png&quot;).toString()));</span>
+<span class="nc" id="L125">    backlogTab.setOnSelectionChanged(</span>
         (event) -&gt; {
-<span class="nc bnc" id="L84" title="All 2 branches missed.">          if (backlogTab.isSelected()) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">          if (backlogTab.isSelected()) {</span>
             try {
-<span class="nc" id="L86">              backlogTab.setTabPage(backlogView.getBacklogScene());</span>
-<span class="nc" id="L87">            } catch (SQLException e) {</span>
-<span class="nc" id="L88">              e.printStackTrace();</span>
-<span class="nc" id="L89">            }</span>
+<span class="nc" id="L129">              backlogTab.setTabPage(backlogView.getBacklogScene());</span>
+<span class="nc" id="L130">            } catch (SQLException e) {</span>
+<span class="nc" id="L131">              e.printStackTrace();</span>
+<span class="nc" id="L132">            }</span>
           }
-<span class="nc" id="L91">        });</span>
-<span class="nc" id="L92">    tabs.add(backlogTab);</span>
+<span class="nc" id="L134">        });</span>
+<span class="nc" id="L135">    TabHoverAnimation.install(backlogTab);</span>
+<span class="nc" id="L136">    tabs.add(backlogTab);</span>
 
-<span class="nc" id="L94">    tabs.add(new StyledTab(&quot;Settings&quot;, SortOrder.ByName, &quot;view/tabs/SettingsPage.fxml&quot;));</span>
+    // Only load the DB Management page on Admin log in
+<span class="nc" id="L139">    adminDBPage =</span>
+        new StyledTab(
+            &quot;DB Management&quot;,
+            SortOrder.ByName,
+            &quot;view/tabs/DBManagementPage.fxml&quot;,
+<span class="nc" id="L144">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/AdminDBIcon.png&quot;).toString()));</span>
+<span class="nc" id="L145">    TabHoverAnimation.install(adminDBPage);</span>
+<span class="nc" id="L146">    tabs.add(adminDBPage);</span>
 
-<span class="nc" id="L96">    tabs.sort(StyledTab::compareTo);</span>
-<span class="nc" id="L97">    mainTabPane.getTabs().setAll(tabs);</span>
-<span class="nc" id="L98">  }</span>
+<span class="nc" id="L148">    StyledTab settingsTab =</span>
+        new StyledTab(
+            &quot;Settings&quot;,
+            SortOrder.ByName,
+            &quot;view/tabs/SettingsPage.fxml&quot;,
+<span class="nc" id="L153">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/Settings.png&quot;).toString()));</span>
+<span class="nc" id="L154">    TabHoverAnimation.install(settingsTab);</span>
+<span class="nc" id="L155">    tabs.add(settingsTab);</span>
+
+<span class="nc" id="L157">    credentialManagementPage =</span>
+        new StyledTab(
+            &quot;Credential Manager&quot;,
+            SortOrder.ByName,
+            &quot;view/tabs/CredentialManagementPage.fxml&quot;,
+            new Image(
+                App.class
+<span class="nc" id="L164">                    .getResource(&quot;images/Icons/pageIcons/CredentialManagement.png&quot;)</span>
+<span class="nc" id="L165">                    .toString()));</span>
+<span class="nc" id="L166">    TabHoverAnimation.install(settingsTab);</span>
+<span class="nc" id="L167">    tabs.add(credentialManagementPage);</span>
+
+<span class="nc" id="L169">    StyledTab aboutPageTab =</span>
+        new StyledTab(
+            &quot;About Page&quot;,
+            SortOrder.ByName,
+            &quot;view/tabs/AboutPage.fxml&quot;,
+<span class="nc" id="L174">            new Image(App.class.getResource(&quot;images/Icons/pageIcons/AboutUs.png&quot;).toString()));</span>
+<span class="nc" id="L175">    TabHoverAnimation.install(aboutPageTab);</span>
+<span class="nc" id="L176">    tabs.add(aboutPageTab);</span>
+
+<span class="nc" id="L178">    tabs.sort(StyledTab::compareTo);</span>
+<span class="nc" id="L179">    mainTabPane.getTabs().setAll(tabs);</span>
+
+<span class="nc" id="L181">    shouldEnlarge = false;</span>
+<span class="nc" id="L182">    updateTabSize();</span>
+<span class="nc" id="L183">  }</span>
+
+  @FXML
+  public void toggleAdminDBPage() throws SQLException, NoSuchAlgorithmException {
+<span class="nc" id="L187">    AccessLevel currentAccess = CredentialManager.getInstance().getCurrentUserLevel();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">    switch (currentAccess) {</span>
+      case Admin:
+<span class="nc" id="L190">        mainTabPane.getTabs().add(adminDBPage);</span>
+<span class="nc" id="L191">        mainTabPane.getTabs().add(credentialManagementPage);</span>
+<span class="nc" id="L192">        break;</span>
+
+      default:
+      case Staff:
+<span class="nc" id="L196">        mainTabPane.getTabs().remove(adminDBPage);</span>
+<span class="nc" id="L197">        mainTabPane.getTabs().remove(credentialManagementPage);</span>
+        break;
+    }
+<span class="nc" id="L200">  }</span>
+
+  private void updateTabSize() {
+<span class="nc bnc" id="L203" title="All 2 branches missed.">    if (shouldEnlarge) {</span>
+<span class="nc" id="L204">      mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
+<span class="nc" id="L205">      mainTabPane.setTabMinHeight(StyledTab.Height);</span>
+<span class="nc" id="L206">      mainTabPane.setTabMaxWidth(StyledTab.Width);</span>
+<span class="nc" id="L207">      mainTabPane.setTabMinWidth(StyledTab.Width);</span>
+    } else {
+<span class="nc" id="L209">      mainTabPane.setTabMaxHeight(75);</span>
+<span class="nc" id="L210">      mainTabPane.setTabMinHeight(75);</span>
+<span class="nc" id="L211">      mainTabPane.setTabMaxWidth(75);</span>
+<span class="nc" id="L212">      mainTabPane.setTabMinWidth(75);</span>
+    }
+
+<span class="nc bnc" id="L215" title="All 2 branches missed.">    for (Tab tab : mainTabPane.getTabs()) {</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">      ((StyledTab) tab).toggleTabSize(!shouldEnlarge);</span>
+<span class="nc" id="L217">    }</span>
+<span class="nc" id="L218">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapSideView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map</a> &gt; <span class="el_source">MapSideView.java</span></div><h1>MapSideView.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map;
+
+import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.view.controllers.LandingPageController;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+public class MapSideView {
+<span class="nc" id="L28">  private final StackPane layout = new StackPane();</span>
+  private Image backgroundImage;
+<span class="nc" id="L30">  private double MAPHEIGHT = 1343;</span>
+<span class="nc" id="L31">  private double MAPWIDTH = 859;</span>
+<span class="nc" id="L32">  private int[][] EquipmentManagementArray = new int[2][4];</span>
+<span class="nc" id="L33">  ListView&lt;Equipment&gt; AllEquipmentView = new ListView&lt;Equipment&gt;();</span>
+<span class="nc" id="L34">  GridPane holder = new GridPane();</span>
+<span class="nc" id="L35">  public ArrayList&lt;TextField&gt; cleanFields = new ArrayList&lt;TextField&gt;();</span>
+<span class="nc" id="L36">  public ArrayList&lt;TextField&gt; dirtyFields = new ArrayList&lt;TextField&gt;();</span>
+  private LandingPageController Tabber;
+  private Map MapView;
+
+<span class="nc" id="L40">  public MapSideView(LandingPageController Tab, Map mapView) {</span>
+<span class="nc" id="L41">    Tabber = Tab;</span>
+<span class="nc" id="L42">    MapView = mapView;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">    for (int i = 0; i &lt; 4; ++i) {</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">      for (byte j = 0; i &lt; 2; ++i) {</span>
+<span class="nc" id="L45">        this.EquipmentManagementArray[i][j] = 0;</span>
+      }
+    }
+<span class="nc bnc" id="L48" title="All 2 branches missed.">    for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L49">      TextField clean = new TextField(&quot;0&quot;);</span>
+<span class="nc" id="L50">      clean.setMaxWidth(35);</span>
+<span class="nc" id="L51">      cleanFields.add(clean);</span>
+<span class="nc" id="L52">      TextField dirty = new TextField(&quot;0&quot;);</span>
+<span class="nc" id="L53">      dirty.setMaxWidth(35);</span>
+<span class="nc" id="L54">      dirtyFields.add(dirty);</span>
+<span class="nc" id="L55">      holder.add(cleanFields.get(i), i + 1, 1);</span>
+<span class="nc" id="L56">      holder.add(dirtyFields.get(i), i + 1, 2);</span>
+    }
+<span class="nc" id="L58">    backgroundImage =</span>
+<span class="nc" id="L59">        new Image(App.class.getResource(&quot;images/map/Tower - Side View.jpg&quot;).toString());</span>
+<span class="nc" id="L60">    AllEquipmentView.setPrefSize(600, 200);</span>
+<span class="nc" id="L61">    AllEquipmentView.setMaxSize(AllEquipmentView.getPrefWidth(), AllEquipmentView.getPrefHeight());</span>
+<span class="nc" id="L62">    AllEquipmentView.getStyleClass().add(&quot;combo-box&quot;);</span>
+    //    holder.setAlignment();
+<span class="nc" id="L64">    holder.setTranslateX(700);</span>
+<span class="nc" id="L65">    holder.setTranslateY(-300);</span>
+<span class="nc" id="L66">    Label Clean = new Label(&quot;Clean&quot;);</span>
+<span class="nc" id="L67">    Label Dirty = new Label(&quot;Dirty&quot;);</span>
+<span class="nc" id="L68">    holder.add(Clean, 0, 1);</span>
+<span class="nc" id="L69">    holder.add(Dirty, 0, 2);</span>
+<span class="nc" id="L70">    Label PBED = new Label(&quot;Patient Beds&quot;);</span>
+<span class="nc" id="L71">    Label XRAY = new Label(&quot;XRAYs&quot;);</span>
+<span class="nc" id="L72">    Label INFUSIONPUMP = new Label(&quot;Infusion Pumps&quot;);</span>
+<span class="nc" id="L73">    Label RECLINER = new Label(&quot;Recliners&quot;);</span>
+<span class="nc" id="L74">    holder.add(PBED, 1, 0);</span>
+<span class="nc" id="L75">    holder.add(INFUSIONPUMP, 2, 0);</span>
+<span class="nc" id="L76">    holder.add(XRAY, 3, 0);</span>
+<span class="nc" id="L77">    holder.add(RECLINER, 4, 0);</span>
+<span class="nc" id="L78">    holder.setMaxSize(600, 200);</span>
+<span class="nc" id="L79">    holder.setHgap(10);</span>
+<span class="nc" id="L80">    holder.setVgap(10);</span>
+<span class="nc" id="L81">  }</span>
+
+  public Parent getMapScene() {
+<span class="nc" id="L84">    layout.getChildren().add(new ImageView(backgroundImage));</span>
+<span class="nc" id="L85">    ZoomableScrollPane scroll = createScrollPane(layout);</span>
+<span class="nc" id="L86">    StackPane staticWrapper = new StackPane();</span>
+<span class="nc" id="L87">    GridPane Grid = new GridPane();</span>
+<span class="nc" id="L88">    Grid.setMouseTransparent(true);</span>
+<span class="nc" id="L89">    Grid.getChildren().add(AllEquipmentView);</span>
+<span class="nc" id="L90">    Grid.setVgrow(AllEquipmentView, Priority.ALWAYS);</span>
+<span class="nc" id="L91">    Grid.setAlignment(Pos.TOP_CENTER);</span>
+<span class="nc" id="L92">    staticWrapper.getChildren().add(scroll);</span>
+<span class="nc" id="L93">    Rectangle Floor3 = this.createRectangle(125.0D, 1025.0D, 413.0D, 52.0D);</span>
+<span class="nc" id="L94">    Rectangle Floor1 = this.createRectangle(125.0D, 1125.0D, 413.0D, 52.0D);</span>
+<span class="nc" id="L95">    Rectangle LL1 = this.createRectangle(121.0D, 1175.0D, 415.0D, 52.0D);</span>
+
+<span class="nc" id="L97">    LL1.setOnMouseEntered(</span>
+<span class="nc" id="L98">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          public void handle(MouseEvent event) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L101">              EquipmentManagementArray[0][i] = 0;</span>
+<span class="nc" id="L102">              EquipmentManagementArray[1][i] = 0;</span>
+            }
+            try {
+<span class="nc" id="L105">              AllEquipmentView.getItems().clear();</span>
+<span class="nc" id="L106">              MapSideView.this.getEquipmentByFloorFromDB(FloorType.LowerLevel1).stream()</span>
+<span class="nc" id="L107">                  .forEach(</span>
+                      (equipment) -&gt; {
+<span class="nc" id="L109">                        System.out.println(&quot;Sorting&quot;);</span>
+<span class="nc" id="L110">                        AllEquipmentView.getItems().add(equipment);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                        if (equipment.isClean()) {</span>
+<span class="nc" id="L112">                          MapSideView.this</span>
+<span class="nc" id="L113">                              .EquipmentManagementArray[0][equipment.getType().ordinal()]++;</span>
+                        } else {
+<span class="nc" id="L115">                          MapSideView.this</span>
+<span class="nc" id="L116">                              .EquipmentManagementArray[1][equipment.getType().ordinal()]++;</span>
+                        }
+<span class="nc" id="L118">                      });</span>
+<span class="nc" id="L119">            } catch (SQLException var3) {</span>
+<span class="nc" id="L120">              var3.printStackTrace();</span>
+<span class="nc" id="L121">            }</span>
+<span class="nc" id="L122">            updateFieldsinGrid();</span>
+<span class="nc" id="L123">          }</span>
+        });
+<span class="nc" id="L125">    LL1.setOnMouseClicked(</span>
+<span class="nc" id="L126">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          @Override
+          public void handle(MouseEvent event) {
+<span class="nc" id="L129">            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);</span>
+            try {
+<span class="nc" id="L131">              MapView.switchFloors(FloorType.LowerLevel1);</span>
+<span class="nc" id="L132">            } catch (SQLException e) {</span>
+<span class="nc" id="L133">              e.printStackTrace();</span>
+<span class="nc" id="L134">            }</span>
+<span class="nc" id="L135">          }</span>
+        });
+<span class="nc" id="L137">    Floor1.setOnMouseEntered(</span>
+<span class="nc" id="L138">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          public void handle(MouseEvent event) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L141">              EquipmentManagementArray[0][i] = 0;</span>
+<span class="nc" id="L142">              EquipmentManagementArray[1][i] = 0;</span>
+            }
+<span class="nc" id="L144">            AllEquipmentView.getItems().clear();</span>
+            try {
+<span class="nc" id="L146">              MapSideView.this.getEquipmentByFloorFromDB(FloorType.FirstFloor).stream()</span>
+<span class="nc" id="L147">                  .forEach(</span>
+                      (equipment) -&gt; {
+<span class="nc" id="L149">                        System.out.println(&quot;Sorting&quot;);</span>
+<span class="nc" id="L150">                        AllEquipmentView.getItems().add(equipment);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                        if (equipment.isClean()) {</span>
+<span class="nc" id="L152">                          MapSideView.this</span>
+<span class="nc" id="L153">                              .EquipmentManagementArray[0][equipment.getType().ordinal()]++;</span>
+                        } else {
+<span class="nc" id="L155">                          MapSideView.this</span>
+<span class="nc" id="L156">                              .EquipmentManagementArray[1][equipment.getType().ordinal()]++;</span>
+                        }
+<span class="nc" id="L158">                      });</span>
+<span class="nc" id="L159">            } catch (SQLException var3) {</span>
+<span class="nc" id="L160">              var3.printStackTrace();</span>
+<span class="nc" id="L161">            }</span>
+<span class="nc" id="L162">            updateFieldsinGrid();</span>
+<span class="nc" id="L163">          }</span>
+        });
+<span class="nc" id="L165">    Floor1.setOnMouseClicked(</span>
+<span class="nc" id="L166">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          @Override
+          public void handle(MouseEvent event) {
+<span class="nc" id="L169">            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);</span>
+            try {
+<span class="nc" id="L171">              MapView.switchFloors(FloorType.FirstFloor);</span>
+<span class="nc" id="L172">            } catch (SQLException e) {</span>
+<span class="nc" id="L173">              e.printStackTrace();</span>
+<span class="nc" id="L174">            }</span>
+<span class="nc" id="L175">          }</span>
+        });
+<span class="nc" id="L177">    Floor3.setOnMouseEntered(</span>
+<span class="nc" id="L178">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          public void handle(MouseEvent event) {
+<span class="nc" id="L180">            AllEquipmentView.getItems().clear();</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L182">              EquipmentManagementArray[0][i] = 0;</span>
+<span class="nc" id="L183">              EquipmentManagementArray[1][i] = 0;</span>
+            }
+            try {
+<span class="nc" id="L186">              MapSideView.this.getEquipmentByFloorFromDB(FloorType.ThirdFloor).stream()</span>
+<span class="nc" id="L187">                  .forEach(</span>
+                      (equipment) -&gt; {
+<span class="nc" id="L189">                        System.out.println(&quot;Sorting&quot;);</span>
+<span class="nc" id="L190">                        AllEquipmentView.getItems().add(equipment);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                        if (equipment.isClean()) {</span>
+<span class="nc" id="L192">                          MapSideView.this</span>
+<span class="nc" id="L193">                              .EquipmentManagementArray[0][equipment.getType().ordinal()]++;</span>
+                        } else {
+<span class="nc" id="L195">                          MapSideView.this</span>
+<span class="nc" id="L196">                              .EquipmentManagementArray[1][equipment.getType().ordinal()]++;</span>
+                        }
+<span class="nc" id="L198">                      });</span>
+<span class="nc" id="L199">            } catch (SQLException var3) {</span>
+<span class="nc" id="L200">              var3.printStackTrace();</span>
+<span class="nc" id="L201">            }</span>
+<span class="nc" id="L202">            updateFieldsinGrid();</span>
+<span class="nc" id="L203">          }</span>
+        });
+<span class="nc" id="L205">    Floor3.setOnMouseClicked(</span>
+<span class="nc" id="L206">        new EventHandler&lt;MouseEvent&gt;() {</span>
+          @Override
+          public void handle(MouseEvent event) {
+<span class="nc" id="L209">            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);</span>
+            try {
+<span class="nc" id="L211">              MapView.switchFloors(FloorType.ThirdFloor);</span>
+<span class="nc" id="L212">            } catch (SQLException e) {</span>
+<span class="nc" id="L213">              e.printStackTrace();</span>
+<span class="nc" id="L214">            }</span>
+<span class="nc" id="L215">          }</span>
+        });
+<span class="nc" id="L217">    layout.getChildren().addAll(Floor3, Floor1, LL1);</span>
+<span class="nc" id="L218">    holder.setMouseTransparent(true);</span>
+<span class="nc" id="L219">    holder.getStyleClass().add(&quot;combo-box&quot;);</span>
+<span class="nc" id="L220">    staticWrapper.getChildren().add(holder);</span>
+<span class="nc" id="L221">    Grid.setColumnSpan(AllEquipmentView, 3);</span>
+<span class="nc" id="L222">    return staticWrapper;</span>
+  }
+
+  private void updateFieldsinGrid() {
+<span class="nc bnc" id="L226" title="All 2 branches missed.">    for (int i = 0; i &lt; 4; i++) {</span>
+<span class="nc" id="L227">      cleanFields.get(i).setText(String.valueOf(EquipmentManagementArray[1][i]));</span>
+<span class="nc" id="L228">      dirtyFields.get(i).setText(String.valueOf(EquipmentManagementArray[0][i]));</span>
+    }
+<span class="nc" id="L230">  }</span>
+
+  private ZoomableScrollPane createScrollPane(Pane layout) {
+<span class="nc" id="L233">    ZoomableScrollPane scroll = new ZoomableScrollPane(layout);</span>
+<span class="nc" id="L234">    scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</span>
+<span class="nc" id="L235">    scroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);</span>
+<span class="nc" id="L236">    scroll.setPannable(true);</span>
+    // scroll.setPrefSize(WIDTH, HEIGHT);
+<span class="nc" id="L238">    return scroll;</span>
+  }
+
+  private Rectangle createRectangle(
+      double PixelXLeftTop, double PixelYLeftTop, double width, double height) {
+<span class="nc" id="L243">    Rectangle retval = new Rectangle();</span>
+<span class="nc" id="L244">    retval.setWidth(width);</span>
+<span class="nc" id="L245">    retval.setHeight(height);</span>
+<span class="nc" id="L246">    retval.setTranslateX(PixelXLeftTop + retval.getWidth() / 2 - MAPWIDTH / 2);</span>
+<span class="nc" id="L247">    retval.setTranslateY(PixelYLeftTop + retval.getHeight() / 2 - MAPHEIGHT / 2);</span>
+<span class="nc" id="L248">    retval.setFill(Color.BLUE);</span>
+<span class="nc" id="L249">    retval.setOpacity(.35);</span>
+<span class="nc" id="L250">    return retval;</span>
+  }
+
+  private List&lt;Equipment&gt; getEquipmentByFloorFromDB(FloorType floor) throws SQLException {
+<span class="nc" id="L254">    List&lt;Equipment&gt; equipmentList = new ArrayList();</span>
+    for (Equipment equipment :
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getAll()) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">      if (equipment.getLocation().getFloor() == floor) {</span>
+<span class="nc" id="L258">        equipmentList.add(equipment);</span>
+      }
+<span class="nc" id="L260">    }</span>
+<span class="nc" id="L261">    return equipmentList;</span>
+  }
+
+<span class="nc" id="L264">  private void SwitchToMapView(FloorType floor) {}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

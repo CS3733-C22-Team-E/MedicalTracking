@@ -1,90 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Patient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model</a> &gt; <span class="el_source">Patient.java</span></div><h1>Patient.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
   private Date dateOfBirth;
+  private boolean isDeleted;
   private String name;
   private int id;
 
-<span class="nc" id="L16">  public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {</span>
-<span class="nc" id="L17">    this.currentLocation = currentLocation;</span>
-<span class="nc" id="L18">    this.dateOfBirth = dateOfBirth;</span>
-<span class="nc" id="L19">    this.name = name;</span>
-<span class="nc" id="L20">    this.id = id;</span>
-<span class="nc" id="L21">  }</span>
+<span class="nc" id="L19">  public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {</span>
+<span class="nc" id="L20">    this.currentLocation = currentLocation;</span>
+<span class="nc" id="L21">    this.dateOfBirth = dateOfBirth;</span>
+<span class="nc" id="L22">    this.isDeleted = false;</span>
+<span class="nc" id="L23">    this.name = name;</span>
+<span class="nc" id="L24">    this.id = id;</span>
+<span class="nc" id="L25">  }</span>
 
-<span class="nc" id="L23">  public Patient(ResultSet resultSet) throws SQLException {</span>
-<span class="nc" id="L24">    this.currentLocation =</span>
-<span class="nc" id="L25">        DBManager.getInstance().getLocationManager().get(resultSet.getInt(&quot;currentLocationID&quot;));</span>
-<span class="nc" id="L26">    this.dateOfBirth = resultSet.getDate(&quot;dateOfBirth&quot;);</span>
-<span class="nc" id="L27">    this.name = resultSet.getString(&quot;name&quot;);</span>
-<span class="nc" id="L28">    this.id = resultSet.getInt(&quot;id&quot;);</span>
-<span class="nc" id="L29">  }</span>
+<span class="nc" id="L27">  public Patient(ResultSet resultSet) throws SQLException {</span>
+<span class="nc" id="L28">    this.currentLocation =</span>
+        (Location)
+<span class="nc" id="L30">            DBManager.getManager(DataBaseObjectType.Location)</span>
+<span class="nc" id="L31">                .get(resultSet.getInt(&quot;currentLocationID&quot;));</span>
+<span class="nc" id="L32">    this.isDeleted = resultSet.getBoolean(&quot;isDeleted&quot;);</span>
+<span class="nc" id="L33">    this.dateOfBirth = resultSet.getDate(&quot;dateOfBirth&quot;);</span>
+<span class="nc" id="L34">    this.name = resultSet.getString(&quot;name&quot;);</span>
+<span class="nc" id="L35">    this.id = resultSet.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L36">  }</span>
+
+<span class="nc" id="L38">  public Patient(CSVLineData lineData) throws SQLException, ParseException {</span>
+<span class="nc" id="L39">    this.isDeleted = false;</span>
+<span class="nc" id="L40">    this.name = lineData.getColumnString(&quot;name&quot;);</span>
+<span class="nc" id="L41">    this.dateOfBirth = lineData.getColumnDate(&quot;dateOfBirth&quot;);</span>
+<span class="nc" id="L42">    this.currentLocation =</span>
+<span class="nc" id="L43">        (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;currentLocation&quot;);</span>
+<span class="nc" id="L44">  }</span>
 
   @Override
-  public DataBaseObjectType getDBType() {
-<span class="nc" id="L33">    return DataBaseObjectType.Patient;</span>
-  }
-
-  @Override
-  public String getSQLInsertString() {
-<span class="nc" id="L38">    return &quot;'&quot; + name + &quot;', '&quot; + dateOfBirth.toString() + &quot;', &quot; + currentLocation.getId();</span>
+  public String toString() {
+<span class="nc" id="L48">    return new StringBuilder()</span>
+<span class="nc" id="L49">        .append(&quot;patientId: &quot;)</span>
+<span class="nc" id="L50">        .append(id)</span>
+<span class="nc" id="L51">        .append(&quot;, patientName: &quot;)</span>
+<span class="nc" id="L52">        .append(name)</span>
+<span class="nc" id="L53">        .append(&quot;, dateOfBirth: &quot;)</span>
+<span class="nc" id="L54">        .append(dateOfBirth.toString())</span>
+<span class="nc" id="L55">        .append(&quot;, currentLocationId: &quot;)</span>
+<span class="nc" id="L56">        .append(currentLocation.getId())</span>
+<span class="nc" id="L57">        .append(&quot;, currentLocationName: &quot;)</span>
+<span class="nc" id="L58">        .append(currentLocation.getLongName())</span>
+<span class="nc" id="L59">        .toString();</span>
   }
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L43">    return &quot;name = '&quot;</span>
+<span class="nc" id="L64">    return &quot;name = '&quot;</span>
         + name
         + &quot;', dateOfBirth = '&quot;
-<span class="nc" id="L46">        + dateOfBirth.toString()</span>
+<span class="nc" id="L67">        + dateOfBirth.toString()</span>
         + &quot;', currentLocationID = &quot;
-<span class="nc" id="L48">        + currentLocation.getId()</span>
+<span class="nc" id="L69">        + currentLocation.getId()</span>
         + &quot; WHERE id = &quot;
         + id;
   }
 
   @Override
-  public String getTableColumns() {
-<span class="nc" id="L55">    return &quot;(name, dateOfBirth, currentLocationID)&quot;;</span>
+  public String getSQLInsertString() {
+<span class="nc" id="L76">    return &quot;'&quot; + name + &quot;', '&quot; + dateOfBirth.toString() + &quot;', &quot; + currentLocation.getId();</span>
   }
 
+  @Override
+  public String[] toCSVData() {
+<span class="nc" id="L81">    return new String[] {</span>
+<span class="nc" id="L82">      name, dateOfBirth.toString(), Integer.toString(currentLocation.getId()), Integer.toString(id)</span>
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+<span class="nc" id="L88">    return new String[] {&quot;name&quot;, &quot;dateOfBirth&quot;, &quot;currentLocation&quot;, &quot;id&quot;};</span>
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L93">    return &quot;(name, dateOfBirth, currentLocationID)&quot;;</span>
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+<span class="nc" id="L98">    return DataBaseObjectType.Patient;</span>
+  }
+
+  // Getters and Setters
   public Location getCurrentLocation() {
-<span class="nc" id="L59">    return currentLocation;</span>
+<span class="nc" id="L103">    return currentLocation;</span>
   }
 
   public void setCurrentLocation(Location currentLocation) {
-<span class="nc" id="L63">    this.currentLocation = currentLocation;</span>
-<span class="nc" id="L64">  }</span>
+<span class="nc" id="L107">    this.currentLocation = currentLocation;</span>
+<span class="nc" id="L108">  }</span>
 
   public Date getDateOfBirth() {
-<span class="nc" id="L67">    return dateOfBirth;</span>
+<span class="nc" id="L111">    return dateOfBirth;</span>
   }
 
   public void setDateOfBirth(Date dateOfBirth) {
-<span class="nc" id="L71">    this.dateOfBirth = dateOfBirth;</span>
-<span class="nc" id="L72">  }</span>
+<span class="nc" id="L115">    this.dateOfBirth = dateOfBirth;</span>
+<span class="nc" id="L116">  }</span>
 
   public String getName() {
-<span class="nc" id="L75">    return name;</span>
+<span class="nc" id="L119">    return name;</span>
   }
 
   public void setName(String name) {
-<span class="nc" id="L79">    this.name = name;</span>
-<span class="nc" id="L80">  }</span>
+<span class="nc" id="L123">    this.name = name;</span>
+<span class="nc" id="L124">  }</span>
 
   public int getId() {
-<span class="nc" id="L83">    return id;</span>
+<span class="nc" id="L127">    return id;</span>
   }
 
   public void setId(int id) {
-<span class="nc" id="L87">    this.id = id;</span>
-<span class="nc" id="L88">  }</span>
+<span class="nc" id="L131">    this.id = id;</span>
+<span class="nc" id="L132">  }</span>
+
+  public boolean getIsDeleted() {
+<span class="nc" id="L135">    return isDeleted;</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

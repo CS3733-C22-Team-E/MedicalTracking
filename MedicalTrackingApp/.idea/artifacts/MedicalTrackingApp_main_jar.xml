@@ -2,9 +2,6 @@
   <artifact type="jar" name="MedicalTrackingApp.main:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/MedicalTrackingApp_main_jar</output-path>
     <root id="archive" name="MedicalTrackingApp.main.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="MedicalTrackingApp.main" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/17/7116001b777530c89e5c7381d39a2c9268f71e7e/javafx-controls-17.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/17/2c56d252b97eba8b42f049c6ce145172d744ce08/javafx-graphics-17-win.jar" path-in-jar="/" />

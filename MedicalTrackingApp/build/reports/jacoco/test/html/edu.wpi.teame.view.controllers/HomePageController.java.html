@@ -3,19 +3,21 @@
 // import com.opencsv.exceptions.CsvValidationException;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.objectManagers.*;
-import java.awt.*;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 
-<span class="nc" id="L13">public class HomePageController {</span>
+<span class="nc" id="L14">public class HomePageController {</span>
   @FXML
-  private void logout() throws IOException {
-<span class="nc" id="L16">    Scene scene = new Scene(FXMLLoader.load(App.class.getResource(&quot;view/LoginPage.fxml&quot;)));</span>
-<span class="nc" id="L17">    App.getAppPrimaryStage().setScene(scene);</span>
-<span class="nc" id="L18">    App.getAppPrimaryStage().setFullScreen(true);</span>
-<span class="nc" id="L19">  }</span>
+  private void logout() throws IOException, SQLException, NoSuchAlgorithmException {
+<span class="nc" id="L17">    Scene scene = new Scene(FXMLLoader.load(App.class.getResource(&quot;view/LoginPage.fxml&quot;)));</span>
+<span class="nc" id="L18">    App.getAppPrimaryStage().setScene(scene);</span>
+<span class="nc" id="L19">    App.getAppPrimaryStage().setFullScreen(true);</span>
+<span class="nc" id="L20">    CredentialManager.getInstance().logOut();</span>
+<span class="nc" id="L21">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

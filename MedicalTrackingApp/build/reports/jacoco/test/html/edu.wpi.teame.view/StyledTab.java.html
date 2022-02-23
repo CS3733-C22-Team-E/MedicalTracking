@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 
@@ -18,78 +19,132 @@ public class StyledTab extends Tab implements Comparable&lt;StyledTab&gt; {
   public static final double Height = 250;
   public static final double Width = 35;
 
+  private AnchorPane anchorPane;
+  private ImageView imageView;
+  private Label tabText;
+
+  public Object controller;
+  private Parent tabPage;
+  private Image tabIcon;
+
   private SortOrder tabOrder;
   private String tabPageUrl;
-  private Parent tabPage;
   private String tabName;
-  private Image tabIcon;
-  public Object controller;
 
-<span class="nc" id="L28">  public StyledTab(String name, SortOrder order, Parent page) throws IOException {</span>
-<span class="nc" id="L29">    tabPageUrl = null;</span>
-<span class="nc" id="L30">    tabOrder = order;</span>
-<span class="nc" id="L31">    tabName = name;</span>
-<span class="nc" id="L32">    tabPage = page;</span>
-<span class="nc" id="L33">    setUpTab();</span>
-<span class="nc" id="L34">  }</span>
+<span class="nc" id="L34">  public StyledTab(String name, SortOrder order, Parent page) throws IOException {</span>
+<span class="nc" id="L35">    tabPageUrl = null;</span>
+<span class="nc" id="L36">    tabOrder = order;</span>
+<span class="nc" id="L37">    tabName = name;</span>
+<span class="nc" id="L38">    tabPage = page;</span>
+<span class="nc" id="L39">    setUpTab();</span>
+<span class="nc" id="L40">  }</span>
 
-<span class="nc" id="L36">  public StyledTab(String name, SortOrder order, String pageUrl) throws IOException {</span>
-<span class="nc" id="L37">    tabPageUrl = pageUrl;</span>
-<span class="nc" id="L38">    tabOrder = order;</span>
-<span class="nc" id="L39">    tabName = name;</span>
-<span class="nc" id="L40">    FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));</span>
-<span class="nc" id="L41">    tabPage = loader.load();</span>
-<span class="nc bnc" id="L42" title="All 6 branches missed.">    if (name != &quot;Service Request Backlog&quot; || name != &quot;Home&quot; || name != &quot;Hospital Map&quot;) {</span>
-<span class="nc" id="L43">      controller = loader.getController();</span>
-    }
-<span class="nc" id="L45">    setUpTab();</span>
-<span class="nc" id="L46">  }</span>
+<span class="nc" id="L42">  public StyledTab(String name, SortOrder order, Parent page, Image icon) throws IOException {</span>
+<span class="nc" id="L43">    tabPageUrl = null;</span>
+<span class="nc" id="L44">    tabOrder = order;</span>
+<span class="nc" id="L45">    tabName = name;</span>
+<span class="nc" id="L46">    tabPage = page;</span>
+<span class="nc" id="L47">    tabIcon = icon;</span>
+<span class="nc" id="L48">    setUpTab();</span>
+<span class="nc" id="L49">  }</span>
+
+<span class="nc" id="L51">  public StyledTab(String name, SortOrder order, String pageUrl) throws IOException {</span>
+<span class="nc" id="L52">    tabPageUrl = pageUrl;</span>
+<span class="nc" id="L53">    tabOrder = order;</span>
+<span class="nc" id="L54">    tabName = name;</span>
+<span class="nc" id="L55">    tabIcon = null;</span>
+
+<span class="nc" id="L57">    FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));</span>
+<span class="nc" id="L58">    tabPage = loader.load();</span>
+<span class="nc" id="L59">    controller = loader.getController();</span>
+<span class="nc" id="L60">    setUpTab();</span>
+<span class="nc" id="L61">  }</span>
+
+<span class="nc" id="L63">  public StyledTab(String name, SortOrder order, String pageUrl, Image icon) throws IOException {</span>
+<span class="nc" id="L64">    tabPageUrl = pageUrl;</span>
+<span class="nc" id="L65">    tabOrder = order;</span>
+<span class="nc" id="L66">    tabName = name;</span>
+<span class="nc" id="L67">    tabIcon = icon;</span>
+
+<span class="nc" id="L69">    FXMLLoader loader = new FXMLLoader(App.class.getResource(tabPageUrl));</span>
+<span class="nc" id="L70">    tabPage = loader.load();</span>
+<span class="nc" id="L71">    controller = loader.getController();</span>
+<span class="nc" id="L72">    setUpTab();</span>
+<span class="nc" id="L73">  }</span>
 
   public void setTabPage(Parent p) {
-<span class="nc" id="L49">    tabPage = p;</span>
-<span class="nc" id="L50">  }</span>
+<span class="nc" id="L76">    tabPage = p;</span>
+<span class="nc" id="L77">  }</span>
 
-  private void setUpTab() throws IOException {
-<span class="nc" id="L53">    Label label = new Label(tabName);</span>
-<span class="nc" id="L54">    label.setTextAlignment(TextAlignment.CENTER);</span>
-<span class="nc" id="L55">    label.setStyle(&quot;-fx-text-fill: -fx-text-color&quot;);</span>
-<span class="nc" id="L56">    label.setRotate(90.0);</span>
+  public void toggleTabSize(boolean showImage) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">    if (showImage) {</span>
+<span class="nc" id="L81">      anchorPane.getChildren().remove(0);</span>
+<span class="nc" id="L82">      anchorPane.getChildren().add(imageView);</span>
+<span class="nc" id="L83">      return;</span>
+    }
 
-<span class="nc" id="L58">    AnchorPane anchorPane = new AnchorPane();</span>
-<span class="nc" id="L59">    anchorPane.getChildren().add(label);</span>
+<span class="nc" id="L86">    anchorPane.getChildren().remove(0);</span>
+<span class="nc" id="L87">    anchorPane.getChildren().add(tabText);</span>
+<span class="nc" id="L88">  }</span>
 
-<span class="nc" id="L61">    tabPage.setStyle(&quot;@../css/mainStyle.css&quot;);</span>
-<span class="nc" id="L62">    GridPane gridPane = createContentPane();</span>
-<span class="nc" id="L63">    gridPane.add(tabPage, 0, 0);</span>
+  private void setUpTab() {
+<span class="nc" id="L91">    tabText = new Label(tabName);</span>
+<span class="nc" id="L92">    tabText.setTextAlignment(TextAlignment.CENTER);</span>
+<span class="nc" id="L93">    tabText.setStyle(&quot;-fx-text-fill: -fx-text-color; -fx-font-weight: bold;&quot;);</span>
+<span class="nc" id="L94">    tabText.setRotate(90.0);</span>
 
-<span class="nc" id="L65">    setGraphic(anchorPane);</span>
-<span class="nc" id="L66">    setContent(gridPane);</span>
-<span class="nc" id="L67">    setText(&quot;&quot;);</span>
-<span class="nc" id="L68">  }</span>
+<span class="nc" id="L96">    imageView = new ImageView();</span>
+<span class="nc" id="L97">    imageView.setImage(tabIcon);</span>
+<span class="nc" id="L98">    imageView.setFitHeight(50);</span>
+<span class="nc" id="L99">    imageView.setFitWidth(50);</span>
+<span class="nc" id="L100">    imageView.setRotate(90);</span>
+
+<span class="nc" id="L102">    anchorPane = new AnchorPane();</span>
+<span class="nc" id="L103">    anchorPane.getChildren().add(tabText);</span>
+
+<span class="nc" id="L105">    tabPage.setStyle(&quot;@../css/mainStyle.css&quot;);</span>
+<span class="nc" id="L106">    GridPane gridPane = createContentPane();</span>
+<span class="nc" id="L107">    gridPane.add(tabPage, 0, 0);</span>
+
+<span class="nc" id="L109">    setGraphic(anchorPane);</span>
+<span class="nc" id="L110">    setContent(gridPane);</span>
+<span class="nc" id="L111">    setText(&quot;&quot;);</span>
+<span class="nc" id="L112">  }</span>
 
   private GridPane createContentPane() {
-<span class="nc" id="L71">    GridPane gridPane = new GridPane();</span>
-<span class="nc" id="L72">    gridPane.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L115">    GridPane gridPane = new GridPane();</span>
+<span class="nc" id="L116">    gridPane.setAlignment(Pos.CENTER);</span>
 
-<span class="nc" id="L74">    ColumnConstraints columnConstraints = new ColumnConstraints();</span>
-<span class="nc" id="L75">    RowConstraints rowConstraints = new RowConstraints();</span>
-<span class="nc" id="L76">    columnConstraints.setHalignment(HPos.CENTER);</span>
-<span class="nc" id="L77">    columnConstraints.setHgrow(Priority.ALWAYS);</span>
-<span class="nc" id="L78">    rowConstraints.setValignment(VPos.CENTER);</span>
-<span class="nc" id="L79">    rowConstraints.setVgrow(Priority.ALWAYS);</span>
-
-<span class="nc" id="L81">    gridPane.getColumnConstraints().add(columnConstraints);</span>
-<span class="nc" id="L82">    gridPane.getRowConstraints().add(rowConstraints);</span>
-<span class="nc" id="L83">    return gridPane;</span>
+<span class="nc" id="L118">    ColumnConstraints columnConstraints = new ColumnConstraints();</span>
+<span class="nc" id="L119">    RowConstraints rowConstraints = new RowConstraints();</span>
+<span class="nc" id="L120">    columnConstraints.setHalignment(HPos.CENTER);</span>
+<span class="nc" id="L121">    columnConstraints.setHgrow(Priority.ALWAYS);</span>
+<span class="nc" id="L122">    rowConstraints.setValignment(VPos.CENTER);</span>
+<span class="nc" id="L123">    rowConstraints.setVgrow(Priority.ALWAYS);</span>
+<span class="nc" id="L124">    gridPane.getColumnConstraints().add(columnConstraints);</span>
+<span class="nc" id="L125">    gridPane.getRowConstraints().add(rowConstraints);</span>
+<span class="nc" id="L126">    return gridPane;</span>
   }
 
   @Override
   public int compareTo(StyledTab o) {
-<span class="nc" id="L88">    int order = tabOrder.compareTo(o.tabOrder);</span>
-<span class="nc bnc" id="L89" title="All 2 branches missed.">    if (order != 0) {</span>
-<span class="nc" id="L90">      return order;</span>
+<span class="nc" id="L131">    int order = tabOrder.compareTo(o.tabOrder);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">    if (order != 0) {</span>
+<span class="nc" id="L133">      return order;</span>
     }
-<span class="nc" id="L92">    return tabName.compareTo(o.tabName);</span>
+<span class="nc" id="L135">    return tabName.compareTo(o.tabName);</span>
+  }
+
+  public AnchorPane getAnchorPane() {
+<span class="nc" id="L139">    return anchorPane;</span>
+  }
+
+  public ImageView getImageView() {
+<span class="nc" id="L143">    return imageView;</span>
+  }
+
+  public Label getTabText() {
+<span class="nc" id="L147">    return tabText;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -2,7 +2,9 @@ package edu.wpi.teame.view.map;
 
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EquipmentManager;
 import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.view.controllers.LandingPageController;
 import java.sql.SQLException;
@@ -124,7 +126,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.LowerLevel1);
             } catch (SQLException e) {
@@ -164,7 +166,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.FirstFloor);
             } catch (SQLException e) {
@@ -204,7 +206,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.ThirdFloor);
             } catch (SQLException e) {
@@ -250,7 +252,8 @@ public class MapSideView {
 
   private List<Equipment> getEquipmentByFloorFromDB(FloorType floor) throws SQLException {
     List<Equipment> equipmentList = new ArrayList();
-    for (Equipment equipment : DBManager.getInstance().getEquipmentManager().getAll()) {
+    for (Equipment equipment :
+        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getAll()) {
       if (equipment.getLocation().getFloor() == floor) {
         equipmentList.add(equipment);
       }

@@ -3,8 +3,11 @@ package edu.wpi.teame.view.map.Icons;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
+
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,54 +140,9 @@ public class MapServiceRequestIcon {
                     Icon.setVisible(false);
                     attachedTo.remove(this);
                     try {
-                      switch (SR.getDBType()) {
-                        case AudioVisualSR:
-                          DBManager.getInstance().getAudioVisualSRManager().remove(SR.getId());
-                          break;
-                        case ComputerSR:
-                          DBManager.getInstance().getComputerSRManager().remove(SR.getId());
-                          break;
-                        case FoodDeliverySR:
-                          DBManager.getInstance().getFoodDeliverySRManager().remove(SR.getId());
-                          break;
-                        case GiftAndFloralSR:
-                          DBManager.getInstance().getGiftAndFloralSRManager().remove(SR.getId());
-                          break;
-                        case InternalPatientTransferSR:
-                          DBManager.getInstance().getInternalPatientSRManager().remove(SR.getId());
-                          break;
-                        case ExternalPatientSR:
-                          DBManager.getInstance().getExternalPatientSRManager().remove(SR.getId());
-                          break;
-                        case LanguageInterpreterSR:
-                          DBManager.getInstance().getLanguageSRManager().remove(SR.getId());
-                          break;
-                        case LaundrySR:
-                          DBManager.getInstance().getLaundrySRManager().remove(SR.getId());
-                          break;
-                        case ReligiousSR:
-                          DBManager.getInstance().getReligiousSRManager().remove(SR.getId());
-                          break;
-                        case SecuritySR:
-                          DBManager.getInstance().getSecuritySRManager().remove(SR.getId());
-                          break;
-                        case MedicalEquipmentSR:
-                          DBManager.getInstance().getMedicalEquipmentSRManager().remove(SR.getId());
-                          break;
-                        case MedicineDeliverySR:
-                          DBManager.getInstance().getMedicineDeliverySRManager().remove(SR.getId());
-                          break;
-                        case FacilitiesMaintenanceSR:
-                          DBManager.getInstance()
-                              .getFacilitiesMaintenanceSRManager()
-                              .remove(SR.getId());
-                          break;
-                        case SanitationSR:
-                          DBManager.getInstance().getSanitationSRManager().remove(SR.getId());
-                          break;
-                        default:
-                          System.out.println("THERE IS A BIG PROBLEM HERE!!");
-                      }
+                      SR.setStatus(ServiceRequestStatus.CLOSED);
+                      SR.setCloseDate(new Date(new java.util.Date().getTime()));
+                      DBManager.getManager(SR.getDBType()).update(SR);
                     } catch (SQLException e) {
                       e.printStackTrace();
                     }
@@ -225,52 +183,7 @@ public class MapServiceRequestIcon {
     Icon.setVisible(false);
     attachedTo.remove(this);
     try {
-      switch (SR.getDBType()) {
-        case AudioVisualSR:
-          DBManager.getInstance().getAudioVisualSRManager().remove(SR.getId());
-          break;
-        case ComputerSR:
-          DBManager.getInstance().getComputerSRManager().remove(SR.getId());
-          break;
-        case FoodDeliverySR:
-          DBManager.getInstance().getFoodDeliverySRManager().remove(SR.getId());
-          break;
-        case GiftAndFloralSR:
-          DBManager.getInstance().getGiftAndFloralSRManager().remove(SR.getId());
-          break;
-        case InternalPatientTransferSR:
-          DBManager.getInstance().getInternalPatientSRManager().remove(SR.getId());
-          break;
-        case ExternalPatientSR:
-          DBManager.getInstance().getExternalPatientSRManager().remove(SR.getId());
-          break;
-        case LanguageInterpreterSR:
-          DBManager.getInstance().getLanguageSRManager().remove(SR.getId());
-          break;
-        case LaundrySR:
-          DBManager.getInstance().getLaundrySRManager().remove(SR.getId());
-          break;
-        case ReligiousSR:
-          DBManager.getInstance().getReligiousSRManager().remove(SR.getId());
-          break;
-        case SecuritySR:
-          DBManager.getInstance().getSecuritySRManager().remove(SR.getId());
-          break;
-        case MedicalEquipmentSR:
-          DBManager.getInstance().getMedicalEquipmentSRManager().remove(SR.getId());
-          break;
-        case MedicineDeliverySR:
-          DBManager.getInstance().getMedicineDeliverySRManager().remove(SR.getId());
-          break;
-        case FacilitiesMaintenanceSR:
-          DBManager.getInstance().getFacilitiesMaintenanceSRManager().remove(SR.getId());
-          break;
-        case SanitationSR:
-          DBManager.getInstance().getSanitationSRManager().remove(SR.getId());
-          break;
-        default:
-          System.out.println("THERE IS A BIG PROBLEM HERE!!");
-      }
+      DBManager.getManager(SR.getDBType()).remove(SR.getId());
     } catch (SQLException e) {
       e.printStackTrace();
     }

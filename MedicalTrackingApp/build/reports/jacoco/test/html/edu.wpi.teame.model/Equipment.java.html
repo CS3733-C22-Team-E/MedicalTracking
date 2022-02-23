@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Equipment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model</a> &gt; <span class="el_source">Equipment.java</span></div><h1>Equipment.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
   private EquipmentType type;
   private Location location;
+  private boolean isDeleted;
   private boolean isClean;
   private String name;
   private int id;
@@ -21,124 +23,66 @@ public class Equipment implements ISQLSerializable {
       EquipmentType type,
       String name,
       boolean hasPatient,
-<span class="nc" id="L24">      boolean isClean) {</span>
-<span class="nc" id="L25">    this.id = ID;</span>
-<span class="nc" id="L26">    this.location = location;</span>
-<span class="nc" id="L27">    this.type = type;</span>
-<span class="nc" id="L28">    this.name = name;</span>
-<span class="nc" id="L29">    this.hasPatient = hasPatient;</span>
-<span class="nc" id="L30">    this.isClean = isClean;</span>
-<span class="nc" id="L31">  }</span>
+<span class="nc" id="L26">      boolean isClean) {</span>
+<span class="nc" id="L27">    this.id = ID;</span>
+<span class="nc" id="L28">    this.location = location;</span>
+<span class="nc" id="L29">    this.type = type;</span>
+<span class="nc" id="L30">    this.name = name;</span>
+<span class="nc" id="L31">    this.hasPatient = hasPatient;</span>
+<span class="nc" id="L32">    this.isClean = isClean;</span>
+<span class="nc" id="L33">    this.isDeleted = false;</span>
+<span class="nc" id="L34">  }</span>
 
-<span class="nc" id="L33">  public Equipment(ResultSet resultSet) throws SQLException {</span>
-<span class="nc" id="L34">    this.id = resultSet.getInt(&quot;id&quot;);</span>
-<span class="nc" id="L35">    this.location =</span>
-        new LocationManager()
-<span class="nc" id="L37">            .get(</span>
-<span class="nc" id="L38">                resultSet.getInt(</span>
-                    &quot;locationID&quot;)); // DBManager.getInstance().get(resultSet.getString(&quot;location&quot;));
-<span class="nc" id="L40">    this.type = EquipmentType.values()[resultSet.getInt(&quot;type&quot;)];</span>
-<span class="nc" id="L41">    this.name = resultSet.getString(&quot;name&quot;);</span>
-<span class="nc" id="L42">    this.hasPatient = resultSet.getBoolean(&quot;hasPatient&quot;);</span>
-<span class="nc" id="L43">    this.isClean = resultSet.getBoolean(&quot;isClean&quot;);</span>
-<span class="nc" id="L44">    System.out.println(location);</span>
-<span class="nc" id="L45">  }</span>
+<span class="nc" id="L36">  public Equipment(ResultSet resultSet) throws SQLException {</span>
+<span class="nc" id="L37">    this.id = resultSet.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L38">    this.hasPatient = resultSet.getBoolean(&quot;hasPatient&quot;);</span>
+<span class="nc" id="L39">    this.type = EquipmentType.values()[resultSet.getInt(&quot;type&quot;)];</span>
+<span class="nc" id="L40">    this.isDeleted = resultSet.getBoolean(&quot;isDeleted&quot;);</span>
+<span class="nc" id="L41">    this.isClean = resultSet.getBoolean(&quot;isClean&quot;);</span>
+<span class="nc" id="L42">    this.name = resultSet.getString(&quot;name&quot;);</span>
+<span class="nc" id="L43">    this.location =</span>
+        (Location)
+<span class="nc" id="L45">            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt(&quot;locationID&quot;));</span>
+<span class="nc" id="L46">  }</span>
 
-  public int getId() {
-<span class="nc" id="L48">    return id;</span>
-  }
-
-  public void setId(int id) {
-<span class="nc" id="L52">    this.id = id;</span>
-<span class="nc" id="L53">  }</span>
-
-  public Location getLocation() {
-<span class="nc" id="L56">    return location;</span>
-  }
-
-  public void setLocation(Location locationNodeID) {
-<span class="nc" id="L60">    this.location = locationNodeID;</span>
-<span class="nc" id="L61">  }</span>
-
-  public String getName() {
-<span class="nc" id="L64">    return name;</span>
-  }
-
-  public void setName(String name) {
-<span class="nc" id="L68">    this.name = name;</span>
-<span class="nc" id="L69">  }</span>
-
-  public EquipmentType getType() {
-<span class="nc" id="L72">    return type;</span>
-  }
-
-  public void setType(EquipmentType type) {
-<span class="nc" id="L76">    this.type = type;</span>
-<span class="nc" id="L77">  }</span>
-
-  public boolean isHasPatient() {
-<span class="nc" id="L80">    return hasPatient;</span>
-  }
-
-  public void setHasPatient(boolean hasPatient) {
-<span class="nc" id="L84">    this.hasPatient = hasPatient;</span>
-<span class="nc" id="L85">  }</span>
-
-  public boolean isClean() {
-<span class="nc" id="L88">    return isClean;</span>
-  }
-
-  public void setClean(boolean clean) {
-<span class="nc" id="L92">    isClean = clean;</span>
-<span class="nc" id="L93">  }</span>
+<span class="nc" id="L48">  public Equipment(CSVLineData lineData) throws SQLException {</span>
+<span class="nc" id="L49">    this.id = lineData.getColumnInt(&quot;id&quot;);</span>
+<span class="nc" id="L50">    this.name = lineData.getColumnString(&quot;longName&quot;);</span>
+<span class="nc" id="L51">    this.isClean = lineData.getColumnBoolean(&quot;isClean&quot;);</span>
+<span class="nc" id="L52">    this.hasPatient = lineData.getColumnBoolean(&quot;hasPatient&quot;);</span>
+<span class="nc" id="L53">    this.type = EquipmentType.values()[(lineData.getColumnInt(&quot;nodeType&quot;))];</span>
+<span class="nc" id="L54">    this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;locationNodeID&quot;);</span>
+<span class="nc" id="L55">  }</span>
 
   @Override
   public String toString() {
-<span class="nc bnc" id="L97" title="All 2 branches missed.">    String locId = location == null ? &quot;&quot; : &quot;&quot; + location.getId();</span>
-<span class="nc" id="L98">    return &quot;id: &quot;</span>
-        + id
-        + &quot;, location: &quot;
-        + locId
-        + &quot;, type: &quot;
-        + type
-        + &quot;, name: &quot;
-        + name
-        + &quot;, hasPatient: &quot;
-        + hasPatient
-        + &quot;, isClean: &quot;
-        + isClean;
-  }
-
-  @Override
-  public DataBaseObjectType getDBType() {
-<span class="nc" id="L114">    return DataBaseObjectType.Equipment;</span>
-  }
-
-  @Override
-  public String getSQLInsertString() {
-<span class="nc bnc" id="L119" title="All 2 branches missed.">    int isCleanInt = isClean ? 1 : 0;</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">    int hasPatientInt = hasPatient ? 1 : 0;</span>
-<span class="nc" id="L121">    return location.getId()</span>
-        + &quot;, '&quot;
-        + name
-        + &quot;', &quot;
-<span class="nc" id="L125">        + type.ordinal()</span>
-        + &quot;, &quot;
-        + isCleanInt
-        + &quot;, &quot;
-        + hasPatientInt;
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    String locId = location == null ? &quot;&quot; : &quot;&quot; + location.getId();</span>
+<span class="nc" id="L60">    return new StringBuilder()</span>
+<span class="nc" id="L61">        .append(&quot;id: &quot;)</span>
+<span class="nc" id="L62">        .append(id)</span>
+<span class="nc" id="L63">        .append(&quot;, location: &quot;)</span>
+<span class="nc" id="L64">        .append(locId)</span>
+<span class="nc" id="L65">        .append(&quot;, type: &quot;)</span>
+<span class="nc" id="L66">        .append(type)</span>
+<span class="nc" id="L67">        .append(&quot;, name: &quot;)</span>
+<span class="nc" id="L68">        .append(name)</span>
+<span class="nc" id="L69">        .append(&quot;, hasPatient: &quot;)</span>
+<span class="nc" id="L70">        .append(hasPatient)</span>
+<span class="nc" id="L71">        .append(&quot;, isClean: &quot;)</span>
+<span class="nc" id="L72">        .append(isClean)</span>
+<span class="nc" id="L73">        .toString();</span>
   }
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc bnc" id="L134" title="All 2 branches missed.">    int isCleanInt = isClean ? 1 : 0;</span>
-<span class="nc bnc" id="L135" title="All 2 branches missed.">    int hasPatientInt = hasPatient ? 1 : 0;</span>
-<span class="nc" id="L136">    return &quot;locationID = &quot;</span>
-<span class="nc" id="L137">        + location.getId()</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">    int isCleanInt = isClean ? 1 : 0;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    int hasPatientInt = hasPatient ? 1 : 0;</span>
+<span class="nc" id="L80">    return &quot;locationID = &quot;</span>
+<span class="nc" id="L81">        + location.getId()</span>
         + &quot;, name = '&quot;
         + name
         + &quot;', type = &quot;
-<span class="nc" id="L141">        + type.ordinal()</span>
+<span class="nc" id="L85">        + type.ordinal()</span>
         + &quot;, isClean = &quot;
         + isCleanInt
         + &quot;, hasPatient = &quot;
@@ -148,8 +92,98 @@ public class Equipment implements ISQLSerializable {
   }
 
   @Override
-  public String getTableColumns() {
-<span class="nc" id="L152">    return &quot;(locationID, name, type, isClean, hasPatient)&quot;;</span>
+  public String getSQLInsertString() {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">    int isCleanInt = isClean ? 1 : 0;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">    int hasPatientInt = hasPatient ? 1 : 0;</span>
+<span class="nc" id="L98">    return location.getId()</span>
+        + &quot;, '&quot;
+        + name
+        + &quot;', &quot;
+<span class="nc" id="L102">        + type.ordinal()</span>
+        + &quot;, &quot;
+        + isCleanInt
+        + &quot;, &quot;
+        + hasPatientInt;
   }
+
+  @Override
+  public String[] toCSVData() {
+<span class="nc" id="L111">    return new String[] {</span>
+<span class="nc" id="L112">      Integer.toString(id),</span>
+<span class="nc" id="L113">      Integer.toString(location.getId()),</span>
+<span class="nc" id="L114">      Integer.toString(type.ordinal()),</span>
+      name,
+<span class="nc bnc" id="L116" title="All 2 branches missed.">      hasPatient ? &quot;1&quot; : &quot;0&quot;,</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">      isClean ? &quot;1&quot; : &quot;0&quot;</span>
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+<span class="nc" id="L123">    return new String[] {&quot;id&quot;, &quot;locationNodeID&quot;, &quot;nodeType&quot;, &quot;longName&quot;, &quot;hasPatient&quot;, &quot;isClean&quot;};</span>
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L128">    return &quot;(locationID, name, type, isClean, hasPatient)&quot;;</span>
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+<span class="nc" id="L133">    return DataBaseObjectType.Equipment;</span>
+  }
+
+  // Getters and Setters
+  public int getId() {
+<span class="nc" id="L138">    return id;</span>
+  }
+
+  public void setId(int id) {
+<span class="nc" id="L142">    this.id = id;</span>
+<span class="nc" id="L143">  }</span>
+
+  public boolean getIsDeleted() {
+<span class="nc" id="L146">    return isDeleted;</span>
+  }
+
+  public Location getLocation() {
+<span class="nc" id="L150">    return location;</span>
+  }
+
+  public void setLocation(Location locationNodeID) {
+<span class="nc" id="L154">    this.location = locationNodeID;</span>
+<span class="nc" id="L155">  }</span>
+
+  public String getName() {
+<span class="nc" id="L158">    return name;</span>
+  }
+
+  public void setName(String name) {
+<span class="nc" id="L162">    this.name = name;</span>
+<span class="nc" id="L163">  }</span>
+
+  public EquipmentType getType() {
+<span class="nc" id="L166">    return type;</span>
+  }
+
+  public void setType(EquipmentType type) {
+<span class="nc" id="L170">    this.type = type;</span>
+<span class="nc" id="L171">  }</span>
+
+  public boolean isHasPatient() {
+<span class="nc" id="L174">    return hasPatient;</span>
+  }
+
+  public void setHasPatient(boolean hasPatient) {
+<span class="nc" id="L178">    this.hasPatient = hasPatient;</span>
+<span class="nc" id="L179">  }</span>
+
+  public boolean isClean() {
+<span class="nc" id="L182">    return isClean;</span>
+  }
+
+  public void setClean(boolean clean) {
+<span class="nc" id="L186">    isClean = clean;</span>
+<span class="nc" id="L187">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

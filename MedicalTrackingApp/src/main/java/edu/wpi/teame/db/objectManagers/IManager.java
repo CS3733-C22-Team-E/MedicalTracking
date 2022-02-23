@@ -1,6 +1,5 @@
 package edu.wpi.teame.db.objectManagers;
 
-// import com.opencsv.exceptions.CsvValidationException;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.ISQLSerializable;
 import java.io.IOException;
@@ -17,11 +16,11 @@ public interface IManager<T extends ISQLSerializable> {
 
   public T insert(T newObject) throws SQLException;
 
-  void remove(int id) throws SQLException;
+  public void remove(int id) throws SQLException;
+
+  void restore(int id) throws SQLException;
 
   public void update(T updatedObject) throws SQLException;
-
-  public void restore() throws SQLException;
 
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException;

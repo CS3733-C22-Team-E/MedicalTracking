@@ -56,16 +56,21 @@ public class AutoCompleteTextField extends TextField {
 
 <span class="nc" id="L57">    focusedProperty()</span>
 <span class="nc" id="L58">        .addListener(</span>
-<span class="nc" id="L59">            new ChangeListener&lt;Boolean&gt;() {</span>
-              @Override
-              public void changed(
-                  ObservableValue&lt;? extends Boolean&gt; observableValue,
-                  Boolean aBoolean,
-                  Boolean aBoolean2) {
-<span class="nc" id="L65">                entriesPopup.hide();</span>
-<span class="nc" id="L66">              }</span>
-            });
-<span class="nc" id="L68">  }</span>
+            e -&gt; {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">              if (!this.focusedProperty().getValue()) {</span>
+<span class="nc" id="L61">                entriesPopup.hide();</span>
+              } else {
+<span class="nc" id="L63">                LinkedList&lt;String&gt; searchResult = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L64">                final List&lt;String&gt; filteredEntries =</span>
+<span class="nc" id="L65">                    entries.stream()</span>
+<span class="nc" id="L66">                        .filter(ev -&gt; ev.toLowerCase().contains(getText().toLowerCase()))</span>
+<span class="nc" id="L67">                        .collect(Collectors.toList());</span>
+<span class="nc" id="L68">                searchResult.addAll(filteredEntries);</span>
+<span class="nc" id="L69">                populatePopup(searchResult);</span>
+<span class="nc" id="L70">                entriesPopup.show(AutoCompleteTextField.this, Side.BOTTOM, 0, 0);</span>
+              }
+<span class="nc" id="L72">            });</span>
+<span class="nc" id="L73">  }</span>
 
   /**
    * Get the existing set of autocomplete entries.
@@ -73,7 +78,7 @@ public class AutoCompleteTextField extends TextField {
    * @return The existing autocomplete entries.
    */
   public SortedSet&lt;String&gt; getEntries() {
-<span class="nc" id="L76">    return entries;</span>
+<span class="nc" id="L81">    return entries;</span>
   }
 
   /**
@@ -83,26 +88,26 @@ public class AutoCompleteTextField extends TextField {
    * @param searchResult The set of matching strings.
    */
   private void populatePopup(List&lt;String&gt; searchResult) {
-<span class="nc" id="L86">    List&lt;CustomMenuItem&gt; menuItems = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L91">    List&lt;CustomMenuItem&gt; menuItems = new LinkedList&lt;&gt;();</span>
     // If you'd like more entries, modify this line.
-<span class="nc" id="L88">    int maxEntries = 10;</span>
-<span class="nc" id="L89">    int count = Math.min(searchResult.size(), maxEntries);</span>
-<span class="nc bnc" id="L90" title="All 2 branches missed.">    for (int i = 0; i &lt; count; i++) {</span>
-<span class="nc" id="L91">      final String result = searchResult.get(i);</span>
-<span class="nc" id="L92">      Label entryLabel = new Label(result);</span>
-<span class="nc" id="L93">      CustomMenuItem item = new CustomMenuItem(entryLabel, true);</span>
-<span class="nc" id="L94">      item.setOnAction(</span>
-<span class="nc" id="L95">          new EventHandler&lt;ActionEvent&gt;() {</span>
+<span class="nc" id="L93">    int maxEntries = 10;</span>
+<span class="nc" id="L94">    int count = Math.min(searchResult.size(), maxEntries);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">    for (int i = 0; i &lt; count; i++) {</span>
+<span class="nc" id="L96">      final String result = searchResult.get(i);</span>
+<span class="nc" id="L97">      Label entryLabel = new Label(result);</span>
+<span class="nc" id="L98">      CustomMenuItem item = new CustomMenuItem(entryLabel, true);</span>
+<span class="nc" id="L99">      item.setOnAction(</span>
+<span class="nc" id="L100">          new EventHandler&lt;ActionEvent&gt;() {</span>
             @Override
             public void handle(ActionEvent actionEvent) {
-<span class="nc" id="L98">              setText(result);</span>
-<span class="nc" id="L99">              entriesPopup.hide();</span>
-<span class="nc" id="L100">            }</span>
+<span class="nc" id="L103">              setText(result);</span>
+<span class="nc" id="L104">              entriesPopup.hide();</span>
+<span class="nc" id="L105">            }</span>
           });
-<span class="nc" id="L102">      menuItems.add(item);</span>
+<span class="nc" id="L107">      menuItems.add(item);</span>
     }
-<span class="nc" id="L104">    entriesPopup.getItems().clear();</span>
-<span class="nc" id="L105">    entriesPopup.getItems().addAll(menuItems);</span>
-<span class="nc" id="L106">  }</span>
+<span class="nc" id="L109">    entriesPopup.getItems().clear();</span>
+<span class="nc" id="L110">    entriesPopup.getItems().addAll(menuItems);</span>
+<span class="nc" id="L111">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

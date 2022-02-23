@@ -1,8 +1,5 @@
 package edu.wpi.teame.model.enums;
 
-import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.db.objectManagers.ObjectManager;
-import java.sql.SQLException;
 import javafx.scene.paint.Color;
 
 public enum DataBaseObjectType {
@@ -10,6 +7,7 @@ public enum DataBaseObjectType {
   Equipment,
   Patient,
   Employee,
+  Edge,
 
   AudioVisualSR,
   ComputerSR,
@@ -74,6 +72,8 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+      case Edge:
+        return "Edge";
     }
     return null;
   }
@@ -122,6 +122,8 @@ public enum DataBaseObjectType {
         return Location;
       case "Equipment":
         return Equipment;
+      case "Edge":
+        return Edge;
     }
     return null;
   }
@@ -170,6 +172,8 @@ public enum DataBaseObjectType {
         return "Equipment";
       case Patient:
         return "Patient";
+      case Edge:
+        return "Edge";
     }
     return null;
   }
@@ -261,6 +265,8 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+      case Edge:
+        return "Edge";
     }
     return null;
   }
@@ -327,46 +333,5 @@ public enum DataBaseObjectType {
         return "This is an equipment.";
     }
     return s + " at the requested location.";
-  }
-
-  @Deprecated
-  public ObjectManager getDBManagerInstance() throws SQLException {
-    switch (this) {
-      case AudioVisualSR:
-        return DBManager.getInstance().getAudioVisualSRManager();
-      case ComputerSR:
-        return DBManager.getInstance().getComputerSRManager();
-      case FoodDeliverySR:
-        return DBManager.getInstance().getFoodDeliverySRManager();
-      case GiftAndFloralSR:
-        return DBManager.getInstance().getGiftAndFloralSRManager();
-      case ExternalPatientSR:
-        return DBManager.getInstance().getExternalPatientSRManager();
-      case LanguageInterpreterSR:
-        return DBManager.getInstance().getLanguageSRManager();
-      case InternalPatientTransferSR:
-        return DBManager.getInstance().getInternalPatientSRManager();
-      case LaundrySR:
-        return DBManager.getInstance().getLaundrySRManager();
-      case SecuritySR:
-        return DBManager.getInstance().getSecuritySRManager();
-      case ReligiousSR:
-        return DBManager.getInstance().getReligiousSRManager();
-      case SanitationSR:
-        return DBManager.getInstance().getSanitationSRManager();
-      case MedicalEquipmentSR:
-        return DBManager.getInstance().getMedicalEquipmentSRManager();
-      case MedicineDeliverySR:
-        return DBManager.getInstance().getMedicineDeliverySRManager();
-      case FacilitiesMaintenanceSR:
-        return DBManager.getInstance().getFacilitiesMaintenanceSRManager();
-      case Employee:
-        return DBManager.getInstance().getEmployeeManager();
-      case Location:
-        return DBManager.getInstance().getLocationManager();
-      case Equipment:
-        return DBManager.getInstance().getEquipmentManager();
-    }
-    return null;
   }
 }

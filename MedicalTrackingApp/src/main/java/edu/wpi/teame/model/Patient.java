@@ -1,44 +1,62 @@
 package edu.wpi.teame.model;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
   private Date dateOfBirth;
+  private boolean isDeleted;
   private String name;
   private int id;
-  private boolean isDeleted;
 
   public Patient(Location currentLocation, Date dateOfBirth, String name, int id) {
     this.currentLocation = currentLocation;
     this.dateOfBirth = dateOfBirth;
+    this.isDeleted = false;
     this.name = name;
     this.id = id;
-    this.isDeleted = false;
   }
 
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
-        DBManager.getInstance().getLocationManager().get(resultSet.getInt("currentLocationID"));
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("currentLocationID"));
+    this.isDeleted = resultSet.getBoolean("isDeleted");
     this.dateOfBirth = resultSet.getDate("dateOfBirth");
     this.name = resultSet.getString("name");
     this.id = resultSet.getInt("id");
-    this.isDeleted = resultSet.getBoolean("isDeleted");
+  }
+
+  public Patient(CSVLineData lineData) throws SQLException, ParseException {
+    this.isDeleted = false;
+    this.name = lineData.getColumnString("name");
+    this.dateOfBirth = lineData.getColumnDate("dateOfBirth");
+    this.currentLocation =
+        (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
   }
 
   @Override
-  public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.Patient;
-  }
-
-  @Override
-  public String getSQLInsertString() {
-    return "'" + name + "', '" + dateOfBirth.toString() + "', " + currentLocation.getId();
+  public String toString() {
+    return new StringBuilder()
+        .append("patientId: ")
+        .append(id)
+        .append(", patientName: ")
+        .append(name)
+        .append(", dateOfBirth: ")
+        .append(dateOfBirth.toString())
+        .append(", currentLocationId: ")
+        .append(currentLocation.getId())
+        .append(", currentLocationName: ")
+        .append(currentLocation.getLongName())
+        .toString();
   }
 
   @Override
@@ -54,10 +72,33 @@ public class Patient implements ISQLSerializable {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return "'" + name + "', '" + dateOfBirth.toString() + "', " + currentLocation.getId();
+  }
+
+  @Override
+  public String[] toCSVData() {
+    return new String[] {
+      name, dateOfBirth.toString(), Integer.toString(currentLocation.getId()), Integer.toString(id)
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    return new String[] {"name", "dateOfBirth", "currentLocation", "id"};
+  }
+
+  @Override
   public String getTableColumns() {
     return "(name, dateOfBirth, currentLocationID)";
   }
 
+  @Override
+  public DataBaseObjectType getDBType() {
+    return DataBaseObjectType.Patient;
+  }
+
+  // Getters and Setters
   public Location getCurrentLocation() {
     return currentLocation;
   }
@@ -90,16 +131,7 @@ public class Patient implements ISQLSerializable {
     this.id = id;
   }
 
-  public String toString() {
-    return "patientId: "
-        + id
-        + ", patientName: "
-        + name
-        + ", dateOfBirth: "
-        + dateOfBirth.toString()
-        + ", currentLocationId: "
-        + currentLocation.getId()
-        + ", currentLocationName: "
-        + currentLocation.getLongName();
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 }

@@ -4,7 +4,7 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;

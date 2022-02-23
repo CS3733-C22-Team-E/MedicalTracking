@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RouteNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Astar</a> &gt; <span class="el_source">RouteNode.java</span></div><h1>RouteNode.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Astar;
+
+import java.util.StringJoiner;
+
+class RouteNode&lt;T extends GraphNode&gt; implements Comparable&lt;RouteNode&gt; {
+  private final T current;
+  private T previous;
+  private double routeScore;
+  private double estimatedScore;
+
+  RouteNode(T current) {
+<span class="nc" id="L12">    this(current, null, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);</span>
+<span class="nc" id="L13">  }</span>
+
+<span class="nc" id="L15">  RouteNode(T current, T previous, double routeScore, double estimatedScore) {</span>
+<span class="nc" id="L16">    this.current = current;</span>
+<span class="nc" id="L17">    this.previous = previous;</span>
+<span class="nc" id="L18">    this.routeScore = routeScore;</span>
+<span class="nc" id="L19">    this.estimatedScore = estimatedScore;</span>
+<span class="nc" id="L20">  }</span>
+
+  T getCurrent() {
+<span class="nc" id="L23">    return current;</span>
+  }
+
+  T getPrevious() {
+<span class="nc" id="L27">    return previous;</span>
+  }
+
+  double getRouteScore() {
+<span class="nc" id="L31">    return routeScore;</span>
+  }
+
+  double getEstimatedScore() {
+<span class="nc" id="L35">    return estimatedScore;</span>
+  }
+
+  void setPrevious(T previous) {
+<span class="nc" id="L39">    this.previous = previous;</span>
+<span class="nc" id="L40">  }</span>
+
+  void setRouteScore(double routeScore) {
+<span class="nc" id="L43">    this.routeScore = routeScore;</span>
+<span class="nc" id="L44">  }</span>
+
+  void setEstimatedScore(double estimatedScore) {
+<span class="nc" id="L47">    this.estimatedScore = estimatedScore;</span>
+<span class="nc" id="L48">  }</span>
+
+  @Override
+  public int compareTo(RouteNode other) {
+<span class="nc bnc" id="L52" title="All 2 branches missed.">    if (this.estimatedScore &gt; other.estimatedScore) {</span>
+<span class="nc" id="L53">      return 1;</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">    } else if (this.estimatedScore &lt; other.estimatedScore) {</span>
+<span class="nc" id="L55">      return -1;</span>
+    } else {
+<span class="nc" id="L57">      return 0;</span>
+    }
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L63">    return new StringJoiner(&quot;, &quot;, RouteNode.class.getSimpleName() + &quot;[&quot;, &quot;]&quot;)</span>
+<span class="nc" id="L64">        .add(&quot;current=&quot; + current)</span>
+<span class="nc" id="L65">        .add(&quot;previous=&quot; + previous)</span>
+<span class="nc" id="L66">        .add(&quot;routeScore=&quot; + routeScore)</span>
+<span class="nc" id="L67">        .add(&quot;estimatedScore=&quot; + estimatedScore)</span>
+<span class="nc" id="L68">        .toString();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

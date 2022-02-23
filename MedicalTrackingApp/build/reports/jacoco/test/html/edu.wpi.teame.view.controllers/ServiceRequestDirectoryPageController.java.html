@@ -3,6 +3,7 @@
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.animations.TabHoverAnimation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,151 +15,199 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
-<span class="nc" id="L17">public class ServiceRequestDirectoryPageController implements Initializable {</span>
+<span class="nc" id="L18">public class ServiceRequestDirectoryPageController implements Initializable {</span>
   public static StyledTab medicalEquipmentSRTab;
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
 
   @Override
-<span class="nc" id="L23">  @SneakyThrows</span>
+<span class="nc" id="L24">  @SneakyThrows</span>
   public void initialize(URL location, ResourceBundle resources) {
-<span class="nc" id="L25">    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());</span>
-<span class="nc" id="L26">    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());</span>
-<span class="nc" id="L27">    mainAnchorPane.autosize();</span>
-<span class="nc" id="L28">    mainTabPane.getTabs().clear();</span>
+<span class="nc" id="L26">    mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());</span>
+<span class="nc" id="L27">    mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());</span>
+<span class="nc" id="L28">    mainAnchorPane.autosize();</span>
+<span class="nc" id="L29">    mainTabPane.getTabs().clear();</span>
 
-<span class="nc" id="L30">    mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
-<span class="nc" id="L31">    mainTabPane.setMaxWidth(StyledTab.Width);</span>
-<span class="nc" id="L32">    mainTabPane.setRotateGraphic(true);</span>
+<span class="nc" id="L31">    mainTabPane.setTabMaxHeight(StyledTab.Height);</span>
+<span class="nc" id="L32">    mainTabPane.setMaxWidth(StyledTab.Width);</span>
+<span class="nc" id="L33">    mainTabPane.setRotateGraphic(true);</span>
 
-<span class="nc" id="L34">    List&lt;StyledTab&gt; tabs = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L35">    medicalEquipmentSRTab =</span>
+<span class="nc" id="L35">    List&lt;StyledTab&gt; tabs = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L36">    medicalEquipmentSRTab =</span>
         new StyledTab(
-            &quot;Medical Equipment Delivery&quot;,
+            &quot;Equipment Delivery&quot;,
             SortOrder.ByName,
-<span class="nc" id="L39">            getPageUrl(DataBaseObjectType.MedicalEquipmentSR));</span>
-<span class="nc" id="L40">    tabs.add(medicalEquipmentSRTab);</span>
+<span class="nc" id="L40">            getPageUrl(DataBaseObjectType.MedicalEquipmentSR));</span>
+<span class="nc" id="L41">    TabHoverAnimation.install(medicalEquipmentSRTab);</span>
+<span class="nc" id="L42">    tabs.add(medicalEquipmentSRTab);</span>
 
-<span class="nc" id="L42">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L44">            &quot;Food Delivery&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR)));</span>
+<span class="nc" id="L44">    tabs.add(</span>
+<span class="nc" id="L45">        TabHoverAnimation.install(</span>
+            new StyledTab(
+<span class="nc" id="L47">                &quot;Food Delivery&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.FoodDeliverySR))));</span>
 
-<span class="nc" id="L46">    tabs.add(</span>
-        new StyledTab(
-            &quot;Medicine Delivery&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L50">            getPageUrl(DataBaseObjectType.MedicineDeliverySR)));</span>
+<span class="nc" id="L49">    tabs.add(</span>
+<span class="nc" id="L50">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Medicine Delivery&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L54">                getPageUrl(DataBaseObjectType.MedicineDeliverySR))));</span>
 
-<span class="nc" id="L52">    tabs.add(</span>
-        new StyledTab(
-            &quot;Gift And Floral Delivery&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L56">            getPageUrl(DataBaseObjectType.GiftAndFloralSR)));</span>
+<span class="nc" id="L56">    tabs.add(</span>
+<span class="nc" id="L57">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Gift/Floral Delivery&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L61">                getPageUrl(DataBaseObjectType.GiftAndFloralSR))));</span>
 
-<span class="nc" id="L58">    tabs.add(</span>
-        new StyledTab(
-            &quot;Language Services&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L62">            getPageUrl(DataBaseObjectType.LanguageInterpreterSR)));</span>
+<span class="nc" id="L63">    tabs.add(</span>
+<span class="nc" id="L64">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Language Services&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L68">                getPageUrl(DataBaseObjectType.LanguageInterpreterSR))));</span>
 
-<span class="nc" id="L64">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L66">            &quot;Sanitation Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.SanitationSR)));</span>
+<span class="nc" id="L70">    tabs.add(</span>
+<span class="nc" id="L71">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Sanitation Services&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L75">                getPageUrl(DataBaseObjectType.SanitationSR))));</span>
 
-<span class="nc" id="L68">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L70">            &quot;Laundry Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR)));</span>
-
-<span class="nc" id="L72">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L74">            &quot;Religious Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.ReligiousSR)));</span>
-
-<span class="nc" id="L76">    tabs.add(</span>
-        new StyledTab(
-            &quot;Internal Patient Transportation&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L80">            getPageUrl(DataBaseObjectType.InternalPatientTransferSR)));</span>
+<span class="nc" id="L77">    tabs.add(</span>
+<span class="nc" id="L78">        TabHoverAnimation.install(</span>
+            new StyledTab(
+<span class="nc" id="L80">                &quot;Laundry Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.LaundrySR))));</span>
 
 <span class="nc" id="L82">    tabs.add(</span>
-        new StyledTab(
-            &quot;External Patient Transportation&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L86">            getPageUrl(DataBaseObjectType.ExternalPatientSR)));</span>
+<span class="nc" id="L83">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Religious Services&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L87">                getPageUrl(DataBaseObjectType.ReligiousSR))));</span>
 
-<span class="nc" id="L88">    tabs.add(</span>
-        new StyledTab(
-            &quot;Audio/Video Services&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L92">            getPageUrl(DataBaseObjectType.AudioVisualSR)));</span>
+<span class="nc" id="L89">    tabs.add(</span>
+<span class="nc" id="L90">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Internal Transportation&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L94">                getPageUrl(DataBaseObjectType.InternalPatientTransferSR))));</span>
 
-<span class="nc" id="L94">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L96">            &quot;Computer Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR)));</span>
+<span class="nc" id="L96">    tabs.add(</span>
+<span class="nc" id="L97">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;External Transportation&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L101">                getPageUrl(DataBaseObjectType.ExternalPatientSR))));</span>
 
-<span class="nc" id="L98">    tabs.add(</span>
-        new StyledTab(
-<span class="nc" id="L100">            &quot;Security Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR)));</span>
+<span class="nc" id="L103">    tabs.add(</span>
+<span class="nc" id="L104">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Audio/Video Services&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L108">                getPageUrl(DataBaseObjectType.AudioVisualSR))));</span>
 
-<span class="nc" id="L102">    tabs.add(</span>
-        new StyledTab(
-            &quot;Facilities Maintenance&quot;,
-            SortOrder.ByName,
-<span class="nc" id="L106">            getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR)));</span>
+<span class="nc" id="L110">    tabs.add(</span>
+<span class="nc" id="L111">        TabHoverAnimation.install(</span>
+            new StyledTab(
+<span class="nc" id="L113">                &quot;Computer Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.ComputerSR))));</span>
 
-<span class="nc" id="L108">    tabs.sort(StyledTab::compareTo);</span>
-<span class="nc" id="L109">    mainTabPane.getTabs().setAll(tabs);</span>
-<span class="nc" id="L110">  }</span>
+<span class="nc" id="L115">    tabs.add(</span>
+<span class="nc" id="L116">        TabHoverAnimation.install(</span>
+            new StyledTab(
+<span class="nc" id="L118">                &quot;Security Services&quot;, SortOrder.ByName, getPageUrl(DataBaseObjectType.SecuritySR))));</span>
+
+<span class="nc" id="L120">    tabs.add(</span>
+<span class="nc" id="L121">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Facilities Maintenance&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L125">                getPageUrl(DataBaseObjectType.FacilitiesMaintenanceSR))));</span>
+
+<span class="nc" id="L127">    tabs.add(</span>
+<span class="nc" id="L128">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Mental Health Services&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L132">                getPageUrl(DataBaseObjectType.MentalHealthSR))));</span>
+
+<span class="nc" id="L134">    tabs.add(</span>
+<span class="nc" id="L135">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Deceased Body Removal&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L139">                getPageUrl(DataBaseObjectType.DeceasedBodySR))));</span>
+
+<span class="nc" id="L141">    tabs.add(</span>
+<span class="nc" id="L142">        TabHoverAnimation.install(</span>
+            new StyledTab(
+                &quot;Patient Discharge&quot;,
+                SortOrder.ByName,
+<span class="nc" id="L146">                getPageUrl(DataBaseObjectType.PatientDischargeSR))));</span>
+
+<span class="nc" id="L148">    tabs.sort(StyledTab::compareTo);</span>
+<span class="nc" id="L149">    mainTabPane.getTabs().setAll(tabs);</span>
+<span class="nc" id="L150">  }</span>
 
   private String getPageUrl(DataBaseObjectType t) {
-<span class="nc" id="L113">    String url = &quot;view/tabs/&quot;;</span>
-<span class="nc bnc" id="L114" title="All 15 branches missed.">    switch (t) {</span>
+<span class="nc" id="L153">    String url = &quot;view/tabs/&quot;;</span>
+<span class="nc bnc" id="L154" title="All 18 branches missed.">    switch (t) {</span>
       case LaundrySR:
-<span class="nc" id="L116">        url += &quot;Laundry&quot;;</span>
-<span class="nc" id="L117">        break;</span>
+<span class="nc" id="L156">        url += &quot;Laundry&quot;;</span>
+<span class="nc" id="L157">        break;</span>
       case ComputerSR:
-<span class="nc" id="L119">        url += &quot;Computer&quot;;</span>
-<span class="nc" id="L120">        break;</span>
+<span class="nc" id="L159">        url += &quot;Computer&quot;;</span>
+<span class="nc" id="L160">        break;</span>
       case SecuritySR:
-<span class="nc" id="L122">        url += &quot;Security&quot;;</span>
-<span class="nc" id="L123">        break;</span>
+<span class="nc" id="L162">        url += &quot;Security&quot;;</span>
+<span class="nc" id="L163">        break;</span>
       case ReligiousSR:
-<span class="nc" id="L125">        url += &quot;Religious&quot;;</span>
-<span class="nc" id="L126">        break;</span>
+<span class="nc" id="L165">        url += &quot;Religious&quot;;</span>
+<span class="nc" id="L166">        break;</span>
       case AudioVisualSR:
-<span class="nc" id="L128">        url += &quot;AudioVisual&quot;;</span>
-<span class="nc" id="L129">        break;</span>
+<span class="nc" id="L168">        url += &quot;AudioVisual&quot;;</span>
+<span class="nc" id="L169">        break;</span>
       case FoodDeliverySR:
-<span class="nc" id="L131">        url += &quot;FoodDelivery&quot;;</span>
-<span class="nc" id="L132">        break;</span>
+<span class="nc" id="L171">        url += &quot;FoodDelivery&quot;;</span>
+<span class="nc" id="L172">        break;</span>
       case GiftAndFloralSR:
-<span class="nc" id="L134">        url += &quot;GiftAndFloral&quot;;</span>
-<span class="nc" id="L135">        break;</span>
+<span class="nc" id="L174">        url += &quot;GiftAndFloral&quot;;</span>
+<span class="nc" id="L175">        break;</span>
       case MedicalEquipmentSR:
-<span class="nc" id="L137">        url += &quot;MedicalEquipmentDelivery&quot;;</span>
-<span class="nc" id="L138">        break;</span>
+<span class="nc" id="L177">        url += &quot;MedicalEquipmentDelivery&quot;;</span>
+<span class="nc" id="L178">        break;</span>
       case MedicineDeliverySR:
-<span class="nc" id="L140">        url += &quot;MedicineDelivery&quot;;</span>
-<span class="nc" id="L141">        break;</span>
+<span class="nc" id="L180">        url += &quot;MedicineDelivery&quot;;</span>
+<span class="nc" id="L181">        break;</span>
       case LanguageInterpreterSR:
-<span class="nc" id="L143">        url += &quot;LanguageInterpreter&quot;;</span>
-<span class="nc" id="L144">        break;</span>
+<span class="nc" id="L183">        url += &quot;LanguageInterpreter&quot;;</span>
+<span class="nc" id="L184">        break;</span>
       case FacilitiesMaintenanceSR:
-<span class="nc" id="L146">        url += &quot;FacilitiesMaintenance&quot;;</span>
-<span class="nc" id="L147">        break;</span>
+<span class="nc" id="L186">        url += &quot;FacilitiesMaintenance&quot;;</span>
+<span class="nc" id="L187">        break;</span>
       case InternalPatientTransferSR:
-<span class="nc" id="L149">        url += &quot;InternalPatientTransportation&quot;;</span>
-<span class="nc" id="L150">        break;</span>
+<span class="nc" id="L189">        url += &quot;InternalPatientTransportation&quot;;</span>
+<span class="nc" id="L190">        break;</span>
       case ExternalPatientSR:
-<span class="nc" id="L152">        url += &quot;ExternalPatientTransportation&quot;;</span>
-<span class="nc" id="L153">        break;</span>
+<span class="nc" id="L192">        url += &quot;ExternalPatientTransportation&quot;;</span>
+<span class="nc" id="L193">        break;</span>
       case SanitationSR:
-<span class="nc" id="L155">        url += &quot;Sanitation&quot;;</span>
-<span class="nc" id="L156">        break;</span>
+<span class="nc" id="L195">        url += &quot;Sanitation&quot;;</span>
+<span class="nc" id="L196">        break;</span>
+      case MentalHealthSR:
+<span class="nc" id="L198">        url += &quot;MentalHealth&quot;;</span>
+<span class="nc" id="L199">        break;</span>
+      case DeceasedBodySR:
+<span class="nc" id="L201">        url += &quot;DeceasedBodyRemoval&quot;;</span>
+<span class="nc" id="L202">        break;</span>
+      case PatientDischargeSR:
+<span class="nc" id="L204">        url += &quot;PatientDischarge&quot;;</span>
+<span class="nc" id="L205">        break;</span>
       default:
-<span class="nc" id="L158">        return null;</span>
+<span class="nc" id="L207">        return null;</span>
     }
-<span class="nc" id="L160">    url += &quot;ServiceRequestPage.fxml&quot;;</span>
-<span class="nc" id="L161">    return url;</span>
+<span class="nc" id="L209">    url += &quot;ServiceRequestPage.fxml&quot;;</span>
+<span class="nc" id="L210">    return url;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,7 +1,7 @@
 package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.CredentialManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
@@ -30,8 +30,11 @@ import lombok.SneakyThrows;
 public class LandingPageController implements Initializable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
+
+  private StyledTab credentialManagementPage = null;
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
+  public StyledTab mapTabPage = null;
 
   @Override
   @SneakyThrows
@@ -79,13 +82,13 @@ public class LandingPageController implements Initializable {
     tabs.add(directoryTab);
 
     Map mapView = new Map(FloorType.ThirdFloor, this);
-    StyledTab mapTab =
+    mapTabPage =
         new StyledTab(
             "Hospital Map",
             SortOrder.ByName,
             mapView.getMapScene(tabContentHeight, tabContentWidth),
             new Image(App.class.getResource("images/Icons/pageIcons/MapView.png").toString()));
-    mapTab.setOnSelectionChanged(
+    mapTabPage.setOnSelectionChanged(
         new EventHandler<Event>() {
           @Override
           public void handle(Event event) {
@@ -96,8 +99,8 @@ public class LandingPageController implements Initializable {
             }
           }
         });
-    TabHoverAnimation.install(mapTab);
-    tabs.add(mapTab);
+    TabHoverAnimation.install(mapTabPage);
+    tabs.add(mapTabPage);
 
     MapSideView mapSideView = new MapSideView(this, mapView);
     StyledTab mapSideViewTab =
@@ -138,7 +141,7 @@ public class LandingPageController implements Initializable {
             "DB Management",
             SortOrder.ByName,
             "view/tabs/DBManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/DBView.png").toString()));
+            new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
@@ -151,15 +154,17 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
 
-    StyledTab CredentialManagerTab =
+    credentialManagementPage =
         new StyledTab(
             "Credential Manager",
             SortOrder.ByName,
             "view/tabs/CredentialManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
+            new Image(
+                App.class
+                    .getResource("images/Icons/pageIcons/CredentialManagement.png")
+                    .toString()));
     TabHoverAnimation.install(settingsTab);
-    tabs.add(CredentialManagerTab);
-
+    tabs.add(credentialManagementPage);
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
@@ -174,11 +179,13 @@ public class LandingPageController implements Initializable {
     switch (currentAccess) {
       case Admin:
         mainTabPane.getTabs().add(adminDBPage);
+        mainTabPane.getTabs().add(credentialManagementPage);
         break;
 
       default:
       case Staff:
         mainTabPane.getTabs().remove(adminDBPage);
+        mainTabPane.getTabs().remove(credentialManagementPage);
         break;
     }
   }

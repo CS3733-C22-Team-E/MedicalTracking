@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
@@ -11,6 +12,9 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class PatientTransportationServiceRequest extends ServiceRequest {
   private Location destination;
@@ -51,7 +55,7 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     this.patient = patient;
   }
 
-  public PatientTransportationServiceRequest(boolean isInternal, ResultSet resultSet)
+  public PatientTransportationServiceRequest(ResultSet resultSet, boolean isInternal)
       throws SQLException {
     super(
         resultSet,
@@ -59,21 +63,28 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
             ? DataBaseObjectType.InternalPatientTransferSR
             : DataBaseObjectType.ExternalPatientSR);
     this.destination =
-        DBManager.getInstance().getLocationManager().get(resultSet.getInt("destinationID"));
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("destinationID"));
     this.equipment =
-        DBManager.getInstance().getEquipmentManager().get(resultSet.getInt("equipmentID"));
-    this.patient = DBManager.getInstance().getPatientManager().get(resultSet.getInt("patientID"));
+        (Equipment)
+            DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
+    this.patient =
+        (Patient)
+            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
   }
 
-  @Override
-  public String getSQLInsertString() {
-    return super.getSQLInsertString()
-        + ", "
-        + destination.getId()
-        + ", "
-        + equipment.getId()
-        + ", "
-        + patient.getId();
+  public PatientTransportationServiceRequest(CSVLineData lineData, boolean isInternal)
+      throws SQLException, ParseException {
+    super(
+        lineData,
+        isInternal
+            ? DataBaseObjectType.InternalPatientTransferSR
+            : DataBaseObjectType.ExternalPatientSR);
+    this.destination =
+        (Location) lineData.getDBObject(DataBaseObjectType.Location, "destinationID");
+    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
   @Override
@@ -93,10 +104,46 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
   }
 
   @Override
+  public String getSQLInsertString() {
+    return super.getSQLInsertString()
+        + ", "
+        + destination.getId()
+        + ", "
+        + equipment.getId()
+        + ", "
+        + patient.getId();
+  }
+
+  @Override
+  public String[] toCSVData() {
+    List<String> csvData = new ArrayList<>();
+    csvData.addAll(List.of(super.toCSVData()));
+    csvData.add(Integer.toString(destination.getId()));
+    csvData.add(Integer.toString(patient.getId()));
+    csvData.add(Integer.toString(equipment.getId()));
+
+    String[] retArr = new String[csvData.size()];
+    return csvData.toArray(retArr);
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+    List<String> csvHeaders = new ArrayList<>();
+    csvHeaders.addAll(List.of(super.getCSVHeaders()));
+    csvHeaders.add("destinationID");
+    csvHeaders.add("patientID");
+    csvHeaders.add("equipmentID");
+
+    String[] retArr = new String[csvHeaders.size()];
+    return csvHeaders.toArray(retArr);
+  }
+
+  @Override
   public String getTableColumns() {
     return "(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)";
   }
 
+  // Getters and Setters
   public Location getDestination() {
     return destination;
   }
