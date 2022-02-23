@@ -735,6 +735,7 @@ public class Map {
     updateLayoutChildren();
 
     ContextMenu ServiceRequestMenu = new ContextMenu();
+    ServiceRequestMenu.setStyle("-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px");
     RadioMenuItem CompleteServiceRequest = new RadioMenuItem("Complete Service Request");
     RadioMenuItem UpdateServiceRequest = new RadioMenuItem("Update Service Request");
     AutoCompleteTextField LocationField = new AutoCompleteTextField();
