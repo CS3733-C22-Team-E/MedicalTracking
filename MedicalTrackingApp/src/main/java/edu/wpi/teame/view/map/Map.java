@@ -325,6 +325,23 @@ public class Map {
     locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
     retval.add(locationsCheckBox);
 
+    JFXCheckBox serviceRequestsCheckbox = new JFXCheckBox("Service Requests");
+    serviceRequestsCheckbox.getStyleClass().add("combo-box");
+    serviceRequestsCheckbox.setSelected(true);
+    serviceRequestsCheckbox.setOnAction(
+        event -> {
+          for (MapServiceRequestIcon i : ActiveSRByFloor.get(currFloor)) {
+            i.getIcon().setVisible(!i.getIcon().isVisible());
+            i.getFillProgressIndicator().setVisible(serviceRequestsCheckbox.isSelected());
+          }
+        });
+    serviceRequestsCheckbox.setPrefHeight(30);
+    serviceRequestsCheckbox.setPrefWidth(30);
+    serviceRequestsCheckbox.setTranslateY(
+        -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+    serviceRequestsCheckbox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
+    retval.add(serviceRequestsCheckbox);
+
     return retval;
   }
 
@@ -735,6 +752,8 @@ public class Map {
     updateLayoutChildren();
 
     ContextMenu ServiceRequestMenu = new ContextMenu();
+    ServiceRequestMenu.setStyle(
+        "-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
     RadioMenuItem CompleteServiceRequest = new RadioMenuItem("Complete Service Request");
     RadioMenuItem UpdateServiceRequest = new RadioMenuItem("Update Service Request");
     AutoCompleteTextField LocationField = new AutoCompleteTextField();

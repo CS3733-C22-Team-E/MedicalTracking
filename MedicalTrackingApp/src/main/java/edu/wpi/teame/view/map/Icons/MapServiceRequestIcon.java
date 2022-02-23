@@ -280,4 +280,12 @@ public class MapServiceRequestIcon {
     attachedTo = SRList;
     SRList.add(this);
   }
+
+  public ImageView getIcon() {
+    return this.Icon;
+  }
+
+  public FillProgressIndicator getFillProgressIndicator() {
+    return this.progressIndicator;
+  }
 }

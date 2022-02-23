@@ -111,7 +111,7 @@ public class LandingPageController implements Initializable {
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
-            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,
+            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,
             Screen.getPrimary().getBounds().getHeight());
     StyledTab backlogTab =
         new StyledTab(
@@ -138,7 +138,7 @@ public class LandingPageController implements Initializable {
             "DB Management",
             SortOrder.ByName,
             "view/tabs/DBManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
+            new Image(App.class.getResource("images/Icons/pageIcons/DBView.png").toString()));
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
@@ -150,6 +150,16 @@ public class LandingPageController implements Initializable {
             new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
+
+    StyledTab CredentialManagerTab =
+        new StyledTab(
+            "Credential Manager",
+            SortOrder.ByName,
+            "view/tabs/CredentialManagementPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
+    TabHoverAnimation.install(settingsTab);
+    tabs.add(CredentialManagerTab);
+
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);

@@ -2,15 +2,16 @@ package edu.wpi.teame.view.backlog;
 
 import static javafx.application.Application.launch;
 
+import com.jfoenix.controls.JFXCheckBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -19,7 +20,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -32,6 +37,7 @@ public class ServiceRequestBacklog {
   private final double VGAP = 3;
   private double CARDWIDTH;
 
+  private HashMap<String, Boolean> filterMap = new HashMap<String, Boolean>();
   private List<ServiceRequest> serviceRequestsFromDB = new LinkedList<>();
   private List<ServiceRequestCard> cardsDisplayed = new LinkedList<>();
   private List<ServiceRequest> deadServiceRequests = new LinkedList<>();
@@ -41,7 +47,7 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    CARDWIDTH = SCENEWIDTH / 1.5;
+    CARDWIDTH = SCENEWIDTH;
   }
 
   public static void main(String[] args) {
@@ -85,10 +91,19 @@ public class ServiceRequestBacklog {
   public HBox getTitle() throws SQLException {
 
     HBox tBox = new HBox();
-    Text title = new Text("Request Backlog");
-    title.setFont(Font.font(56));
+    Text title = new Text("Service Request Backlog");
+    title.setFont(Font.font("Arial", FontWeight.BOLD, 56));
+    title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
-    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); // TODO Fix
+    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
+    Stop[] stops =
+        new Stop[] {
+          new Stop(0, Color.color(0.458823529, 0.474509804, 1)),
+          new Stop(1, Color.color(0.698039216, 0.141176471, 0.937254902))
+        };
+    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
+    tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
 
@@ -119,6 +134,7 @@ public class ServiceRequestBacklog {
     }
     requestHolder.add(getTitle(), 0, 0);
     requestHolder.add(getRefreshBar(), 0, 1);
+    requestHolder.add(getFilterBar(), 0, 2);
     //    GridPane titleGridPane = new GridPane();
     //    titleGridPane.set
     return requestHolder;
@@ -126,7 +142,7 @@ public class ServiceRequestBacklog {
 
   public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
     HBox card = c.getCard(CARDWIDTH, 100);
-    g.add(card, 0, cardsDisplayed.size() + 2);
+    g.add(card, 0, cardsDisplayed.size() + 3);
     cardsDisplayed.add(c);
   }
 
@@ -195,7 +211,7 @@ public class ServiceRequestBacklog {
     LinkedList<ServiceRequest> p2 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p3 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p4 = new LinkedList<ServiceRequest>();
-    LinkedList<ServiceRequest> retList = new LinkedList<ServiceRequest>();
+    LinkedList<ServiceRequest> preFilterList = new LinkedList<ServiceRequest>();
 
     for (ServiceRequest request : l) {
       switch (request.getPriority()) {
@@ -253,10 +269,61 @@ public class ServiceRequestBacklog {
             return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
           }
         });
-    retList.addAll(p1);
-    retList.addAll(p2);
-    retList.addAll(p3);
-    retList.addAll(p4);
-    return retList;
+    preFilterList.addAll(p1);
+    preFilterList.addAll(p2);
+    preFilterList.addAll(p3);
+    preFilterList.addAll(p4);
+
+    if (filterMap.isEmpty()) {
+      return preFilterList;
+    }
+    LinkedList<ServiceRequest> filteredList = new LinkedList<ServiceRequest>();
+    for (ServiceRequest sr : preFilterList) {
+      if (filterMap.get(sr.getAssignee().getName())) {
+        filteredList.add(sr);
+      }
+    }
+    return filteredList;
+  }
+
+  private HBox getFilterBar() throws SQLException {
+    HBox filterBar = new HBox();
+    filterBar.setPrefSize(CARDWIDTH, 50);
+    filterBar.setAlignment(Pos.CENTER);
+    filterBar.setSpacing(10);
+    List<Object> DBEmployeeList =
+        Objects.requireNonNull(DBManager.getManager(DataBaseObjectType.Employee)).getAll();
+    if (DBEmployeeList.isEmpty()) {
+      Text t = new Text("No employees loaded to filter.");
+      filterBar.getChildren().add(t);
+      return filterBar;
+    }
+    for (Object DBObject : DBEmployeeList) {
+      Employee e = (Employee) DBObject;
+      JFXCheckBox eBox = new JFXCheckBox();
+      String eBoxText = e.getName();
+      if (eBoxText.length() > 18) {
+        eBoxText = eBoxText.substring(0, 10) + "...";
+      }
+      eBox.setText(eBoxText);
+      if (filterMap.containsKey(e.getName())) {
+        eBox.setSelected(filterMap.get(e.getName()));
+      } else {
+        filterMap.put(e.getName(), true);
+        eBox.setSelected(true);
+      }
+      eBox.setOnAction(
+          ev -> {
+            Boolean oldVal = filterMap.get(e.getName());
+            filterMap.replace(e.getName(), !oldVal);
+            try {
+              scrollWrapper.setContent(getRequestHolder());
+            } catch (SQLException ex) {
+              ex.printStackTrace();
+            }
+          });
+      filterBar.getChildren().add(eBox);
+    }
+    return filterBar;
   }
 }
