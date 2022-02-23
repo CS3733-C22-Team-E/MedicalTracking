@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Edge.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model</a> &gt; <span class="el_source">Edge.java</span></div><h1>Edge.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model;
+
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Edge implements ISQLSerializable {
+  private boolean isDeleted;
+  private Location start;
+  private Location end;
+  private int id;
+
+<span class="nc" id="L16">  public Edge(Location start, Location end, int id) {</span>
+<span class="nc" id="L17">    this.start = start;</span>
+<span class="nc" id="L18">    this.end = end;</span>
+<span class="nc" id="L19">    this.id = id;</span>
+<span class="nc" id="L20">  }</span>
+
+<span class="nc" id="L22">  public Edge(ResultSet resultSet) throws SQLException {</span>
+<span class="nc" id="L23">    this.start =</span>
+        (Location)
+<span class="nc" id="L25">            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt(&quot;startID&quot;));</span>
+<span class="nc" id="L26">    this.end =</span>
+<span class="nc" id="L27">        (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt(&quot;endID&quot;));</span>
+<span class="nc" id="L28">    this.isDeleted = resultSet.getBoolean(&quot;isDeleted&quot;);</span>
+<span class="nc" id="L29">    this.id = resultSet.getInt(&quot;id&quot;);</span>
+<span class="nc" id="L30">  }</span>
+
+<span class="nc" id="L32">  public Edge(CSVLineData lineData) throws SQLException {</span>
+<span class="nc" id="L33">    this.start = (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;startID&quot;);</span>
+<span class="nc" id="L34">    this.end = (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;endID&quot;);</span>
+<span class="nc" id="L35">    this.id = lineData.getColumnInt(&quot;id&quot;);</span>
+<span class="nc" id="L36">    this.isDeleted = false;</span>
+<span class="nc" id="L37">  }</span>
+
+  @Override
+  public String toString() {
+<span class="nc" id="L41">    return new StringBuilder()</span>
+<span class="nc" id="L42">        .append(&quot;id: &quot;)</span>
+<span class="nc" id="L43">        .append(id)</span>
+<span class="nc" id="L44">        .append(&quot;, startID: &quot;)</span>
+<span class="nc" id="L45">        .append(start.getId())</span>
+<span class="nc" id="L46">        .append(&quot;, endID: &quot;)</span>
+<span class="nc" id="L47">        .append(end.getId())</span>
+<span class="nc" id="L48">        .toString();</span>
+  }
+
+  @Override
+  public String getSQLUpdateString() {
+<span class="nc" id="L53">    return new StringBuilder()</span>
+<span class="nc" id="L54">        .append(&quot;startID = &quot;)</span>
+<span class="nc" id="L55">        .append(start.getId())</span>
+<span class="nc" id="L56">        .append(&quot;, endID = '&quot;)</span>
+<span class="nc" id="L57">        .append(end.getId())</span>
+<span class="nc" id="L58">        .append(&quot; WHERE id = &quot;)</span>
+<span class="nc" id="L59">        .append(id)</span>
+<span class="nc" id="L60">        .toString();</span>
+  }
+
+  @Override
+  public String getSQLInsertString() {
+<span class="nc" id="L65">    return new StringBuilder().append(start.getId()).append(&quot;, &quot;).append(end.getId()).toString();</span>
+  }
+
+  @Override
+  public String[] toCSVData() {
+<span class="nc" id="L70">    return new String[] {</span>
+<span class="nc" id="L71">      Integer.toString(id), Integer.toString(start.getId()), Integer.toString(end.getId()), &quot;0&quot;</span>
+    };
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+<span class="nc" id="L77">    return new String[] {&quot;id&quot;, &quot;startID&quot;, &quot;endID&quot;, &quot;isDeleted&quot;};</span>
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L82">    return &quot;(startID, endID)&quot;;</span>
+  }
+
+  @Override
+  public DataBaseObjectType getDBType() {
+<span class="nc" id="L87">    return DataBaseObjectType.Edge;</span>
+  }
+
+  // Getters and Setters
+  public boolean getIsDeleted() {
+<span class="nc" id="L92">    return isDeleted;</span>
+  }
+
+  public int getId() {
+<span class="nc" id="L96">    return id;</span>
+  }
+
+  public void setId(int id) {
+<span class="nc" id="L100">    this.id = id;</span>
+<span class="nc" id="L101">  }</span>
+
+  public Location getStart() {
+<span class="nc" id="L104">    return start;</span>
+  }
+
+  public void setStart(Location start) {
+<span class="nc" id="L108">    this.start = start;</span>
+<span class="nc" id="L109">  }</span>
+
+  public Location getEnd() {
+<span class="nc" id="L112">    return end;</span>
+  }
+
+  public void setEnd(Location end) {
+<span class="nc" id="L116">    this.end = end;</span>
+<span class="nc" id="L117">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

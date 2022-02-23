@@ -8,10 +8,7 @@ import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
-import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.io.FileWriter;
@@ -29,112 +26,112 @@ public abstract class ObjectManager&lt;T extends ISQLSerializable&gt; implements
   private Connection connection;
   private Statement statement;
 
-<span class="nc" id="L32">  public ObjectManager(DataBaseObjectType objectType) throws SQLException {</span>
-<span class="nc" id="L33">    connection = DBManager.getInstance().getConnection();</span>
-<span class="nc" id="L34">    statement = connection.createStatement();</span>
-<span class="nc" id="L35">    this.objectType = objectType;</span>
-<span class="nc" id="L36">  }</span>
+<span class="nc" id="L29">  public ObjectManager(DataBaseObjectType objectType) throws SQLException {</span>
+<span class="nc" id="L30">    connection = DBManager.getInstance().getConnection();</span>
+<span class="nc" id="L31">    statement = connection.createStatement();</span>
+<span class="nc" id="L32">    this.objectType = objectType;</span>
+<span class="nc" id="L33">  }</span>
 
   @Override
   public List&lt;T&gt; getAll() throws SQLException {
-<span class="nc" id="L40">    return getBy(&quot; WHERE isDeleted = 0&quot;);</span>
+<span class="nc" id="L37">    return getBy(&quot; WHERE isDeleted = 0&quot;);</span>
   }
 
   @Override
   public List&lt;T&gt; getDeleted() throws SQLException {
-<span class="nc" id="L45">    return getBy(&quot; WHERE isDeleted = 1&quot;);</span>
+<span class="nc" id="L42">    return getBy(&quot; WHERE isDeleted = 1&quot;);</span>
   }
 
   @Override
   public T get(int id) throws SQLException {
-<span class="nc" id="L50">    List&lt;T&gt; results = getBy(&quot; WHERE ID = &quot; + id);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">    if (results.isEmpty()) {</span>
-<span class="nc" id="L52">      return null;</span>
+<span class="nc" id="L47">    List&lt;T&gt; results = getBy(&quot; WHERE ID = &quot; + id);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">    if (results.isEmpty()) {</span>
+<span class="nc" id="L49">      return null;</span>
     }
-<span class="nc" id="L54">    return results.get(0);</span>
+<span class="nc" id="L51">    return results.get(0);</span>
   }
 
   protected List&lt;T&gt; getBy(String whereClause) throws SQLException {
-<span class="nc" id="L58">    String getQuery = &quot;SELECT * FROM &quot; + objectType.toTableName() + &quot; &quot; + whereClause;</span>
-<span class="nc" id="L59">    ResultSet resultSet = statement.executeQuery(getQuery);</span>
-<span class="nc" id="L60">    List&lt;T&gt; listResult = new LinkedList&lt;&gt;();</span>
-<span class="nc bnc" id="L61" title="All 2 branches missed.">    while (resultSet.next()) {</span>
-<span class="nc" id="L62">      listResult.add(getCastedType(resultSet));</span>
+<span class="nc" id="L55">    String getQuery = &quot;SELECT * FROM &quot; + objectType.toTableName() + &quot; &quot; + whereClause;</span>
+<span class="nc" id="L56">    ResultSet resultSet = statement.executeQuery(getQuery);</span>
+<span class="nc" id="L57">    List&lt;T&gt; listResult = new LinkedList&lt;&gt;();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">    while (resultSet.next()) {</span>
+<span class="nc" id="L59">      listResult.add(getCastedType(resultSet));</span>
     }
-<span class="nc" id="L64">    return listResult;</span>
+<span class="nc" id="L61">    return listResult;</span>
   }
 
   @Override
   public T insert(T newObject) throws SQLException {
-<span class="nc" id="L69">    StringBuilder insertQuery = new StringBuilder(&quot;INSERT INTO &quot;);</span>
-<span class="nc" id="L70">    insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());</span>
-<span class="nc" id="L71">    insertQuery.append(&quot; VALUES(&quot;);</span>
-<span class="nc" id="L72">    insertQuery.append(newObject.getSQLInsertString()).append(&quot;)&quot;);</span>
-<span class="nc" id="L73">    System.out.println(insertQuery);</span>
-<span class="nc" id="L74">    PreparedStatement insertStatement =</span>
-<span class="nc" id="L75">        connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);</span>
-<span class="nc" id="L76">    int rowsAffected = insertStatement.executeUpdate();</span>
-<span class="nc" id="L77">    ResultSet resultSet = insertStatement.getGeneratedKeys();</span>
+<span class="nc" id="L66">    StringBuilder insertQuery = new StringBuilder(&quot;INSERT INTO &quot;);</span>
+<span class="nc" id="L67">    insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());</span>
+<span class="nc" id="L68">    insertQuery.append(&quot; VALUES(&quot;);</span>
+<span class="nc" id="L69">    insertQuery.append(newObject.getSQLInsertString()).append(&quot;)&quot;);</span>
+<span class="nc" id="L70">    System.out.println(insertQuery);</span>
+<span class="nc" id="L71">    PreparedStatement insertStatement =</span>
+<span class="nc" id="L72">        connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);</span>
+<span class="nc" id="L73">    int rowsAffected = insertStatement.executeUpdate();</span>
+<span class="nc" id="L74">    ResultSet resultSet = insertStatement.getGeneratedKeys();</span>
 
-<span class="nc" id="L79">    resultSet.next();</span>
-<span class="nc" id="L80">    long id = resultSet.getLong(1);</span>
-<span class="nc" id="L81">    return get((int) id);</span>
+<span class="nc" id="L76">    resultSet.next();</span>
+<span class="nc" id="L77">    long id = resultSet.getLong(1);</span>
+<span class="nc" id="L78">    return get((int) id);</span>
   }
 
   @Override
   public void update(T updatedObject) throws SQLException {
-<span class="nc" id="L86">    StringBuilder updateQuery = new StringBuilder(&quot;UPDATE &quot;);</span>
-<span class="nc" id="L87">    updateQuery.append(objectType.toTableName()).append(&quot; SET &quot;);</span>
-<span class="nc" id="L88">    updateQuery.append(updatedObject.getSQLUpdateString());</span>
-<span class="nc" id="L89">    statement.executeUpdate(updateQuery.toString());</span>
-<span class="nc" id="L90">  }</span>
+<span class="nc" id="L83">    StringBuilder updateQuery = new StringBuilder(&quot;UPDATE &quot;);</span>
+<span class="nc" id="L84">    updateQuery.append(objectType.toTableName()).append(&quot; SET &quot;);</span>
+<span class="nc" id="L85">    updateQuery.append(updatedObject.getSQLUpdateString());</span>
+<span class="nc" id="L86">    statement.executeUpdate(updateQuery.toString());</span>
+<span class="nc" id="L87">  }</span>
 
   @Override
   public void remove(int id) throws SQLException {
-<span class="nc" id="L94">    StringBuilder markIsDeleted = new StringBuilder(&quot;UPDATE &quot;);</span>
-<span class="nc" id="L95">    markIsDeleted</span>
-<span class="nc" id="L96">        .append(objectType.toTableName())</span>
-<span class="nc" id="L97">        .append(&quot; SET isDeleted = 1&quot;)</span>
-<span class="nc" id="L98">        .append(&quot; WHERE id = &quot;)</span>
-<span class="nc" id="L99">        .append(id);</span>
-<span class="nc" id="L100">    statement.executeUpdate(markIsDeleted.toString());</span>
-<span class="nc" id="L101">  }</span>
+<span class="nc" id="L91">    StringBuilder markIsDeleted = new StringBuilder(&quot;UPDATE &quot;);</span>
+<span class="nc" id="L92">    markIsDeleted</span>
+<span class="nc" id="L93">        .append(objectType.toTableName())</span>
+<span class="nc" id="L94">        .append(&quot; SET isDeleted = 1&quot;)</span>
+<span class="nc" id="L95">        .append(&quot; WHERE id = &quot;)</span>
+<span class="nc" id="L96">        .append(id);</span>
+<span class="nc" id="L97">    statement.executeUpdate(markIsDeleted.toString());</span>
+<span class="nc" id="L98">  }</span>
 
   @Override
   public void restore(int id) throws SQLException {
-<span class="nc" id="L105">    StringBuilder restoreQuery = new StringBuilder(&quot;UPDATE &quot;);</span>
-<span class="nc" id="L106">    restoreQuery</span>
-<span class="nc" id="L107">        .append(objectType.toTableName())</span>
-<span class="nc" id="L108">        .append(&quot; SET isDeleted = 0&quot;)</span>
-<span class="nc" id="L109">        .append(&quot; WHERE id = &quot;)</span>
-<span class="nc" id="L110">        .append(id);</span>
-<span class="nc" id="L111">    statement.executeUpdate(restoreQuery.toString());</span>
-<span class="nc" id="L112">  }</span>
+<span class="nc" id="L102">    StringBuilder restoreQuery = new StringBuilder(&quot;UPDATE &quot;);</span>
+<span class="nc" id="L103">    restoreQuery</span>
+<span class="nc" id="L104">        .append(objectType.toTableName())</span>
+<span class="nc" id="L105">        .append(&quot; SET isDeleted = 0&quot;)</span>
+<span class="nc" id="L106">        .append(&quot; WHERE id = &quot;)</span>
+<span class="nc" id="L107">        .append(id);</span>
+<span class="nc" id="L108">    statement.executeUpdate(restoreQuery.toString());</span>
+<span class="nc" id="L109">  }</span>
 
   @Override
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException {
-<span class="nc" id="L117">    InputStream filePath = App.class.getResourceAsStream(&quot;csv/&quot; + inputFileName);</span>
-<span class="nc" id="L118">    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));</span>
-<span class="nc" id="L119">    CSVLineData lineData = new CSVLineData(csvReader);</span>
+<span class="nc" id="L114">    InputStream filePath = App.class.getResourceAsStream(&quot;csv/&quot; + inputFileName);</span>
+<span class="nc" id="L115">    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));</span>
+<span class="nc" id="L116">    CSVLineData lineData = new CSVLineData(csvReader);</span>
 
     // Check if we found anything in the CSV file
-<span class="nc bnc" id="L122" title="All 2 branches missed.">    if (!lineData.readHeaders()) {</span>
-<span class="nc" id="L123">      return;</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">    if (!lineData.readHeaders()) {</span>
+<span class="nc" id="L120">      return;</span>
     }
 
-<span class="nc bnc" id="L126" title="All 2 branches missed.">    while (lineData.readNext()) {</span>
-<span class="nc" id="L127">      T object = insert(getCastedType(lineData));</span>
-<span class="nc" id="L128">      CSVManager.getInstance()</span>
-<span class="nc" id="L129">          .putCsvToDBId(objectType, lineData.getColumnInt(&quot;id&quot;), object.getId());</span>
-<span class="nc" id="L130">    }</span>
-<span class="nc" id="L131">  }</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">    while (lineData.readNext()) {</span>
+<span class="nc" id="L124">      T object = insert(getCastedType(lineData));</span>
+<span class="nc" id="L125">      CSVManager.getInstance()</span>
+<span class="nc" id="L126">          .putCsvToDBId(objectType, lineData.getColumnInt(&quot;id&quot;), object.getId());</span>
+<span class="nc" id="L127">    }</span>
+<span class="nc" id="L128">  }</span>
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
-<span class="nc" id="L135">    String filePath = App.class.getResource(&quot;csv/&quot; + outputFileName).getPath();</span>
-<span class="nc" id="L136">    FileWriter outputFile = new FileWriter(filePath);</span>
-<span class="nc" id="L137">    CSVWriter writer =</span>
+<span class="nc" id="L132">    String filePath = App.class.getResource(&quot;csv/&quot; + outputFileName).getPath();</span>
+<span class="nc" id="L133">    FileWriter outputFile = new FileWriter(filePath);</span>
+<span class="nc" id="L134">    CSVWriter writer =</span>
         new CSVWriter(
             outputFile,
             ',',
@@ -142,23 +139,23 @@ public abstract class ObjectManager&lt;T extends ISQLSerializable&gt; implements
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-<span class="nc" id="L145">    List&lt;T&gt; dbObjectList = getAll();</span>
-<span class="nc" id="L146">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
+<span class="nc" id="L142">    List&lt;T&gt; dbObjectList = getAll();</span>
+<span class="nc" id="L143">    List&lt;String[]&gt; data = new ArrayList&lt;String[]&gt;();</span>
 
-<span class="nc bnc" id="L148" title="All 2 branches missed.">    if (dbObjectList.isEmpty()) {</span>
-<span class="nc" id="L149">      return;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">    if (dbObjectList.isEmpty()) {</span>
+<span class="nc" id="L146">      return;</span>
     }
 
-<span class="nc" id="L152">    data.add(dbObjectList.get(0).getCSVHeaders());</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">    for (T dbObject : dbObjectList) {</span>
-<span class="nc" id="L154">      data.add(dbObject.toCSVData());</span>
-<span class="nc" id="L155">    }</span>
-<span class="nc" id="L156">    writer.writeAll(data);</span>
-<span class="nc" id="L157">    writer.close();</span>
-<span class="nc" id="L158">  }</span>
+<span class="nc" id="L149">    data.add(dbObjectList.get(0).getCSVHeaders());</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">    for (T dbObject : dbObjectList) {</span>
+<span class="nc" id="L151">      data.add(dbObject.toCSVData());</span>
+<span class="nc" id="L152">    }</span>
+<span class="nc" id="L153">    writer.writeAll(data);</span>
+<span class="nc" id="L154">    writer.close();</span>
+<span class="nc" id="L155">  }</span>
 
   private T getCastedType(ResultSet resultSet) throws SQLException {
-<span class="nc bnc" id="L161" title="All 14 branches missed.">    switch (objectType) {</span>
+<span class="nc bnc" id="L158" title="All 15 branches missed.">    switch (objectType) {</span>
       case AudioVisualSR:
       case ComputerSR:
       case DeceasedBodySR:
@@ -168,37 +165,39 @@ public abstract class ObjectManager&lt;T extends ISQLSerializable&gt; implements
       case SecuritySR:
       case MentalHealthSR:
       case PatientDischargeSR:
-<span class="nc" id="L171">        return (T) new ServiceRequest(resultSet, objectType);</span>
+<span class="nc" id="L168">        return (T) new ServiceRequest(resultSet, objectType);</span>
       case ExternalPatientSR:
-<span class="nc" id="L173">        return (T) new PatientTransportationServiceRequest(resultSet, false);</span>
+<span class="nc" id="L170">        return (T) new PatientTransportationServiceRequest(resultSet, false);</span>
       case FoodDeliverySR:
-<span class="nc" id="L175">        return (T) new FoodDeliveryServiceRequest(resultSet);</span>
+<span class="nc" id="L172">        return (T) new FoodDeliveryServiceRequest(resultSet);</span>
       case GiftAndFloralSR:
-<span class="nc" id="L177">        return (T) new GiftAndFloralServiceRequest(resultSet);</span>
+<span class="nc" id="L174">        return (T) new GiftAndFloralServiceRequest(resultSet);</span>
       case InternalPatientTransferSR:
-<span class="nc" id="L179">        return (T) new PatientTransportationServiceRequest(resultSet, true);</span>
+<span class="nc" id="L176">        return (T) new PatientTransportationServiceRequest(resultSet, true);</span>
       case LanguageInterpreterSR:
-<span class="nc" id="L181">        return (T) new LanguageInterpreterServiceRequest(resultSet);</span>
+<span class="nc" id="L178">        return (T) new LanguageInterpreterServiceRequest(resultSet);</span>
       case MedicalEquipmentSR:
-<span class="nc" id="L183">        return (T) new MedicalEquipmentServiceRequest(resultSet);</span>
+<span class="nc" id="L180">        return (T) new MedicalEquipmentServiceRequest(resultSet);</span>
       case MedicineDeliverySR:
-<span class="nc" id="L185">        return (T) new MedicineDeliveryServiceRequest(resultSet);</span>
+<span class="nc" id="L182">        return (T) new MedicineDeliveryServiceRequest(resultSet);</span>
       case ReligiousSR:
-<span class="nc" id="L187">        return (T) new ReligiousServiceRequest(resultSet);</span>
+<span class="nc" id="L184">        return (T) new ReligiousServiceRequest(resultSet);</span>
       case Location:
-<span class="nc" id="L189">        return (T) new Location(resultSet);</span>
+<span class="nc" id="L186">        return (T) new Location(resultSet);</span>
       case Equipment:
-<span class="nc" id="L191">        return (T) new Equipment(resultSet);</span>
+<span class="nc" id="L188">        return (T) new Equipment(resultSet);</span>
       case Employee:
-<span class="nc" id="L193">        return (T) new Employee(resultSet);</span>
+<span class="nc" id="L190">        return (T) new Employee(resultSet);</span>
       case Patient:
-<span class="nc" id="L195">        return (T) new Patient(resultSet);</span>
+<span class="nc" id="L192">        return (T) new Patient(resultSet);</span>
+      case Edge:
+<span class="nc" id="L194">        return (T) new Edge(resultSet);</span>
     }
-<span class="nc" id="L197">    return null;</span>
+<span class="nc" id="L196">    return null;</span>
   }
 
   private T getCastedType(CSVLineData lineData) throws SQLException, ParseException {
-<span class="nc bnc" id="L201" title="All 14 branches missed.">    switch (objectType) {</span>
+<span class="nc bnc" id="L200" title="All 15 branches missed.">    switch (objectType) {</span>
       case AudioVisualSR:
       case ComputerSR:
       case DeceasedBodySR:
@@ -208,33 +207,35 @@ public abstract class ObjectManager&lt;T extends ISQLSerializable&gt; implements
       case SecuritySR:
       case MentalHealthSR:
       case PatientDischargeSR:
-<span class="nc" id="L211">        return (T) new ServiceRequest(lineData, objectType);</span>
+<span class="nc" id="L210">        return (T) new ServiceRequest(lineData, objectType);</span>
       case ExternalPatientSR:
-<span class="nc" id="L213">        return (T) new PatientTransportationServiceRequest(lineData, false);</span>
+<span class="nc" id="L212">        return (T) new PatientTransportationServiceRequest(lineData, false);</span>
       case FoodDeliverySR:
-<span class="nc" id="L215">        return (T) new FoodDeliveryServiceRequest(lineData);</span>
+<span class="nc" id="L214">        return (T) new FoodDeliveryServiceRequest(lineData);</span>
       case GiftAndFloralSR:
-<span class="nc" id="L217">        return (T) new GiftAndFloralServiceRequest(lineData);</span>
+<span class="nc" id="L216">        return (T) new GiftAndFloralServiceRequest(lineData);</span>
       case InternalPatientTransferSR:
-<span class="nc" id="L219">        return (T) new PatientTransportationServiceRequest(lineData, true);</span>
+<span class="nc" id="L218">        return (T) new PatientTransportationServiceRequest(lineData, true);</span>
       case LanguageInterpreterSR:
-<span class="nc" id="L221">        return (T) new LanguageInterpreterServiceRequest(lineData);</span>
+<span class="nc" id="L220">        return (T) new LanguageInterpreterServiceRequest(lineData);</span>
       case MedicalEquipmentSR:
-<span class="nc" id="L223">        return (T) new MedicalEquipmentServiceRequest(lineData);</span>
+<span class="nc" id="L222">        return (T) new MedicalEquipmentServiceRequest(lineData);</span>
       case MedicineDeliverySR:
-<span class="nc" id="L225">        return (T) new MedicineDeliveryServiceRequest(lineData);</span>
+<span class="nc" id="L224">        return (T) new MedicineDeliveryServiceRequest(lineData);</span>
       case ReligiousSR:
-<span class="nc" id="L227">        return (T) new ReligiousServiceRequest(lineData);</span>
+<span class="nc" id="L226">        return (T) new ReligiousServiceRequest(lineData);</span>
       case Location:
-<span class="nc" id="L229">        return (T) new Location(lineData);</span>
+<span class="nc" id="L228">        return (T) new Location(lineData);</span>
       case Equipment:
-<span class="nc" id="L231">        return (T) new Equipment(lineData);</span>
+<span class="nc" id="L230">        return (T) new Equipment(lineData);</span>
       case Employee:
-<span class="nc" id="L233">        return (T) new Employee(lineData);</span>
+<span class="nc" id="L232">        return (T) new Employee(lineData);</span>
       case Patient:
-<span class="nc" id="L235">        return (T) new Patient(lineData);</span>
+<span class="nc" id="L234">        return (T) new Patient(lineData);</span>
+      case Edge:
+<span class="nc" id="L236">        return (T) new Edge(lineData);</span>
     }
-<span class="nc" id="L237">    return null;</span>
+<span class="nc" id="L238">    return null;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
