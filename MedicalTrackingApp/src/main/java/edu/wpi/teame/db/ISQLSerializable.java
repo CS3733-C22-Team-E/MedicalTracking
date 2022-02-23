@@ -11,5 +11,7 @@ public interface ISQLSerializable extends ICSVSerializable {
 
   public String getTableColumns();
 
+  public boolean getIsDeleted();
+
   public int getId();
 }

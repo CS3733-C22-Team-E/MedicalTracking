@@ -64,22 +64,24 @@ public class Location implements ISQLSerializable, GraphNode {
 
   @Override
   public String toString() {
-    return "nodeID: "
-        + id
-        + ", xcoord: "
-        + x
-        + ", ycoord: "
-        + y
-        + ", floor: "
-        + floor
-        + ", building: "
-        + building
-        + ", nodeType: "
-        + type
-        + ", longName: "
-        + longName
-        + ", shortName: "
-        + shortName;
+    return new StringBuilder()
+        .append("nodeID: ")
+        .append(id)
+        .append(", x: ")
+        .append(x)
+        .append(", y: ")
+        .append(y)
+        .append(", floor: ")
+        .append(floor)
+        .append(", building: ")
+        .append(building)
+        .append(", nodeType: ")
+        .append(type)
+        .append(", longName: ")
+        .append(longName)
+        .append(", shortName: ")
+        .append(shortName)
+        .toString();
   }
 
   @Override
@@ -161,6 +163,10 @@ public class Location implements ISQLSerializable, GraphNode {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 
   public String getLongName() {

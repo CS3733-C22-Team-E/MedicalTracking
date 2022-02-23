@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
@@ -18,20 +19,25 @@
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="485.9999694824219" minWidth="10.0" prefWidth="485.9999694824219" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="384.0" minWidth="10.0" percentWidth="10.0" prefWidth="50.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.3333740234375" minWidth="0.0" percentWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="10.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="10.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints fillHeight="false" percentHeight="10.0" valignment="CENTER" vgrow="NEVER" />
-            <RowConstraints fillHeight="false" percentHeight="10.0" vgrow="NEVER" />
-            <RowConstraints fillHeight="false" percentHeight="10.0" valignment="CENTER" vgrow="NEVER" />
-            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" percentHeight="70.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" vgrow="NEVER" />
+            <RowConstraints percentHeight="5.0" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints percentHeight="5.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" percentHeight="55.0" valignment="CENTER" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="DB Management" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <TextField fx:id="searchTextBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#searchBoxChanged" onKeyTyped="#searchBoxChanged" promptText="Search..." styleClass="text-box" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <TextField fx:id="searchTextBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#searchBoxChanged" onKeyTyped="#searchBoxChanged" promptText="Search..." styleClass="text-box" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <font>
-                  <Font size="16.0" />
+                  <Font size="22.0" />
                </font>
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
@@ -40,19 +46,38 @@
                   <Insets left="10.0" />
                </padding>
             </TextField>
-            <JFXListView fx:id="resultView" stylesheets="@../../css/mainStyle.css" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <JFXListView fx:id="resultView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../css/mainStyle.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.rowSpan="2147483647" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" />
+                  <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
                </GridPane.margin></JFXListView>
-            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#searchButtonClick" text="Search" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-            <JFXComboBox fx:id="tableComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchTable" promptText="DB Table" styleClass="jfx-combo-box" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#searchButtonClick" text="Search" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
+            <JFXComboBox fx:id="tableComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onAction="#switchTable" promptText="DB Table" styleClass="jfx-combo-box" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
                <padding>
                   <Insets left="5.0" />
                </padding>
             </JFXComboBox>
+            <JFXButton onAction="#deleteFromDB" text="Delete" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton onAction="#restoreToDB" text="Restore" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </JFXButton>
          </children>
       </GridPane>
    </children>

@@ -39,12 +39,19 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toString() {
-    StringBuilder employeeString = new StringBuilder();
-    employeeString.append("id: ").append(this.id).append(" ");
-    employeeString.append("department: ").append(this.department).append(" ");
-    employeeString.append("name: ").append(this.name).append(" ");
-    employeeString.append("type: ").append(this.type);
-    return employeeString.toString();
+    return new StringBuilder()
+        .append("id: ")
+        .append(this.id)
+        .append(" ")
+        .append("department: ")
+        .append(this.department)
+        .append(" ")
+        .append("name: ")
+        .append(this.name)
+        .append(" ")
+        .append("type: ")
+        .append(this.type)
+        .toString();
   }
 
   @Override
@@ -96,6 +103,10 @@ public class Employee implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 
   public DepartmentType getDepartment() {

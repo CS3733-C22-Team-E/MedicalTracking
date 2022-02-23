@@ -45,16 +45,18 @@ public class Patient implements ISQLSerializable {
 
   @Override
   public String toString() {
-    return "patientId: "
-        + id
-        + ", patientName: "
-        + name
-        + ", dateOfBirth: "
-        + dateOfBirth.toString()
-        + ", currentLocationId: "
-        + currentLocation.getId()
-        + ", currentLocationName: "
-        + currentLocation.getLongName();
+    return new StringBuilder()
+        .append("patientId: ")
+        .append(id)
+        .append(", patientName: ")
+        .append(name)
+        .append(", dateOfBirth: ")
+        .append(dateOfBirth.toString())
+        .append(", currentLocationId: ")
+        .append(currentLocation.getId())
+        .append(", currentLocationName: ")
+        .append(currentLocation.getLongName())
+        .toString();
   }
 
   @Override
@@ -127,5 +129,9 @@ public class Patient implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 }

@@ -138,7 +138,7 @@ public class LandingPageController implements Initializable {
             "DB Management",
             SortOrder.ByName,
             "view/tabs/DBManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/DBView.png").toString()));
+            new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
@@ -156,7 +156,10 @@ public class LandingPageController implements Initializable {
             "Credential Manager",
             SortOrder.ByName,
             "view/tabs/CredentialManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
+            new Image(
+                App.class
+                    .getResource("images/Icons/pageIcons/CredentialManagement.png")
+                    .toString()));
     TabHoverAnimation.install(settingsTab);
     tabs.add(CredentialManagerTab);
 

@@ -57,18 +57,20 @@ public class Equipment implements ISQLSerializable {
   @Override
   public String toString() {
     String locId = location == null ? "" : "" + location.getId();
-    return "id: "
-        + id
-        + ", location: "
-        + locId
-        + ", type: "
-        + type
-        + ", name: "
-        + name
-        + ", hasPatient: "
-        + hasPatient
-        + ", isClean: "
-        + isClean;
+    return new StringBuilder()
+        .append("id: ")
+        .append(id)
+        .append(", location: ")
+        .append(locId)
+        .append(", type: ")
+        .append(type)
+        .append(", name: ")
+        .append(name)
+        .append(", hasPatient: ")
+        .append(hasPatient)
+        .append(", isClean: ")
+        .append(isClean)
+        .toString();
   }
 
   @Override
@@ -138,6 +140,10 @@ public class Equipment implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 
   public Location getLocation() {

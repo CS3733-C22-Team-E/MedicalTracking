@@ -101,9 +101,13 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   @Override
-  public void restore() throws SQLException {
+  public void restore(int id) throws SQLException {
     StringBuilder restoreQuery = new StringBuilder("UPDATE ");
-    restoreQuery.append(objectType.toTableName()).append(" SET isDeleted = 0");
+    restoreQuery
+        .append(objectType.toTableName())
+        .append(" SET isDeleted = 0")
+        .append(" WHERE id = ")
+        .append(id);
     statement.executeUpdate(restoreQuery.toString());
   }
 

@@ -90,35 +90,29 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String toString() {
-    return "id = "
-        + id
-        + "locationID = "
-        + location.getId()
-        + ", "
-        + "assigneeID = "
-        + assignee.getId()
-        + ", "
-        + "openDate = '"
-        + dateToSQLString(openDate)
-        + "', "
-        + "closeDate = "
-        + closeDate.toString()
-        + ", "
-        + "status = "
-        + status.ordinal()
-        + ", "
-        + "title = '"
-        + title
-        + "', "
-        + "additionalInfo = '"
-        + additionalInfo
-        + "', "
-        + "priority = "
-        + priority.ordinal()
-        + ", "
-        + "requestDate = '"
-        + dateToSQLString(requestDate)
-        + "'";
+    return new StringBuilder()
+        .append("id = ")
+        .append(id)
+        .append(", locationID = ")
+        .append(location.getId())
+        .append(", assigneeID = ")
+        .append(assignee.getId())
+        .append(", openDate = '")
+        .append(dateToSQLString(openDate))
+        .append("', closeDate = ")
+        .append(closeDate.toString())
+        .append(", status = ")
+        .append(status.ordinal())
+        .append(", title = '")
+        .append(title)
+        .append("', additionalInfo = '")
+        .append(additionalInfo)
+        .append("', priority = ")
+        .append(priority.ordinal())
+        .append(", requestDate = '")
+        .append(dateToSQLString(requestDate))
+        .append("'")
+        .toString();
   }
 
   @Override
@@ -309,5 +303,9 @@ public class ServiceRequest implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public boolean getIsDeleted() {
+    return isDeleted;
   }
 }
