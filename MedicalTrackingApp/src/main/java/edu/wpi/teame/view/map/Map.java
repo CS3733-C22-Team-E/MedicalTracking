@@ -323,7 +323,24 @@ public class Map {
     locationsCheckBox.setTranslateY(
         -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
-    retval.add(locationsCheckBox);
+
+    JFXCheckBox serviceRequestsCheckbox = new JFXCheckBox("Service Requests");
+    serviceRequestsCheckbox.getStyleClass().add("combo-box");
+    serviceRequestsCheckbox.setSelected(true);
+    serviceRequestsCheckbox.setOnAction(
+        event -> {
+          for (MapServiceRequestIcon i : ActiveSRByFloor.get(currFloor)) {
+            i.getIcon().setVisible(!i.getIcon().isVisible());
+            i.getFillProgressIndicator().setVisible(serviceRequestsCheckbox.isSelected());
+          }
+          showLocationNodes = !showLocationNodes;
+        });
+    serviceRequestsCheckbox.setPrefHeight(30);
+    serviceRequestsCheckbox.setPrefWidth(30);
+    serviceRequestsCheckbox.setTranslateY(
+        -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
+    serviceRequestsCheckbox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
+    retval.add(serviceRequestsCheckbox);
 
     return retval;
   }
