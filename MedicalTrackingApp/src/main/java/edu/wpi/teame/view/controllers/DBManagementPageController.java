@@ -84,7 +84,7 @@ public class DBManagementPageController implements Initializable {
   public void deleteFromDB() throws SQLException {
     int selectedIndex = resultView.getSelectionModel().getSelectedIndex();
     ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);
-    DBManager.getManager(currentType).remove(dbObject.getId());
+    DBManager.getInstance().getManager(currentType).remove(dbObject.getId());
 
     updateListView();
   }
@@ -93,7 +93,7 @@ public class DBManagementPageController implements Initializable {
   public void restoreToDB() throws SQLException {
     int selectedIndex = resultView.getSelectionModel().getSelectedIndex();
     ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);
-    DBManager.getManager(currentType).restore(dbObject.getId());
+    DBManager.getInstance().getManager(currentType).restore(dbObject.getId());
 
     updateListView();
   }

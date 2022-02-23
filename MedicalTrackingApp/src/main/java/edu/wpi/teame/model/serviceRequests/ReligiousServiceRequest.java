@@ -53,7 +53,9 @@ public final class ReligiousServiceRequest extends ServiceRequest {
     this.religion = resultSet.getString("religion");
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
   }
 
   public ReligiousServiceRequest(CSVLineData lineData) throws SQLException, ParseException {

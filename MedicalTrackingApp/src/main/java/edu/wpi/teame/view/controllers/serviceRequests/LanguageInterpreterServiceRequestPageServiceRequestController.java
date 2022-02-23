@@ -107,10 +107,13 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
-    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -134,13 +137,13 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getByAssignee(assignee.getText());
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
     Patient patient =
-        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
             .getByName(patientName.getText());
 
     LanguageInterpreterServiceRequest serviceRequest =
@@ -159,7 +162,9 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
             0,
             (LanguageType) language.getValue(),
             patient);
-    DBManager.getManager(DataBaseObjectType.LanguageInterpreterSR).insert(serviceRequest);
+    DBManager.getInstance()
+        .getManager(DataBaseObjectType.LanguageInterpreterSR)
+        .insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

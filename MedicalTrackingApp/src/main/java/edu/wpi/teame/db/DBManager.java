@@ -529,7 +529,7 @@ public final class DBManager {
     }
   }
 
-  public static ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
+  public ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
     switch (managerType) {
       case Location:
         return new LocationManager();

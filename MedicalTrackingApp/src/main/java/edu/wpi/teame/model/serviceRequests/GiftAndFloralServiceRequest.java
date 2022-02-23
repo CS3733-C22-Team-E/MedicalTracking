@@ -49,7 +49,9 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
     super(resultSet, DataBaseObjectType.GiftAndFloralSR);
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
   }
 
   public GiftAndFloralServiceRequest(CSVLineData lineData) throws SQLException, ParseException {

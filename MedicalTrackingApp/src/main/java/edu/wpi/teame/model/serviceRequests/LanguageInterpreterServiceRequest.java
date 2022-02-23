@@ -53,7 +53,9 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
     super(resultSet, DataBaseObjectType.LanguageInterpreterSR);
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
     this.language = LanguageType.values()[resultSet.getInt("language")];
   }
 

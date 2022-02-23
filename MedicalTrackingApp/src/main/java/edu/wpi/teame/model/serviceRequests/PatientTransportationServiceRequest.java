@@ -64,14 +64,19 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
             : DataBaseObjectType.ExternalPatientSR);
     this.destination =
         (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
                 .get(resultSet.getInt("destinationID"));
     this.equipment =
         (Equipment)
-            DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Equipment)
+                .get(resultSet.getInt("equipmentID"));
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
   }
 
   public PatientTransportationServiceRequest(CSVLineData lineData, boolean isInternal)

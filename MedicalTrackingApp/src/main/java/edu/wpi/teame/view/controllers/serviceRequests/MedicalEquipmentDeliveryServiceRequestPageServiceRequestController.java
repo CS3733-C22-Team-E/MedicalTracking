@@ -95,10 +95,13 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
     List<Equipment> equipments =
-        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getByAllAvailable();
+        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))
+            .getByAllAvailable();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -126,11 +129,13 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
     String emp = (String) assignee.getText();
 
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee)).getByAssignee(emp);
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
+            .getByAssignee(emp);
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location)).getByName(roomNum);
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
+            .getByName(roomNum);
     Equipment equipmentNeeded =
-        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment))
+        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))
             .getByName(equipment.getText());
 
     MedicalEquipmentServiceRequest serviceRequest =
@@ -148,7 +153,9 @@ public class MedicalEquipmentDeliveryServiceRequestPageServiceRequestController
             "",
             0,
             equipmentNeeded);
-    DBManager.getManager(DataBaseObjectType.MedicalEquipmentSR).insert(serviceRequest);
+    DBManager.getInstance()
+        .getManager(DataBaseObjectType.MedicalEquipmentSR)
+        .insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

@@ -111,12 +111,16 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
     List<Equipment> equipments =
-        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getByAllAvailable();
+        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))
+            .getByAllAvailable();
 
-    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -147,19 +151,19 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getByAssignee(assignee.getText());
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
     Location dest =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(destinationLocation.getText());
     Equipment equipBring =
-        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment))
+        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))
             .getByName(equipment.getText());
     Patient patient =
-        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
             .getByName(patientName.getText());
 
     PatientTransportationServiceRequest serviceRequest =
@@ -180,7 +184,9 @@ public class InternalPatientTransportationServiceRequestPageServiceRequestContro
             dest,
             equipBring,
             patient);
-    DBManager.getManager(DataBaseObjectType.InternalPatientTransferSR).insert(serviceRequest);
+    DBManager.getInstance()
+        .getManager(DataBaseObjectType.InternalPatientTransferSR)
+        .insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

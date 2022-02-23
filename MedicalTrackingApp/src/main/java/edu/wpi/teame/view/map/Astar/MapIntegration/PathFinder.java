@@ -38,13 +38,14 @@ public class PathFinder {
   }
 
   public void refreshLocationsFromDB() throws SQLException {
-    locations.addAll(DBManager.getManager(DataBaseObjectType.Location).getAll());
+    locations.addAll(DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll());
   }
 
   public void createConnections() throws SQLException {
     connections.clear();
     if (edgeList == null || edgeList.size() == 0) {
-      edgeList = ((EdgeManager) DBManager.getManager(DataBaseObjectType.Edge)).getAll();
+      edgeList =
+          ((EdgeManager) DBManager.getInstance().getManager(DataBaseObjectType.Edge)).getAll();
     }
 
     for (Edge edge : edgeList) {
@@ -69,7 +70,7 @@ public class PathFinder {
   public List<Location> FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
-    // DBManager.getManager(DataBaseObjectType.Location).get(StartID);
+    // DBManager.getInstance().getManager(DataBaseObjectType.Location).get(StartID);
     Visual.clearConnections();
     locations.stream()
         .forEach(

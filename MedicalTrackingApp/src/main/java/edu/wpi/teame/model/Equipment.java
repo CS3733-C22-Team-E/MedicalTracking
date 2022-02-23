@@ -42,7 +42,9 @@ public class Equipment implements ISQLSerializable {
     this.name = resultSet.getString("name");
     this.location =
         (Location)
-            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("locationID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("locationID"));
   }
 
   public Equipment(CSVLineData lineData) throws SQLException {

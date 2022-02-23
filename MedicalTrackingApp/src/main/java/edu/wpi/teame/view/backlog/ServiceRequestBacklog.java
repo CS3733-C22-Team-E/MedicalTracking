@@ -57,29 +57,38 @@ public class ServiceRequestBacklog {
   private void getSecurityRequests() throws SQLException {
     System.out.println("Getting SR");
     serviceRequestsFromDB.clear();
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.SanitationSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.SecuritySR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.MedicineDeliverySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.MedicalEquipmentSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.AudioVisualSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.ExternalPatientSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ComputerSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.FacilitiesMaintenanceSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.FoodDeliverySR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.GiftAndFloralSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.InternalPatientTransferSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.LaundrySR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ReligiousSR).getAll());
-    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.DeceasedBodySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).getAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getManager(DataBaseObjectType.PatientDischargeSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.FacilitiesMaintenanceSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.InternalPatientTransferSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).getAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).getAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -148,13 +157,13 @@ public class ServiceRequestBacklog {
 
   public void killServiceRequest(ServiceRequest sr) throws SQLException {
     sr.setStatus(ServiceRequestStatus.CLOSED);
-    ObjectManager m = DBManager.getManager(sr.getDBType());
+    ObjectManager m = DBManager.getInstance().getManager(sr.getDBType());
     m.update(sr);
     scrollWrapper.setContent(getRequestHolder());
   }
 
   public void removeServiceRequest(ServiceRequest sr) throws SQLException {
-    ObjectManager m = DBManager.getManager(sr.getDBType());
+    ObjectManager m = DBManager.getInstance().getManager(sr.getDBType());
     m.remove(sr.getId());
     scrollWrapper.setContent(getRequestHolder());
   }
@@ -292,7 +301,8 @@ public class ServiceRequestBacklog {
     filterBar.setAlignment(Pos.CENTER);
     filterBar.setSpacing(10);
     List<Object> DBEmployeeList =
-        Objects.requireNonNull(DBManager.getManager(DataBaseObjectType.Employee)).getAll();
+        Objects.requireNonNull(DBManager.getInstance().getManager(DataBaseObjectType.Employee))
+            .getAll();
     if (DBEmployeeList.isEmpty()) {
       Text t = new Text("No employees loaded to filter.");
       filterBar.getChildren().add(t);

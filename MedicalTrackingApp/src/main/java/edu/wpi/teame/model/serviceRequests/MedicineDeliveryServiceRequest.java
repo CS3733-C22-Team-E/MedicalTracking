@@ -56,7 +56,9 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     super(resultSet, DataBaseObjectType.MedicineDeliverySR);
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
     this.medicineQuantity = resultSet.getString("medicineQuantity");
     this.medicineName = resultSet.getString("medicineName");
   }

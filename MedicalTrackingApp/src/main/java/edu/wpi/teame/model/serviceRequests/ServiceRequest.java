@@ -58,10 +58,14 @@ public class ServiceRequest implements ISQLSerializable {
     this.priority = ServiceRequestPriority.values()[resultSet.getInt("priority")];
     this.location =
         (Location)
-            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("locationID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("locationID"));
     this.assignee =
         (Employee)
-            DBManager.getManager(DataBaseObjectType.Employee).get(resultSet.getInt("assigneeID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Employee)
+                .get(resultSet.getInt("assigneeID"));
     this.status = ServiceRequestStatus.values()[resultSet.getInt("status")];
     this.additionalInfo = resultSet.getString("additionalInfo");
     this.requestDate = resultSet.getDate("requestDate");

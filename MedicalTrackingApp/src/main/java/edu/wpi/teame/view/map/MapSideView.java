@@ -253,7 +253,8 @@ public class MapSideView {
   private List<Equipment> getEquipmentByFloorFromDB(FloorType floor) throws SQLException {
     List<Equipment> equipmentList = new ArrayList();
     for (Equipment equipment :
-        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getAll()) {
+        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))
+            .getAll()) {
       if (equipment.getLocation().getFloor() == floor) {
         equipmentList.add(equipment);
       }

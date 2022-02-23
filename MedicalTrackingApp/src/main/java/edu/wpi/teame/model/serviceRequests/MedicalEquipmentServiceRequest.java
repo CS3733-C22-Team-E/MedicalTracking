@@ -47,7 +47,9 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
     super(resultSet, DataBaseObjectType.MedicalEquipmentSR);
     this.equipment =
         (Equipment)
-            DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt("equipmentID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Equipment)
+                .get(resultSet.getInt("equipmentID"));
   }
 
   public MedicalEquipmentServiceRequest(CSVLineData lineData) throws SQLException, ParseException {

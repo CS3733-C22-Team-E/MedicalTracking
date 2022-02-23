@@ -104,10 +104,13 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
-    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -131,13 +134,13 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getByAssignee(assignee.getText());
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
     Patient patient =
-        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
             .getByName(patientName.getText());
 
     ReligiousServiceRequest serviceRequest =
@@ -156,7 +159,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             0,
             patient,
             religion.getText());
-    DBManager.getManager(DataBaseObjectType.ReligiousSR).insert(serviceRequest);
+    DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

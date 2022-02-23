@@ -85,8 +85,10 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -105,10 +107,10 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getByAssignee(assignee.getText());
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
 
     ServiceRequest serviceRequest =
@@ -126,7 +128,7 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
             new Date(new java.util.Date().getTime()),
             "",
             0);
-    DBManager.getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
+    DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

@@ -27,7 +27,8 @@ public class Patient implements ISQLSerializable {
   public Patient(ResultSet resultSet) throws SQLException {
     this.currentLocation =
         (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
                 .get(resultSet.getInt("currentLocationID"));
     this.isDeleted = resultSet.getBoolean("isDeleted");
     this.dateOfBirth = resultSet.getDate("dateOfBirth");

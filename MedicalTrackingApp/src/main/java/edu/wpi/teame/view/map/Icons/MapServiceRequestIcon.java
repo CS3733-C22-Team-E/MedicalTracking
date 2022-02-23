@@ -6,7 +6,6 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -142,7 +141,7 @@ public class MapServiceRequestIcon {
                     try {
                       SR.setStatus(ServiceRequestStatus.CLOSED);
                       SR.setCloseDate(new Date(new java.util.Date().getTime()));
-                      DBManager.getManager(SR.getDBType()).update(SR);
+                      DBManager.getInstance().getManager(SR.getDBType()).update(SR);
                     } catch (SQLException e) {
                       e.printStackTrace();
                     }
@@ -183,7 +182,7 @@ public class MapServiceRequestIcon {
     Icon.setVisible(false);
     attachedTo.remove(this);
     try {
-      DBManager.getManager(SR.getDBType()).remove(SR.getId());
+      DBManager.getInstance().getManager(SR.getDBType()).remove(SR.getId());
     } catch (SQLException e) {
       e.printStackTrace();
     }

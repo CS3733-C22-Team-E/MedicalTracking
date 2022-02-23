@@ -52,7 +52,9 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     super(resultSet, DataBaseObjectType.FoodDeliverySR);
     this.patient =
         (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt("patientID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Patient)
+                .get(resultSet.getInt("patientID"));
     this.food = resultSet.getString("food");
   }
 

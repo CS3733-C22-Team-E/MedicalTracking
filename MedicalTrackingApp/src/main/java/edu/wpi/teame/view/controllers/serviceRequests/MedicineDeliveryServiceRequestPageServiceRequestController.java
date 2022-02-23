@@ -115,10 +115,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
-    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -145,11 +148,13 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     String worker = (String) assignee.getText();
 
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee)).getByAssignee(worker);
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
+            .getByAssignee(worker);
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location)).getByName(roomNum);
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
+            .getByName(roomNum);
     Patient patient =
-        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
             .getByName(patientName.getText());
 
     MedicineDeliveryServiceRequest serviceRequest =
@@ -169,7 +174,9 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
             medicineName.getText(),
             medicineQuantity.getText(),
             patient);
-    DBManager.getManager(DataBaseObjectType.MedicineDeliverySR).insert(serviceRequest);
+    DBManager.getInstance()
+        .getManager(DataBaseObjectType.MedicineDeliverySR)
+        .insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

@@ -105,10 +105,13 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     hasRun = true;
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-    List<Location> locations = DBManager.getManager(DataBaseObjectType.Location).getAll();
-    List<Employee> employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Employee> employees =
+        DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
-    List<Patient> patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
     List<String> patientNames = new LinkedList<>();
     for (Patient p : patients) {
       patientNames.add(p.getName());
@@ -132,13 +135,13 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
   @FXML
   void sendToDB() throws SQLException {
     Employee employee =
-        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))
+        ((EmployeeManager) DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getByAssignee(assignee.getText());
     Location location =
-        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))
+        ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
     Patient patient =
-        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
             .getByName(patientName.getText());
 
     FoodDeliveryServiceRequest serviceRequest =
@@ -157,7 +160,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
             0,
             patient,
             food.getText());
-    DBManager.getManager(DataBaseObjectType.FoodDeliverySR).insert(serviceRequest);
+    DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

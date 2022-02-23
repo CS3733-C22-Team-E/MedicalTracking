@@ -22,9 +22,14 @@ public class Edge implements ISQLSerializable {
   public Edge(ResultSet resultSet) throws SQLException {
     this.start =
         (Location)
-            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("startID"));
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("startID"));
     this.end =
-        (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("endID"));
+        (Location)
+            DBManager.getInstance()
+                .getManager(DataBaseObjectType.Location)
+                .get(resultSet.getInt("endID"));
     this.isDeleted = resultSet.getBoolean("isDeleted");
     this.id = resultSet.getInt("id");
   }
