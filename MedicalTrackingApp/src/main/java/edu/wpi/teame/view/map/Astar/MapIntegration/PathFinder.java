@@ -1,14 +1,20 @@
 package edu.wpi.teame.view.map.Astar.MapIntegration;
 
+import com.sun.javafx.geom.Vec2d;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
+
+import java.awt.geom.Point2D;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -246,6 +252,7 @@ public class PathFinder {
           Visual.createConnection(
               initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
     }
+
   }
 
   public void FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
@@ -280,5 +287,44 @@ public class PathFinder {
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
+  }
+  public void FindAndDrawRoute(int StartID, int EndID, MapEquipmentIcon iconToBeMoved, double timerSeconds) throws SQLException {
+    // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+    Visual.clearConnections();
+    locations.stream()
+            .forEach(
+                    node -> {
+                      if (node.getId() == StartID) {
+                        startTest = node;
+                        System.out.println("Hit Start");
+                      }
+                      if (node.getId() == EndID) {
+                        endTest = node;
+                        System.out.println("Hit End");
+                      }
+                    });
+    Location From = startTest;
+    Location To = endTest;
+    List<Location> route = null;
+    try {
+      route = routeFinder.findRoute(From, To);
+    } catch (IllegalStateException e) {
+      System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
+    }
+    double TimePerConnection = timerSeconds*1000/route.size(); //Millis per connection
+    ArrayList<Vec2d> timerSteps = new ArrayList<>();
+    for (int i = 1; i < route.size(); i++) {
+      Location initNode = route.get(i - 1);
+      Location endNode = route.get(i);
+      routeVisual.add(
+              Visual.createConnection(
+                      initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
+      double deltaXPerTimeStep = 10*(endNode.getX()- initNode.getX())/TimePerConnection; //Per 10 ms this deltaX
+      double deltaYPerTimeStep = 10*(endNode.getY() - initNode.getY())/TimePerConnection;
+      timerSteps.add(new Vec2d(deltaXPerTimeStep,deltaYPerTimeStep));
+    }
+
   }
 }
