@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class PathFinder {
@@ -133,7 +134,7 @@ public class PathFinder {
     connections.put(91, Stream.of(92, 93, 90).collect(Collectors.toSet()));
     connections.put(92, Stream.of(79, 91).collect(Collectors.toSet()));
     connections.put(93, Stream.of(82, 94, 91).collect(Collectors.toSet()));
-    connections.put(94, Stream.of(95, 93).collect(Collectors.toSet()));
+    connections.put(94, Stream.of(95, 93, 142).collect(Collectors.toSet()));
     connections.put(95, Stream.of(96, 94).collect(Collectors.toSet()));
     connections.put(96, Stream.of(97, 95).collect(Collectors.toSet()));
     connections.put(97, Stream.of(80, 88, 96).collect(Collectors.toSet()));
@@ -236,18 +237,48 @@ public class PathFinder {
     try {
       route = routeFinder.findRoute(From, To);
     } catch (IllegalStateException e) {
-      System.out.println("No Valid Route From " + From.getId() + " To" + To.getId());
-    }
-    for (Location location : route) {
-      System.out.println(location.getId());
+      System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
     for (int i = 1; i < route.size(); i++) {
       Location initNode = route.get(i - 1);
       Location endNode = route.get(i);
-      System.out.println(initNode.getX() + " " + initNode.getY());
       routeVisual.add(
           Visual.createConnection(
               initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
+    }
+  }
+
+  public void FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
+    // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+    Visual.clearConnections();
+    locations.stream()
+        .forEach(
+            node -> {
+              if (node.getId() == StartID) {
+                startTest = node;
+                System.out.println("Hit Start: " + node.getId());
+              }
+              if (node.getId() == EndID) {
+                endTest = node;
+                System.out.println("Hit End: " + node.getId());
+              }
+            });
+    Location From = startTest;
+    Location To = endTest;
+    List<Location> route;
+    try {
+      route = routeFinder.findRoute(From, To);
+      for (int i = 1; i < route.size(); i++) {
+        Location initNode = route.get(i - 1);
+        Location endNode = route.get(i);
+        routeVisual.add(
+            Visual.createConnection(
+                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY(), color));
+      }
+    } catch (IllegalStateException e) {
+      System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
   }
 }

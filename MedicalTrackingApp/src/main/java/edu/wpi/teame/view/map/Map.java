@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.controllers.LandingPageController;
@@ -220,7 +221,9 @@ public class Map {
       layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
-      layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+      if (!layout.getChildren().contains(icon.progressIndicator)) {
+        layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+      }
     }
     updateRadialMenus();
     createNewRadialMenus();
@@ -659,6 +662,12 @@ public class Map {
                 oldSR.add(serviceRequest);
                 try {
                   ServiceRequestToMapElement(serviceRequest);
+                  if (serviceRequest.getDBType() == DataBaseObjectType.MedicalEquipmentSR) {
+                    MedicalEquipmentServiceRequest newSr =
+                        (MedicalEquipmentServiceRequest) serviceRequest;
+                    Navigation.FindAndDrawRoute(
+                        newSr.getEquipment().getLocation().getId(), newSr.getLocation().getId());
+                  }
                 } catch (SQLException e) {
                   e.printStackTrace();
                 }
@@ -695,7 +704,8 @@ public class Map {
                       PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getLocation().getId(),
-                          PathFindingLocations.get(1).getLocation().getId());
+                          PathFindingLocations.get(1).getLocation().getId(),
+                          Color.BLACK);
 
                     } catch (SQLException e) {
                       e.printStackTrace();
