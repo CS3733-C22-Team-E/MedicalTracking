@@ -3,7 +3,6 @@ package edu.wpi.teame.db;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
-
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -40,7 +39,8 @@ public class CSVLineData {
     return headers != null && headers.size() > 0;
   }
 
-  public ISQLSerializable getDBObject(DataBaseObjectType objectType, String columnName) throws SQLException {
+  public ISQLSerializable getDBObject(DataBaseObjectType objectType, String columnName)
+      throws SQLException {
     int employeeCSVID = getColumnInt(columnName);
     int employeeID = CSVManager.getInstance().getDBId(objectType, employeeCSVID);
     return DBManager.getManager(objectType).get(employeeID);

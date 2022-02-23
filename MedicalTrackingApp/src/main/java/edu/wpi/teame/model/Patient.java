@@ -39,21 +39,22 @@ public class Patient implements ISQLSerializable {
     this.isDeleted = false;
     this.name = lineData.getColumnString("name");
     this.dateOfBirth = lineData.getColumnDate("dateOfBirth");
-    this.currentLocation = (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
+    this.currentLocation =
+        (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
   }
 
   @Override
   public String toString() {
     return "patientId: "
-            + id
-            + ", patientName: "
-            + name
-            + ", dateOfBirth: "
-            + dateOfBirth.toString()
-            + ", currentLocationId: "
-            + currentLocation.getId()
-            + ", currentLocationName: "
-            + currentLocation.getLongName();
+        + id
+        + ", patientName: "
+        + name
+        + ", dateOfBirth: "
+        + dateOfBirth.toString()
+        + ", currentLocationId: "
+        + currentLocation.getId()
+        + ", currentLocationName: "
+        + currentLocation.getLongName();
   }
 
   @Override

@@ -121,7 +121,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
     while (lineData.readNext()) {
       T object = insert(getCastedType(lineData));
-      CSVManager.getInstance().putCsvToDBId(objectType, lineData.getColumnInt("id"), object.getId());
+      CSVManager.getInstance()
+          .putCsvToDBId(objectType, lineData.getColumnInt("id"), object.getId());
     }
   }
 

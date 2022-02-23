@@ -46,7 +46,7 @@ public class Equipment implements ISQLSerializable {
   }
 
   public Equipment(CSVLineData lineData) throws SQLException {
-    this.id = lineData.getColumnInt("nodeID");
+    this.id = lineData.getColumnInt("id");
     this.name = lineData.getColumnString("longName");
     this.isClean = lineData.getColumnBoolean("isClean");
     this.hasPatient = lineData.getColumnBoolean("hasPatient");
@@ -118,9 +118,7 @@ public class Equipment implements ISQLSerializable {
 
   @Override
   public String[] getCSVHeaders() {
-    return new String[] {
-      "nodeID", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"
-    };
+    return new String[] {"id", "locationNodeID", "nodeType", "longName", "hasPatient", "isClean"};
   }
 
   @Override

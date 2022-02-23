@@ -514,7 +514,7 @@ public final class DBManager {
     }
 
     DataBaseObjectType[] dbTables = DataBaseObjectType.values();
-    for (int i = dbTables.length - 1; i > 0; i--) {
+    for (int i = dbTables.length - 1; i >= 0; i--) {
       stmt.executeUpdate(deleteQuery + dbTables[i].toTableName());
     }
   }

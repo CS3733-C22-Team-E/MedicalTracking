@@ -1,4 +1,4 @@
-employeeID,department,name,type,isDeleted
+id,department,name,type,isDeleted
 1,0,Shannon L. Burnham,0,0
 2,1,Madelyn Pearson,1,0
 3,2,John Ronald Reagan Tolkien,0,0

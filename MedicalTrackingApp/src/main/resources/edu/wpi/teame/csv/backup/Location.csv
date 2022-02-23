@@ -1,4 +1,4 @@
-nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,isDeleted
+id,xcoord,ycoord,floor,building,nodeType,longName,shortName,isDeleted
 1,1617,825,3,Tower,DEPT,Center for International Medicine,CIM,0
 2,1610,1120,3,Tower,DEPT,Bretholtz Center for Patients and Families,Bretholtz WR,0
 3,1721,931,3,Tower,DEPT,Multifaith Chapel,Chapel,0

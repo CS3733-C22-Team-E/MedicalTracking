@@ -76,7 +76,7 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String[] getCSVHeaders() {
-    return new String[] {"employeeID", "department", "name", "type"};
+    return new String[] {"id", "department", "name", "type"};
   }
 
   @Override

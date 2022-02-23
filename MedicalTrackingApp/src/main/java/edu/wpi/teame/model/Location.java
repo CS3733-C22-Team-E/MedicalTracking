@@ -52,9 +52,9 @@ public class Location implements ISQLSerializable, GraphNode {
   }
 
   public Location(CSVLineData lineData) throws SQLException {
+    this.id = lineData.getColumnInt("id");
     this.x = lineData.getColumnInt("xcoord");
     this.y = lineData.getColumnInt("ycoord");
-    this.id = lineData.getColumnInt("nodeID");
     this.longName = lineData.getColumnString("longName");
     this.shortName = lineData.getColumnString("shortName");
     this.floor = FloorType.values()[lineData.getColumnInt("floor")];
@@ -136,7 +136,7 @@ public class Location implements ISQLSerializable, GraphNode {
   @Override
   public String[] getCSVHeaders() {
     return new String[] {
-      "nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName"
+      "id", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName"
     };
   }
 

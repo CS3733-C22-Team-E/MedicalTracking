@@ -1,4 +1,4 @@
-nodeID,locationNodeID,nodeType,longName,hasPatient,isClean,isDeleted
+id,locationNodeID,nodeType,longName,hasPatient,isClean,isDeleted
 1,133,0,Hospital Bed 1,0,0,0
 2,134,0,Hospital Bed 2,1,0,0
 3,135,0,Hospital Bed 3,0,0,0
