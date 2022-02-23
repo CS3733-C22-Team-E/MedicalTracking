@@ -116,4 +116,17 @@ public class Patient implements ISQLSerializable {
   public void setId(int id) {
     this.id = id;
   }
+
+  public String toString() {
+    return "patientId: "
+        + id
+        + ", patientName: "
+        + name
+        + ", dateOfBirth: "
+        + dateOfBirth.toString()
+        + ", currentLocationId: "
+        + currentLocation.getId()
+        + ", currentLocationName: "
+        + currentLocation.getLongName();
+  }
 }
