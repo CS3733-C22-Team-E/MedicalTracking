@@ -665,7 +665,6 @@ public class Map {
                   if (serviceRequest.getDBType() == DataBaseObjectType.MedicalEquipmentSR) {
                     MedicalEquipmentServiceRequest newSr =
                         (MedicalEquipmentServiceRequest) serviceRequest;
-                    //Get
                     Navigation.FindAndDrawRoute(newSr.getEquipment().getLocation().getId(), newSr.getLocation().getId());
 
                   }
