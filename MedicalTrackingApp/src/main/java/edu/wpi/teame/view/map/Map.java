@@ -323,6 +323,7 @@ public class Map {
     locationsCheckBox.setTranslateY(
         -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
+    retval.add(locationsCheckBox);
 
     JFXCheckBox serviceRequestsCheckbox = new JFXCheckBox("Service Requests");
     serviceRequestsCheckbox.getStyleClass().add("combo-box");
