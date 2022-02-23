@@ -7,6 +7,7 @@ public enum DataBaseObjectType {
   Equipment,
   Patient,
   Employee,
+  Connection,
 
   AudioVisualSR,
   ComputerSR,

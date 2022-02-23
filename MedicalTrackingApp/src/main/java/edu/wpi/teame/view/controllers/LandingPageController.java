@@ -166,7 +166,6 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(credentialManagementPage);
 
-
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
 

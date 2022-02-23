@@ -8,10 +8,7 @@ import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
-import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
-import edu.wpi.teame.model.Location;
-import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.io.FileWriter;
@@ -193,6 +190,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Employee(resultSet);
       case Patient:
         return (T) new Patient(resultSet);
+      case Connection:
+        return (T) new Edge(resultSet);
     }
     return null;
   }
@@ -233,6 +232,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Employee(lineData);
       case Patient:
         return (T) new Patient(lineData);
+      case Connection:
+        return (T) new Edge(lineData);
     }
     return null;
   }

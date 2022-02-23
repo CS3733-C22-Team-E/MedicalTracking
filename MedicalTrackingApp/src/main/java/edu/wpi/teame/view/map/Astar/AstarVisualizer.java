@@ -26,7 +26,7 @@ public class AstarVisualizer {
 
   public Rectangle createConnection(
       double StartX, double StartY, double EndX, double EndY, Paint color) {
-    System.out.println("Creating Connection");
+    System.out.println("Creating Edge");
     Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);
     double distance =
         Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));
