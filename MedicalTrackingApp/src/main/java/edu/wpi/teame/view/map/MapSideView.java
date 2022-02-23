@@ -126,7 +126,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.LowerLevel1);
             } catch (SQLException e) {
@@ -166,7 +166,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.FirstFloor);
             } catch (SQLException e) {
@@ -206,7 +206,7 @@ public class MapSideView {
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(MouseEvent event) {
-            Tabber.mainTabPane.getSelectionModel().select(2);
+            Tabber.mainTabPane.getSelectionModel().select(Tabber.mapTabPage);
             try {
               MapView.switchFloors(FloorType.ThirdFloor);
             } catch (SQLException e) {

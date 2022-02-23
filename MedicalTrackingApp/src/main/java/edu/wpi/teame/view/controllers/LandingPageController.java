@@ -30,8 +30,11 @@ import lombok.SneakyThrows;
 public class LandingPageController implements Initializable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
+
+  private StyledTab credentialManagementPage = null;
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
+  public StyledTab mapTabPage = null;
 
   @Override
   @SneakyThrows
@@ -79,13 +82,13 @@ public class LandingPageController implements Initializable {
     tabs.add(directoryTab);
 
     Map mapView = new Map(FloorType.ThirdFloor, this);
-    StyledTab mapTab =
+    mapTabPage =
         new StyledTab(
             "Hospital Map",
             SortOrder.ByName,
             mapView.getMapScene(tabContentHeight, tabContentWidth),
             new Image(App.class.getResource("images/Icons/pageIcons/MapView.png").toString()));
-    mapTab.setOnSelectionChanged(
+    mapTabPage.setOnSelectionChanged(
         new EventHandler<Event>() {
           @Override
           public void handle(Event event) {
@@ -96,8 +99,8 @@ public class LandingPageController implements Initializable {
             }
           }
         });
-    TabHoverAnimation.install(mapTab);
-    tabs.add(mapTab);
+    TabHoverAnimation.install(mapTabPage);
+    tabs.add(mapTabPage);
 
     MapSideView mapSideView = new MapSideView(this, mapView);
     StyledTab mapSideViewTab =
@@ -151,7 +154,7 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(settingsTab);
 
-    StyledTab CredentialManagerTab =
+    credentialManagementPage =
         new StyledTab(
             "Credential Manager",
             SortOrder.ByName,
@@ -161,7 +164,7 @@ public class LandingPageController implements Initializable {
                     .getResource("images/Icons/pageIcons/CredentialManagement.png")
                     .toString()));
     TabHoverAnimation.install(settingsTab);
-    tabs.add(CredentialManagerTab);
+    tabs.add(credentialManagementPage);
 
     StyledTab aboutPageTab =
         new StyledTab(
@@ -185,11 +188,13 @@ public class LandingPageController implements Initializable {
     switch (currentAccess) {
       case Admin:
         mainTabPane.getTabs().add(adminDBPage);
+        mainTabPane.getTabs().add(credentialManagementPage);
         break;
 
       default:
       case Staff:
         mainTabPane.getTabs().remove(adminDBPage);
+        mainTabPane.getTabs().remove(credentialManagementPage);
         break;
     }
   }
