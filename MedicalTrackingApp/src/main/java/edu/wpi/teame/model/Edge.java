@@ -49,7 +49,7 @@ public class Edge implements ISQLSerializable {
 
   @Override
   public DataBaseObjectType getDBType() {
-    return DataBaseObjectType.Connection;
+    return DataBaseObjectType.Edge;
   }
 
   // Getters and Setters

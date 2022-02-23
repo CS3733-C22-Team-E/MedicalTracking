@@ -4,8 +4,8 @@ import edu.wpi.teame.model.Edge;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.SQLException;
 
-public class ConnectionManager extends ObjectManager<Edge> {
-  public ConnectionManager() throws SQLException {
-    super(DataBaseObjectType.Connection);
+public class EdgeManager extends ObjectManager<Edge> {
+  public EdgeManager() throws SQLException {
+    super(DataBaseObjectType.Edge);
   }
 }

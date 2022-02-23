@@ -190,7 +190,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Employee(resultSet);
       case Patient:
         return (T) new Patient(resultSet);
-      case Connection:
+      case Edge:
         return (T) new Edge(resultSet);
     }
     return null;
@@ -232,7 +232,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Employee(lineData);
       case Patient:
         return (T) new Patient(lineData);
-      case Connection:
+      case Edge:
         return (T) new Edge(lineData);
     }
     return null;

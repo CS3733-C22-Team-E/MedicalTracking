@@ -539,8 +539,8 @@ public final class DBManager {
         return new PatientManager();
       case Employee:
         return new EmployeeManager();
-      case Connection:
-        return new ConnectionManager();
+      case Edge:
+        return new EdgeManager();
       case LaundrySR:
       case ComputerSR:
       case SecuritySR:
