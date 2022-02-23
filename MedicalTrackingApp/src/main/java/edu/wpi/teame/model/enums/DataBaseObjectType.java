@@ -72,6 +72,8 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+      case Edge:
+        return "Edge";
     }
     return null;
   }
@@ -120,6 +122,8 @@ public enum DataBaseObjectType {
         return Location;
       case "Equipment":
         return Equipment;
+      case "Edge":
+        return Edge;
     }
     return null;
   }
@@ -168,6 +172,8 @@ public enum DataBaseObjectType {
         return "Equipment";
       case Patient:
         return "Patient";
+      case Edge:
+        return "Edge";
     }
     return null;
   }
@@ -259,6 +265,8 @@ public enum DataBaseObjectType {
         return "Location";
       case Equipment:
         return "Equipment";
+      case Edge:
+        return "Edge";
     }
     return null;
   }

@@ -30,9 +30,10 @@ public class Edge implements ISQLSerializable {
   }
 
   public Edge(CSVLineData lineData) throws SQLException {
-    this.isDeleted = false;
     this.start = (Location) lineData.getDBObject(DataBaseObjectType.Location, "startID");
     this.end = (Location) lineData.getDBObject(DataBaseObjectType.Location, "endID");
+    this.id = lineData.getColumnInt("id");
+    this.isDeleted = false;
   }
 
   @Override
@@ -61,13 +62,13 @@ public class Edge implements ISQLSerializable {
 
   @Override
   public String getSQLInsertString() {
-    return new StringBuilder().append(start.getId()).append(", '").append(end.getId()).toString();
+    return new StringBuilder().append(start.getId()).append(", ").append(end.getId()).toString();
   }
 
   @Override
   public String[] toCSVData() {
     return new String[] {
-      Integer.toString(id), Integer.toString(start.getId()), Integer.toString(end.getId())
+      Integer.toString(id), Integer.toString(start.getId()), Integer.toString(end.getId()), "0"
     };
   }
 
@@ -78,7 +79,7 @@ public class Edge implements ISQLSerializable {
 
   @Override
   public String getTableColumns() {
-    return "(startID, endID, isDeleted)";
+    return "(startID, endID)";
   }
 
   @Override

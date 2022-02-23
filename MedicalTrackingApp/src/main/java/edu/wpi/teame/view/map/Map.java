@@ -85,7 +85,7 @@ public class Map {
       radialMenusByFloor.put(currFloor, new ArrayList<>());
       ActiveSRByFloor.put(currFloor, new ArrayList<>());
     }
-    System.out.println("Loaded Maps");
+    System.out.println("Loa\nded Maps");
     switchFloors(floor);
   }
 
@@ -475,7 +475,6 @@ public class Map {
     layout.setOnMouseMoved(this::closeRadialMenus);
     System.out.println("Init Complete");
     Navigation = new PathFinder(layout, backgroundImage.getWidth(), backgroundImage.getHeight());
-
     return staticWrapper;
   }
 
@@ -641,6 +640,7 @@ public class Map {
       locationToMapElement(currLocation);
     }
     Navigation.refreshLocationsFromDB();
+    Navigation.createConnections();
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -688,7 +688,8 @@ public class Map {
                     List<Location> routeSnap =
                         Navigation.FindAndDrawRoute(
                             newSr.getEquipment().getLocation().getId(),
-                            newSr.getLocation().getId());
+                            newSr.getLocation().getId(),
+                            Color.BLUE);
                     Timer newTimer = new Timer();
                     mapIconsByFloor
                         .get(newSr.getLocation().getFloor())

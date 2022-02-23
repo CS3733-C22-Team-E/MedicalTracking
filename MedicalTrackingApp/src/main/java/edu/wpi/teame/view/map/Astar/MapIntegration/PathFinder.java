@@ -2,19 +2,14 @@ package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EdgeManager;
-import edu.wpi.teame.model.Edge;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
-
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Stream;
-
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -44,13 +39,21 @@ public class PathFinder {
     locations.addAll(DBManager.getManager(DataBaseObjectType.Location).getAll());
   }
 
-  private void createConnections() throws SQLException {
-    ((EdgeManager)DBManager.getManager(DataBaseObjectType.Edge)).getAll().forEach(edge->{
-    connections.put(edge.getStart().getId(), new HashSet<Integer>());
-    });
-    ((EdgeManager)DBManager.getManager(DataBaseObjectType.Edge)).getAll().forEach(edge->{
-      connections.get(edge.getStart()).add(edge.getEnd().getId());
-    });
+  public void createConnections() throws SQLException {
+    connections.clear();
+    ((EdgeManager) DBManager.getManager(DataBaseObjectType.Edge))
+        .getAll()
+        .forEach(
+            edge -> {
+              connections.put(edge.getStart().getId(), new HashSet<Integer>());
+            });
+    ((EdgeManager) DBManager.getManager(DataBaseObjectType.Edge))
+        .getAll()
+        .forEach(
+            edge -> {
+              System.out.println("Init");
+              connections.get(edge.getStart().getId()).add(edge.getEnd().getId());
+            });
     //    connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     //    connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     //    connections.put(3, Stream.of(26).collect(Collectors.toSet()));
@@ -247,9 +250,8 @@ public class PathFinder {
             });
     Location From = startTest;
     Location To = endTest;
-    List<Location> route = null;
     try {
-      route = routeFinder.findRoute(From, To);
+      List<Location> route = routeFinder.findRoute(From, To);
       for (int i = 1; i < route.size(); i++) {
         Location initNode = route.get(i - 1);
         Location endNode = route.get(i);
@@ -257,6 +259,7 @@ public class PathFinder {
             Visual.createConnection(
                 initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
       }
+      System.out.println(route.size());
       return route;
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
@@ -264,7 +267,7 @@ public class PathFinder {
     return null;
   }
 
-  public void FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
+  public List<Location> FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
     // DBManager.getInstance().getLocationManager().get(StartID);
@@ -293,8 +296,10 @@ public class PathFinder {
             Visual.createConnection(
                 initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY(), color));
       }
+      return route;
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
+      return null;
     }
   }
 
