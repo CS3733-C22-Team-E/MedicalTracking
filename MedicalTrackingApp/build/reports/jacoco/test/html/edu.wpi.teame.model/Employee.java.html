@@ -39,95 +39,106 @@ public class Employee implements ISQLSerializable {
 
   @Override
   public String toString() {
-<span class="nc" id="L42">    StringBuilder employeeString = new StringBuilder();</span>
-<span class="nc" id="L43">    employeeString.append(&quot;id: &quot;).append(this.id).append(&quot; &quot;);</span>
-<span class="nc" id="L44">    employeeString.append(&quot;department: &quot;).append(this.department).append(&quot; &quot;);</span>
-<span class="nc" id="L45">    employeeString.append(&quot;name: &quot;).append(this.name).append(&quot; &quot;);</span>
-<span class="nc" id="L46">    employeeString.append(&quot;type: &quot;).append(this.type);</span>
-<span class="nc" id="L47">    return employeeString.toString();</span>
+<span class="nc" id="L42">    return new StringBuilder()</span>
+<span class="nc" id="L43">        .append(&quot;id: &quot;)</span>
+<span class="nc" id="L44">        .append(this.id)</span>
+<span class="nc" id="L45">        .append(&quot; &quot;)</span>
+<span class="nc" id="L46">        .append(&quot;department: &quot;)</span>
+<span class="nc" id="L47">        .append(this.department)</span>
+<span class="nc" id="L48">        .append(&quot; &quot;)</span>
+<span class="nc" id="L49">        .append(&quot;name: &quot;)</span>
+<span class="nc" id="L50">        .append(this.name)</span>
+<span class="nc" id="L51">        .append(&quot; &quot;)</span>
+<span class="nc" id="L52">        .append(&quot;type: &quot;)</span>
+<span class="nc" id="L53">        .append(this.type)</span>
+<span class="nc" id="L54">        .toString();</span>
   }
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L52">    return &quot;department = &quot;</span>
-<span class="nc" id="L53">        + department.ordinal()</span>
+<span class="nc" id="L59">    return &quot;department = &quot;</span>
+<span class="nc" id="L60">        + department.ordinal()</span>
         + &quot;, name = '&quot;
         + name
         + &quot;', type = &quot;
-<span class="nc" id="L57">        + type.ordinal()</span>
+<span class="nc" id="L64">        + type.ordinal()</span>
         + &quot; WHERE id = &quot;
         + id;
   }
 
   @Override
   public String getSQLInsertString() {
-<span class="nc" id="L64">    return department.ordinal() + &quot;, '&quot; + name + &quot;', &quot; + type.ordinal();</span>
+<span class="nc" id="L71">    return department.ordinal() + &quot;, '&quot; + name + &quot;', &quot; + type.ordinal();</span>
   }
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L69">    return new String[] {</span>
-<span class="nc" id="L70">      Integer.toString(id),</span>
-<span class="nc" id="L71">      Integer.toString(department.ordinal()),</span>
+<span class="nc" id="L76">    return new String[] {</span>
+<span class="nc" id="L77">      Integer.toString(id),</span>
+<span class="nc" id="L78">      Integer.toString(department.ordinal()),</span>
       name,
-<span class="nc" id="L73">      Integer.toString(type.ordinal())</span>
+<span class="nc" id="L80">      Integer.toString(type.ordinal())</span>
     };
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L79">    return new String[] {&quot;id&quot;, &quot;department&quot;, &quot;name&quot;, &quot;type&quot;};</span>
+<span class="nc" id="L86">    return new String[] {&quot;id&quot;, &quot;department&quot;, &quot;name&quot;, &quot;type&quot;};</span>
   }
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L84">    return &quot;(department, name, type)&quot;;</span>
+<span class="nc" id="L91">    return &quot;(department, name, type)&quot;;</span>
   }
 
   @Override
   public DataBaseObjectType getDBType() {
-<span class="nc" id="L89">    return DataBaseObjectType.Employee;</span>
+<span class="nc" id="L96">    return DataBaseObjectType.Employee;</span>
   }
 
   // GETTERS &amp; SETTERS
   public int getId() {
-<span class="nc" id="L94">    return id;</span>
+<span class="nc" id="L101">    return id;</span>
   }
 
   public void setId(int id) {
-<span class="nc" id="L98">    this.id = id;</span>
-<span class="nc" id="L99">  }</span>
+<span class="nc" id="L105">    this.id = id;</span>
+<span class="nc" id="L106">  }</span>
+
+  public boolean getIsDeleted() {
+<span class="nc" id="L109">    return isDeleted;</span>
+  }
 
   public DepartmentType getDepartment() {
-<span class="nc" id="L102">    return department;</span>
+<span class="nc" id="L113">    return department;</span>
   }
 
   public void setDepartment(DepartmentType department) {
-<span class="nc" id="L106">    this.department = department;</span>
-<span class="nc" id="L107">  }</span>
+<span class="nc" id="L117">    this.department = department;</span>
+<span class="nc" id="L118">  }</span>
 
   public String getName() {
-<span class="nc" id="L110">    return name;</span>
+<span class="nc" id="L121">    return name;</span>
   }
 
   public void setName(String name) {
-<span class="nc" id="L114">    this.name = name;</span>
-<span class="nc" id="L115">  }</span>
+<span class="nc" id="L125">    this.name = name;</span>
+<span class="nc" id="L126">  }</span>
 
   public EmployeeType getType() {
-<span class="nc" id="L118">    return type;</span>
+<span class="nc" id="L129">    return type;</span>
   }
 
   public void setType(EmployeeType type) {
-<span class="nc" id="L122">    this.type = type;</span>
-<span class="nc" id="L123">  }</span>
+<span class="nc" id="L133">    this.type = type;</span>
+<span class="nc" id="L134">  }</span>
 
   public boolean isDeleted() {
-<span class="nc" id="L126">    return isDeleted;</span>
+<span class="nc" id="L137">    return isDeleted;</span>
   }
 
   public void setDeleted(boolean deleted) {
-<span class="nc" id="L130">    isDeleted = deleted;</span>
-<span class="nc" id="L131">  }</span>
+<span class="nc" id="L141">    isDeleted = deleted;</span>
+<span class="nc" id="L142">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

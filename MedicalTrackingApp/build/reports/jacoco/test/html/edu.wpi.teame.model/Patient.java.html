@@ -45,88 +45,94 @@ public class Patient implements ISQLSerializable {
 
   @Override
   public String toString() {
-<span class="nc" id="L48">    return &quot;patientId: &quot;</span>
-        + id
-        + &quot;, patientName: &quot;
-        + name
-        + &quot;, dateOfBirth: &quot;
-<span class="nc" id="L53">        + dateOfBirth.toString()</span>
-        + &quot;, currentLocationId: &quot;
-<span class="nc" id="L55">        + currentLocation.getId()</span>
-        + &quot;, currentLocationName: &quot;
-<span class="nc" id="L57">        + currentLocation.getLongName();</span>
+<span class="nc" id="L48">    return new StringBuilder()</span>
+<span class="nc" id="L49">        .append(&quot;patientId: &quot;)</span>
+<span class="nc" id="L50">        .append(id)</span>
+<span class="nc" id="L51">        .append(&quot;, patientName: &quot;)</span>
+<span class="nc" id="L52">        .append(name)</span>
+<span class="nc" id="L53">        .append(&quot;, dateOfBirth: &quot;)</span>
+<span class="nc" id="L54">        .append(dateOfBirth.toString())</span>
+<span class="nc" id="L55">        .append(&quot;, currentLocationId: &quot;)</span>
+<span class="nc" id="L56">        .append(currentLocation.getId())</span>
+<span class="nc" id="L57">        .append(&quot;, currentLocationName: &quot;)</span>
+<span class="nc" id="L58">        .append(currentLocation.getLongName())</span>
+<span class="nc" id="L59">        .toString();</span>
   }
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L62">    return &quot;name = '&quot;</span>
+<span class="nc" id="L64">    return &quot;name = '&quot;</span>
         + name
         + &quot;', dateOfBirth = '&quot;
-<span class="nc" id="L65">        + dateOfBirth.toString()</span>
+<span class="nc" id="L67">        + dateOfBirth.toString()</span>
         + &quot;', currentLocationID = &quot;
-<span class="nc" id="L67">        + currentLocation.getId()</span>
+<span class="nc" id="L69">        + currentLocation.getId()</span>
         + &quot; WHERE id = &quot;
         + id;
   }
 
   @Override
   public String getSQLInsertString() {
-<span class="nc" id="L74">    return &quot;'&quot; + name + &quot;', '&quot; + dateOfBirth.toString() + &quot;', &quot; + currentLocation.getId();</span>
+<span class="nc" id="L76">    return &quot;'&quot; + name + &quot;', '&quot; + dateOfBirth.toString() + &quot;', &quot; + currentLocation.getId();</span>
   }
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L79">    return new String[] {</span>
-<span class="nc" id="L80">      name, dateOfBirth.toString(), Integer.toString(currentLocation.getId()), Integer.toString(id)</span>
+<span class="nc" id="L81">    return new String[] {</span>
+<span class="nc" id="L82">      name, dateOfBirth.toString(), Integer.toString(currentLocation.getId()), Integer.toString(id)</span>
     };
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L86">    return new String[] {&quot;name&quot;, &quot;dateOfBirth&quot;, &quot;currentLocation&quot;, &quot;id&quot;};</span>
+<span class="nc" id="L88">    return new String[] {&quot;name&quot;, &quot;dateOfBirth&quot;, &quot;currentLocation&quot;, &quot;id&quot;};</span>
   }
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L91">    return &quot;(name, dateOfBirth, currentLocationID)&quot;;</span>
+<span class="nc" id="L93">    return &quot;(name, dateOfBirth, currentLocationID)&quot;;</span>
   }
 
   @Override
   public DataBaseObjectType getDBType() {
-<span class="nc" id="L96">    return DataBaseObjectType.Patient;</span>
+<span class="nc" id="L98">    return DataBaseObjectType.Patient;</span>
   }
 
   // Getters and Setters
   public Location getCurrentLocation() {
-<span class="nc" id="L101">    return currentLocation;</span>
+<span class="nc" id="L103">    return currentLocation;</span>
   }
 
   public void setCurrentLocation(Location currentLocation) {
-<span class="nc" id="L105">    this.currentLocation = currentLocation;</span>
-<span class="nc" id="L106">  }</span>
+<span class="nc" id="L107">    this.currentLocation = currentLocation;</span>
+<span class="nc" id="L108">  }</span>
 
   public Date getDateOfBirth() {
-<span class="nc" id="L109">    return dateOfBirth;</span>
+<span class="nc" id="L111">    return dateOfBirth;</span>
   }
 
   public void setDateOfBirth(Date dateOfBirth) {
-<span class="nc" id="L113">    this.dateOfBirth = dateOfBirth;</span>
-<span class="nc" id="L114">  }</span>
+<span class="nc" id="L115">    this.dateOfBirth = dateOfBirth;</span>
+<span class="nc" id="L116">  }</span>
 
   public String getName() {
-<span class="nc" id="L117">    return name;</span>
+<span class="nc" id="L119">    return name;</span>
   }
 
   public void setName(String name) {
-<span class="nc" id="L121">    this.name = name;</span>
-<span class="nc" id="L122">  }</span>
+<span class="nc" id="L123">    this.name = name;</span>
+<span class="nc" id="L124">  }</span>
 
   public int getId() {
-<span class="nc" id="L125">    return id;</span>
+<span class="nc" id="L127">    return id;</span>
   }
 
   public void setId(int id) {
-<span class="nc" id="L129">    this.id = id;</span>
-<span class="nc" id="L130">  }</span>
+<span class="nc" id="L131">    this.id = id;</span>
+<span class="nc" id="L132">  }</span>
+
+  public boolean getIsDeleted() {
+<span class="nc" id="L135">    return isDeleted;</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

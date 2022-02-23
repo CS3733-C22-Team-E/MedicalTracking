@@ -90,82 +90,76 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String toString() {
-<span class="nc" id="L93">    return &quot;id = &quot;</span>
-        + id
-        + &quot;locationID = &quot;
-<span class="nc" id="L96">        + location.getId()</span>
-        + &quot;, &quot;
-        + &quot;assigneeID = &quot;
-<span class="nc" id="L99">        + assignee.getId()</span>
-        + &quot;, &quot;
-        + &quot;openDate = '&quot;
-<span class="nc" id="L102">        + dateToSQLString(openDate)</span>
-        + &quot;', &quot;
-        + &quot;closeDate = &quot;
-<span class="nc" id="L105">        + closeDate.toString()</span>
-        + &quot;, &quot;
-        + &quot;status = &quot;
-<span class="nc" id="L108">        + status.ordinal()</span>
-        + &quot;, &quot;
-        + &quot;title = '&quot;
-        + title
-        + &quot;', &quot;
-        + &quot;additionalInfo = '&quot;
-        + additionalInfo
-        + &quot;', &quot;
-        + &quot;priority = &quot;
-<span class="nc" id="L117">        + priority.ordinal()</span>
-        + &quot;, &quot;
-        + &quot;requestDate = '&quot;
-<span class="nc" id="L120">        + dateToSQLString(requestDate)</span>
-        + &quot;'&quot;;
+<span class="nc" id="L93">    return new StringBuilder()</span>
+<span class="nc" id="L94">        .append(&quot;id = &quot;)</span>
+<span class="nc" id="L95">        .append(id)</span>
+<span class="nc" id="L96">        .append(&quot;, locationID = &quot;)</span>
+<span class="nc" id="L97">        .append(location.getId())</span>
+<span class="nc" id="L98">        .append(&quot;, assigneeID = &quot;)</span>
+<span class="nc" id="L99">        .append(assignee.getId())</span>
+<span class="nc" id="L100">        .append(&quot;, openDate = '&quot;)</span>
+<span class="nc" id="L101">        .append(dateToSQLString(openDate))</span>
+<span class="nc" id="L102">        .append(&quot;', closeDate = &quot;)</span>
+<span class="nc" id="L103">        .append(closeDate.toString())</span>
+<span class="nc" id="L104">        .append(&quot;, status = &quot;)</span>
+<span class="nc" id="L105">        .append(status.ordinal())</span>
+<span class="nc" id="L106">        .append(&quot;, title = '&quot;)</span>
+<span class="nc" id="L107">        .append(title)</span>
+<span class="nc" id="L108">        .append(&quot;', additionalInfo = '&quot;)</span>
+<span class="nc" id="L109">        .append(additionalInfo)</span>
+<span class="nc" id="L110">        .append(&quot;', priority = &quot;)</span>
+<span class="nc" id="L111">        .append(priority.ordinal())</span>
+<span class="nc" id="L112">        .append(&quot;, requestDate = '&quot;)</span>
+<span class="nc" id="L113">        .append(dateToSQLString(requestDate))</span>
+<span class="nc" id="L114">        .append(&quot;'&quot;)</span>
+<span class="nc" id="L115">        .toString();</span>
   }
 
   @Override
   public String getSQLInsertString() {
-<span class="nc bnc" id="L126" title="All 2 branches missed.">    String closeDateString = closeDate == null ? &quot;NULL&quot; : &quot; '&quot; + dateToSQLString(closeDate) + &quot;'&quot;;</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">    String assigneeString = assignee == null ? &quot;NULL&quot; : &quot; &quot; + assignee.getId();</span>
-<span class="nc" id="L128">    return location.getId()</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">    String closeDateString = closeDate == null ? &quot;NULL&quot; : &quot; '&quot; + dateToSQLString(closeDate) + &quot;'&quot;;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">    String assigneeString = assignee == null ? &quot;NULL&quot; : &quot; &quot; + assignee.getId();</span>
+<span class="nc" id="L122">    return location.getId()</span>
         + &quot;, &quot;
         + assigneeString
         + &quot;, '&quot;
-<span class="nc" id="L132">        + dateToSQLString(openDate)</span>
+<span class="nc" id="L126">        + dateToSQLString(openDate)</span>
         + &quot;', &quot;
         + closeDateString
         + &quot;, &quot;
-<span class="nc" id="L136">        + status.ordinal()</span>
+<span class="nc" id="L130">        + status.ordinal()</span>
         + &quot;, '&quot;
         + title
         + &quot;', '&quot;
         + additionalInfo
         + &quot;', &quot;
-<span class="nc" id="L142">        + priority.ordinal()</span>
+<span class="nc" id="L136">        + priority.ordinal()</span>
         + &quot;, '&quot;
-<span class="nc" id="L144">        + dateToSQLString(requestDate)</span>
+<span class="nc" id="L138">        + dateToSQLString(requestDate)</span>
         + &quot;'&quot;;
   }
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L150">    return getRawUpdateString() + &quot; WHERE id = &quot; + id;</span>
+<span class="nc" id="L144">    return getRawUpdateString() + &quot; WHERE id = &quot; + id;</span>
   }
 
   protected String getRawUpdateString() {
-<span class="nc bnc" id="L154" title="All 2 branches missed.">    String closeDateString = closeDate == null ? &quot;NULL&quot; : &quot; '&quot; + dateToSQLString(closeDate) + &quot;'&quot;;</span>
-<span class="nc" id="L155">    return &quot;locationID = &quot;</span>
-<span class="nc" id="L156">        + location.getId()</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">    String closeDateString = closeDate == null ? &quot;NULL&quot; : &quot; '&quot; + dateToSQLString(closeDate) + &quot;'&quot;;</span>
+<span class="nc" id="L149">    return &quot;locationID = &quot;</span>
+<span class="nc" id="L150">        + location.getId()</span>
         + &quot;, &quot;
         + &quot;assigneeID = &quot;
-<span class="nc" id="L159">        + assignee.getId()</span>
+<span class="nc" id="L153">        + assignee.getId()</span>
         + &quot;, &quot;
         + &quot;openDate = '&quot;
-<span class="nc" id="L162">        + dateToSQLString(openDate)</span>
+<span class="nc" id="L156">        + dateToSQLString(openDate)</span>
         + &quot;', &quot;
         + &quot;closeDate = &quot;
         + closeDateString
         + &quot;, &quot;
         + &quot;status = &quot;
-<span class="nc" id="L168">        + status.ordinal()</span>
+<span class="nc" id="L162">        + status.ordinal()</span>
         + &quot;, &quot;
         + &quot;title = '&quot;
         + title
@@ -174,32 +168,32 @@ public class ServiceRequest implements ISQLSerializable {
         + additionalInfo
         + &quot;', &quot;
         + &quot;priority = &quot;
-<span class="nc" id="L177">        + priority.ordinal()</span>
+<span class="nc" id="L171">        + priority.ordinal()</span>
         + &quot;, &quot;
         + &quot;requestDate = '&quot;
-<span class="nc" id="L180">        + dateToSQLString(requestDate)</span>
+<span class="nc" id="L174">        + dateToSQLString(requestDate)</span>
         + &quot;'&quot;;
   }
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L186">    return new String[] {</span>
-<span class="nc" id="L187">      Integer.toString(id),</span>
-<span class="nc" id="L188">      Integer.toString(location.getId()),</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">      assignee == null ? &quot;&quot; : Integer.toString(assignee.getId()),</span>
-<span class="nc" id="L190">      openDate.toString(),</span>
-<span class="nc bnc" id="L191" title="All 2 branches missed.">      closeDate == null ? &quot;&quot; : closeDate.toString(),</span>
-<span class="nc" id="L192">      Integer.toString(status.ordinal()),</span>
+<span class="nc" id="L180">    return new String[] {</span>
+<span class="nc" id="L181">      Integer.toString(id),</span>
+<span class="nc" id="L182">      Integer.toString(location.getId()),</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">      assignee == null ? &quot;&quot; : Integer.toString(assignee.getId()),</span>
+<span class="nc" id="L184">      openDate.toString(),</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">      closeDate == null ? &quot;&quot; : closeDate.toString(),</span>
+<span class="nc" id="L186">      Integer.toString(status.ordinal()),</span>
       title,
       additionalInfo,
-<span class="nc" id="L195">      Integer.toString(priority.ordinal()),</span>
-<span class="nc" id="L196">      requestDate.toString()</span>
+<span class="nc" id="L189">      Integer.toString(priority.ordinal()),</span>
+<span class="nc" id="L190">      requestDate.toString()</span>
     };
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L202">    return new String[] {</span>
+<span class="nc" id="L196">    return new String[] {</span>
       &quot;id&quot;,
       &quot;locationID&quot;,
       &quot;assigneeID&quot;,
@@ -215,100 +209,104 @@ public class ServiceRequest implements ISQLSerializable {
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L218">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)&quot;;</span>
+<span class="nc" id="L212">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate)&quot;;</span>
   }
 
   @Override
   public DataBaseObjectType getDBType() {
-<span class="nc" id="L223">    return dbType;</span>
+<span class="nc" id="L217">    return dbType;</span>
   }
 
   protected String dateToSQLString(Date date) {
-<span class="nc" id="L227">    LocalTime localTime = LocalTime.now();</span>
-<span class="nc" id="L228">    String dateAsString = openDate.toLocalDate().atTime(localTime).toString();</span>
-<span class="nc" id="L229">    dateAsString = dateAsString.substring(0, dateAsString.indexOf('.'));</span>
-<span class="nc" id="L230">    return dateAsString.replace(&quot;T&quot;, &quot; &quot;).replace(&quot;Z&quot;, &quot;&quot;);</span>
+<span class="nc" id="L221">    LocalTime localTime = LocalTime.now();</span>
+<span class="nc" id="L222">    String dateAsString = openDate.toLocalDate().atTime(localTime).toString();</span>
+<span class="nc" id="L223">    dateAsString = dateAsString.substring(0, dateAsString.indexOf('.'));</span>
+<span class="nc" id="L224">    return dateAsString.replace(&quot;T&quot;, &quot; &quot;).replace(&quot;Z&quot;, &quot;&quot;);</span>
   }
 
   // Getters and Setters
   public ServiceRequestPriority getPriority() {
-<span class="nc" id="L235">    return priority;</span>
+<span class="nc" id="L229">    return priority;</span>
   }
 
   public void setPriority(ServiceRequestPriority priority) {
-<span class="nc" id="L239">    this.priority = priority;</span>
-<span class="nc" id="L240">  }</span>
+<span class="nc" id="L233">    this.priority = priority;</span>
+<span class="nc" id="L234">  }</span>
 
   public ServiceRequestStatus getStatus() {
-<span class="nc" id="L243">    return status;</span>
+<span class="nc" id="L237">    return status;</span>
   }
 
   public void setStatus(ServiceRequestStatus status) {
-<span class="nc" id="L247">    this.status = status;</span>
-<span class="nc" id="L248">  }</span>
+<span class="nc" id="L241">    this.status = status;</span>
+<span class="nc" id="L242">  }</span>
 
   public String getAdditionalInfo() {
-<span class="nc" id="L251">    return additionalInfo;</span>
+<span class="nc" id="L245">    return additionalInfo;</span>
   }
 
   public void setAdditionalInfo(String additionalInfo) {
-<span class="nc" id="L255">    this.additionalInfo = additionalInfo;</span>
-<span class="nc" id="L256">  }</span>
+<span class="nc" id="L249">    this.additionalInfo = additionalInfo;</span>
+<span class="nc" id="L250">  }</span>
 
   public Employee getAssignee() {
-<span class="nc" id="L259">    return assignee;</span>
+<span class="nc" id="L253">    return assignee;</span>
   }
 
   public void setAssignee(Employee assignee) {
-<span class="nc" id="L263">    this.assignee = assignee;</span>
-<span class="nc" id="L264">  }</span>
+<span class="nc" id="L257">    this.assignee = assignee;</span>
+<span class="nc" id="L258">  }</span>
 
   public Location getLocation() {
-<span class="nc" id="L267">    return location;</span>
+<span class="nc" id="L261">    return location;</span>
   }
 
   public void setLocation(Location location) {
-<span class="nc" id="L271">    this.location = location;</span>
-<span class="nc" id="L272">  }</span>
+<span class="nc" id="L265">    this.location = location;</span>
+<span class="nc" id="L266">  }</span>
 
   public Date getRequestDate() {
-<span class="nc" id="L275">    return requestDate;</span>
+<span class="nc" id="L269">    return requestDate;</span>
   }
 
   public void setRequestDate(Date requestDate) {
-<span class="nc" id="L279">    this.requestDate = requestDate;</span>
-<span class="nc" id="L280">  }</span>
+<span class="nc" id="L273">    this.requestDate = requestDate;</span>
+<span class="nc" id="L274">  }</span>
 
   public Date getCloseDate() {
-<span class="nc" id="L283">    return closeDate;</span>
+<span class="nc" id="L277">    return closeDate;</span>
   }
 
   public void setCloseDate(Date closeDate) {
-<span class="nc" id="L287">    this.closeDate = closeDate;</span>
-<span class="nc" id="L288">  }</span>
+<span class="nc" id="L281">    this.closeDate = closeDate;</span>
+<span class="nc" id="L282">  }</span>
 
   public Date getOpenDate() {
-<span class="nc" id="L291">    return openDate;</span>
+<span class="nc" id="L285">    return openDate;</span>
   }
 
   public void setOpenDate(Date openDate) {
-<span class="nc" id="L295">    this.openDate = openDate;</span>
-<span class="nc" id="L296">  }</span>
+<span class="nc" id="L289">    this.openDate = openDate;</span>
+<span class="nc" id="L290">  }</span>
 
   public String getTitle() {
-<span class="nc" id="L299">    return title;</span>
+<span class="nc" id="L293">    return title;</span>
   }
 
   public void setTitle(String title) {
-<span class="nc" id="L303">    this.title = title;</span>
-<span class="nc" id="L304">  }</span>
+<span class="nc" id="L297">    this.title = title;</span>
+<span class="nc" id="L298">  }</span>
 
   public int getId() {
-<span class="nc" id="L307">    return id;</span>
+<span class="nc" id="L301">    return id;</span>
   }
 
   public void setId(int id) {
-<span class="nc" id="L311">    this.id = id;</span>
-<span class="nc" id="L312">  }</span>
+<span class="nc" id="L305">    this.id = id;</span>
+<span class="nc" id="L306">  }</span>
+
+  public boolean getIsDeleted() {
+<span class="nc" id="L309">    return isDeleted;</span>
+  }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

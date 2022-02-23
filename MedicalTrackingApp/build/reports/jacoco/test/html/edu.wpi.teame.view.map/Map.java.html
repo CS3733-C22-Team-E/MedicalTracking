@@ -737,165 +737,167 @@ public class Map {
 <span class="nc" id="L737">    updateLayoutChildren();</span>
 
 <span class="nc" id="L739">    ContextMenu ServiceRequestMenu = new ContextMenu();</span>
-<span class="nc" id="L740">    RadioMenuItem CompleteServiceRequest = new RadioMenuItem(&quot;Complete Service Request&quot;);</span>
-<span class="nc" id="L741">    RadioMenuItem UpdateServiceRequest = new RadioMenuItem(&quot;Update Service Request&quot;);</span>
-<span class="nc" id="L742">    AutoCompleteTextField LocationField = new AutoCompleteTextField();</span>
-<span class="nc" id="L743">    AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();</span>
-<span class="nc" id="L744">    CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);</span>
-<span class="nc" id="L745">    CustomMenuItem Location = new CustomMenuItem(LocationField);</span>
-<span class="nc" id="L746">    ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))</span>
-<span class="nc" id="L747">        .getAll()</span>
-<span class="nc" id="L748">        .forEach(</span>
+<span class="nc" id="L740">    ServiceRequestMenu.setStyle(</span>
+        &quot;-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)&quot;);
+<span class="nc" id="L742">    RadioMenuItem CompleteServiceRequest = new RadioMenuItem(&quot;Complete Service Request&quot;);</span>
+<span class="nc" id="L743">    RadioMenuItem UpdateServiceRequest = new RadioMenuItem(&quot;Update Service Request&quot;);</span>
+<span class="nc" id="L744">    AutoCompleteTextField LocationField = new AutoCompleteTextField();</span>
+<span class="nc" id="L745">    AutoCompleteTextField AssigneeServiceRequest = new AutoCompleteTextField();</span>
+<span class="nc" id="L746">    CustomMenuItem Assignee = new CustomMenuItem(AssigneeServiceRequest);</span>
+<span class="nc" id="L747">    CustomMenuItem Location = new CustomMenuItem(LocationField);</span>
+<span class="nc" id="L748">    ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))</span>
+<span class="nc" id="L749">        .getAll()</span>
+<span class="nc" id="L750">        .forEach(</span>
             location -&gt; {
-<span class="nc" id="L750">              LocationField.getEntries().add(location.getLongName());</span>
-<span class="nc" id="L751">            });</span>
-<span class="nc" id="L752">    ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))</span>
-<span class="nc" id="L753">        .getAll()</span>
-<span class="nc" id="L754">        .forEach(</span>
+<span class="nc" id="L752">              LocationField.getEntries().add(location.getLongName());</span>
+<span class="nc" id="L753">            });</span>
+<span class="nc" id="L754">    ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))</span>
+<span class="nc" id="L755">        .getAll()</span>
+<span class="nc" id="L756">        .forEach(</span>
             employee -&gt; {
-<span class="nc" id="L756">              AssigneeServiceRequest.getEntries().add(employee.getName());</span>
-<span class="nc" id="L757">            });</span>
-<span class="nc" id="L758">    UpdateServiceRequest.setSelected(false);</span>
-<span class="nc" id="L759">    UpdateServiceRequest.setOnAction(</span>
-<span class="nc" id="L760">        new EventHandler&lt;ActionEvent&gt;() {</span>
+<span class="nc" id="L758">              AssigneeServiceRequest.getEntries().add(employee.getName());</span>
+<span class="nc" id="L759">            });</span>
+<span class="nc" id="L760">    UpdateServiceRequest.setSelected(false);</span>
+<span class="nc" id="L761">    UpdateServiceRequest.setOnAction(</span>
+<span class="nc" id="L762">        new EventHandler&lt;ActionEvent&gt;() {</span>
           @Override
           public void handle(ActionEvent event) {
             try {
-<span class="nc" id="L764">              Location newLocation =</span>
-<span class="nc" id="L765">                  ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))</span>
-<span class="nc" id="L766">                      .getByName(LocationField.getText());</span>
-<span class="nc" id="L767">              Employee newEmployee =</span>
-<span class="nc" id="L768">                  ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))</span>
-<span class="nc" id="L769">                      .getByAssignee(AssigneeServiceRequest.getText());</span>
-<span class="nc bnc" id="L770" title="All 2 branches missed.">              if (newLocation != null) {</span>
-<span class="nc" id="L771">                SR.setLocation(newLocation);</span>
-<span class="nc" id="L772">                newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);</span>
-<span class="nc" id="L773">                newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);</span>
-<span class="nc" id="L774">                newIcon.progressIndicator.setTranslateX(newIcon.Icon.getTranslateX());</span>
-<span class="nc" id="L775">                newIcon.progressIndicator.setTranslateY(newIcon.Icon.getTranslateY());</span>
-<span class="nc" id="L776">                System.out.println(</span>
-<span class="nc" id="L777">                    &quot;Updated Service Request Location to:&quot; + SR.getLocation().getLongName());</span>
+<span class="nc" id="L766">              Location newLocation =</span>
+<span class="nc" id="L767">                  ((LocationManager) DBManager.getManager(DataBaseObjectType.Location))</span>
+<span class="nc" id="L768">                      .getByName(LocationField.getText());</span>
+<span class="nc" id="L769">              Employee newEmployee =</span>
+<span class="nc" id="L770">                  ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee))</span>
+<span class="nc" id="L771">                      .getByAssignee(AssigneeServiceRequest.getText());</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">              if (newLocation != null) {</span>
+<span class="nc" id="L773">                SR.setLocation(newLocation);</span>
+<span class="nc" id="L774">                newIcon.Icon.setTranslateX(newLocation.getX() - MAPWIDTH / 2);</span>
+<span class="nc" id="L775">                newIcon.Icon.setTranslateY(newLocation.getY() - MAPHEIGHT / 2);</span>
+<span class="nc" id="L776">                newIcon.progressIndicator.setTranslateX(newIcon.Icon.getTranslateX());</span>
+<span class="nc" id="L777">                newIcon.progressIndicator.setTranslateY(newIcon.Icon.getTranslateY());</span>
+<span class="nc" id="L778">                System.out.println(</span>
+<span class="nc" id="L779">                    &quot;Updated Service Request Location to:&quot; + SR.getLocation().getLongName());</span>
               }
-<span class="nc bnc" id="L779" title="All 2 branches missed.">              if (newEmployee != null) {</span>
-<span class="nc" id="L780">                SR.setAssignee(newEmployee);</span>
-<span class="nc" id="L781">                System.out.println(</span>
-<span class="nc" id="L782">                    &quot;Updated Service Request Assignee to: &quot; + SR.getAssignee().getName());</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">              if (newEmployee != null) {</span>
+<span class="nc" id="L782">                SR.setAssignee(newEmployee);</span>
+<span class="nc" id="L783">                System.out.println(</span>
+<span class="nc" id="L784">                    &quot;Updated Service Request Assignee to: &quot; + SR.getAssignee().getName());</span>
               }
-<span class="nc" id="L784">            } catch (SQLException e) {</span>
-<span class="nc" id="L785">              e.printStackTrace();</span>
-<span class="nc" id="L786">            }</span>
+<span class="nc" id="L786">            } catch (SQLException e) {</span>
+<span class="nc" id="L787">              e.printStackTrace();</span>
+<span class="nc" id="L788">            }</span>
 
             try {
-<span class="nc" id="L789">              DBManager.getManager(SR.getDBType()).update(SR);</span>
-<span class="nc" id="L790">            } catch (SQLException e) {</span>
-<span class="nc" id="L791">              e.printStackTrace();</span>
-<span class="nc" id="L792">            }</span>
-<span class="nc" id="L793">          }</span>
+<span class="nc" id="L791">              DBManager.getManager(SR.getDBType()).update(SR);</span>
+<span class="nc" id="L792">            } catch (SQLException e) {</span>
+<span class="nc" id="L793">              e.printStackTrace();</span>
+<span class="nc" id="L794">            }</span>
+<span class="nc" id="L795">          }</span>
         });
-<span class="nc" id="L795">    CompleteServiceRequest.setOnAction(</span>
-<span class="nc" id="L796">        new EventHandler&lt;ActionEvent&gt;() {</span>
+<span class="nc" id="L797">    CompleteServiceRequest.setOnAction(</span>
+<span class="nc" id="L798">        new EventHandler&lt;ActionEvent&gt;() {</span>
           @Override
           public void handle(ActionEvent event) {
-<span class="nc" id="L799">            newIcon.cancelTimer();</span>
-<span class="nc" id="L800">            CompleteServiceRequest.setSelected(true);</span>
-<span class="nc" id="L801">          }</span>
+<span class="nc" id="L801">            newIcon.cancelTimer();</span>
+<span class="nc" id="L802">            CompleteServiceRequest.setSelected(true);</span>
+<span class="nc" id="L803">          }</span>
         });
-<span class="nc" id="L803">    Location.setHideOnClick(false);</span>
-<span class="nc" id="L804">    Assignee.setHideOnClick(false);</span>
-<span class="nc" id="L805">    CompleteServiceRequest.setSelected(false);</span>
-<span class="nc" id="L806">    ServiceRequestMenu.getItems().add(Assignee);</span>
-<span class="nc" id="L807">    ServiceRequestMenu.getItems().add(Location);</span>
-<span class="nc" id="L808">    ServiceRequestMenu.getItems().add(CompleteServiceRequest);</span>
-<span class="nc" id="L809">    ServiceRequestMenu.getItems().add(UpdateServiceRequest);</span>
+<span class="nc" id="L805">    Location.setHideOnClick(false);</span>
+<span class="nc" id="L806">    Assignee.setHideOnClick(false);</span>
+<span class="nc" id="L807">    CompleteServiceRequest.setSelected(false);</span>
+<span class="nc" id="L808">    ServiceRequestMenu.getItems().add(Assignee);</span>
+<span class="nc" id="L809">    ServiceRequestMenu.getItems().add(Location);</span>
+<span class="nc" id="L810">    ServiceRequestMenu.getItems().add(CompleteServiceRequest);</span>
+<span class="nc" id="L811">    ServiceRequestMenu.getItems().add(UpdateServiceRequest);</span>
 
-<span class="nc" id="L811">    newIcon.progressIndicator.setOnMouseClicked(</span>
-<span class="nc" id="L812">        new EventHandler&lt;MouseEvent&gt;() {</span>
+<span class="nc" id="L813">    newIcon.progressIndicator.setOnMouseClicked(</span>
+<span class="nc" id="L814">        new EventHandler&lt;MouseEvent&gt;() {</span>
           @Override
           public void handle(MouseEvent event) {
-<span class="nc" id="L815">            ServiceRequestMenu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());</span>
-<span class="nc" id="L816">          }</span>
+<span class="nc" id="L817">            ServiceRequestMenu.show(newIcon.Icon, event.getScreenX(), event.getScreenY());</span>
+<span class="nc" id="L818">          }</span>
         });
-<span class="nc" id="L818">  }</span>
+<span class="nc" id="L820">  }</span>
 
   private void createNewRadialMenus() {
-<span class="nc" id="L821">    System.out.println(&quot;Creating radial menus...&quot;);</span>
-<span class="nc bnc" id="L822" title="All 2 branches missed.">    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {</span>
-<span class="nc" id="L823">      List&lt;MapEquipmentIcon&gt; mapEquipmentIconsAtLocation = new LinkedList&lt;&gt;();</span>
-<span class="nc bnc" id="L824" title="All 2 branches missed.">      for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {</span>
-<span class="nc" id="L825">        Equipment e = i.getEquipment();</span>
-<span class="nc bnc" id="L826" title="All 2 branches missed.">        if (e.getLocation().equalsByName(dot.getLocation())) {</span>
-<span class="nc" id="L827">          mapEquipmentIconsAtLocation.add(i);</span>
+<span class="nc" id="L823">    System.out.println(&quot;Creating radial menus...&quot;);</span>
+<span class="nc bnc" id="L824" title="All 2 branches missed.">    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {</span>
+<span class="nc" id="L825">      List&lt;MapEquipmentIcon&gt; mapEquipmentIconsAtLocation = new LinkedList&lt;&gt;();</span>
+<span class="nc bnc" id="L826" title="All 2 branches missed.">      for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {</span>
+<span class="nc" id="L827">        Equipment e = i.getEquipment();</span>
+<span class="nc bnc" id="L828" title="All 2 branches missed.">        if (e.getLocation().equalsByName(dot.getLocation())) {</span>
+<span class="nc" id="L829">          mapEquipmentIconsAtLocation.add(i);</span>
         }
-<span class="nc" id="L829">      }</span>
+<span class="nc" id="L831">      }</span>
 
       // If there's more than 1 equipment per location, create a radial menu.
-<span class="nc bnc" id="L832" title="All 2 branches missed.">      if (mapEquipmentIconsAtLocation.size() &gt; 1) {</span>
-<span class="nc" id="L833">        System.out.println(&quot;Equipment sharing location!&quot;);</span>
-<span class="nc" id="L834">        RadialEquipmentMenu r = new RadialEquipmentMenu(mapEquipmentIconsAtLocation);</span>
+<span class="nc bnc" id="L834" title="All 2 branches missed.">      if (mapEquipmentIconsAtLocation.size() &gt; 1) {</span>
+<span class="nc" id="L835">        System.out.println(&quot;Equipment sharing location!&quot;);</span>
+<span class="nc" id="L836">        RadialEquipmentMenu r = new RadialEquipmentMenu(mapEquipmentIconsAtLocation);</span>
         // Make sure we don't already have this radial menu:
-<span class="nc" id="L836">        boolean found = false;</span>
-<span class="nc bnc" id="L837" title="All 2 branches missed.">        for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
-<span class="nc bnc" id="L838" title="All 2 branches missed.">          if (r.toString().equals(rm.toString())) {</span>
-<span class="nc" id="L839">            found = true;</span>
+<span class="nc" id="L838">        boolean found = false;</span>
+<span class="nc bnc" id="L839" title="All 2 branches missed.">        for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">          if (r.toString().equals(rm.toString())) {</span>
+<span class="nc" id="L841">            found = true;</span>
           }
-<span class="nc" id="L841">        }</span>
-<span class="nc bnc" id="L842" title="All 2 branches missed.">        if (!found) {</span>
-<span class="nc" id="L843">          System.out.println(&quot;New radial menu detectedâ€” adding to HashMap...&quot;);</span>
-<span class="nc" id="L844">          radialMenusByFloor.get(currFloor).add(r);</span>
+<span class="nc" id="L843">        }</span>
+<span class="nc bnc" id="L844" title="All 2 branches missed.">        if (!found) {</span>
+<span class="nc" id="L845">          System.out.println(&quot;New radial menu detectedâ€” adding to HashMap...&quot;);</span>
+<span class="nc" id="L846">          radialMenusByFloor.get(currFloor).add(r);</span>
         }
       }
-<span class="nc" id="L847">    }</span>
+<span class="nc" id="L849">    }</span>
 
     // Put on map
-<span class="nc bnc" id="L850" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
-<span class="nc" id="L851">      rm.hideIndividualIcons();</span>
-<span class="nc" id="L852">      rm.place(MAPWIDTH, MAPHEIGHT);</span>
-<span class="nc" id="L853">    }</span>
-<span class="nc" id="L854">  }</span>
+<span class="nc bnc" id="L852" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
+<span class="nc" id="L853">      rm.hideIndividualIcons();</span>
+<span class="nc" id="L854">      rm.place(MAPWIDTH, MAPHEIGHT);</span>
+<span class="nc" id="L855">    }</span>
+<span class="nc" id="L856">  }</span>
 
   private void closeRadialMenus(MouseEvent e) {
-<span class="nc bnc" id="L857" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
-<span class="nc" id="L858">      Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));</span>
-<span class="nc" id="L859">      double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());</span>
-<span class="nc bnc" id="L860" title="All 2 branches missed.">      if (distance &gt; rm.getRadius()) {</span>
-<span class="nc" id="L861">        rm.hide();</span>
+<span class="nc bnc" id="L859" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
+<span class="nc" id="L860">      Point2D mouseLocation = layout.sceneToLocal(new Point2D(e.getSceneX(), e.getSceneY()));</span>
+<span class="nc" id="L861">      double distance = rm.getDistanceToCoordinate(mouseLocation.getX(), mouseLocation.getY());</span>
+<span class="nc bnc" id="L862" title="All 2 branches missed.">      if (distance &gt; rm.getRadius()) {</span>
+<span class="nc" id="L863">        rm.hide();</span>
       }
-<span class="nc" id="L863">    }</span>
-<span class="nc" id="L864">  }</span>
+<span class="nc" id="L865">    }</span>
+<span class="nc" id="L866">  }</span>
 
   private void updateRadialMenus() {
-<span class="nc bnc" id="L867" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
-<span class="nc bnc" id="L868" title="All 2 branches missed.">      if (!rm.getIcons().isEmpty()) {</span>
-<span class="nc bnc" id="L869" title="All 2 branches missed.">        for (MapEquipmentIcon i : rm.getIcons()) {</span>
-<span class="nc bnc" id="L870" title="All 2 branches missed.">          if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {</span>
-<span class="nc" id="L871">            rm.removeEquipmentIcon(i);</span>
+<span class="nc bnc" id="L869" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
+<span class="nc bnc" id="L870" title="All 2 branches missed.">      if (!rm.getIcons().isEmpty()) {</span>
+<span class="nc bnc" id="L871" title="All 2 branches missed.">        for (MapEquipmentIcon i : rm.getIcons()) {</span>
+<span class="nc bnc" id="L872" title="All 2 branches missed.">          if (!i.getEquipment().getLocation().equalsByName(rm.getLocation())) {</span>
+<span class="nc" id="L873">            rm.removeEquipmentIcon(i);</span>
           }
-<span class="nc" id="L873">        }</span>
+<span class="nc" id="L875">        }</span>
       }
 
-<span class="nc bnc" id="L876" title="All 2 branches missed.">      if (rm.getIcons().size() &lt; 2) {</span>
-<span class="nc bnc" id="L877" title="All 2 branches missed.">        for (MapEquipmentIcon i : rm.getIcons()) {</span>
-<span class="nc" id="L878">          i.getButton().setVisible(true);</span>
-<span class="nc" id="L879">        }</span>
-<span class="nc" id="L880">        radialMenusByFloor.get(currFloor).remove(rm);</span>
-<span class="nc" id="L881">        rm.kill();</span>
+<span class="nc bnc" id="L878" title="All 2 branches missed.">      if (rm.getIcons().size() &lt; 2) {</span>
+<span class="nc bnc" id="L879" title="All 2 branches missed.">        for (MapEquipmentIcon i : rm.getIcons()) {</span>
+<span class="nc" id="L880">          i.getButton().setVisible(true);</span>
+<span class="nc" id="L881">        }</span>
+<span class="nc" id="L882">        radialMenusByFloor.get(currFloor).remove(rm);</span>
+<span class="nc" id="L883">        rm.kill();</span>
       }
-<span class="nc" id="L883">    }</span>
-<span class="nc" id="L884">  }</span>
+<span class="nc" id="L885">    }</span>
+<span class="nc" id="L886">  }</span>
 
   // This is the longest method name I will tolerate. Do not do this.
   private void showEquipmentRemovedFromRadialMenus() {
-<span class="nc" id="L888">    LinkedList&lt;MapEquipmentIcon&gt; iconsInMenus = new LinkedList&lt;&gt;();</span>
-<span class="nc bnc" id="L889" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
-<span class="nc" id="L890">      rm.getButton().setVisible(true);</span>
-<span class="nc" id="L891">      iconsInMenus.addAll(rm.getIcons());</span>
-<span class="nc" id="L892">    }</span>
-<span class="nc bnc" id="L893" title="All 2 branches missed.">    for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {</span>
-<span class="nc bnc" id="L894" title="All 4 branches missed.">      if (!i.getButton().isVisible() &amp;&amp; !iconsInMenus.contains(i)) {</span>
-<span class="nc" id="L895">        i.getButton().setVisible(true);</span>
+<span class="nc" id="L890">    LinkedList&lt;MapEquipmentIcon&gt; iconsInMenus = new LinkedList&lt;&gt;();</span>
+<span class="nc bnc" id="L891" title="All 2 branches missed.">    for (RadialEquipmentMenu rm : radialMenusByFloor.get(currFloor)) {</span>
+<span class="nc" id="L892">      rm.getButton().setVisible(true);</span>
+<span class="nc" id="L893">      iconsInMenus.addAll(rm.getIcons());</span>
+<span class="nc" id="L894">    }</span>
+<span class="nc bnc" id="L895" title="All 2 branches missed.">    for (MapEquipmentIcon i : mapIconsByFloor.get(currFloor)) {</span>
+<span class="nc bnc" id="L896" title="All 4 branches missed.">      if (!i.getButton().isVisible() &amp;&amp; !iconsInMenus.contains(i)) {</span>
+<span class="nc" id="L897">        i.getButton().setVisible(true);</span>
       }
-<span class="nc" id="L897">    }</span>
-<span class="nc" id="L898">  }</span>
+<span class="nc" id="L899">    }</span>
+<span class="nc" id="L900">  }</span>
 
   private static class Position {
     double x;
