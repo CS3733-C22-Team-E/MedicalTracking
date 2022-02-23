@@ -3,8 +3,11 @@ package edu.wpi.teame.view.map.Icons;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
+
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,7 +140,9 @@ public class MapServiceRequestIcon {
                     Icon.setVisible(false);
                     attachedTo.remove(this);
                     try {
-                      DBManager.getManager(SR.getDBType()).remove(SR.getId());
+                      SR.setStatus(ServiceRequestStatus.CLOSED);
+                      SR.setCloseDate(new Date(new java.util.Date().getTime()));
+                      DBManager.getManager(SR.getDBType()).update(SR);
                     } catch (SQLException e) {
                       e.printStackTrace();
                     }
