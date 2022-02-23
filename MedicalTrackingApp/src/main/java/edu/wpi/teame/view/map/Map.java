@@ -22,6 +22,7 @@ import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -665,8 +666,46 @@ public class Map {
                   if (serviceRequest.getDBType() == DataBaseObjectType.MedicalEquipmentSR) {
                     MedicalEquipmentServiceRequest newSr =
                         (MedicalEquipmentServiceRequest) serviceRequest;
-                    Navigation.FindAndDrawRoute(
-                        newSr.getEquipment().getLocation().getId(), newSr.getLocation().getId());
+                    List<Location> routeSnap =
+                        Navigation.FindAndDrawRoute(
+                            newSr.getEquipment().getLocation().getId(),
+                            newSr.getLocation().getId());
+                    Timer newTimer = new Timer();
+                    mapIconsByFloor
+                        .get(newSr.getLocation().getFloor())
+                        .forEach(
+                            icon -> {
+                              if (newSr.getEquipment().getId() == icon.getEquipment().getId()) {
+                                System.out.println("Found Equipment");
+                                int period = (int) 20 * 1000 / routeSnap.size();
+                                final int[] counter = {0};
+                                newTimer.scheduleAtFixedRate(
+                                    new TimerTask() {
+                                      @Override
+                                      public void run() {
+                                        Platform.runLater(
+                                            new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                if (counter[0] == routeSnap.size()) {
+                                                  Navigation.RemoveRoute();
+                                                  newTimer.cancel();
+                                                }
+                                              }
+                                            });
+                                        icon.getButton()
+                                            .setTranslateX(
+                                                routeSnap.get(counter[0]).getX() - MAPWIDTH / 2);
+                                        icon.getButton()
+                                            .setTranslateY(
+                                                routeSnap.get(counter[0]).getY() - MAPHEIGHT / 2);
+                                        counter[0]++;
+                                      }
+                                    },
+                                    0,
+                                    period);
+                              }
+                            });
                   }
                 } catch (SQLException e) {
                   e.printStackTrace();

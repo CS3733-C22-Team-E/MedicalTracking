@@ -215,7 +215,7 @@ public class PathFinder {
     routeVisual.clear();
   }
 
-  public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
+  public List<Location> FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
     // DBManager.getInstance().getLocationManager().get(StartID);
@@ -244,9 +244,11 @@ public class PathFinder {
             Visual.createConnection(
                 initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
       }
+      return route;
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
+    return null;
   }
 
   public void FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
