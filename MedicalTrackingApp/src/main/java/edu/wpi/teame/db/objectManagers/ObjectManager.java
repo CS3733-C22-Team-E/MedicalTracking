@@ -5,6 +5,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Employee;
@@ -119,7 +120,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     }
 
     while (lineData.readNext()) {
-      insert(getCastedType(lineData));
+      T object = insert(getCastedType(lineData));
+      CSVManager.getInstance().putCsvToDBId(objectType, lineData.getColumnString("id"), object.getId());
     }
   }
 

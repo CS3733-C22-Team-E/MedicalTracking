@@ -10,4 +10,6 @@ public interface ISQLSerializable extends ICSVSerializable {
   public String getSQLUpdateString();
 
   public String getTableColumns();
+
+  public int getId();
 }
