@@ -1,9 +1,11 @@
 package edu.wpi.teame.model;
 
 import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Edge implements ISQLSerializable {
   private boolean isDeleted;
@@ -11,23 +13,55 @@ public class Edge implements ISQLSerializable {
   private Location end;
   private int id;
 
-  public Edge(ResultSet resultSet) {}
+  public Edge(Location start, Location end, int id) {
+    this.start = start;
+    this.end = end;
+    this.id = id;
+  }
 
-  public Edge(CSVLineData lineData) {}
+  public Edge(ResultSet resultSet) throws SQLException {
+    this.start =
+        (Location)
+            DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("startID"));
+    this.end =
+        (Location) DBManager.getManager(DataBaseObjectType.Location).get(resultSet.getInt("endID"));
+    this.isDeleted = resultSet.getBoolean("isDeleted");
+    this.id = resultSet.getInt("id");
+  }
+
+  public Edge(CSVLineData lineData) throws SQLException {
+    this.isDeleted = false;
+    this.start = (Location) lineData.getDBObject(DataBaseObjectType.Location, "startID");
+    this.end = (Location) lineData.getDBObject(DataBaseObjectType.Location, "endID");
+  }
 
   @Override
   public String toString() {
-    return "id: " + id + ", startID: " + start.getId() + ", endID: " + end.getId();
+    return new StringBuilder()
+        .append("id: ")
+        .append(id)
+        .append(", startID: ")
+        .append(start.getId())
+        .append(", endID: ")
+        .append(end.getId())
+        .toString();
   }
 
   @Override
   public String getSQLUpdateString() {
-    return "startID = " + start.getId() + ", endID = '" + end.getId() + " WHERE id = " + id;
+    return new StringBuilder()
+        .append("startID = ")
+        .append(start.getId())
+        .append(", endID = '")
+        .append(end.getId())
+        .append(" WHERE id = ")
+        .append(id)
+        .toString();
   }
 
   @Override
   public String getSQLInsertString() {
-    return start.getId() + ", '" + end.getId();
+    return new StringBuilder().append(start.getId()).append(", '").append(end.getId()).toString();
   }
 
   @Override
@@ -59,5 +93,25 @@ public class Edge implements ISQLSerializable {
 
   public int getId() {
     return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public Location getStart() {
+    return start;
+  }
+
+  public void setStart(Location start) {
+    this.start = start;
+  }
+
+  public Location getEnd() {
+    return end;
+  }
+
+  public void setEnd(Location end) {
+    this.end = end;
   }
 }
