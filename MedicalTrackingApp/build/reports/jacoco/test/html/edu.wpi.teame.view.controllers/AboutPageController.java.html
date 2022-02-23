@@ -1,97 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AboutPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.controllers</a> &gt; <span class="el_source">AboutPageController.java</span></div><h1>AboutPageController.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.controllers;
 
-import edu.wpi.teame.App;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 
-<span class="nc" id="L19">public class AboutPageController implements Initializable {</span>
-  @FXML private AnchorPane anchorPane;
-  @FXML private GridPane gridPane;
-  @FXML private Button backButton;
-
-  @FXML private Circle samayCircle;
-  @FXML private Label samay;
-  @FXML private Circle amitaiCircle;
-  @FXML private Label amitai;
-  @FXML private Circle joeCircle;
-  @FXML private Label joe;
-  @FXML private Circle maanavCircle;
-  @FXML private Label maanav;
-  @FXML private Circle joseCircle;
-  @FXML private Label jose;
-  @FXML private Circle haohaoCircle;
-  @FXML private Label haohao;
-  @FXML private Circle jeremyCircle;
-  @FXML private Label jeremy;
-  @FXML private Circle brindaCircle;
-  @FXML private Label brinda;
-  @FXML private Circle camiloCircle;
-  @FXML private Label camilo;
-
-<span class="nc" id="L43">  private Scene landingPage = null;</span>
-
+<span class="nc" id="L7">public class AboutPageController implements Initializable {</span>
   @Override
-  public void initialize(URL location, ResourceBundle resources) {
-    try {
-<span class="nc" id="L48">      landingPage = new Scene(FXMLLoader.load(App.class.getResource(&quot;view/LandingPage.fxml&quot;)));</span>
-<span class="nc" id="L49">    } catch (IOException e) {</span>
-<span class="nc" id="L50">      e.printStackTrace();</span>
-<span class="nc" id="L51">    }</span>
-
-<span class="nc" id="L53">    Image samImage = new Image(&quot;edu/wpi/teame/images/About/samay.png&quot;);</span>
-<span class="nc" id="L54">    ImagePattern samPattern = new ImagePattern(samImage);</span>
-<span class="nc" id="L55">    samayCircle.setFill(samPattern);</span>
-
-<span class="nc" id="L57">    Image amiImage = new Image(&quot;edu/wpi/teame/images/About/amitai.png&quot;);</span>
-<span class="nc" id="L58">    ImagePattern amiPattern = new ImagePattern(amiImage);</span>
-<span class="nc" id="L59">    amitaiCircle.setFill(amiPattern);</span>
-
-<span class="nc" id="L61">    Image joeImage = new Image(&quot;edu/wpi/teame/images/About/joe2.JPG&quot;);</span>
-<span class="nc" id="L62">    ImagePattern joePattern = new ImagePattern(joeImage);</span>
-<span class="nc" id="L63">    joeCircle.setFill(joePattern);</span>
-
-<span class="nc" id="L65">    Image maaImage = new Image(&quot;edu/wpi/teame/images/About/maanav.png&quot;);</span>
-<span class="nc" id="L66">    ImagePattern maaPattern = new ImagePattern(maaImage);</span>
-<span class="nc" id="L67">    maanavCircle.setFill(maaPattern);</span>
-
-<span class="nc" id="L69">    Image josImage = new Image(&quot;edu/wpi/teame/images/About/jose.png&quot;);</span>
-<span class="nc" id="L70">    ImagePattern josPattern = new ImagePattern(josImage);</span>
-<span class="nc" id="L71">    joseCircle.setFill(josPattern);</span>
-
-<span class="nc" id="L73">    Image haoImage = new Image(&quot;edu/wpi/teame/images/About/haohao.png&quot;);</span>
-<span class="nc" id="L74">    ImagePattern haoPattern = new ImagePattern(haoImage);</span>
-<span class="nc" id="L75">    haohaoCircle.setFill(haoPattern);</span>
-
-<span class="nc" id="L77">    Image jerImage = new Image(&quot;edu/wpi/teame/images/About/jeremy.png&quot;);</span>
-<span class="nc" id="L78">    ImagePattern jerPattern = new ImagePattern(jerImage);</span>
-<span class="nc" id="L79">    jeremyCircle.setFill(jerPattern);</span>
-
-<span class="nc" id="L81">    Image briImage = new Image(&quot;edu/wpi/teame/images/About/brinda.png&quot;);</span>
-<span class="nc" id="L82">    ImagePattern briPattern = new ImagePattern(briImage);</span>
-<span class="nc" id="L83">    brindaCircle.setFill(briPattern);</span>
-
-<span class="nc" id="L85">    Image camImage = new Image(&quot;edu/wpi/teame/images/About/camilo.png&quot;);</span>
-<span class="nc" id="L86">    ImagePattern camPattern = new ImagePattern(camImage);</span>
-<span class="nc" id="L87">    camiloCircle.setFill(camPattern);</span>
-<span class="nc" id="L88">  }</span>
-
-  @FXML
-  private void exitAbout() {
-<span class="nc" id="L92">    App.getAppPrimaryStage().setScene(landingPage);</span>
-<span class="nc" id="L93">    App.getAppPrimaryStage().show();</span>
-<span class="nc" id="L94">    App.getAppPrimaryStage().setFullScreen(true);</span>
-<span class="nc" id="L95">  }</span>
+<span class="nc" id="L9">  public void initialize(URL location, ResourceBundle resources) {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
