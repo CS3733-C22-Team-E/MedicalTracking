@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.*;
+import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.controllers.LandingPageController;
@@ -21,6 +22,7 @@ import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -220,7 +222,9 @@ public class Map {
       layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
-      layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+      if (!layout.getChildren().contains(icon.progressIndicator)) {
+        layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
+      }
     }
     updateRadialMenus();
     createNewRadialMenus();
@@ -676,6 +680,84 @@ public class Map {
                 oldSR.add(serviceRequest);
                 try {
                   ServiceRequestToMapElement(serviceRequest);
+                  if (serviceRequest.getDBType() == DataBaseObjectType.MedicalEquipmentSR) {
+                    MedicalEquipmentServiceRequest newSr =
+                        (MedicalEquipmentServiceRequest) serviceRequest;
+                    List<Location> routeSnap =
+                        Navigation.FindAndDrawRoute(
+                            newSr.getEquipment().getLocation().getId(),
+                            newSr.getLocation().getId());
+                    Timer newTimer = new Timer();
+                    mapIconsByFloor
+                        .get(newSr.getLocation().getFloor())
+                        .forEach(
+                            icon -> {
+                              if (newSr.getEquipment().getId() == icon.getEquipment().getId()) {
+                                System.out.println("Found Equipment");
+                                int period = (int) 20 * 1000 / routeSnap.size();
+                                final int[] counter = {0};
+                                newTimer.scheduleAtFixedRate(
+                                    new TimerTask() {
+                                      @Override
+                                      public void run() {
+                                        Platform.runLater(
+                                            new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                if (counter[0] > routeSnap.size() - 1) {
+                                                  Navigation.RemoveRoute();
+                                                  newTimer.cancel();
+                                                }
+                                                if (counter[0] <= routeSnap.size() - 1) {
+                                                  icon.getButton()
+                                                      .setTranslateX(
+                                                          routeSnap.get(counter[0]).getX()
+                                                              - MAPWIDTH / 2);
+                                                  icon.getButton()
+                                                      .setTranslateY(
+                                                          routeSnap.get(counter[0]).getY()
+                                                              - MAPHEIGHT / 2);
+                                                  newSr
+                                                      .getEquipment()
+                                                      .setLocation(routeSnap.get(counter[0]));
+                                                  try {
+                                                    DBManager.getManager(
+                                                            DataBaseObjectType.Equipment)
+                                                        .update(newSr.getEquipment());
+                                                  } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                  }
+                                                }
+                                              }
+                                            });
+
+                                        //                                        try {
+                                        //                                          Location newL =
+                                        //
+                                        // routeSnap.get(routeSnap.size() - 1);
+                                        //                                          Equipment newE =
+                                        // newSr.getEquipment();
+                                        //
+                                        // newE.setLocation(newL);
+                                        //
+                                        // DBManager.getManager(
+                                        //
+                                        // DataBaseObjectType.Equipment)
+                                        //
+                                        // .update(newE);
+                                        //                                        } catch
+                                        // (SQLException e) {
+                                        //
+                                        // e.printStackTrace();
+                                        //                                        }
+                                        counter[0]++;
+                                      }
+                                    },
+                                    0,
+                                    period);
+                              }
+                            });
+                  }
                 } catch (SQLException e) {
                   e.printStackTrace();
                 }
@@ -712,7 +794,8 @@ public class Map {
                       PathFindingLocations.get(1).getIcon().setFill(Color.GREEN);
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getLocation().getId(),
-                          PathFindingLocations.get(1).getLocation().getId());
+                          PathFindingLocations.get(1).getLocation().getId(),
+                          Color.BLACK);
 
                     } catch (SQLException e) {
                       e.printStackTrace();
