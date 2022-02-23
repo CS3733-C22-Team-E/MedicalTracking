@@ -1,14 +1,20 @@
 package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EdgeManager;
+import edu.wpi.teame.model.Edge;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
+
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Stream;
+
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -38,7 +44,13 @@ public class PathFinder {
     locations.addAll(DBManager.getManager(DataBaseObjectType.Location).getAll());
   }
 
-  private void createConnections() {
+  private void createConnections() throws SQLException {
+    ((EdgeManager)DBManager.getManager(DataBaseObjectType.Edge)).getAll().forEach(edge->{
+    connections.put(edge.getStart().getId(), new HashSet<Integer>());
+    });
+    ((EdgeManager)DBManager.getManager(DataBaseObjectType.Edge)).getAll().forEach(edge->{
+      connections.get(edge.getStart()).add(edge.getEnd().getId());
+    });
     //    connections.put(1, Stream.of(22).collect(Collectors.toSet()));
     //    connections.put(2, Stream.of(29).collect(Collectors.toSet()));
     //    connections.put(3, Stream.of(26).collect(Collectors.toSet()));
