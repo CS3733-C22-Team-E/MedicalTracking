@@ -20,7 +20,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
@@ -43,7 +47,7 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    CARDWIDTH = SCENEWIDTH / 1.5;
+    CARDWIDTH = SCENEWIDTH;
   }
 
   public static void main(String[] args) {
@@ -87,10 +91,19 @@ public class ServiceRequestBacklog {
   public HBox getTitle() throws SQLException {
 
     HBox tBox = new HBox();
-    Text title = new Text("Request Backlog");
-    title.setFont(Font.font(56));
+    Text title = new Text("Service Request Backlog");
+    title.setFont(Font.font("Arial", FontWeight.BOLD, 56));
+    title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
-    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); // TODO Fix
+    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
+    Stop[] stops =
+        new Stop[] {
+          new Stop(0, Color.color(0.458823529, 0.474509804, 1)),
+          new Stop(1, Color.color(0.698039216, 0.141176471, 0.937254902))
+        };
+    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
+    tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
 
@@ -289,7 +302,7 @@ public class ServiceRequestBacklog {
       Employee e = (Employee) DBObject;
       JFXCheckBox eBox = new JFXCheckBox();
       String eBoxText = e.getName();
-      if (eBoxText.length() > 10) {
+      if (eBoxText.length() > 18) {
         eBoxText = eBoxText.substring(0, 10) + "...";
       }
       eBox.setText(eBoxText);

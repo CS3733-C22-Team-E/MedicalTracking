@@ -111,7 +111,7 @@ public class LandingPageController implements Initializable {
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
-            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,
+            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,
             Screen.getPrimary().getBounds().getHeight());
     StyledTab backlogTab =
         new StyledTab(
@@ -138,7 +138,7 @@ public class LandingPageController implements Initializable {
             "DB Management",
             SortOrder.ByName,
             "view/tabs/DBManagementPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
+            new Image(App.class.getResource("images/Icons/pageIcons/DBView.png").toString()));
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
@@ -165,7 +165,7 @@ public class LandingPageController implements Initializable {
             "About Page",
             SortOrder.ByName,
             "view/tabs/AboutPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
+            new Image(App.class.getResource("images/Icons/pageIcons/AboutUs.png").toString()));
     TabHoverAnimation.install(aboutPageTab);
     tabs.add(aboutPageTab);
 
