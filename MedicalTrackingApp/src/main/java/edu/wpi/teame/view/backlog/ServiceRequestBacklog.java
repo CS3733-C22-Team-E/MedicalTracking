@@ -43,7 +43,7 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    CARDWIDTH = SCENEWIDTH / 1.5;
+    CARDWIDTH = SCENEWIDTH;
   }
 
   public static void main(String[] args) {
@@ -289,7 +289,7 @@ public class ServiceRequestBacklog {
       Employee e = (Employee) DBObject;
       JFXCheckBox eBox = new JFXCheckBox();
       String eBoxText = e.getName();
-      if (eBoxText.length() > 10) {
+      if (eBoxText.length() > 18) {
         eBoxText = eBoxText.substring(0, 10) + "...";
       }
       eBox.setText(eBoxText);

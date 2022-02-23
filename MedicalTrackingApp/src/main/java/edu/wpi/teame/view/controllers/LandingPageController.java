@@ -111,7 +111,7 @@ public class LandingPageController implements Initializable {
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
-            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width,
+            Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,
             Screen.getPrimary().getBounds().getHeight());
     StyledTab backlogTab =
         new StyledTab(
