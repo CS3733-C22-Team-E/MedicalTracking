@@ -33,6 +33,7 @@ public class PatientDischargeServiceRequestPageServiceRequestController
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;

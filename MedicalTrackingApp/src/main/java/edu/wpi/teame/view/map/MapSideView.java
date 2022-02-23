@@ -60,7 +60,9 @@ public class MapSideView {
     AllEquipmentView.setPrefSize(600, 200);
     AllEquipmentView.setMaxSize(AllEquipmentView.getPrefWidth(), AllEquipmentView.getPrefHeight());
     AllEquipmentView.getStyleClass().add("combo-box");
-    holder.setAlignment(Pos.CENTER);
+    //    holder.setAlignment();
+    holder.setTranslateX(700);
+    holder.setTranslateY(-300);
     Label Clean = new Label("Clean");
     Label Dirty = new Label("Dirty");
     holder.add(Clean, 0, 1);

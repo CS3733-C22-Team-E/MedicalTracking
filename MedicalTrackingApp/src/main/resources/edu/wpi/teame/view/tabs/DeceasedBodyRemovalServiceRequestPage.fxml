@@ -28,6 +28,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="122.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="52.60001220703123" minHeight="0.0" prefHeight="44.5" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -42,7 +43,7 @@
                 <GridPane.margin>
                     <Insets right="10.0" />
                 </GridPane.margin></Text>
-            <Text fill="#e7c7c7" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Additional Info:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+            <Text fill="#e7c7c7" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Additional Info:" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                 <GridPane.margin>
                     <Insets right="10.0" />
                 </GridPane.margin>
@@ -55,26 +56,26 @@
                 <GridPane.margin>
                     <Insets right="10.0" />
                 </GridPane.margin></Text>
-            <Text fill="#e1abab" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Priority: " GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Text fill="#e1abab" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Priority: " GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                 <GridPane.margin>
                     <Insets right="10.0" />
                 </GridPane.margin></Text>
-            <Text fill="#f7bfbf" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <Text fill="#f7bfbf" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Status:" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                 <GridPane.margin>
                     <Insets right="10.0" />
                 </GridPane.margin>
             </Text>
-            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearText" text="Clear" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Button>
-            <Button fx:id="submitButton" disable="true" mnemonicParsing="false" onAction="#sendToDB" text="Submit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+            <Button fx:id="submitButton" disable="true" mnemonicParsing="false" onAction="#sendToDB" text="Submit" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8">
                 <font>
                     <Font size="16.0" />
                 </font>
             </Button>
-            <TextArea fx:id="additionalInfo" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="247.0" promptText="Add any additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <TextArea fx:id="additionalInfo" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="247.0" promptText="Add any additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="7">
                 <GridPane.margin>
                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                 </GridPane.margin>
@@ -97,16 +98,26 @@
                     <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
                 </GridPane.margin>
             </AutoCompleteTextField>
-            <JFXComboBox fx:id="priority" prefHeight="26.0" prefWidth="569.0" promptText="  Choose priority..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <JFXComboBox fx:id="priority" prefHeight="26.0" prefWidth="569.0" promptText="  Choose priority..." GridPane.columnIndex="1" GridPane.rowIndex="5">
                 <GridPane.margin>
                     <Insets left="10.0" right="10.0" />
                 </GridPane.margin>
             </JFXComboBox>
-            <JFXComboBox fx:id="status" prefHeight="26.0" prefWidth="569.0" promptText="  Choose status..." GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <JFXComboBox fx:id="status" prefHeight="26.0" prefWidth="569.0" promptText="  Choose status..." GridPane.columnIndex="1" GridPane.rowIndex="6">
                 <GridPane.margin>
                     <Insets left="10.0" right="10.0" />
                 </GridPane.margin>
             </JFXComboBox>
+            <Text fill="#e1a9a9" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="* Patient Name:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Text>
+            <AutoCompleteTextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </AutoCompleteTextField>
         </children>
     </GridPane>
 </children>
