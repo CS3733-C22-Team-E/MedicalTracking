@@ -16,24 +16,31 @@
 package edu.wpi.teame.view.ProgressBar;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import javafx.scene.control.Skin;
 
-/**
- * Progress indicator showing a circle that fills
- *
- * @author Andrea Vacondio
- */
 public class FillProgressIndicator extends ProgressCircleIndicator {
 
-<span class="nc" id="L28">  public FillProgressIndicator() {</span>
-<span class="nc" id="L29">    this.getStylesheets().add(App.class.getResource(&quot;css/fillprogress.css&quot;).toString());</span>
-<span class="nc" id="L30">    this.getStyleClass().add(&quot;fillindicator&quot;);</span>
-<span class="nc" id="L31">    this.setInnerCircleRadius(20);</span>
-<span class="nc" id="L32">  }</span>
+<span class="nc" id="L24">  public FillProgressIndicator() {</span>
+<span class="nc" id="L25">    this.getStylesheets().add(App.class.getResource(&quot;css/fillprogress1.css&quot;).toString());</span>
+<span class="nc" id="L26">    this.getStyleClass().add(&quot;fillindicator&quot;);</span>
+<span class="nc" id="L27">    this.setInnerCircleRadius(20);</span>
+<span class="nc" id="L28">  }</span>
+
+<span class="nc" id="L30">  public FillProgressIndicator(ServiceRequestPriority priority) {</span>
+<span class="nc" id="L31">    System.out.println(&quot;css/fillprogress&quot; + String.valueOf(priority.ordinal()) + &quot;.css&quot;);</span>
+<span class="nc" id="L32">    this.getStylesheets()</span>
+<span class="nc" id="L33">        .add(</span>
+            App.class
+<span class="nc" id="L35">                .getResource(&quot;css/fillprogress&quot; + String.valueOf(priority.ordinal()) + &quot;.css&quot;)</span>
+<span class="nc" id="L36">                .toString());</span>
+<span class="nc" id="L37">    this.getStyleClass().add(&quot;fillindicator&quot;);</span>
+<span class="nc" id="L38">    this.setInnerCircleRadius(20);</span>
+<span class="nc" id="L39">  }</span>
 
   @Override
   protected Skin&lt;?&gt; createDefaultSkin() {
-<span class="nc" id="L36">    return new FillProgressIndicatorSkin(this);</span>
+<span class="nc" id="L43">    return new FillProgressIndicatorSkin(this);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

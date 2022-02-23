@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import javafx.fxml.Initializable;
 
 <span class="nc" id="L7">public abstract class ServiceRequestController implements Initializable {</span>
-  static final ArrayList&lt;String&gt; createTime() {
+  static ArrayList&lt;String&gt; createTime() {
 <span class="nc" id="L9">    ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;();</span>
 <span class="nc bnc" id="L10" title="All 2 branches missed.">    for (int i = 0; i &lt; 96; i++) {</span>
 <span class="nc" id="L11">      DecimalFormat decimalFormat = new DecimalFormat(&quot;00&quot;);</span>
-<span class="nc" id="L12">      String time = String.valueOf(decimalFormat.format(i / 4));</span>
-<span class="nc" id="L13">      time += &quot;:&quot; + String.valueOf(decimalFormat.format(15 * (i % 4)));</span>
+<span class="nc" id="L12">      String time = decimalFormat.format(i / 4);</span>
+<span class="nc" id="L13">      time += &quot;:&quot; + decimalFormat.format(15 * (i % 4));</span>
 <span class="nc" id="L14">      list.add(time);</span>
     }
 <span class="nc" id="L16">    return list;</span>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MapEquipmentIcon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Icons</a> &gt; <span class="el_source">MapEquipmentIcon.java</span></div><h1>MapEquipmentIcon.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Icons;
+
+import com.jfoenix.controls.JFXButton;
+import edu.wpi.teame.model.Equipment;
+import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
+
+public class MapEquipmentIcon {
+  public Equipment equipment;
+  public JFXButton Button;
+
+<span class="nc" id="L12">  public MapEquipmentIcon(JFXButton button, Equipment equip) {</span>
+<span class="nc" id="L13">    equipment = equip;</span>
+<span class="nc" id="L14">    Button = button;</span>
+<span class="nc" id="L15">  }</span>
+
+  public Equipment getEquipment() {
+<span class="nc" id="L18">    return this.equipment;</span>
+  }
+
+<span class="nc" id="L21">  public MapEquipmentIcon(Double x, Double y, String descriptor, Node graphic) {</span>
+<span class="nc" id="L22">    Button = new JFXButton();</span>
+<span class="nc" id="L23">    Button.setGraphic(graphic);</span>
+<span class="nc" id="L24">    Tooltip tooltip = new Tooltip(descriptor);</span>
+<span class="nc" id="L25">    Tooltip.install(Button, tooltip);</span>
+<span class="nc" id="L26">    Button.setTranslateX(x - (2500));</span>
+<span class="nc" id="L27">    Button.setTranslateY(y - (1700));</span>
+<span class="nc" id="L28">    Button.setOpacity(.5);</span>
+<span class="nc" id="L29">  }</span>
+
+  public JFXButton getButton() {
+<span class="nc" id="L32">    return Button;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

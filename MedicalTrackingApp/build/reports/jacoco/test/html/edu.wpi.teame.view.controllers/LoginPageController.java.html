@@ -4,7 +4,7 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
-import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -51,10 +51,10 @@ import javafx.util.Duration;
 <span class="nc" id="L51">  private Media loginSound = null;</span>
 
   @FXML
-  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException {
+  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
 <span class="nc" id="L55">    String username = usernameTextInput.getText();</span>
 <span class="nc" id="L56">    String password = passwordTextInput.getText();</span>
-<span class="nc" id="L57">    boolean loggedIn = DBManager.getInstance().getCredentialManager().logIn(username, password);</span>
+<span class="nc" id="L57">    boolean loggedIn = CredentialManager.getInstance().logIn(username, password);</span>
 
     // Check if we were able to log in.
 <span class="nc bnc" id="L60" title="All 2 branches missed.">    if (!loggedIn) {</span>
@@ -62,36 +62,36 @@ import javafx.util.Duration;
 <span class="nc" id="L62">      return;</span>
     }
 
-<span class="nc bnc" id="L65" title="All 2 branches missed.">    if (loginSound != null) { // TODO find out why this couses null pointer</span>
-<span class="nc" id="L66">      MediaPlayer mediaPlayer = new MediaPlayer(loginSound);</span>
-<span class="nc" id="L67">      mediaPlayer.setVolume(0.3);</span>
-    }
+    // Load the sound
+<span class="nc" id="L66">    MediaPlayer mediaPlayer = new MediaPlayer(loginSound);</span>
+<span class="nc" id="L67">    mediaPlayer.setVolume(0.3);</span>
 
-<span class="nc" id="L70">    TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);</span>
-<span class="nc" id="L71">    t2.setFromY(-50);</span>
-<span class="nc" id="L72">    t2.setToY(0);</span>
-<span class="nc" id="L73">    t2.setOnFinished(</span>
+<span class="nc" id="L69">    TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);</span>
+<span class="nc" id="L70">    t2.setFromY(-50);</span>
+<span class="nc" id="L71">    t2.setToY(0);</span>
+<span class="nc" id="L72">    t2.setOnFinished(</span>
         e -&gt; {
-<span class="nc" id="L75">          switchToLandingPage();</span>
-<span class="nc" id="L76">        });</span>
+<span class="nc" id="L74">          switchToLandingPage();</span>
+<span class="nc" id="L75">        });</span>
 
-<span class="nc" id="L78">    RotateTransition r = new RotateTransition(new Duration(300), icon);</span>
-<span class="nc" id="L79">    r.setFromAngle(0);</span>
-<span class="nc" id="L80">    r.setToAngle(360);</span>
-<span class="nc" id="L81">    r.setInterpolator(EASE_OUT);</span>
-<span class="nc" id="L82">    r.setOnFinished(</span>
+<span class="nc" id="L77">    RotateTransition r = new RotateTransition(new Duration(300), icon);</span>
+<span class="nc" id="L78">    r.setFromAngle(0);</span>
+<span class="nc" id="L79">    r.setToAngle(360);</span>
+<span class="nc" id="L80">    r.setInterpolator(EASE_OUT);</span>
+<span class="nc" id="L81">    r.setOnFinished(</span>
         e -&gt; {
-<span class="nc" id="L84">          t2.play();</span>
-<span class="nc" id="L85">        });</span>
+<span class="nc" id="L83">          t2.play();</span>
+<span class="nc" id="L84">        });</span>
 
-<span class="nc" id="L87">    TranslateTransition t1 = new TranslateTransition(new Duration(200), icon);</span>
-<span class="nc" id="L88">    t1.setInterpolator(EASE_OUT);</span>
-<span class="nc" id="L89">    t1.setFromY(0);</span>
-<span class="nc" id="L90">    t1.setToY(-50);</span>
-<span class="nc" id="L91">    t1.setOnFinished(e -&gt; {});</span>
-<span class="nc" id="L92">    t1.play();</span>
-<span class="nc" id="L93">    r.play();</span>
-    // mediaPlayer.play(); //TODO uncomment when sounds play
+<span class="nc" id="L86">    TranslateTransition t1 = new TranslateTransition(new Duration(200), icon);</span>
+<span class="nc" id="L87">    t1.setInterpolator(EASE_OUT);</span>
+<span class="nc" id="L88">    t1.setFromY(0);</span>
+<span class="nc" id="L89">    t1.setToY(-50);</span>
+<span class="nc" id="L90">    t1.setOnFinished(e -&gt; {});</span>
+
+<span class="nc" id="L92">    mediaPlayer.play();</span>
+<span class="nc" id="L93">    t1.play();</span>
+<span class="nc" id="L94">    r.play();</span>
 <span class="nc" id="L95">  }</span>
 
   private void loginFailedAnimation() {
@@ -252,46 +252,40 @@ import javafx.util.Duration;
           new Scene(
 <span class="nc" id="L253">              FXMLLoader.load(</span>
 <span class="nc" id="L254">                  Objects.requireNonNull(App.class.getResource(&quot;view/LandingPage.fxml&quot;))));</span>
-<span class="nc" id="L255">      loginSound = new Media(App.class.getResource(&quot;audio/Shoop.mp3&quot;).toString());</span>
-<span class="nc" id="L256">    } catch (IOException e) {</span>
-<span class="nc" id="L257">      e.printStackTrace();</span>
-<span class="nc" id="L258">    }</span>
-<span class="nc" id="L259">    usernameImage.setOnMousePressed(e -&gt; checkFocus());</span>
-<span class="nc" id="L260">    passwordImage.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L255">    } catch (IOException e) {</span>
+<span class="nc" id="L256">      e.printStackTrace();</span>
+<span class="nc" id="L257">    }</span>
 
-<span class="nc" id="L262">    usernameTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
-<span class="nc" id="L263">    passwordTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L259">    loginSound = new Media(App.class.getResource(&quot;audio/Shoop.mp3&quot;).toString());</span>
+<span class="nc" id="L260">    usernameImage.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L261">    passwordImage.setOnMousePressed(e -&gt; checkFocus());</span>
 
-<span class="nc" id="L265">    passwordText.setScaleX(1.5);</span>
-<span class="nc" id="L266">    passwordText.setScaleY(1.5);</span>
+<span class="nc" id="L263">    usernameTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
+<span class="nc" id="L264">    passwordTextInput.setOnMousePressed(e -&gt; checkFocus());</span>
 
-    // Load the credentials before we show the log in page
-    try {
-<span class="nc" id="L270">      DBManager.getInstance().getCredentialManager().readCSV(&quot;Credentials.csv&quot;);</span>
-<span class="nc" id="L271">    } catch (Exception ex) {</span>
-<span class="nc" id="L272">      ex.printStackTrace();</span>
-<span class="nc" id="L273">    }</span>
-<span class="nc" id="L274">  }</span>
+<span class="nc" id="L266">    passwordText.setScaleX(1.5);</span>
+<span class="nc" id="L267">    passwordText.setScaleY(1.5);</span>
+<span class="nc" id="L268">  }</span>
 
   @FXML
   public void closeApp() {
-<span class="nc" id="L278">    Dialog dialog = new Dialog();</span>
-<span class="nc" id="L279">    dialog.setTitle(&quot;Are you sure you want to quit?&quot;);</span>
-<span class="nc" id="L280">    ImageView newIcon =</span>
-<span class="nc" id="L281">        new ImageView(new Image(App.class.getResource(&quot;images/icons/ExitIcon.png&quot;).toString()));</span>
-<span class="nc" id="L282">    newIcon.setFitHeight(30);</span>
-<span class="nc" id="L283">    newIcon.setFitWidth(30);</span>
-<span class="nc" id="L284">    dialog.getDialogPane().setGraphic(newIcon);</span>
-<span class="nc" id="L285">    ButtonType OK = new ButtonType(&quot;Exit&quot;, ButtonBar.ButtonData.OK_DONE);</span>
-<span class="nc" id="L286">    dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);</span>
-<span class="nc" id="L287">    dialog.setResultConverter(</span>
+<span class="nc" id="L272">    Dialog dialog = new Dialog();</span>
+<span class="nc" id="L273">    dialog.setTitle(&quot;Are you sure you want to quit?&quot;);</span>
+<span class="nc" id="L274">    ImageView newIcon =</span>
+<span class="nc" id="L275">        new ImageView(new Image(App.class.getResource(&quot;images/Icons/ExitIcon.png&quot;).toString()));</span>
+<span class="nc" id="L276">    newIcon.setFitHeight(30);</span>
+<span class="nc" id="L277">    newIcon.setFitWidth(30);</span>
+<span class="nc" id="L278">    dialog.getDialogPane().setGraphic(newIcon);</span>
+<span class="nc" id="L279">    ButtonType OK = new ButtonType(&quot;Exit&quot;, ButtonBar.ButtonData.OK_DONE);</span>
+<span class="nc" id="L280">    dialog.getDialogPane().getButtonTypes().addAll(OK, ButtonType.CANCEL);</span>
+<span class="nc" id="L281">    dialog.setResultConverter(</span>
         dialogButton -&gt; {
-<span class="nc bnc" id="L289" title="All 2 branches missed.">          if (dialogButton == OK) {</span>
-<span class="nc" id="L290">            App.getAppPrimaryStage().close();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">          if (dialogButton == OK) {</span>
+<span class="nc" id="L284">            App.getAppPrimaryStage().close();</span>
           }
-<span class="nc" id="L292">          return null;</span>
+<span class="nc" id="L286">          return null;</span>
         });
-<span class="nc" id="L294">    dialog.showAndWait();</span>
-<span class="nc" id="L295">  }</span>
+<span class="nc" id="L288">    dialog.showAndWait();</span>
+<span class="nc" id="L289">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

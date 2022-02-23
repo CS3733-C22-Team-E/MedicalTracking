@@ -2,15 +2,17 @@
 
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EmployeeManager;
+import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.MedicalEquipmentServiceRequest;
 import edu.wpi.teame.model.serviceRequests.MedicineDeliveryServiceRequest;
-import edu.wpi.teame.view.SRSentAnimation;
+import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
 import java.sql.Date;
@@ -29,7 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 
-<span class="nc" id="L32">public class MedicineDeliveryServiceRequestPageServiceRequestController</span>
+<span class="nc" id="L34">public class MedicineDeliveryServiceRequestPageServiceRequestController</span>
     extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
@@ -44,113 +46,111 @@ import javafx.scene.layout.AnchorPane;
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
-<span class="nc" id="L47">  private boolean hasRun = false;</span>
+<span class="nc" id="L49">  private boolean hasRun = false;</span>
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-<span class="nc" id="L51">    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.MedicineDeliverySR.getColor()));</span>
-<span class="nc" id="L52">    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));</span>
-<span class="nc" id="L53">    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));</span>
+<span class="nc" id="L53">    mainAnchorPane.setEffect(new DropShadow(20, DataBaseObjectType.MedicineDeliverySR.getColor()));</span>
+<span class="nc" id="L54">    priority.setItems(FXCollections.observableArrayList(ServiceRequestPriority.values()));</span>
+<span class="nc" id="L55">    status.setItems(FXCollections.observableArrayList(ServiceRequestStatus.values()));</span>
 
-<span class="nc" id="L55">    requestDate</span>
-<span class="nc" id="L56">        .valueProperty()</span>
-<span class="nc" id="L57">        .addListener(</span>
+<span class="nc" id="L57">    requestDate</span>
+<span class="nc" id="L58">        .valueProperty()</span>
+<span class="nc" id="L59">        .addListener(</span>
             (listener) -&gt; {
-<span class="nc" id="L59">              validateSubmitButton();</span>
-<span class="nc" id="L60">            });</span>
+<span class="nc" id="L61">              validateSubmitButton();</span>
+<span class="nc" id="L62">            });</span>
 
-<span class="nc" id="L62">    locationText.setOnMousePressed(</span>
+<span class="nc" id="L64">    locationText.setOnMousePressed(</span>
         listener -&gt; {
-<span class="nc" id="L64">          validateSubmitButton();</span>
-<span class="nc" id="L65">        });</span>
+<span class="nc" id="L66">          validateSubmitButton();</span>
+<span class="nc" id="L67">        });</span>
 
-<span class="nc" id="L67">    assignee.setOnMousePressed(</span>
+<span class="nc" id="L69">    assignee.setOnMousePressed(</span>
         listener -&gt; {
-<span class="nc" id="L69">          validateSubmitButton();</span>
-<span class="nc" id="L70">        });</span>
+<span class="nc" id="L71">          validateSubmitButton();</span>
+<span class="nc" id="L72">        });</span>
 
-<span class="nc" id="L72">    priority</span>
-<span class="nc" id="L73">        .valueProperty()</span>
-<span class="nc" id="L74">        .addListener(</span>
+<span class="nc" id="L74">    priority</span>
+<span class="nc" id="L75">        .valueProperty()</span>
+<span class="nc" id="L76">        .addListener(</span>
             listener -&gt; {
-<span class="nc" id="L76">              validateSubmitButton();</span>
-<span class="nc" id="L77">            });</span>
+<span class="nc" id="L78">              validateSubmitButton();</span>
+<span class="nc" id="L79">            });</span>
 
-<span class="nc" id="L79">    status</span>
-<span class="nc" id="L80">        .valueProperty()</span>
-<span class="nc" id="L81">        .addListener(</span>
+<span class="nc" id="L81">    status</span>
+<span class="nc" id="L82">        .valueProperty()</span>
+<span class="nc" id="L83">        .addListener(</span>
             listener -&gt; {
-<span class="nc" id="L83">              validateSubmitButton();</span>
-<span class="nc" id="L84">            });</span>
+<span class="nc" id="L85">              validateSubmitButton();</span>
+<span class="nc" id="L86">            });</span>
 
-<span class="nc" id="L86">    patientName</span>
-<span class="nc" id="L87">        .onActionProperty()</span>
-<span class="nc" id="L88">        .addListener(</span>
+<span class="nc" id="L88">    patientName</span>
+<span class="nc" id="L89">        .onActionProperty()</span>
+<span class="nc" id="L90">        .addListener(</span>
             listener -&gt; {
-<span class="nc" id="L90">              validateSubmitButton();</span>
-<span class="nc" id="L91">            });</span>
+<span class="nc" id="L92">              validateSubmitButton();</span>
+<span class="nc" id="L93">            });</span>
 
-<span class="nc" id="L93">    medicineName</span>
-<span class="nc" id="L94">        .onActionProperty()</span>
-<span class="nc" id="L95">        .addListener(</span>
+<span class="nc" id="L95">    medicineName</span>
+<span class="nc" id="L96">        .onActionProperty()</span>
+<span class="nc" id="L97">        .addListener(</span>
             listener -&gt; {
-<span class="nc" id="L97">              validateSubmitButton();</span>
-<span class="nc" id="L98">            });</span>
+<span class="nc" id="L99">              validateSubmitButton();</span>
+<span class="nc" id="L100">            });</span>
 
-<span class="nc" id="L100">    medicineQuantity</span>
-<span class="nc" id="L101">        .onActionProperty()</span>
-<span class="nc" id="L102">        .addListener(</span>
+<span class="nc" id="L102">    medicineQuantity</span>
+<span class="nc" id="L103">        .onActionProperty()</span>
+<span class="nc" id="L104">        .addListener(</span>
             listener -&gt; {
-<span class="nc" id="L104">              validateSubmitButton();</span>
-<span class="nc" id="L105">            });</span>
-<span class="nc" id="L106">  }</span>
+<span class="nc" id="L106">              validateSubmitButton();</span>
+<span class="nc" id="L107">            });</span>
+<span class="nc" id="L108">  }</span>
 
   @FXML
   public void updateFromDB() throws SQLException {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">    if (hasRun) {</span>
-<span class="nc" id="L111">      return;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">    if (hasRun) {</span>
+<span class="nc" id="L113">      return;</span>
     }
-<span class="nc" id="L113">    hasRun = true;</span>
+<span class="nc" id="L115">    hasRun = true;</span>
 
     // creates a linkedList of locations and sets all the values as one of roomNumber comboBox items
-<span class="nc" id="L116">    List&lt;Location&gt; locations = DBManager.getInstance().getLocationManager().getAll();</span>
-<span class="nc" id="L117">    List&lt;Employee&gt; employees = DBManager.getInstance().getEmployeeManager().getAll();</span>
+<span class="nc" id="L118">    List&lt;Location&gt; locations = DBManager.getManager(DataBaseObjectType.Location).getAll();</span>
+<span class="nc" id="L119">    List&lt;Employee&gt; employees = DBManager.getManager(DataBaseObjectType.Employee).getAll();</span>
 
-<span class="nc" id="L119">    List&lt;Patient&gt; patients = DBManager.getInstance().getPatientManager().getAll();</span>
-<span class="nc" id="L120">    List&lt;String&gt; patientNames = new LinkedList&lt;&gt;();</span>
-<span class="nc bnc" id="L121" title="All 2 branches missed.">    for (Patient p : patients) {</span>
-<span class="nc" id="L122">      patientNames.add(p.getName());</span>
-<span class="nc" id="L123">    }</span>
-<span class="nc" id="L124">    patientName.getEntries().addAll(patientNames);</span>
+<span class="nc" id="L121">    List&lt;Patient&gt; patients = DBManager.getManager(DataBaseObjectType.Patient).getAll();</span>
+<span class="nc" id="L122">    List&lt;String&gt; patientNames = new LinkedList&lt;&gt;();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">    for (Patient p : patients) {</span>
+<span class="nc" id="L124">      patientNames.add(p.getName());</span>
+<span class="nc" id="L125">    }</span>
+<span class="nc" id="L126">    patientName.getEntries().addAll(patientNames);</span>
 
-<span class="nc" id="L126">    List&lt;String&gt; locationNames = new LinkedList&lt;String&gt;();</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">    for (Location loc : locations) {</span>
-<span class="nc" id="L128">      locationNames.add(loc.getLongName());</span>
-<span class="nc" id="L129">    }</span>
+<span class="nc" id="L128">    List&lt;String&gt; locationNames = new LinkedList&lt;String&gt;();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">    for (Location loc : locations) {</span>
+<span class="nc" id="L130">      locationNames.add(loc.getLongName());</span>
+<span class="nc" id="L131">    }</span>
 
-<span class="nc" id="L131">    List&lt;String&gt; employeeNames = new LinkedList&lt;String&gt;();</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">    for (Employee emp : employees) {</span>
-<span class="nc" id="L133">      employeeNames.add(emp.getName());</span>
-<span class="nc" id="L134">    }</span>
+<span class="nc" id="L133">    List&lt;String&gt; employeeNames = new LinkedList&lt;String&gt;();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">    for (Employee emp : employees) {</span>
+<span class="nc" id="L135">      employeeNames.add(emp.getName());</span>
+<span class="nc" id="L136">    }</span>
 
-<span class="nc" id="L136">    locationText.getEntries().addAll(locationNames);</span>
-<span class="nc" id="L137">    assignee.getEntries().addAll(employeeNames);</span>
-<span class="nc" id="L138">  }</span>
+<span class="nc" id="L138">    locationText.getEntries().addAll(locationNames);</span>
+<span class="nc" id="L139">    assignee.getEntries().addAll(employeeNames);</span>
+<span class="nc" id="L140">  }</span>
 
   @FXML
   public void sendToDB() throws SQLException, ParseException {
-<span class="nc" id="L142">    String roomNum = (String) locationText.getText();</span>
-<span class="nc" id="L143">    String worker = (String) assignee.getText();</span>
+<span class="nc" id="L144">    String roomNum = (String) locationText.getText();</span>
+<span class="nc" id="L145">    String worker = (String) assignee.getText();</span>
 
-    List&lt;MedicalEquipmentServiceRequest&gt; allSerReq =
-<span class="nc" id="L146">        DBManager.getInstance().getMedicalEquipmentSRManager().getAll();</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">    for (MedicalEquipmentServiceRequest serviceReq : allSerReq) {</span>
-<span class="nc" id="L148">      System.out.println(serviceReq);</span>
-<span class="nc" id="L149">    }</span>
-
-<span class="nc" id="L151">    Employee employee = DBManager.getInstance().getEmployeeManager().getByAssignee(worker);</span>
-<span class="nc" id="L152">    Location location = DBManager.getInstance().getLocationManager().getByName(roomNum);</span>
-<span class="nc" id="L153">    Patient patient = DBManager.getInstance().getPatientManager().getByName(patientName.getText());</span>
+<span class="nc" id="L147">    Employee employee =</span>
+<span class="nc" id="L148">        ((EmployeeManager) DBManager.getManager(DataBaseObjectType.Employee)).getByAssignee(worker);</span>
+<span class="nc" id="L149">    Location location =</span>
+<span class="nc" id="L150">        ((LocationManager) DBManager.getManager(DataBaseObjectType.Location)).getByName(roomNum);</span>
+<span class="nc" id="L151">    Patient patient =</span>
+<span class="nc" id="L152">        ((PatientManager) DBManager.getManager(DataBaseObjectType.Patient))</span>
+<span class="nc" id="L153">            .getByName(patientName.getText());</span>
 
 <span class="nc" id="L155">    MedicineDeliveryServiceRequest serviceRequest =</span>
         new MedicineDeliveryServiceRequest(
@@ -169,37 +169,38 @@ import javafx.scene.layout.AnchorPane;
 <span class="nc" id="L169">            medicineName.getText(),</span>
 <span class="nc" id="L170">            medicineQuantity.getText(),</span>
             patient);
-<span class="nc" id="L172">    DBManager.getInstance().getMedicineDeliverySRManager().insert(serviceRequest);</span>
+<span class="nc" id="L172">    DBManager.getManager(DataBaseObjectType.MedicineDeliverySR).insert(serviceRequest);</span>
 <span class="nc" id="L173">    SRSentAnimation a = new SRSentAnimation();</span>
 <span class="nc" id="L174">    a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);</span>
 <span class="nc" id="L175">    a.getStackPane().setLayoutY(submitButton.getLayoutY());</span>
 <span class="nc" id="L176">    mainAnchorPane.getChildren().add(a.getStackPane());</span>
 <span class="nc" id="L177">    a.play();</span>
-<span class="nc" id="L178">  }</span>
+<span class="nc" id="L178">    clearText();</span>
+<span class="nc" id="L179">  }</span>
 
   public void validateSubmitButton() {
-<span class="nc" id="L181">    submitButton.setDisable(</span>
-<span class="nc bnc" id="L182" title="All 2 branches missed.">        requestDate.getValue() == null</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">            || locationText.getEntries() == null</span>
-<span class="nc bnc" id="L184" title="All 2 branches missed.">            || assignee.getEntries() == null</span>
-<span class="nc bnc" id="L185" title="All 2 branches missed.">            || priority.getValue() == null</span>
-<span class="nc bnc" id="L186" title="All 2 branches missed.">            || status.getValue() == null</span>
-<span class="nc bnc" id="L187" title="All 2 branches missed.">            || patientName.getText().isEmpty()</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">            || medicineName.getText().isEmpty()</span>
-<span class="nc bnc" id="L189" title="All 2 branches missed.">            || medicineQuantity.getText().isEmpty());</span>
-<span class="nc" id="L190">  }</span>
+<span class="nc" id="L182">    submitButton.setDisable(</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        requestDate.getValue() == null</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            || locationText.getEntries() == null</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            || assignee.getEntries() == null</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            || priority.getValue() == null</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">            || status.getValue() == null</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            || patientName.getText().isEmpty()</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            || medicineName.getText().isEmpty()</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">            || medicineQuantity.getText().isEmpty());</span>
+<span class="nc" id="L191">  }</span>
 
   public void clearText() {
-<span class="nc" id="L193">    additionalInfo.setText(&quot;&quot;);</span>
-<span class="nc" id="L194">    locationText.setText(&quot;&quot;);</span>
-<span class="nc" id="L195">    assignee.setText(&quot;&quot;);</span>
-<span class="nc" id="L196">    requestDate.setValue(null);</span>
-<span class="nc" id="L197">    requestDate.getEditor().clear();</span>
-<span class="nc" id="L198">    priority.valueProperty().setValue(null);</span>
-<span class="nc" id="L199">    status.valueProperty().setValue(null);</span>
-<span class="nc" id="L200">    patientName.setText(&quot;&quot;);</span>
-<span class="nc" id="L201">    medicineName.setText(&quot;&quot;);</span>
-<span class="nc" id="L202">    medicineQuantity.setText(&quot;&quot;);</span>
-<span class="nc" id="L203">  }</span>
+<span class="nc" id="L194">    additionalInfo.setText(&quot;&quot;);</span>
+<span class="nc" id="L195">    locationText.setText(&quot;&quot;);</span>
+<span class="nc" id="L196">    assignee.setText(&quot;&quot;);</span>
+<span class="nc" id="L197">    requestDate.setValue(null);</span>
+<span class="nc" id="L198">    requestDate.getEditor().clear();</span>
+<span class="nc" id="L199">    priority.valueProperty().setValue(null);</span>
+<span class="nc" id="L200">    status.valueProperty().setValue(null);</span>
+<span class="nc" id="L201">    patientName.setText(&quot;&quot;);</span>
+<span class="nc" id="L202">    medicineName.setText(&quot;&quot;);</span>
+<span class="nc" id="L203">    medicineQuantity.setText(&quot;&quot;);</span>
+<span class="nc" id="L204">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

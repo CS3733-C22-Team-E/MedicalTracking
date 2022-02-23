@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceRequestBacklog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.backlog</a> &gt; <span class="el_source">ServiceRequestBacklog.java</span></div><h1>ServiceRequestBacklog.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.backlog;
+
+import static javafx.application.Application.launch;
+
+import com.jfoenix.controls.JFXCheckBox;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.List;
+import javafx.animation.ScaleTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
+
+public class ServiceRequestBacklog {
+
+<span class="nc" id="L30">  ScrollPane scrollWrapper = new ScrollPane();</span>
+  private double SCENEWIDTH;
+  private double SCENEHEIGHT;
+<span class="nc" id="L33">  private final double VGAP = 3;</span>
+  private double CARDWIDTH;
+
+<span class="nc" id="L36">  private HashMap&lt;String, Boolean&gt; filterMap = new HashMap&lt;String, Boolean&gt;();</span>
+<span class="nc" id="L37">  private List&lt;ServiceRequest&gt; serviceRequestsFromDB = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L38">  private List&lt;ServiceRequestCard&gt; cardsDisplayed = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L39">  private List&lt;ServiceRequest&gt; deadServiceRequests = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L40">  private List&lt;ServiceRequestCard&gt; deadCards = new LinkedList&lt;&gt;();</span>
+
+<span class="nc" id="L42">  public ServiceRequestBacklog(double width, double height) {</span>
+<span class="nc" id="L43">    SCENEWIDTH = width;</span>
+<span class="nc" id="L44">    SCENEHEIGHT = height;</span>
+<span class="nc" id="L45">    scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);</span>
+<span class="nc" id="L46">    CARDWIDTH = SCENEWIDTH / 1.5;</span>
+<span class="nc" id="L47">  }</span>
+
+  public static void main(String[] args) {
+<span class="nc" id="L50">    launch(args);</span>
+<span class="nc" id="L51">  }</span>
+
+  private void getSecurityRequests() throws SQLException {
+<span class="nc" id="L54">    System.out.println(&quot;Getting SR&quot;);</span>
+<span class="nc" id="L55">    serviceRequestsFromDB.clear();</span>
+<span class="nc" id="L56">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.SanitationSR).getAll());</span>
+<span class="nc" id="L57">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.SecuritySR).getAll());</span>
+<span class="nc" id="L58">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L59">        DBManager.getManager(DataBaseObjectType.MedicineDeliverySR).getAll());</span>
+<span class="nc" id="L60">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L61">        DBManager.getManager(DataBaseObjectType.MedicalEquipmentSR).getAll());</span>
+<span class="nc" id="L62">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.AudioVisualSR).getAll());</span>
+<span class="nc" id="L63">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L64">        DBManager.getManager(DataBaseObjectType.ExternalPatientSR).getAll());</span>
+<span class="nc" id="L65">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ComputerSR).getAll());</span>
+<span class="nc" id="L66">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L67">        DBManager.getManager(DataBaseObjectType.FacilitiesMaintenanceSR).getAll());</span>
+<span class="nc" id="L68">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.FoodDeliverySR).getAll());</span>
+<span class="nc" id="L69">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.GiftAndFloralSR).getAll());</span>
+<span class="nc" id="L70">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L71">        DBManager.getManager(DataBaseObjectType.InternalPatientTransferSR).getAll());</span>
+<span class="nc" id="L72">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L73">        DBManager.getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());</span>
+<span class="nc" id="L74">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.LaundrySR).getAll());</span>
+<span class="nc" id="L75">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.ReligiousSR).getAll());</span>
+<span class="nc" id="L76">    serviceRequestsFromDB.addAll(DBManager.getManager(DataBaseObjectType.DeceasedBodySR).getAll());</span>
+<span class="nc" id="L77">    serviceRequestsFromDB.addAll(</span>
+<span class="nc" id="L78">        DBManager.getManager(DataBaseObjectType.PatientDischargeSR).getAll());</span>
+<span class="nc" id="L79">  }</span>
+
+  public Parent getBacklogScene() throws SQLException {
+<span class="nc" id="L82">    serviceRequestsFromDB.clear();</span>
+<span class="nc" id="L83">    scrollWrapper.setContent(getRequestHolder());</span>
+<span class="nc" id="L84">    return scrollWrapper;</span>
+  }
+
+  public HBox getTitle() throws SQLException {
+
+<span class="nc" id="L89">    HBox tBox = new HBox();</span>
+<span class="nc" id="L90">    Text title = new Text(&quot;Request Backlog&quot;);</span>
+<span class="nc" id="L91">    title.setFont(Font.font(56));</span>
+<span class="nc" id="L92">    title.setTextAlignment(TextAlignment.CENTER);</span>
+<span class="nc" id="L93">    title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2); // TODO Fix</span>
+<span class="nc" id="L94">    tBox.getChildren().add(title);</span>
+<span class="nc" id="L95">    tBox.setAlignment(Pos.CENTER);</span>
+
+<span class="nc" id="L97">    return tBox;</span>
+  }
+
+  public GridPane getRequestHolder() throws SQLException {
+<span class="nc" id="L101">    System.out.println(&quot;g&quot;);</span>
+<span class="nc" id="L102">    getSecurityRequests();</span>
+<span class="nc" id="L103">    GridPane requestHolder = new GridPane();</span>
+<span class="nc" id="L104">    requestHolder.setVgap(VGAP);</span>
+<span class="nc" id="L105">    cardsDisplayed.clear();</span>
+<span class="nc" id="L106">    deadServiceRequests.clear();</span>
+<span class="nc" id="L107">    serviceRequestsFromDB = sortServiceRequestsFromDB(serviceRequestsFromDB);</span>
+<span class="nc" id="L108">    System.out.println(serviceRequestsFromDB.size());</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    for (ServiceRequest sr : serviceRequestsFromDB) {</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">      if (sr.getStatus().equals(ServiceRequestStatus.CLOSED)</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">          || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {</span>
+<span class="nc" id="L112">        deadServiceRequests.add(sr);</span>
+      } else {
+<span class="nc" id="L114">        ServiceRequestCard card = new ServiceRequestCard(sr, this);</span>
+<span class="nc" id="L115">        addServiceRequestCard(card, requestHolder);</span>
+      }
+<span class="nc" id="L117">    }</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">    for (ServiceRequest sr : deadServiceRequests) {</span>
+<span class="nc" id="L119">      ServiceRequestCard card = new ServiceRequestCard(sr, this, true);</span>
+<span class="nc" id="L120">      addServiceRequestCard(card, requestHolder);</span>
+<span class="nc" id="L121">    }</span>
+<span class="nc" id="L122">    requestHolder.add(getTitle(), 0, 0);</span>
+<span class="nc" id="L123">    requestHolder.add(getRefreshBar(), 0, 1);</span>
+<span class="nc" id="L124">    requestHolder.add(getFilterBar(), 0, 2);</span>
+    //    GridPane titleGridPane = new GridPane();
+    //    titleGridPane.set
+<span class="nc" id="L127">    return requestHolder;</span>
+  }
+
+  public void addServiceRequestCard(ServiceRequestCard c, GridPane g) {
+<span class="nc" id="L131">    HBox card = c.getCard(CARDWIDTH, 100);</span>
+<span class="nc" id="L132">    g.add(card, 0, cardsDisplayed.size() + 3);</span>
+<span class="nc" id="L133">    cardsDisplayed.add(c);</span>
+<span class="nc" id="L134">  }</span>
+
+  public void killServiceRequest(ServiceRequest sr) throws SQLException {
+<span class="nc" id="L137">    sr.setStatus(ServiceRequestStatus.CLOSED);</span>
+<span class="nc" id="L138">    ObjectManager m = DBManager.getManager(sr.getDBType());</span>
+<span class="nc" id="L139">    m.update(sr);</span>
+<span class="nc" id="L140">    scrollWrapper.setContent(getRequestHolder());</span>
+<span class="nc" id="L141">  }</span>
+
+  public void removeServiceRequest(ServiceRequest sr) throws SQLException {
+<span class="nc" id="L144">    ObjectManager m = DBManager.getManager(sr.getDBType());</span>
+<span class="nc" id="L145">    m.remove(sr.getId());</span>
+<span class="nc" id="L146">    scrollWrapper.setContent(getRequestHolder());</span>
+<span class="nc" id="L147">  }</span>
+
+  public HBox getRefreshBar() {
+<span class="nc" id="L150">    HBox refreshBar = new HBox();</span>
+<span class="nc" id="L151">    refreshBar.setPrefSize(CARDWIDTH, 50);</span>
+<span class="nc" id="L152">    Text refreshText = new Text(&quot;Click to refresh.&quot;);</span>
+<span class="nc" id="L153">    refreshText.setFont(Font.font(24));</span>
+<span class="nc" id="L154">    refreshBar.getChildren().add(refreshText);</span>
+<span class="nc" id="L155">    refreshBar.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L156">    Background noHoverBG =</span>
+        new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+<span class="nc" id="L158">    refreshBar.setBackground(noHoverBG);</span>
+<span class="nc" id="L159">    Background hoverBG =</span>
+        new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+<span class="nc" id="L161">    refreshBar.setOnMouseExited(</span>
+        e -&gt; {
+<span class="nc" id="L163">          refreshBar.setBackground(noHoverBG);</span>
+<span class="nc" id="L164">        });</span>
+<span class="nc" id="L165">    refreshBar.setOnMouseEntered(</span>
+        e -&gt; {
+<span class="nc" id="L167">          refreshBar.setBackground(hoverBG);</span>
+<span class="nc" id="L168">        });</span>
+<span class="nc" id="L169">    refreshBar.setOnMouseClicked(</span>
+        e -&gt; {
+<span class="nc" id="L171">          ((Text) refreshBar.getChildren().get(0)).setText(&quot;Refreshing...&quot;);</span>
+          // I'm trying to get this done quickly and have no idea how to make a timer
+          // so I'm gonna do something really stupid but I know it'll work.
+<span class="nc" id="L174">          ScaleTransition wait2 = new ScaleTransition(new Duration(200), refreshText);</span>
+<span class="nc" id="L175">          wait2.setOnFinished(</span>
+              ev -&gt; {
+                try {
+<span class="nc" id="L178">                  scrollWrapper.setContent(getRequestHolder());</span>
+<span class="nc" id="L179">                } catch (SQLException ex) {</span>
+<span class="nc" id="L180">                  ex.printStackTrace();</span>
+<span class="nc" id="L181">                }</span>
+<span class="nc" id="L182">              });</span>
+<span class="nc" id="L183">          ScaleTransition wait1 = new ScaleTransition(new Duration(500), refreshText);</span>
+<span class="nc" id="L184">          wait1.setOnFinished(</span>
+              ev -&gt; {
+<span class="nc" id="L186">                ((Text) refreshBar.getChildren().get(0)).setText(&quot;Done!&quot;);</span>
+<span class="nc" id="L187">                wait2.play();</span>
+<span class="nc" id="L188">              });</span>
+<span class="nc" id="L189">          wait1.play();</span>
+          // lol
+<span class="nc" id="L191">        });</span>
+<span class="nc" id="L192">    return refreshBar;</span>
+  }
+
+  private LinkedList&lt;ServiceRequest&gt; sortServiceRequestsFromDB(
+      List&lt;ServiceRequest&gt; l) { // DB Sees all SR as critical
+<span class="nc" id="L197">    LinkedList&lt;ServiceRequest&gt; p1 = new LinkedList&lt;ServiceRequest&gt;();</span>
+<span class="nc" id="L198">    LinkedList&lt;ServiceRequest&gt; p2 = new LinkedList&lt;ServiceRequest&gt;();</span>
+<span class="nc" id="L199">    LinkedList&lt;ServiceRequest&gt; p3 = new LinkedList&lt;ServiceRequest&gt;();</span>
+<span class="nc" id="L200">    LinkedList&lt;ServiceRequest&gt; p4 = new LinkedList&lt;ServiceRequest&gt;();</span>
+<span class="nc" id="L201">    LinkedList&lt;ServiceRequest&gt; preFilterList = new LinkedList&lt;ServiceRequest&gt;();</span>
+
+<span class="nc bnc" id="L203" title="All 2 branches missed.">    for (ServiceRequest request : l) {</span>
+<span class="nc bnc" id="L204" title="All 5 branches missed.">      switch (request.getPriority()) {</span>
+        case Critical:
+<span class="nc" id="L206">          p1.add(request);</span>
+<span class="nc" id="L207">          break;</span>
+        case High:
+<span class="nc" id="L209">          p2.add(request);</span>
+<span class="nc" id="L210">          break;</span>
+        case Normal:
+<span class="nc" id="L212">          p3.add(request);</span>
+<span class="nc" id="L213">          break;</span>
+        case Low:
+<span class="nc" id="L215">          p4.add(request);</span>
+          break;
+      }
+<span class="nc" id="L218">    }</span>
+<span class="nc" id="L219">    p1.sort(</span>
+<span class="nc" id="L220">        new Comparator&lt;ServiceRequest&gt;() {</span>
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {</span>
+<span class="nc" id="L224">              return 0;</span>
+            }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            return serviceRequest.getOpenDate().getTime() &gt; t1.getOpenDate().getTime() ? 1 : -1;</span>
+          }
+        });
+<span class="nc" id="L229">    p2.sort(</span>
+<span class="nc" id="L230">        new Comparator&lt;ServiceRequest&gt;() {</span>
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+<span class="nc bnc" id="L233" title="All 2 branches missed.">            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {</span>
+<span class="nc" id="L234">              return 0;</span>
+            }
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            return serviceRequest.getOpenDate().getTime() &gt; t1.getOpenDate().getTime() ? 1 : -1;</span>
+          }
+        });
+<span class="nc" id="L239">    p3.sort(</span>
+<span class="nc" id="L240">        new Comparator&lt;ServiceRequest&gt;() {</span>
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+<span class="nc bnc" id="L243" title="All 2 branches missed.">            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {</span>
+<span class="nc" id="L244">              return 0;</span>
+            }
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            return serviceRequest.getOpenDate().getTime() &gt; t1.getOpenDate().getTime() ? 1 : -1;</span>
+          }
+        });
+<span class="nc" id="L249">    p4.sort(</span>
+<span class="nc" id="L250">        new Comparator&lt;ServiceRequest&gt;() {</span>
+          @Override
+          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+<span class="nc bnc" id="L253" title="All 2 branches missed.">            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {</span>
+<span class="nc" id="L254">              return 0;</span>
+            }
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            return serviceRequest.getOpenDate().getTime() &gt; t1.getOpenDate().getTime() ? 1 : -1;</span>
+          }
+        });
+<span class="nc" id="L259">    preFilterList.addAll(p1);</span>
+<span class="nc" id="L260">    preFilterList.addAll(p2);</span>
+<span class="nc" id="L261">    preFilterList.addAll(p3);</span>
+<span class="nc" id="L262">    preFilterList.addAll(p4);</span>
+
+<span class="nc bnc" id="L264" title="All 2 branches missed.">    if (filterMap.isEmpty()) {</span>
+<span class="nc" id="L265">      return preFilterList;</span>
+    }
+<span class="nc" id="L267">    LinkedList&lt;ServiceRequest&gt; filteredList = new LinkedList&lt;ServiceRequest&gt;();</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">    for (ServiceRequest sr : preFilterList) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">      if (filterMap.get(sr.getAssignee().getName())) {</span>
+<span class="nc" id="L270">        filteredList.add(sr);</span>
+      }
+<span class="nc" id="L272">    }</span>
+<span class="nc" id="L273">    return filteredList;</span>
+  }
+
+  private HBox getFilterBar() throws SQLException {
+<span class="nc" id="L277">    HBox filterBar = new HBox();</span>
+<span class="nc" id="L278">    filterBar.setPrefSize(CARDWIDTH, 50);</span>
+<span class="nc" id="L279">    filterBar.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L280">    filterBar.setSpacing(10);</span>
+<span class="nc" id="L281">    List&lt;Object&gt; DBEmployeeList =</span>
+<span class="nc" id="L282">        Objects.requireNonNull(DBManager.getManager(DataBaseObjectType.Employee)).getAll();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">    if (DBEmployeeList.isEmpty()) {</span>
+<span class="nc" id="L284">      Text t = new Text(&quot;No employees loaded to filter.&quot;);</span>
+<span class="nc" id="L285">      filterBar.getChildren().add(t);</span>
+<span class="nc" id="L286">      return filterBar;</span>
+    }
+<span class="nc bnc" id="L288" title="All 2 branches missed.">    for (Object DBObject : DBEmployeeList) {</span>
+<span class="nc" id="L289">      Employee e = (Employee) DBObject;</span>
+<span class="nc" id="L290">      JFXCheckBox eBox = new JFXCheckBox();</span>
+<span class="nc" id="L291">      String eBoxText = e.getName();</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">      if (eBoxText.length() &gt; 10) {</span>
+<span class="nc" id="L293">        eBoxText = eBoxText.substring(0, 10) + &quot;...&quot;;</span>
+      }
+<span class="nc" id="L295">      eBox.setText(eBoxText);</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">      if (filterMap.containsKey(e.getName())) {</span>
+<span class="nc" id="L297">        eBox.setSelected(filterMap.get(e.getName()));</span>
+      } else {
+<span class="nc" id="L299">        filterMap.put(e.getName(), true);</span>
+<span class="nc" id="L300">        eBox.setSelected(true);</span>
+      }
+<span class="nc" id="L302">      eBox.setOnAction(</span>
+          ev -&gt; {
+<span class="nc" id="L304">            Boolean oldVal = filterMap.get(e.getName());</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            filterMap.replace(e.getName(), !oldVal);</span>
+            try {
+<span class="nc" id="L307">              scrollWrapper.setContent(getRequestHolder());</span>
+<span class="nc" id="L308">            } catch (SQLException ex) {</span>
+<span class="nc" id="L309">              ex.printStackTrace();</span>
+<span class="nc" id="L310">            }</span>
+<span class="nc" id="L311">          });</span>
+<span class="nc" id="L312">      filterBar.getChildren().add(eBox);</span>
+<span class="nc" id="L313">    }</span>
+<span class="nc" id="L314">    return filterBar;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
