@@ -33,11 +33,6 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openAboutPopup" onMouseClicked="#openAboutPopup" text="About Us" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
          </children>
       </GridPane>
    </children>
