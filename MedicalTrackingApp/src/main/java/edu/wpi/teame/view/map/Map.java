@@ -687,18 +687,52 @@ public class Map {
                                             new Runnable() {
                                               @Override
                                               public void run() {
-                                                if (counter[0] == routeSnap.size()) {
+                                                if (counter[0] > routeSnap.size() - 1) {
                                                   Navigation.RemoveRoute();
                                                   newTimer.cancel();
                                                 }
+                                                if (counter[0] <= routeSnap.size() - 1) {
+                                                  icon.getButton()
+                                                      .setTranslateX(
+                                                          routeSnap.get(counter[0]).getX()
+                                                              - MAPWIDTH / 2);
+                                                  icon.getButton()
+                                                      .setTranslateY(
+                                                          routeSnap.get(counter[0]).getY()
+                                                              - MAPHEIGHT / 2);
+                                                  newSr
+                                                      .getEquipment()
+                                                      .setLocation(routeSnap.get(counter[0]));
+                                                  try {
+                                                    DBManager.getManager(
+                                                            DataBaseObjectType.Equipment)
+                                                        .update(newSr.getEquipment());
+                                                  } catch (SQLException e) {
+                                                    e.printStackTrace();
+                                                  }
+                                                }
                                               }
                                             });
-                                        icon.getButton()
-                                            .setTranslateX(
-                                                routeSnap.get(counter[0]).getX() - MAPWIDTH / 2);
-                                        icon.getButton()
-                                            .setTranslateY(
-                                                routeSnap.get(counter[0]).getY() - MAPHEIGHT / 2);
+
+                                        //                                        try {
+                                        //                                          Location newL =
+                                        //
+                                        // routeSnap.get(routeSnap.size() - 1);
+                                        //                                          Equipment newE =
+                                        // newSr.getEquipment();
+                                        //
+                                        // newE.setLocation(newL);
+                                        //
+                                        // DBManager.getManager(
+                                        //
+                                        // DataBaseObjectType.Equipment)
+                                        //
+                                        // .update(newE);
+                                        //                                        } catch
+                                        // (SQLException e) {
+                                        //
+                                        // e.printStackTrace();
+                                        //                                        }
                                         counter[0]++;
                                       }
                                     },
