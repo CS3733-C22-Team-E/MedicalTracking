@@ -63,10 +63,7 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   public MedicineDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.MedicineDeliverySR);
-    this.patient =
-        (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient)
-                .get(lineData.getColumnInt("patientID"));
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
     this.medicineQuantity = lineData.getColumnString("medicineQuantity");
     this.medicineName = lineData.getColumnString("medicineName");
   }

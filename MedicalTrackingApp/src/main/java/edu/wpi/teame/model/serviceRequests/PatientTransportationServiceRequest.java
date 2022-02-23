@@ -81,18 +81,9 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
         isInternal
             ? DataBaseObjectType.InternalPatientTransferSR
             : DataBaseObjectType.ExternalPatientSR);
-    this.destination =
-        (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
-                .get(lineData.getColumnInt("destinationID"));
-    this.equipment =
-        (Equipment)
-            DBManager.getManager(DataBaseObjectType.Equipment)
-                .get(lineData.getColumnInt("equipmentID"));
-    this.patient =
-        (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient)
-                .get(lineData.getColumnInt("patientID"));
+    this.destination = (Location) lineData.getDBObject(DataBaseObjectType.Location, "destinationID");
+    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
   @Override

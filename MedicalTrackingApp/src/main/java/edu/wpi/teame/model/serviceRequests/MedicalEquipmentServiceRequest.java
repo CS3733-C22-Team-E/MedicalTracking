@@ -52,10 +52,7 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
 
   public MedicalEquipmentServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.MedicalEquipmentSR);
-    this.equipment =
-        (Equipment)
-            DBManager.getManager(DataBaseObjectType.Equipment)
-                .get(lineData.getColumnInt("equipmentID"));
+    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
   }
 
   @Override

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CSVManager {
-    private List<HashMap<String, Integer>> csvToDBIDs = null;
+    private List<HashMap<Integer, Integer>> csvToDBIDs = null;
     private static CSVManager instance;
 
     public static synchronized CSVManager getInstance() {
@@ -24,11 +24,20 @@ public class CSVManager {
         }
     }
 
-    public int getDBId(DataBaseObjectType objectType, String csvID) {
+    public int getDBId(DataBaseObjectType objectType, int csvID) {
+        if (csvToDBIDs.size() == 0 || csvToDBIDs.get(objectType.ordinal()).size() == 0) {
+            return csvID;
+        }
+
+        // Check if the csvID exists
+        if (!csvToDBIDs.get(objectType.ordinal()).containsKey(csvID)) {
+            return csvID;
+        }
+
         return csvToDBIDs.get(objectType.ordinal()).get(csvID);
     }
 
-    public void putCsvToDBId(DataBaseObjectType objectType, String csvID, int DBId) {
+    public void putCsvToDBId(DataBaseObjectType objectType, int csvID, int DBId) {
         csvToDBIDs.get(objectType.ordinal()).put(csvID, DBId);
     }
 }

@@ -51,10 +51,7 @@ public class Equipment implements ISQLSerializable {
     this.isClean = lineData.getColumnBoolean("isClean");
     this.hasPatient = lineData.getColumnBoolean("hasPatient");
     this.type = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
-    this.location =
-        (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
-                .get(lineData.getColumnInt("locationNodeID"));
+    this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, "locationNodeID");
   }
 
   @Override

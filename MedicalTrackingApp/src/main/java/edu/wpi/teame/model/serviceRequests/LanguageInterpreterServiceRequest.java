@@ -60,10 +60,7 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   public LanguageInterpreterServiceRequest(CSVLineData lineData)
       throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.LanguageInterpreterSR);
-    this.patient =
-        (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient)
-                .get(lineData.getColumnInt("patientID"));
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
     this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 

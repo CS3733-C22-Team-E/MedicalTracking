@@ -58,10 +58,7 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
 
   public FoodDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.FoodDeliverySR);
-    this.patient =
-        (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient)
-                .get(lineData.getColumnInt("patientID"));
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
     this.food = lineData.getColumnString("food");
   }
 

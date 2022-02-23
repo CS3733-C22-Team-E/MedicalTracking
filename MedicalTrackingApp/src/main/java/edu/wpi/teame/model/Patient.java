@@ -39,10 +39,21 @@ public class Patient implements ISQLSerializable {
     this.isDeleted = false;
     this.name = lineData.getColumnString("name");
     this.dateOfBirth = lineData.getColumnDate("dateOfBirth");
-    this.currentLocation =
-        (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
-                .get(lineData.getColumnInt("currentLocation"));
+    this.currentLocation = (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
+  }
+
+  @Override
+  public String toString() {
+    return "patientId: "
+            + id
+            + ", patientName: "
+            + name
+            + ", dateOfBirth: "
+            + dateOfBirth.toString()
+            + ", currentLocationId: "
+            + currentLocation.getId()
+            + ", currentLocationName: "
+            + currentLocation.getLongName();
   }
 
   @Override
@@ -115,18 +126,5 @@ public class Patient implements ISQLSerializable {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public String toString() {
-    return "patientId: "
-        + id
-        + ", patientName: "
-        + name
-        + ", dateOfBirth: "
-        + dateOfBirth.toString()
-        + ", currentLocationId: "
-        + currentLocation.getId()
-        + ", currentLocationName: "
-        + currentLocation.getLongName();
   }
 }

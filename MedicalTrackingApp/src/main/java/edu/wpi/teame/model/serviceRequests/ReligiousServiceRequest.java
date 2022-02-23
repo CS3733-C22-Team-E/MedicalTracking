@@ -59,10 +59,7 @@ public final class ReligiousServiceRequest extends ServiceRequest {
   public ReligiousServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
     super(lineData, DataBaseObjectType.ReligiousSR);
     this.religion = lineData.getColumnString("religion");
-    this.patient =
-        (Patient)
-            DBManager.getManager(DataBaseObjectType.Patient)
-                .get(lineData.getColumnInt("patientID"));
+    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
   @Override

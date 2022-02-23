@@ -77,14 +77,8 @@ public class ServiceRequest implements ISQLSerializable {
       throws SQLException, ParseException {
     this.priority = ServiceRequestPriority.values()[lineData.getColumnInt("priority")];
     this.status = ServiceRequestStatus.values()[lineData.getColumnInt("status")];
-    this.assignee =
-        (Employee)
-            DBManager.getManager(DataBaseObjectType.Employee)
-                .get(lineData.getColumnInt("assigneeID"));
-    this.location =
-        (Location)
-            DBManager.getManager(DataBaseObjectType.Location)
-                .get(lineData.getColumnInt("locationID"));
+    this.assignee = (Employee) lineData.getDBObject(DataBaseObjectType.Employee, "assigneeID");
+    this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, "locationID");
     this.additionalInfo = lineData.getColumnString("additionalInfo");
     this.requestDate = lineData.getColumnDate("requestDate");
     this.closeDate = lineData.getColumnDate("closeDate");
