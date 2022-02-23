@@ -165,7 +165,7 @@ public class LandingPageController implements Initializable {
             "About Page",
             SortOrder.ByName,
             "view/tabs/AboutPage.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
+            new Image(App.class.getResource("images/Icons/AboutUs.png").toString()));
     TabHoverAnimation.install(aboutPageTab);
     tabs.add(aboutPageTab);
 
