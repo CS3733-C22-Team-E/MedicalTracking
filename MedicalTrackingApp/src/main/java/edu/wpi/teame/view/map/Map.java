@@ -334,7 +334,6 @@ public class Map {
             i.getIcon().setVisible(!i.getIcon().isVisible());
             i.getFillProgressIndicator().setVisible(serviceRequestsCheckbox.isSelected());
           }
-          showLocationNodes = !showLocationNodes;
         });
     serviceRequestsCheckbox.setPrefHeight(30);
     serviceRequestsCheckbox.setPrefWidth(30);
