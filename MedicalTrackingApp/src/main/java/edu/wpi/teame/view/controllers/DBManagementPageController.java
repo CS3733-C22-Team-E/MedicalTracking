@@ -19,7 +19,6 @@ public class DBManagementPageController implements Initializable {
   @FXML JFXComboBox tableComboBox;
   @FXML TextField searchTextBox;
 
-  private List<ISQLSerializable> itemsList = null;
   private DataBaseObjectType currentType = null;
 
   @Override
@@ -51,18 +50,17 @@ public class DBManagementPageController implements Initializable {
   public void switchTable() throws SQLException {
     String selectedText = tableComboBox.getValue().toString();
     currentType = DataBaseObjectType.getValue(selectedText);
-
-    itemsList = DBManager.getInstance().getManager(currentType).getDeleted();
-    itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());
-
     searchTextBox.clear();
     updateListView();
   }
 
-  private void updateListView() {
-    // Empty the result view
+  private void updateListView() throws SQLException {
+    // Empty the result view at start
     resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
     resultView.applyCss();
+
+    List<ISQLSerializable> itemsList = DBManager.getInstance().getManager(currentType).getDeleted();
+    itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());
 
     if (itemsList.isEmpty()) {
       resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
@@ -100,12 +98,12 @@ public class DBManagementPageController implements Initializable {
   }
 
   @FXML
-  public void searchBoxChanged() {
+  public void searchBoxChanged() throws SQLException {
     updateListView();
   }
 
   @FXML
-  public void searchButtonClick() {
+  public void searchButtonClick() throws SQLException {
     updateListView();
   }
 }

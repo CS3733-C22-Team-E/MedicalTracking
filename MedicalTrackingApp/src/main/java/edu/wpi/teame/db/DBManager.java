@@ -21,7 +21,7 @@ public final class DBManager {
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
-  private Statement stmt;
+  private Statement statement;
 
   public static synchronized DBManager getInstance() {
     if (instance == null) {
@@ -44,7 +44,7 @@ public final class DBManager {
             + "x int, "
             + "y int, "
             + "isDeleted int DEFAULT 0)";
-    stmt.execute(createLocationsTable);
+    statement.execute(createLocationsTable);
     System.out.println("Location Table created");
 
     String createEquipmentTable =
@@ -56,7 +56,7 @@ public final class DBManager {
             + "hasPatient int, "
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id))";
-    stmt.execute(createEquipmentTable);
+    statement.execute(createEquipmentTable);
     System.out.println("Equipment Table created");
 
     String createEmployeeTable =
@@ -65,7 +65,7 @@ public final class DBManager {
             + "name VARCHAR(100), "
             + "type int, "
             + "isDeleted int DEFAULT 0)";
-    stmt.execute(createEmployeeTable);
+    statement.execute(createEmployeeTable);
     System.out.println("Employee Table created");
 
     String createPatientTable =
@@ -75,7 +75,7 @@ public final class DBManager {
             + "currentLocationID int,"
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (currentLocationID) REFERENCES LOCATION(id))";
-    stmt.execute(createPatientTable);
+    statement.execute(createPatientTable);
     System.out.println("Patient Table created");
 
     String createCredentialTable =
@@ -84,7 +84,7 @@ public final class DBManager {
             + "username VARCHAR(50) UNIQUE NOT NULL, "
             + "password VARCHAR(64), "
             + "accessLevel int)";
-    stmt.execute(createCredentialTable);
+    statement.execute(createCredentialTable);
     System.out.println("Credential Table created");
 
     String createEdgeTable =
@@ -94,7 +94,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (startID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (endID) REFERENCES LOCATION(id))";
-    stmt.execute(createEdgeTable);
+    statement.execute(createEdgeTable);
     System.out.println("Edge Table created");
     // </editor-fold>
 
@@ -112,7 +112,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createAudioVisualSRTable);
+    statement.execute(createAudioVisualSRTable);
     System.out.println("AudioVisualSR Table created");
 
     String createComputerSRTable =
@@ -129,7 +129,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createComputerSRTable);
+    statement.execute(createComputerSRTable);
     System.out.println("ComputerSR Table created");
 
     String createDeceasedBodyRemovalSRTable =
@@ -146,7 +146,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createDeceasedBodyRemovalSRTable);
+    statement.execute(createDeceasedBodyRemovalSRTable);
     System.out.println("DeceasedBodyRemovalSR Table created");
 
     String createExternalPatientSRTable =
@@ -169,7 +169,7 @@ public final class DBManager {
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createExternalPatientSRTable);
+    statement.execute(createExternalPatientSRTable);
     System.out.println("ExternalPatientSR Table created");
 
     String createFacilitiesMaintenanceSRTable =
@@ -186,7 +186,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createFacilitiesMaintenanceSRTable);
+    statement.execute(createFacilitiesMaintenanceSRTable);
     System.out.println("FacilitiesMaintenanceSR Table created");
 
     String createFoodDeliverySRTable =
@@ -206,7 +206,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createFoodDeliverySRTable);
+    statement.execute(createFoodDeliverySRTable);
     System.out.println("FoodDeliverySR Table created");
 
     String createGiftAndFloralSRTable =
@@ -225,7 +225,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createGiftAndFloralSRTable);
+    statement.execute(createGiftAndFloralSRTable);
     System.out.println("GiftAndFloralSR Table created");
 
     String createInternalPatientSRTable =
@@ -248,7 +248,7 @@ public final class DBManager {
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createInternalPatientSRTable);
+    statement.execute(createInternalPatientSRTable);
     System.out.println("InternalPatientSR Table created");
 
     String createLanguageSRTable =
@@ -268,7 +268,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createLanguageSRTable);
+    statement.execute(createLanguageSRTable);
     System.out.println("LanguageInterpreterSR Table created");
 
     String createLaundrySRTable =
@@ -285,7 +285,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createLaundrySRTable);
+    statement.execute(createLaundrySRTable);
     System.out.println("LaundrySR Table created");
 
     String createEquipmentDeliverySRTable =
@@ -304,7 +304,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (equipmentID) REFERENCES EQUIPMENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createEquipmentDeliverySRTable);
+    statement.execute(createEquipmentDeliverySRTable);
     System.out.println("MedicalEquipmentSR Table created");
 
     String createMedicineDeliverySRTable =
@@ -325,7 +325,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createMedicineDeliverySRTable);
+    statement.execute(createMedicineDeliverySRTable);
     System.out.println("MedicineDeliverySR Table created");
 
     String createMentalHealthSRTable =
@@ -342,7 +342,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createMentalHealthSRTable);
+    statement.execute(createMentalHealthSRTable);
     System.out.println("MentalHealthSR Table created");
 
     String createPatientDischargeSRTable =
@@ -359,7 +359,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createPatientDischargeSRTable);
+    statement.execute(createPatientDischargeSRTable);
     System.out.println("PatientDischargeSR Table created");
 
     String createReligionSR =
@@ -379,7 +379,7 @@ public final class DBManager {
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (patientID) REFERENCES PATIENT(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createReligionSR);
+    statement.execute(createReligionSR);
     System.out.println("ReligiousSR Table created");
 
     String createSanitationSRTable =
@@ -396,7 +396,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createSanitationSRTable);
+    statement.execute(createSanitationSRTable);
     System.out.println("SanitationSR Table created");
 
     String createSecuritySRTable =
@@ -413,7 +413,7 @@ public final class DBManager {
             + "isDeleted int DEFAULT 0, "
             + "FOREIGN KEY (locationID) REFERENCES LOCATION(id), "
             + "FOREIGN KEY (assigneeID) REFERENCES EMPLOYEE(id))";
-    stmt.execute(createSecuritySRTable);
+    statement.execute(createSecuritySRTable);
     System.out.println("SecuritySR Table created");
   }
 
@@ -439,7 +439,7 @@ public final class DBManager {
 
     // Create Edge
     connection = DriverManager.getConnection(connectionString);
-    stmt = connection.createStatement();
+    statement = connection.createStatement();
     currentType = type;
 
     // Check if we should transfer data
@@ -515,7 +515,7 @@ public final class DBManager {
     // Connect to Client/Server... that DB may already have the tables
     try {
       connection = DriverManager.getConnection(ClientServerConnectionString);
-      stmt = connection.createStatement();
+      statement = connection.createStatement();
       createDBTables();
     } catch (SQLException ex) {
       ex.printStackTrace();
@@ -523,7 +523,7 @@ public final class DBManager {
 
     // Default connect to Embedded Server
     connection = DriverManager.getConnection(EmbeddedConnectionString);
-    stmt = connection.createStatement();
+    statement = connection.createStatement();
     createDBTables();
 
     // Create the object managers
@@ -545,7 +545,7 @@ public final class DBManager {
 
     DataBaseObjectType[] dbTables = DataBaseObjectType.values();
     for (int i = dbTables.length - 1; i >= 0; i--) {
-      stmt.executeUpdate(deleteQuery + dbTables[i].toTableName());
+      statement.executeUpdate(deleteQuery + dbTables[i].toTableName());
     }
   }
 

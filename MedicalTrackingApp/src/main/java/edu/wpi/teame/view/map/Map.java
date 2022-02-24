@@ -85,7 +85,7 @@ public class Map {
       radialMenusByFloor.put(currFloor, new ArrayList<>());
       ActiveSRByFloor.put(currFloor, new ArrayList<>());
     }
-    System.out.println("Loa\nded Maps");
+    System.out.println("Loaded Maps");
     switchFloors(floor);
   }
 
@@ -272,7 +272,6 @@ public class Map {
   }
 
   private JFXButton createZoomInButton() {
-
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
     icon.setFitWidth(30);
@@ -316,7 +315,7 @@ public class Map {
 
     JFXCheckBox locationsCheckBox = new JFXCheckBox("Location Dots");
     locationsCheckBox.getStyleClass().add("combo-box");
-    locationsCheckBox.setSelected(false);
+    locationsCheckBox.setSelected(true);
     locationsCheckBox.setOnAction(
         event -> {
           for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
