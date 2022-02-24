@@ -57,8 +57,7 @@ test {
     useJUnitPlatform()
 }
 
-jar {
-    manifest {
+jar {   manifest {
         attributes 'Main-Class': mainClassName
     }
     from {
