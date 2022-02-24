@@ -137,7 +137,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void readCSV(String inputFileName)
       throws IOException, SQLException, CsvValidationException, ParseException {
-    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
+    InputStream filePath =
+        App.class.getClassLoader().getResourceAsStream("edu/wpi/teame/csv/" + inputFileName);
     CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
     CSVLineData lineData = new CSVLineData(csvReader);
 
@@ -155,7 +156,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
-    String filePath = App.class.getResource("csv/" + outputFileName).getPath();
+    String filePath =
+        App.class.getClassLoader().getResource("edu/wpi/teame/csv/" + outputFileName).getFile();
     FileWriter outputFile = new FileWriter(filePath);
     CSVWriter writer =
         new CSVWriter(

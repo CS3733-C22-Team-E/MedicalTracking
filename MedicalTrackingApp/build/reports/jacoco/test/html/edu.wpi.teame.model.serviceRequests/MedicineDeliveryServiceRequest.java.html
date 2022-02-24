@@ -56,27 +56,29 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 <span class="nc" id="L56">    super(resultSet, DataBaseObjectType.MedicineDeliverySR);</span>
 <span class="nc" id="L57">    this.patient =</span>
         (Patient)
-<span class="nc" id="L59">            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt(&quot;patientID&quot;));</span>
-<span class="nc" id="L60">    this.medicineQuantity = resultSet.getString(&quot;medicineQuantity&quot;);</span>
-<span class="nc" id="L61">    this.medicineName = resultSet.getString(&quot;medicineName&quot;);</span>
-<span class="nc" id="L62">  }</span>
+<span class="nc" id="L59">            DBManager.getInstance()</span>
+<span class="nc" id="L60">                .getManager(DataBaseObjectType.Patient)</span>
+<span class="nc" id="L61">                .get(resultSet.getInt(&quot;patientID&quot;));</span>
+<span class="nc" id="L62">    this.medicineQuantity = resultSet.getString(&quot;medicineQuantity&quot;);</span>
+<span class="nc" id="L63">    this.medicineName = resultSet.getString(&quot;medicineName&quot;);</span>
+<span class="nc" id="L64">  }</span>
 
   public MedicineDeliveryServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
-<span class="nc" id="L65">    super(lineData, DataBaseObjectType.MedicineDeliverySR);</span>
-<span class="nc" id="L66">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
-<span class="nc" id="L67">    this.medicineQuantity = lineData.getColumnString(&quot;medicineQuantity&quot;);</span>
-<span class="nc" id="L68">    this.medicineName = lineData.getColumnString(&quot;medicineName&quot;);</span>
-<span class="nc" id="L69">  }</span>
+<span class="nc" id="L67">    super(lineData, DataBaseObjectType.MedicineDeliverySR);</span>
+<span class="nc" id="L68">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
+<span class="nc" id="L69">    this.medicineQuantity = lineData.getColumnString(&quot;medicineQuantity&quot;);</span>
+<span class="nc" id="L70">    this.medicineName = lineData.getColumnString(&quot;medicineName&quot;);</span>
+<span class="nc" id="L71">  }</span>
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L73">    return getRawUpdateString()</span>
+<span class="nc" id="L75">    return getRawUpdateString()</span>
         + &quot;, &quot;
         + &quot;medicineName = '&quot;
         + medicineName
         + &quot;', &quot;
         + &quot;patientID = &quot;
-<span class="nc" id="L79">        + patient.getId()</span>
+<span class="nc" id="L81">        + patient.getId()</span>
         + &quot;, &quot;
         + &quot;medicineQuantity = '&quot;
         + medicineQuantity
@@ -87,8 +89,8 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String getSQLInsertString() {
-<span class="nc bnc" id="L90" title="All 2 branches missed.">    String patientID = patient == null ? &quot;NULL&quot; : Integer.toString(patient.getId());</span>
-<span class="nc" id="L91">    return super.getSQLInsertString()</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">    String patientID = patient == null ? &quot;NULL&quot; : Integer.toString(patient.getId());</span>
+<span class="nc" id="L93">    return super.getSQLInsertString()</span>
         + &quot;, '&quot;
         + medicineName
         + &quot;', &quot;
@@ -100,57 +102,57 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L103">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L104">    csvData.addAll(List.of(super.toCSVData()));</span>
-<span class="nc" id="L105">    csvData.add(medicineName);</span>
-<span class="nc" id="L106">    csvData.add(Integer.toString(patient.getId()));</span>
-<span class="nc" id="L107">    csvData.add(medicineQuantity);</span>
+<span class="nc" id="L105">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L106">    csvData.addAll(List.of(super.toCSVData()));</span>
+<span class="nc" id="L107">    csvData.add(medicineName);</span>
+<span class="nc" id="L108">    csvData.add(Integer.toString(patient.getId()));</span>
+<span class="nc" id="L109">    csvData.add(medicineQuantity);</span>
 
-<span class="nc" id="L109">    String[] retArr = new String[csvData.size()];</span>
-<span class="nc" id="L110">    return csvData.toArray(retArr);</span>
+<span class="nc" id="L111">    String[] retArr = new String[csvData.size()];</span>
+<span class="nc" id="L112">    return csvData.toArray(retArr);</span>
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L115">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L116">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
-<span class="nc" id="L117">    csvHeaders.add(&quot;medicineName&quot;);</span>
-<span class="nc" id="L118">    csvHeaders.add(&quot;patientID&quot;);</span>
-<span class="nc" id="L119">    csvHeaders.add(&quot;medicineQuantity&quot;);</span>
+<span class="nc" id="L117">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L118">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
+<span class="nc" id="L119">    csvHeaders.add(&quot;medicineName&quot;);</span>
+<span class="nc" id="L120">    csvHeaders.add(&quot;patientID&quot;);</span>
+<span class="nc" id="L121">    csvHeaders.add(&quot;medicineQuantity&quot;);</span>
 
-<span class="nc" id="L121">    String[] retArr = new String[csvHeaders.size()];</span>
-<span class="nc" id="L122">    return csvHeaders.toArray(retArr);</span>
+<span class="nc" id="L123">    String[] retArr = new String[csvHeaders.size()];</span>
+<span class="nc" id="L124">    return csvHeaders.toArray(retArr);</span>
   }
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L127">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate&quot;</span>
+<span class="nc" id="L129">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate&quot;</span>
         + &quot;, medicineName, patientID, medicineQuantity)&quot;;
   }
 
   // Getters and Setters
   public String getMedicineQuantity() {
-<span class="nc" id="L133">    return medicineQuantity;</span>
+<span class="nc" id="L135">    return medicineQuantity;</span>
   }
 
   public void setMedicineQuantity(String medicineQuantity) {
-<span class="nc" id="L137">    this.medicineQuantity = medicineQuantity;</span>
-<span class="nc" id="L138">  }</span>
+<span class="nc" id="L139">    this.medicineQuantity = medicineQuantity;</span>
+<span class="nc" id="L140">  }</span>
 
   public String getMedicineName() {
-<span class="nc" id="L141">    return medicineName;</span>
+<span class="nc" id="L143">    return medicineName;</span>
   }
 
   public void setMedicineName(String medicineName) {
-<span class="nc" id="L145">    this.medicineName = medicineName;</span>
-<span class="nc" id="L146">  }</span>
+<span class="nc" id="L147">    this.medicineName = medicineName;</span>
+<span class="nc" id="L148">  }</span>
 
   public Patient getPatient() {
-<span class="nc" id="L149">    return patient;</span>
+<span class="nc" id="L151">    return patient;</span>
   }
 
   public void setPatient(Patient patient) {
-<span class="nc" id="L153">    this.patient = patient;</span>
-<span class="nc" id="L154">  }</span>
+<span class="nc" id="L155">    this.patient = patient;</span>
+<span class="nc" id="L156">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

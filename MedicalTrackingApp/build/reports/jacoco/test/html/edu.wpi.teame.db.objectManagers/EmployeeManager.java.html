@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public final class EmployeeManager extends ObjectManager&lt;Employee&gt; {
   public EmployeeManager() throws SQLException {
-<span class="nc" id="L10">    super(DataBaseObjectType.Employee);</span>
+<span class="nc" id="L10">    super(DataBaseObjectType.Employee, 5);</span>
 <span class="nc" id="L11">  }</span>
 
   public Employee getByAssignee(String assignee) throws SQLException {

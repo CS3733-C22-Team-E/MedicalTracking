@@ -421,7 +421,7 @@ public final class DBManager {
       throws SQLException, IOException, CsvValidationException, ParseException {
 
     // Write to CSV
-    DBManager.getInstance().writeDBToCSV(false);
+    //DBManager.getInstance().writeDBToCSV(false);
 
     // Switch Edge
     String connectionString = "";

@@ -64,108 +64,113 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
 <span class="nc" id="L64">            : DataBaseObjectType.ExternalPatientSR);</span>
 <span class="nc" id="L65">    this.destination =</span>
         (Location)
-<span class="nc" id="L67">            DBManager.getManager(DataBaseObjectType.Location)</span>
-<span class="nc" id="L68">                .get(resultSet.getInt(&quot;destinationID&quot;));</span>
-<span class="nc" id="L69">    this.equipment =</span>
+<span class="nc" id="L67">            DBManager.getInstance()</span>
+<span class="nc" id="L68">                .getManager(DataBaseObjectType.Location)</span>
+<span class="nc" id="L69">                .get(resultSet.getInt(&quot;destinationID&quot;));</span>
+<span class="nc" id="L70">    this.equipment =</span>
         (Equipment)
-<span class="nc" id="L71">            DBManager.getManager(DataBaseObjectType.Equipment).get(resultSet.getInt(&quot;equipmentID&quot;));</span>
-<span class="nc" id="L72">    this.patient =</span>
+<span class="nc" id="L72">            DBManager.getInstance()</span>
+<span class="nc" id="L73">                .getManager(DataBaseObjectType.Equipment)</span>
+<span class="nc" id="L74">                .get(resultSet.getInt(&quot;equipmentID&quot;));</span>
+<span class="nc" id="L75">    this.patient =</span>
         (Patient)
-<span class="nc" id="L74">            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt(&quot;patientID&quot;));</span>
-<span class="nc" id="L75">  }</span>
+<span class="nc" id="L77">            DBManager.getInstance()</span>
+<span class="nc" id="L78">                .getManager(DataBaseObjectType.Patient)</span>
+<span class="nc" id="L79">                .get(resultSet.getInt(&quot;patientID&quot;));</span>
+<span class="nc" id="L80">  }</span>
 
   public PatientTransportationServiceRequest(CSVLineData lineData, boolean isInternal)
       throws SQLException, ParseException {
-<span class="nc" id="L79">    super(</span>
+<span class="nc" id="L84">    super(</span>
         lineData,
-<span class="nc bnc" id="L81" title="All 2 branches missed.">        isInternal</span>
-<span class="nc" id="L82">            ? DataBaseObjectType.InternalPatientTransferSR</span>
-<span class="nc" id="L83">            : DataBaseObjectType.ExternalPatientSR);</span>
-<span class="nc" id="L84">    this.destination =</span>
-<span class="nc" id="L85">        (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;destinationID&quot;);</span>
-<span class="nc" id="L86">    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, &quot;equipmentID&quot;);</span>
-<span class="nc" id="L87">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
-<span class="nc" id="L88">  }</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        isInternal</span>
+<span class="nc" id="L87">            ? DataBaseObjectType.InternalPatientTransferSR</span>
+<span class="nc" id="L88">            : DataBaseObjectType.ExternalPatientSR);</span>
+<span class="nc" id="L89">    this.destination =</span>
+<span class="nc" id="L90">        (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;destinationID&quot;);</span>
+<span class="nc" id="L91">    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, &quot;equipmentID&quot;);</span>
+<span class="nc" id="L92">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
+<span class="nc" id="L93">  }</span>
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L92">    return getRawUpdateString()</span>
+<span class="nc" id="L97">    return getRawUpdateString()</span>
         + &quot;, &quot;
         + &quot;destinationID = &quot;
-<span class="nc" id="L95">        + destination.getId()</span>
+<span class="nc" id="L100">        + destination.getId()</span>
         + &quot;, &quot;
         + &quot;equipmentID = &quot;
-<span class="nc" id="L98">        + equipment.getId()</span>
+<span class="nc" id="L103">        + equipment.getId()</span>
         + &quot;, &quot;
         + &quot;patientID = &quot;
-<span class="nc" id="L101">        + patient.getId()</span>
+<span class="nc" id="L106">        + patient.getId()</span>
         + &quot; WHERE id = &quot;
         + id;
   }
 
   @Override
   public String getSQLInsertString() {
-<span class="nc" id="L108">    return super.getSQLInsertString()</span>
+<span class="nc" id="L113">    return super.getSQLInsertString()</span>
         + &quot;, &quot;
-<span class="nc" id="L110">        + destination.getId()</span>
+<span class="nc" id="L115">        + destination.getId()</span>
         + &quot;, &quot;
-<span class="nc" id="L112">        + equipment.getId()</span>
+<span class="nc" id="L117">        + equipment.getId()</span>
         + &quot;, &quot;
-<span class="nc" id="L114">        + patient.getId();</span>
+<span class="nc" id="L119">        + patient.getId();</span>
   }
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L119">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L120">    csvData.addAll(List.of(super.toCSVData()));</span>
-<span class="nc" id="L121">    csvData.add(Integer.toString(destination.getId()));</span>
-<span class="nc" id="L122">    csvData.add(Integer.toString(patient.getId()));</span>
-<span class="nc" id="L123">    csvData.add(Integer.toString(equipment.getId()));</span>
+<span class="nc" id="L124">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L125">    csvData.addAll(List.of(super.toCSVData()));</span>
+<span class="nc" id="L126">    csvData.add(Integer.toString(destination.getId()));</span>
+<span class="nc" id="L127">    csvData.add(Integer.toString(patient.getId()));</span>
+<span class="nc" id="L128">    csvData.add(Integer.toString(equipment.getId()));</span>
 
-<span class="nc" id="L125">    String[] retArr = new String[csvData.size()];</span>
-<span class="nc" id="L126">    return csvData.toArray(retArr);</span>
+<span class="nc" id="L130">    String[] retArr = new String[csvData.size()];</span>
+<span class="nc" id="L131">    return csvData.toArray(retArr);</span>
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L131">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L132">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
-<span class="nc" id="L133">    csvHeaders.add(&quot;destinationID&quot;);</span>
-<span class="nc" id="L134">    csvHeaders.add(&quot;patientID&quot;);</span>
-<span class="nc" id="L135">    csvHeaders.add(&quot;equipmentID&quot;);</span>
+<span class="nc" id="L136">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L137">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
+<span class="nc" id="L138">    csvHeaders.add(&quot;destinationID&quot;);</span>
+<span class="nc" id="L139">    csvHeaders.add(&quot;patientID&quot;);</span>
+<span class="nc" id="L140">    csvHeaders.add(&quot;equipmentID&quot;);</span>
 
-<span class="nc" id="L137">    String[] retArr = new String[csvHeaders.size()];</span>
-<span class="nc" id="L138">    return csvHeaders.toArray(retArr);</span>
+<span class="nc" id="L142">    String[] retArr = new String[csvHeaders.size()];</span>
+<span class="nc" id="L143">    return csvHeaders.toArray(retArr);</span>
   }
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L143">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)&quot;;</span>
+<span class="nc" id="L148">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)&quot;;</span>
   }
 
   // Getters and Setters
   public Location getDestination() {
-<span class="nc" id="L148">    return destination;</span>
+<span class="nc" id="L153">    return destination;</span>
   }
 
   public void setDestination(Location destination) {
-<span class="nc" id="L152">    this.destination = destination;</span>
-<span class="nc" id="L153">  }</span>
+<span class="nc" id="L157">    this.destination = destination;</span>
+<span class="nc" id="L158">  }</span>
 
   public Equipment getEquipment() {
-<span class="nc" id="L156">    return equipment;</span>
+<span class="nc" id="L161">    return equipment;</span>
   }
 
   public void setEquipment(Equipment equipment) {
-<span class="nc" id="L160">    this.equipment = equipment;</span>
-<span class="nc" id="L161">  }</span>
+<span class="nc" id="L165">    this.equipment = equipment;</span>
+<span class="nc" id="L166">  }</span>
 
   public Patient getPatient() {
-<span class="nc" id="L164">    return patient;</span>
+<span class="nc" id="L169">    return patient;</span>
   }
 
   public void setPatient(Patient patient) {
-<span class="nc" id="L168">    this.patient = patient;</span>
-<span class="nc" id="L169">  }</span>
+<span class="nc" id="L173">    this.patient = patient;</span>
+<span class="nc" id="L174">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

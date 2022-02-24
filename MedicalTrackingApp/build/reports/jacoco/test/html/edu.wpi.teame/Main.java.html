@@ -16,10 +16,11 @@ import java.text.ParseException;
 
     // Setup the DB
 <span class="nc" id="L18">    DBManager.getInstance().setupDB();</span>
-<span class="nc" id="L19">    CredentialManager.getInstance().readCSV(&quot;backup/Credentials.csv&quot;);</span>
+<span class="nc" id="L19">    DBManager.getInstance().loadDB();</span>
+<span class="nc" id="L20">    CredentialManager.getInstance().readCSV(&quot;backup/Credentials.csv&quot;);</span>
 
     // Launch App
-<span class="nc" id="L22">    App.launch(App.class, args);</span>
-<span class="nc" id="L23">  }</span>
+<span class="nc" id="L23">    App.launch(App.class, args);</span>
+<span class="nc" id="L24">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

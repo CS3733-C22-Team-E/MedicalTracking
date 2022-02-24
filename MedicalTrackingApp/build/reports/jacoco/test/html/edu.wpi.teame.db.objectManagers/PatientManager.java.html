@@ -5,8 +5,8 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.SQLException;
 
 public final class PatientManager extends ObjectManager&lt;Patient&gt; {
-  public PatientManager() throws SQLException {
-<span class="nc" id="L9">    super(DataBaseObjectType.Patient);</span>
+  public PatientManager() {
+<span class="nc" id="L9">    super(DataBaseObjectType.Patient, 5);</span>
 <span class="nc" id="L10">  }</span>
 
   public Patient getByName(String name) throws SQLException {

@@ -3,6 +3,7 @@
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class AstarVisualizer {
@@ -10,47 +11,70 @@ public class AstarVisualizer {
   private double MAPWIDTH;
   private double MAPHEIGHT;
   private static final double MapConnectionWidth = 5;
-<span class="nc" id="L13">  private ArrayList&lt;Rectangle&gt; routeConnections = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L14">  private ArrayList&lt;Rectangle&gt; routeConnections = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L15">  public AstarVisualizer(StackPane VisualizationPane, double Width, double Height) {</span>
-<span class="nc" id="L16">    layout = VisualizationPane;</span>
-<span class="nc" id="L17">    MAPWIDTH = Width;</span>
-<span class="nc" id="L18">    MAPHEIGHT = Height;</span>
-<span class="nc" id="L19">  }</span>
+<span class="nc" id="L16">  public AstarVisualizer(StackPane VisualizationPane, double Width, double Height) {</span>
+<span class="nc" id="L17">    layout = VisualizationPane;</span>
+<span class="nc" id="L18">    MAPWIDTH = Width;</span>
+<span class="nc" id="L19">    MAPHEIGHT = Height;</span>
+<span class="nc" id="L20">  }</span>
 
   public void setMap(double MAPWIDTH_, double MAPHEIGHT_) {
-<span class="nc" id="L22">    MAPWIDTH = MAPWIDTH_;</span>
-<span class="nc" id="L23">    MAPHEIGHT = MAPHEIGHT_;</span>
-<span class="nc" id="L24">  }</span>
+<span class="nc" id="L23">    MAPWIDTH = MAPWIDTH_;</span>
+<span class="nc" id="L24">    MAPHEIGHT = MAPHEIGHT_;</span>
+<span class="nc" id="L25">  }</span>
+
+  public Rectangle createConnection(
+      double StartX, double StartY, double EndX, double EndY, Paint color) {
+<span class="nc" id="L29">    System.out.println(&quot;Creating Edge&quot;);</span>
+<span class="nc" id="L30">    Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);</span>
+<span class="nc" id="L31">    double distance =</span>
+<span class="nc" id="L32">        Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));</span>
+<span class="nc" id="L33">    double theta = Math.atan2(distancePoint.getY(), distancePoint.getX());</span>
+<span class="nc" id="L34">    double ProjectX = StartX + Math.cos(theta) * distance / 2;</span>
+<span class="nc" id="L35">    double ProjectY = StartY + Math.sin(theta) * distance / 2;</span>
+<span class="nc" id="L36">    ProjectX = ProjectX - MAPWIDTH / 2;</span>
+<span class="nc" id="L37">    ProjectY = ProjectY - MAPHEIGHT / 2;</span>
+<span class="nc" id="L38">    Rectangle connection = new Rectangle();</span>
+<span class="nc" id="L39">    connection.setHeight(6);</span>
+<span class="nc" id="L40">    connection.setWidth(distance);</span>
+<span class="nc" id="L41">    connection.setTranslateX(ProjectX);</span>
+<span class="nc" id="L42">    connection.setTranslateY(ProjectY);</span>
+<span class="nc" id="L43">    connection.setRotate(Math.toDegrees(theta));</span>
+<span class="nc" id="L44">    connection.setFill(color);</span>
+<span class="nc" id="L45">    layout.getChildren().add(connection);</span>
+<span class="nc" id="L46">    routeConnections.add(connection);</span>
+<span class="nc" id="L47">    return connection;</span>
+  }
 
   public Rectangle createConnection(double StartX, double StartY, double EndX, double EndY) {
-<span class="nc" id="L27">    Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);</span>
-<span class="nc" id="L28">    double distance =</span>
-<span class="nc" id="L29">        Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));</span>
-<span class="nc" id="L30">    double theta = Math.atan2(distancePoint.getY(), distancePoint.getX());</span>
-<span class="nc" id="L31">    double ProjectX = StartX + Math.cos(theta) * distance / 2;</span>
-<span class="nc" id="L32">    double ProjectY = StartY + Math.sin(theta) * distance / 2;</span>
-<span class="nc" id="L33">    ProjectX = ProjectX - MAPWIDTH / 2;</span>
-<span class="nc" id="L34">    ProjectY = ProjectY - MAPHEIGHT / 2;</span>
-<span class="nc" id="L35">    Rectangle connection = new Rectangle();</span>
-<span class="nc" id="L36">    connection.setHeight(6);</span>
-<span class="nc" id="L37">    connection.setWidth(distance);</span>
-<span class="nc" id="L38">    connection.setTranslateX(ProjectX);</span>
-<span class="nc" id="L39">    connection.setTranslateY(ProjectY);</span>
-<span class="nc" id="L40">    connection.setRotate(Math.toDegrees(theta));</span>
-<span class="nc" id="L41">    layout.getChildren().add(connection);</span>
-<span class="nc" id="L42">    routeConnections.add(connection);</span>
-<span class="nc" id="L43">    return connection;</span>
+<span class="nc" id="L51">    Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);</span>
+<span class="nc" id="L52">    double distance =</span>
+<span class="nc" id="L53">        Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));</span>
+<span class="nc" id="L54">    double theta = Math.atan2(distancePoint.getY(), distancePoint.getX());</span>
+<span class="nc" id="L55">    double ProjectX = StartX + Math.cos(theta) * distance / 2;</span>
+<span class="nc" id="L56">    double ProjectY = StartY + Math.sin(theta) * distance / 2;</span>
+<span class="nc" id="L57">    ProjectX = ProjectX - MAPWIDTH / 2;</span>
+<span class="nc" id="L58">    ProjectY = ProjectY - MAPHEIGHT / 2;</span>
+<span class="nc" id="L59">    Rectangle connection = new Rectangle();</span>
+<span class="nc" id="L60">    connection.setHeight(6);</span>
+<span class="nc" id="L61">    connection.setWidth(distance);</span>
+<span class="nc" id="L62">    connection.setTranslateX(ProjectX);</span>
+<span class="nc" id="L63">    connection.setTranslateY(ProjectY);</span>
+<span class="nc" id="L64">    connection.setRotate(Math.toDegrees(theta));</span>
+<span class="nc" id="L65">    layout.getChildren().add(connection);</span>
+<span class="nc" id="L66">    routeConnections.add(connection);</span>
+<span class="nc" id="L67">    return connection;</span>
   }
 
   public void clearConnections() {
-<span class="nc" id="L47">    layout.getChildren().stream()</span>
-<span class="nc" id="L48">        .forEach(</span>
+<span class="nc" id="L71">    layout.getChildren().stream()</span>
+<span class="nc" id="L72">        .forEach(</span>
             Node -&gt; {
-<span class="nc bnc" id="L50" title="All 2 branches missed.">              if (routeConnections.contains(Node)) {</span>
-<span class="nc" id="L51">                routeConnections.remove(Node);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">              if (routeConnections.contains(Node)) {</span>
+<span class="nc" id="L75">                routeConnections.remove(Node);</span>
               }
-<span class="nc" id="L53">            });</span>
-<span class="nc" id="L54">  }</span>
+<span class="nc" id="L77">            });</span>
+<span class="nc" id="L78">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

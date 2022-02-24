@@ -49,53 +49,55 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
 <span class="nc" id="L49">    super(resultSet, DataBaseObjectType.GiftAndFloralSR);</span>
 <span class="nc" id="L50">    this.patient =</span>
         (Patient)
-<span class="nc" id="L52">            DBManager.getManager(DataBaseObjectType.Patient).get(resultSet.getInt(&quot;patientID&quot;));</span>
-<span class="nc" id="L53">  }</span>
+<span class="nc" id="L52">            DBManager.getInstance()</span>
+<span class="nc" id="L53">                .getManager(DataBaseObjectType.Patient)</span>
+<span class="nc" id="L54">                .get(resultSet.getInt(&quot;patientID&quot;));</span>
+<span class="nc" id="L55">  }</span>
 
   public GiftAndFloralServiceRequest(CSVLineData lineData) throws SQLException, ParseException {
-<span class="nc" id="L56">    super(lineData, DataBaseObjectType.GiftAndFloralSR);</span>
-<span class="nc" id="L57">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
-<span class="nc" id="L58">  }</span>
+<span class="nc" id="L58">    super(lineData, DataBaseObjectType.GiftAndFloralSR);</span>
+<span class="nc" id="L59">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
+<span class="nc" id="L60">  }</span>
 
   @Override
   public String getSQLUpdateString() {
-<span class="nc" id="L62">    return getRawUpdateString() + &quot;, &quot; + &quot;patientID = &quot; + patient.getId() + &quot;WHERE id = &quot; + id;</span>
+<span class="nc" id="L64">    return getRawUpdateString() + &quot;, &quot; + &quot;patientID = &quot; + patient.getId() + &quot;WHERE id = &quot; + id;</span>
   }
 
   @Override
   public String getSQLInsertString() {
-<span class="nc" id="L67">    return super.getSQLInsertString() + &quot;, &quot; + patient.getId();</span>
+<span class="nc" id="L69">    return super.getSQLInsertString() + &quot;, &quot; + patient.getId();</span>
   }
 
   @Override
   public String[] toCSVData() {
-<span class="nc" id="L72">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L73">    csvData.addAll(List.of(super.toCSVData()));</span>
+<span class="nc" id="L74">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L75">    csvData.addAll(List.of(super.toCSVData()));</span>
 
-<span class="nc" id="L75">    String[] retArr = new String[csvData.size()];</span>
-<span class="nc" id="L76">    return csvData.toArray(retArr);</span>
+<span class="nc" id="L77">    String[] retArr = new String[csvData.size()];</span>
+<span class="nc" id="L78">    return csvData.toArray(retArr);</span>
   }
 
   @Override
   public String[] getCSVHeaders() {
-<span class="nc" id="L81">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L82">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
-<span class="nc" id="L83">    csvHeaders.add(&quot;patientID&quot;);</span>
-<span class="nc" id="L84">    return (String[]) csvHeaders.toArray();</span>
+<span class="nc" id="L83">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L84">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
+<span class="nc" id="L85">    csvHeaders.add(&quot;patientID&quot;);</span>
+<span class="nc" id="L86">    return (String[]) csvHeaders.toArray();</span>
   }
 
   @Override
   public String getTableColumns() {
-<span class="nc" id="L89">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID)&quot;;</span>
+<span class="nc" id="L91">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, patientID)&quot;;</span>
   }
 
   // Getters and Setters
   public Patient getPatient() {
-<span class="nc" id="L94">    return patient;</span>
+<span class="nc" id="L96">    return patient;</span>
   }
 
   public void setPatient(Patient patient) {
-<span class="nc" id="L98">    this.patient = patient;</span>
-<span class="nc" id="L99">  }</span>
+<span class="nc" id="L100">    this.patient = patient;</span>
+<span class="nc" id="L101">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -2,11 +2,10 @@
 
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-import java.sql.SQLException;
 
 public final class ServiceRequestManager extends ObjectManager&lt;ServiceRequest&gt; {
-  public ServiceRequestManager(DataBaseObjectType dbType) throws SQLException {
-<span class="nc" id="L9">    super(dbType);</span>
-<span class="nc" id="L10">  }</span>
+  public ServiceRequestManager(DataBaseObjectType dbType) {
+<span class="nc" id="L8">    super(dbType, 0);</span>
+<span class="nc" id="L9">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

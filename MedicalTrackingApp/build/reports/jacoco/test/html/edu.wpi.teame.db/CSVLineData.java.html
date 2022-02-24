@@ -43,7 +43,7 @@ public class CSVLineData {
       throws SQLException {
 <span class="nc" id="L44">    int employeeCSVID = getColumnInt(columnName);</span>
 <span class="nc" id="L45">    int employeeID = CSVManager.getInstance().getDBId(objectType, employeeCSVID);</span>
-<span class="nc" id="L46">    return DBManager.getManager(objectType).get(employeeID);</span>
+<span class="nc" id="L46">    return DBManager.getInstance().getManager(objectType).get(employeeID);</span>
   }
 
   public Date getColumnDate(String columnName) throws ParseException {

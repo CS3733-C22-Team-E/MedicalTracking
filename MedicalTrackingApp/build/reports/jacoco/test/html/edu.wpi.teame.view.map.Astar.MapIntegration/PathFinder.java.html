@@ -1,255 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Astar.MapIntegration</a> &gt; <span class="el_source">PathFinder.java</span></div><h1>PathFinder.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Astar.MapIntegration;
 
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EdgeManager;
+import edu.wpi.teame.model.Edge;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.view.map.Astar.AstarVisualizer;
 import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
+import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class PathFinder {
   private Graph&lt;Location&gt; locationGraph;
   private RouteFinder&lt;Location&gt; routeFinder;
-<span class="nc" id="L19">  private Set&lt;Location&gt; locations = new HashSet&lt;&gt;();</span>
-<span class="nc" id="L20">  private Map&lt;Integer, Set&lt;Integer&gt;&gt; connections = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L21">  private Set&lt;Location&gt; locations = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L22">  private Map&lt;Integer, Set&lt;Integer&gt;&gt; connections = new HashMap&lt;&gt;();</span>
   private AstarVisualizer Visual;
   private StackPane DrawPane;
   private Location startTest;
   private Location endTest;
-<span class="nc" id="L25">  private ArrayList&lt;Rectangle&gt; routeVisual = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L27">  private ArrayList&lt;Rectangle&gt; routeVisual = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L28">  private List&lt;Edge&gt; edgeList = null;</span>
 
-<span class="nc" id="L27">  public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {</span>
-<span class="nc" id="L28">    DrawPane = Draw;</span>
-<span class="nc" id="L29">    Visual = new AstarVisualizer(Draw, MapWidth, MapHeight);</span>
-<span class="nc" id="L30">    createConnections();</span>
-<span class="nc" id="L31">    locationGraph = new Graph&lt;&gt;(locations, connections);</span>
-<span class="nc" id="L32">    routeFinder =</span>
+<span class="nc" id="L30">  public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {</span>
+<span class="nc" id="L31">    DrawPane = Draw;</span>
+<span class="nc" id="L32">    Visual = new AstarVisualizer(Draw, MapWidth, MapHeight);</span>
+<span class="nc" id="L33">    createConnections();</span>
+<span class="nc" id="L34">    locationGraph = new Graph&lt;&gt;(locations, connections);</span>
+<span class="nc" id="L35">    routeFinder =</span>
         new RouteFinder&lt;&gt;(
             locationGraph, new EuclideanDistanceHeuristic(), new EuclideanDistanceHeuristic());
-<span class="nc" id="L35">  }</span>
+<span class="nc" id="L38">  }</span>
 
   public void refreshLocationsFromDB() throws SQLException {
-<span class="nc" id="L38">    locations.addAll(DBManager.getManager(DataBaseObjectType.Location).getAll());</span>
-<span class="nc" id="L39">  }</span>
+<span class="nc" id="L41">    locations.addAll(DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll());</span>
+<span class="nc" id="L42">  }</span>
 
-  private void createConnections() {
-<span class="nc" id="L42">    connections.put(1, Stream.of(22).collect(Collectors.toSet()));</span>
-<span class="nc" id="L43">    connections.put(2, Stream.of(29).collect(Collectors.toSet()));</span>
-<span class="nc" id="L44">    connections.put(3, Stream.of(26).collect(Collectors.toSet()));</span>
-<span class="nc" id="L45">    connections.put(4, Stream.of(30).collect(Collectors.toSet()));</span>
-<span class="nc" id="L46">    connections.put(5, Stream.of(9, 42).collect(Collectors.toSet()));</span>
-<span class="nc" id="L47">    connections.put(6, Stream.of(41).collect(Collectors.toSet()));</span>
-<span class="nc" id="L48">    connections.put(7, Stream.of(12).collect(Collectors.toSet()));</span>
-<span class="nc" id="L49">    connections.put(8, Stream.of(37).collect(Collectors.toSet()));</span>
-<span class="nc" id="L50">    connections.put(9, Stream.of(5).collect(Collectors.toSet()));</span>
-<span class="nc" id="L51">    connections.put(10, Stream.of(11).collect(Collectors.toSet()));</span>
+  public void createConnections() throws SQLException {
+<span class="nc" id="L45">    connections.clear();</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">    if (edgeList == null || edgeList.size() == 0) {</span>
+<span class="nc" id="L47">      edgeList =</span>
+<span class="nc" id="L48">          ((EdgeManager) DBManager.getInstance().getManager(DataBaseObjectType.Edge)).getAll();</span>
+    }
 
-<span class="nc" id="L53">    connections.put(11, Stream.of(53, 12, 10, 40).collect(Collectors.toSet()));</span>
-<span class="nc" id="L54">    connections.put(12, Stream.of(7, 13, 11).collect(Collectors.toSet()));</span>
-<span class="nc" id="L55">    connections.put(13, Stream.of(14, 12, 46).collect(Collectors.toSet()));</span>
-<span class="nc" id="L56">    connections.put(14, Stream.of(48, 13, 15).collect(Collectors.toSet()));</span>
-<span class="nc" id="L57">    connections.put(15, Stream.of(14, 56).collect(Collectors.toSet()));</span>
-<span class="nc" id="L58">    connections.put(16, Stream.of(56, 17, 27).collect(Collectors.toSet()));</span>
-<span class="nc" id="L59">    connections.put(17, Stream.of(16, 18).collect(Collectors.toSet()));</span>
-<span class="nc" id="L60">    connections.put(18, Stream.of(17, 22, 20).collect(Collectors.toSet()));</span>
-<span class="nc" id="L61">    connections.put(19, Stream.of(22, 54).collect(Collectors.toSet()));</span>
-<span class="nc" id="L62">    connections.put(20, Stream.of(18, 21, 23).collect(Collectors.toSet()));</span>
-<span class="nc" id="L63">    connections.put(21, Stream.of(20).collect(Collectors.toSet()));</span>
-<span class="nc" id="L64">    connections.put(22, Stream.of(18, 19, 1).collect(Collectors.toSet()));</span>
-<span class="nc" id="L65">    connections.put(23, Stream.of(20, 49, 24).collect(Collectors.toSet()));</span>
-<span class="nc" id="L66">    connections.put(24, Stream.of(23, 25).collect(Collectors.toSet()));</span>
-<span class="nc" id="L67">    connections.put(25, Stream.of(24, 28, 41).collect(Collectors.toSet()));</span>
-<span class="nc" id="L68">    connections.put(26, Stream.of(27, 51, 3).collect(Collectors.toSet()));</span>
-<span class="nc" id="L69">    connections.put(27, Stream.of(16, 41, 26).collect(Collectors.toSet()));</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">    for (Edge edge : edgeList) {</span>
+<span class="nc" id="L52">      connections.put(edge.getStart().getId(), new HashSet&lt;Integer&gt;());</span>
+<span class="nc" id="L53">    }</span>
 
-<span class="nc" id="L71">    connections.put(28, Stream.of(25, 29, 30).collect(Collectors.toSet()));</span>
-<span class="nc" id="L72">    connections.put(29, Stream.of(2, 50, 28).collect(Collectors.toSet()));</span>
-<span class="nc" id="L73">    connections.put(30, Stream.of(28, 4, 31).collect(Collectors.toSet()));</span>
-<span class="nc" id="L74">    connections.put(31, Stream.of(30, 57, 37).collect(Collectors.toSet()));</span>
-<span class="nc" id="L75">    connections.put(32, Stream.of(33, 57, 44).collect(Collectors.toSet()));</span>
-<span class="nc" id="L76">    connections.put(33, Stream.of(34, 32).collect(Collectors.toSet()));</span>
-<span class="nc" id="L77">    connections.put(34, Stream.of(35, 33, 55).collect(Collectors.toSet()));</span>
-<span class="nc" id="L78">    connections.put(35, Stream.of(40, 34, 36).collect(Collectors.toSet()));</span>
-<span class="nc" id="L79">    connections.put(36, Stream.of(35, 42).collect(Collectors.toSet()));</span>
-<span class="nc" id="L80">    connections.put(37, Stream.of(8, 31, 38).collect(Collectors.toSet()));</span>
-<span class="nc" id="L81">    connections.put(38, Stream.of(37, 43, 52).collect(Collectors.toSet()));</span>
-<span class="nc" id="L82">    connections.put(39, Stream.of(52, 47).collect(Collectors.toSet()));</span>
-<span class="nc" id="L83">    connections.put(40, Stream.of(11, 45, 35).collect(Collectors.toSet()));</span>
-<span class="nc" id="L84">    connections.put(41, Stream.of(25, 6, 27).collect(Collectors.toSet()));</span>
-<span class="nc" id="L85">    connections.put(42, Stream.of(5, 36).collect(Collectors.toSet()));</span>
-<span class="nc" id="L86">    connections.put(43, Stream.of(38).collect(Collectors.toSet()));</span>
-<span class="nc" id="L87">    connections.put(44, Stream.of(32).collect(Collectors.toSet()));</span>
-<span class="nc" id="L88">    connections.put(45, Stream.of(40).collect(Collectors.toSet()));</span>
-<span class="nc" id="L89">    connections.put(46, Stream.of(13).collect(Collectors.toSet()));</span>
-<span class="nc" id="L90">    connections.put(47, Stream.of(39).collect(Collectors.toSet()));</span>
-<span class="nc" id="L91">    connections.put(48, Stream.of(14).collect(Collectors.toSet()));</span>
-<span class="nc" id="L92">    connections.put(49, Stream.of(23).collect(Collectors.toSet()));</span>
-<span class="nc" id="L93">    connections.put(50, Stream.of(29).collect(Collectors.toSet()));</span>
-<span class="nc" id="L94">    connections.put(51, Stream.of(26).collect(Collectors.toSet()));</span>
-<span class="nc" id="L95">    connections.put(52, Stream.of(38, 39).collect(Collectors.toSet()));</span>
-<span class="nc" id="L96">    connections.put(53, Stream.of(11, 73).collect(Collectors.toSet()));</span>
-<span class="nc" id="L97">    connections.put(54, Stream.of(19).collect(Collectors.toSet()));</span>
-<span class="nc" id="L98">    connections.put(55, Stream.of(34).collect(Collectors.toSet()));</span>
-<span class="nc" id="L99">    connections.put(56, Stream.of(15, 76, 101, 16, 122, 114).collect(Collectors.toSet()));</span>
-<span class="nc" id="L100">    connections.put(57, Stream.of(32, 77, 102, 31, 123, 115).collect(Collectors.toSet()));</span>
-<span class="nc" id="L101">    connections.put(58, Stream.of(71).collect(Collectors.toSet()));</span>
-<span class="nc" id="L102">    connections.put(59, Stream.of(69).collect(Collectors.toSet()));</span>
-<span class="nc" id="L103">    connections.put(60, Stream.of(61, 63, 76).collect(Collectors.toSet()));</span>
-<span class="nc" id="L104">    connections.put(61, Stream.of(70, 62, 60).collect(Collectors.toSet()));</span>
-<span class="nc" id="L105">    connections.put(62, Stream.of(73, 61).collect(Collectors.toSet()));</span>
-<span class="nc" id="L106">    connections.put(63, Stream.of(64, 60).collect(Collectors.toSet()));</span>
-<span class="nc" id="L107">    connections.put(64, Stream.of(71, 72, 65, 63).collect(Collectors.toSet()));</span>
-<span class="nc" id="L108">    connections.put(65, Stream.of(66, 64).collect(Collectors.toSet()));</span>
-<span class="nc" id="L109">    connections.put(66, Stream.of(74, 67, 65).collect(Collectors.toSet()));</span>
-<span class="nc" id="L110">    connections.put(67, Stream.of(75, 68, 66).collect(Collectors.toSet()));</span>
-<span class="nc" id="L111">    connections.put(68, Stream.of(78, 77, 67).collect(Collectors.toSet()));</span>
-<span class="nc" id="L112">    connections.put(69, Stream.of(59, 77).collect(Collectors.toSet()));</span>
-<span class="nc" id="L113">    connections.put(70, Stream.of(61).collect(Collectors.toSet()));</span>
-<span class="nc" id="L114">    connections.put(71, Stream.of(58, 64).collect(Collectors.toSet()));</span>
-<span class="nc" id="L115">    connections.put(72, Stream.of(64).collect(Collectors.toSet()));</span>
-<span class="nc" id="L116">    connections.put(73, Stream.of(53, 62).collect(Collectors.toSet()));</span>
-<span class="nc" id="L117">    connections.put(74, Stream.of(66).collect(Collectors.toSet()));</span>
-<span class="nc" id="L118">    connections.put(75, Stream.of(67).collect(Collectors.toSet()));</span>
-<span class="nc" id="L119">    connections.put(76, Stream.of(60, 101, 122, 114, 56).collect(Collectors.toSet()));</span>
-<span class="nc" id="L120">    connections.put(77, Stream.of(69, 102, 68, 123, 115, 57).collect(Collectors.toSet()));</span>
-<span class="nc" id="L121">    connections.put(78, Stream.of(68).collect(Collectors.toSet()));</span>
-<span class="nc" id="L122">    connections.put(79, Stream.of(92).collect(Collectors.toSet()));</span>
-<span class="nc" id="L123">    connections.put(80, Stream.of(97).collect(Collectors.toSet()));</span>
-<span class="nc" id="L124">    connections.put(81, Stream.of(89).collect(Collectors.toSet()));</span>
-<span class="nc" id="L125">    connections.put(82, Stream.of(93).collect(Collectors.toSet()));</span>
-<span class="nc" id="L126">    connections.put(83, Stream.of(85).collect(Collectors.toSet()));</span>
-<span class="nc" id="L127">    connections.put(84, Stream.of(98, 85).collect(Collectors.toSet()));</span>
-<span class="nc" id="L128">    connections.put(85, Stream.of(84, 83, 86).collect(Collectors.toSet()));</span>
-<span class="nc" id="L129">    connections.put(86, Stream.of(85, 87).collect(Collectors.toSet()));</span>
-<span class="nc" id="L130">    connections.put(87, Stream.of(100, 86, 102).collect(Collectors.toSet()));</span>
-<span class="nc" id="L131">    connections.put(88, Stream.of(89, 101, 97).collect(Collectors.toSet()));</span>
-<span class="nc" id="L132">    connections.put(89, Stream.of(81, 90, 88).collect(Collectors.toSet()));</span>
-<span class="nc" id="L133">    connections.put(90, Stream.of(99, 91, 89).collect(Collectors.toSet()));</span>
-<span class="nc" id="L134">    connections.put(91, Stream.of(92, 93, 90).collect(Collectors.toSet()));</span>
-<span class="nc" id="L135">    connections.put(92, Stream.of(79, 91).collect(Collectors.toSet()));</span>
-<span class="nc" id="L136">    connections.put(93, Stream.of(82, 94, 91).collect(Collectors.toSet()));</span>
-<span class="nc" id="L137">    connections.put(94, Stream.of(95, 93).collect(Collectors.toSet()));</span>
-<span class="nc" id="L138">    connections.put(95, Stream.of(96, 94).collect(Collectors.toSet()));</span>
-<span class="nc" id="L139">    connections.put(96, Stream.of(97, 95).collect(Collectors.toSet()));</span>
-<span class="nc" id="L140">    connections.put(97, Stream.of(80, 88, 96).collect(Collectors.toSet()));</span>
-<span class="nc" id="L141">    connections.put(98, Stream.of(84).collect(Collectors.toSet()));</span>
-<span class="nc" id="L142">    connections.put(99, Stream.of(90).collect(Collectors.toSet()));</span>
-<span class="nc" id="L143">    connections.put(100, Stream.of(87).collect(Collectors.toSet()));</span>
-<span class="nc" id="L144">    connections.put(101, Stream.of(88, 122, 114, 56, 76).collect(Collectors.toSet()));</span>
-<span class="nc" id="L145">    connections.put(102, Stream.of(87, 123, 115, 57, 77).collect(Collectors.toSet()));</span>
-<span class="nc" id="L146">    connections.put(103, Stream.of(104).collect(Collectors.toSet()));</span>
-<span class="nc" id="L147">    connections.put(104, Stream.of(109, 103).collect(Collectors.toSet()));</span>
-<span class="nc" id="L148">    connections.put(105, Stream.of(112, 114).collect(Collectors.toSet()));</span>
-<span class="nc" id="L149">    connections.put(106, Stream.of(115, 111).collect(Collectors.toSet()));</span>
-<span class="nc" id="L150">    connections.put(107, Stream.of(108, 113).collect(Collectors.toSet()));</span>
-<span class="nc" id="L151">    connections.put(108, Stream.of(107).collect(Collectors.toSet()));</span>
-<span class="nc" id="L152">    connections.put(109, Stream.of(114, 104).collect(Collectors.toSet()));</span>
-<span class="nc" id="L153">    connections.put(110, Stream.of(113, 115).collect(Collectors.toSet()));</span>
-
-<span class="nc" id="L155">    connections.put(111, Stream.of(106, 112).collect(Collectors.toSet()));</span>
-<span class="nc" id="L156">    connections.put(112, Stream.of(105, 111).collect(Collectors.toSet()));</span>
-<span class="nc" id="L157">    connections.put(113, Stream.of(107, 110).collect(Collectors.toSet()));</span>
-<span class="nc" id="L158">    connections.put(114, Stream.of(105, 56, 76, 101, 109, 122).collect(Collectors.toSet()));</span>
-<span class="nc" id="L159">    connections.put(115, Stream.of(110, 57, 77, 102, 106, 123).collect(Collectors.toSet()));</span>
-<span class="nc" id="L160">    connections.put(116, Stream.of(117, 123, 124).collect(Collectors.toSet()));</span>
-<span class="nc" id="L161">    connections.put(117, Stream.of(118, 116).collect(Collectors.toSet()));</span>
-<span class="nc" id="L162">    connections.put(118, Stream.of(119, 117).collect(Collectors.toSet()));</span>
-<span class="nc" id="L163">    connections.put(119, Stream.of(120, 122, 118).collect(Collectors.toSet()));</span>
-<span class="nc" id="L164">    connections.put(120, Stream.of(121, 119).collect(Collectors.toSet()));</span>
-<span class="nc" id="L165">    connections.put(121, Stream.of(120).collect(Collectors.toSet()));</span>
-<span class="nc" id="L166">    connections.put(122, Stream.of(114, 56, 76, 101, 119).collect(Collectors.toSet()));</span>
-<span class="nc" id="L167">    connections.put(123, Stream.of(115, 57, 77, 102, 116).collect(Collectors.toSet()));</span>
-<span class="nc" id="L168">    connections.put(124, Stream.of(116).collect(Collectors.toSet()));</span>
-
-<span class="nc" id="L170">    connections.put(125, Stream.of(21).collect(Collectors.toSet()));</span>
-<span class="nc" id="L171">    connections.put(</span>
-<span class="nc" id="L172">        126,</span>
-<span class="nc" id="L173">        Stream.of(130, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 95)</span>
-<span class="nc" id="L174">            .collect(Collectors.toSet()));</span>
-<span class="nc" id="L175">    connections.put(</span>
-<span class="nc" id="L176">        127,</span>
-<span class="nc" id="L177">        Stream.of(131, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 94)</span>
-<span class="nc" id="L178">            .collect(Collectors.toSet()));</span>
-<span class="nc" id="L179">    connections.put(128, Stream.of(93, 94, 91).collect(Collectors.toSet()));</span>
-<span class="nc" id="L180">    connections.put(129, Stream.of(95, 96).collect(Collectors.toSet()));</span>
-<span class="nc" id="L181">    connections.put(130, Stream.of(126).collect(Collectors.toSet()));</span>
-<span class="nc" id="L182">    connections.put(131, Stream.of(127).collect(Collectors.toSet()));</span>
-<span class="nc" id="L183">    connections.put(132, Stream.of(94, 95).collect(Collectors.toSet()));</span>
-<span class="nc" id="L184">    connections.put(133, Stream.of(127, 94, 134).collect(Collectors.toSet())); // Patient Bed Start</span>
-<span class="nc" id="L185">    connections.put(134, Stream.of(127, 94, 133, 135).collect(Collectors.toSet()));</span>
-<span class="nc" id="L186">    connections.put(135, Stream.of(127, 94, 134, 136).collect(Collectors.toSet()));</span>
-<span class="nc" id="L187">    connections.put(136, Stream.of(127, 94, 135, 137).collect(Collectors.toSet()));</span>
-<span class="nc" id="L188">    connections.put(137, Stream.of(127, 94, 136, 138).collect(Collectors.toSet()));</span>
-<span class="nc" id="L189">    connections.put(138, Stream.of(127, 94, 137, 139).collect(Collectors.toSet()));</span>
-<span class="nc" id="L190">    connections.put(139, Stream.of(127, 94, 138, 140).collect(Collectors.toSet()));</span>
-<span class="nc" id="L191">    connections.put(140, Stream.of(127, 94, 139, 141).collect(Collectors.toSet()));</span>
-<span class="nc" id="L192">    connections.put(141, Stream.of(127, 94, 140, 142).collect(Collectors.toSet()));</span>
-<span class="nc" id="L193">    connections.put(142, Stream.of(127, 94, 141).collect(Collectors.toSet()));</span>
-<span class="nc" id="L194">    connections.put(143, Stream.of(126, 95, 144).collect(Collectors.toSet())); // Next Pod</span>
-<span class="nc" id="L195">    connections.put(144, Stream.of(126, 95, 143, 145).collect(Collectors.toSet()));</span>
-<span class="nc" id="L196">    connections.put(145, Stream.of(126, 95, 144, 146).collect(Collectors.toSet()));</span>
-<span class="nc" id="L197">    connections.put(146, Stream.of(126, 95, 145, 147).collect(Collectors.toSet()));</span>
-<span class="nc" id="L198">    connections.put(147, Stream.of(126, 95, 146, 148).collect(Collectors.toSet()));</span>
-<span class="nc" id="L199">    connections.put(148, Stream.of(126, 95, 147, 149).collect(Collectors.toSet()));</span>
-<span class="nc" id="L200">    connections.put(149, Stream.of(126, 95, 148, 150).collect(Collectors.toSet()));</span>
-<span class="nc" id="L201">    connections.put(150, Stream.of(126, 95, 149, 151).collect(Collectors.toSet()));</span>
-<span class="nc" id="L202">    connections.put(151, Stream.of(126, 95, 150, 152).collect(Collectors.toSet()));</span>
-<span class="nc" id="L203">    connections.put(152, Stream.of(126, 95, 151).collect(Collectors.toSet())); // Patient Bed End</span>
-<span class="nc" id="L204">    connections.put(153, Stream.of(105).collect(Collectors.toSet()));</span>
-<span class="nc" id="L205">  }</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">    for (Edge edge : edgeList) {</span>
+<span class="nc" id="L56">      connections.get(edge.getStart().getId()).add(edge.getEnd().getId());</span>
+<span class="nc" id="L57">    }</span>
+<span class="nc" id="L58">  }</span>
 
   public void SelectFloor(double WIDTH, double HEIGHT) throws SQLException {
-<span class="nc" id="L208">    Visual.clearConnections();</span>
-<span class="nc" id="L209">    Visual.setMap(WIDTH, HEIGHT);</span>
-<span class="nc" id="L210">  }</span>
+<span class="nc" id="L61">    Visual.clearConnections();</span>
+<span class="nc" id="L62">    Visual.setMap(WIDTH, HEIGHT);</span>
+<span class="nc" id="L63">  }</span>
 
   public void RemoveRoute() {
-<span class="nc" id="L213">    DrawPane.getChildren().removeAll(routeVisual);</span>
-<span class="nc" id="L214">    routeVisual.clear();</span>
-<span class="nc" id="L215">  }</span>
+<span class="nc" id="L66">    DrawPane.getChildren().removeAll(routeVisual);</span>
+<span class="nc" id="L67">    routeVisual.clear();</span>
+<span class="nc" id="L68">  }</span>
 
-  public void FindAndDrawRoute(int StartID, int EndID) throws SQLException {
+  public List&lt;Location&gt; FindAndDrawRoute(int StartID, int EndID) throws SQLException {
     // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
     // returning null
-    // DBManager.getManager(DataBaseObjectType.Location).get(StartID);
-<span class="nc" id="L221">    Visual.clearConnections();</span>
-<span class="nc" id="L222">    locations.stream()</span>
-<span class="nc" id="L223">        .forEach(</span>
+    // DBManager.getInstance().getManager(DataBaseObjectType.Location).get(StartID);
+<span class="nc" id="L74">    Visual.clearConnections();</span>
+<span class="nc" id="L75">    locations.stream()</span>
+<span class="nc" id="L76">        .forEach(</span>
             node -&gt; {
-<span class="nc bnc" id="L225" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
-<span class="nc" id="L226">                startTest = node;</span>
-<span class="nc" id="L227">                System.out.println(&quot;Hit Start&quot;);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L79">                startTest = node;</span>
+<span class="nc" id="L80">                System.out.println(&quot;Hit Start&quot;);</span>
               }
-<span class="nc bnc" id="L229" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
-<span class="nc" id="L230">                endTest = node;</span>
-<span class="nc" id="L231">                System.out.println(&quot;Hit End&quot;);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L83">                endTest = node;</span>
+<span class="nc" id="L84">                System.out.println(&quot;Hit End&quot;);</span>
               }
-<span class="nc" id="L233">            });</span>
-<span class="nc" id="L234">    Location From = startTest;</span>
-<span class="nc" id="L235">    Location To = endTest;</span>
-<span class="nc" id="L236">    List&lt;Location&gt; route = null;</span>
+<span class="nc" id="L86">            });</span>
+<span class="nc" id="L87">    Location From = startTest;</span>
+<span class="nc" id="L88">    Location To = endTest;</span>
     try {
-<span class="nc" id="L238">      route = routeFinder.findRoute(From, To);</span>
-<span class="nc" id="L239">    } catch (IllegalStateException e) {</span>
-<span class="nc" id="L240">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To&quot; + To.getId());</span>
-<span class="nc" id="L241">    }</span>
-<span class="nc bnc" id="L242" title="All 2 branches missed.">    for (Location location : route) {</span>
-<span class="nc" id="L243">      System.out.println(location.getId());</span>
-<span class="nc" id="L244">    }</span>
-<span class="nc bnc" id="L245" title="All 2 branches missed.">    for (int i = 1; i &lt; route.size(); i++) {</span>
-<span class="nc" id="L246">      Location initNode = route.get(i - 1);</span>
-<span class="nc" id="L247">      Location endNode = route.get(i);</span>
-<span class="nc" id="L248">      System.out.println(initNode.getX() + &quot; &quot; + initNode.getY());</span>
-<span class="nc" id="L249">      routeVisual.add(</span>
-<span class="nc" id="L250">          Visual.createConnection(</span>
-<span class="nc" id="L251">              initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));</span>
+<span class="nc" id="L90">      List&lt;Location&gt; route = routeFinder.findRoute(From, To);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">      for (int i = 1; i &lt; route.size(); i++) {</span>
+<span class="nc" id="L92">        Location initNode = route.get(i - 1);</span>
+<span class="nc" id="L93">        Location endNode = route.get(i);</span>
+<span class="nc" id="L94">        routeVisual.add(</span>
+<span class="nc" id="L95">            Visual.createConnection(</span>
+<span class="nc" id="L96">                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));</span>
+      }
+<span class="nc" id="L98">      System.out.println(route.size());</span>
+<span class="nc" id="L99">      return route;</span>
+<span class="nc" id="L100">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L101">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
     }
-<span class="nc" id="L253">  }</span>
+<span class="nc" id="L103">    return null;</span>
+  }
+
+  public List&lt;Location&gt; FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
+    // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+<span class="nc" id="L110">    Visual.clearConnections();</span>
+<span class="nc" id="L111">    locations.stream()</span>
+<span class="nc" id="L112">        .forEach(</span>
+            node -&gt; {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L115">                startTest = node;</span>
+<span class="nc" id="L116">                System.out.println(&quot;Hit Start: &quot; + node.getId());</span>
+              }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L119">                endTest = node;</span>
+<span class="nc" id="L120">                System.out.println(&quot;Hit End: &quot; + node.getId());</span>
+              }
+<span class="nc" id="L122">            });</span>
+<span class="nc" id="L123">    Location From = startTest;</span>
+<span class="nc" id="L124">    Location To = endTest;</span>
+    List&lt;Location&gt; route;
+    try {
+<span class="nc" id="L127">      route = routeFinder.findRoute(From, To);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">      for (int i = 1; i &lt; route.size(); i++) {</span>
+<span class="nc" id="L129">        Location initNode = route.get(i - 1);</span>
+<span class="nc" id="L130">        Location endNode = route.get(i);</span>
+<span class="nc" id="L131">        routeVisual.add(</span>
+<span class="nc" id="L132">            Visual.createConnection(</span>
+<span class="nc" id="L133">                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY(), color));</span>
+      }
+<span class="nc" id="L135">      return route;</span>
+<span class="nc" id="L136">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L137">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
+<span class="nc" id="L138">      return null;</span>
+    }
+  }
+
+  public void FindAndDrawRoute(
+      int StartID, int EndID, MapEquipmentIcon iconToBeMoved, double timerSeconds)
+      throws SQLException {
+    // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+<span class="nc" id="L148">    Visual.clearConnections();</span>
+<span class="nc" id="L149">    locations.stream()</span>
+<span class="nc" id="L150">        .forEach(</span>
+            node -&gt; {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L153">                startTest = node;</span>
+<span class="nc" id="L154">                System.out.println(&quot;Hit Start&quot;);</span>
+              }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L157">                endTest = node;</span>
+<span class="nc" id="L158">                System.out.println(&quot;Hit End&quot;);</span>
+              }
+<span class="nc" id="L160">            });</span>
+<span class="nc" id="L161">    Location From = startTest;</span>
+<span class="nc" id="L162">    Location To = endTest;</span>
+<span class="nc" id="L163">    List&lt;Location&gt; route = null;</span>
+    try {
+<span class="nc" id="L165">      route = routeFinder.findRoute(From, To);</span>
+<span class="nc" id="L166">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L167">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
+<span class="nc" id="L168">    }</span>
+<span class="nc" id="L169">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

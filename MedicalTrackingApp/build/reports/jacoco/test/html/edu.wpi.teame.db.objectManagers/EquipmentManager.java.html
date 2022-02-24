@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public final class EquipmentManager extends ObjectManager&lt;Equipment&gt; {
-  public EquipmentManager() throws SQLException {
-<span class="nc" id="L11">    super(DataBaseObjectType.Equipment);</span>
+  public EquipmentManager() {
+<span class="nc" id="L11">    super(DataBaseObjectType.Equipment, 5);</span>
 <span class="nc" id="L12">  }</span>
 
   public List&lt;Equipment&gt; getByAllAvailable() throws SQLException {

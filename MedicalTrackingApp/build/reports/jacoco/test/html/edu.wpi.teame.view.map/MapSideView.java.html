@@ -253,14 +253,15 @@ public class MapSideView {
   private List&lt;Equipment&gt; getEquipmentByFloorFromDB(FloorType floor) throws SQLException {
 <span class="nc" id="L254">    List&lt;Equipment&gt; equipmentList = new ArrayList();</span>
     for (Equipment equipment :
-<span class="nc bnc" id="L256" title="All 2 branches missed.">        ((EquipmentManager) DBManager.getManager(DataBaseObjectType.Equipment)).getAll()) {</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">      if (equipment.getLocation().getFloor() == floor) {</span>
-<span class="nc" id="L258">        equipmentList.add(equipment);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        ((EquipmentManager) DBManager.getInstance().getManager(DataBaseObjectType.Equipment))</span>
+<span class="nc" id="L257">            .getAll()) {</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">      if (equipment.getLocation().getFloor() == floor) {</span>
+<span class="nc" id="L259">        equipmentList.add(equipment);</span>
       }
-<span class="nc" id="L260">    }</span>
-<span class="nc" id="L261">    return equipmentList;</span>
+<span class="nc" id="L261">    }</span>
+<span class="nc" id="L262">    return equipmentList;</span>
   }
 
-<span class="nc" id="L264">  private void SwitchToMapView(FloorType floor) {}</span>
+<span class="nc" id="L265">  private void SwitchToMapView(FloorType floor) {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

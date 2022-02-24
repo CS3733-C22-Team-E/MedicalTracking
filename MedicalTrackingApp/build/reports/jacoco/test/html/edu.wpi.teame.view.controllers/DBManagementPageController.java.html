@@ -19,93 +19,92 @@ import javafx.scene.control.TextField;
   @FXML JFXComboBox tableComboBox;
   @FXML TextField searchTextBox;
 
-<span class="nc" id="L22">  private List&lt;ISQLSerializable&gt; itemsList = null;</span>
-<span class="nc" id="L23">  private DataBaseObjectType currentType = null;</span>
+<span class="nc" id="L22">  private DataBaseObjectType currentType = null;</span>
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-<span class="nc" id="L27">    DataBaseObjectType[] dbTables = DataBaseObjectType.values();</span>
-<span class="nc" id="L28">    tableComboBox.setItems(FXCollections.observableArrayList(dbTables));</span>
+<span class="nc" id="L26">    DataBaseObjectType[] dbTables = DataBaseObjectType.values();</span>
+<span class="nc" id="L27">    tableComboBox.setItems(FXCollections.observableArrayList(dbTables));</span>
 
-<span class="nc" id="L30">    resultView.setCellFactory(</span>
+<span class="nc" id="L29">    resultView.setCellFactory(</span>
         lv -&gt;
-<span class="nc" id="L32">            new ListCell&lt;ISQLSerializable&gt;() {</span>
+<span class="nc" id="L31">            new ListCell&lt;ISQLSerializable&gt;() {</span>
               @Override
               protected void updateItem(ISQLSerializable dbObject, boolean empty) {
-<span class="nc" id="L35">                super.updateItem(dbObject, empty);</span>
-<span class="nc bnc" id="L36" title="All 2 branches missed.">                if (empty) {</span>
-<span class="nc" id="L37">                  setStyle(&quot;&quot;);</span>
-<span class="nc" id="L38">                  setText(&quot;&quot;);</span>
-<span class="nc" id="L39">                  return;</span>
+<span class="nc" id="L34">                super.updateItem(dbObject, empty);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">                if (empty) {</span>
+<span class="nc" id="L36">                  setStyle(&quot;&quot;);</span>
+<span class="nc" id="L37">                  setText(&quot;&quot;);</span>
+<span class="nc" id="L38">                  return;</span>
                 }
 
-<span class="nc bnc" id="L42" title="All 2 branches missed.">                if (dbObject.getIsDeleted()) {</span>
-<span class="nc" id="L43">                  setStyle(&quot;-fx-background-color: #9C9C9C&quot;);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                if (dbObject.getIsDeleted()) {</span>
+<span class="nc" id="L42">                  setStyle(&quot;-fx-background-color: #9C9C9C&quot;);</span>
                 }
-<span class="nc" id="L45">                setText(dbObject.toString());</span>
-<span class="nc" id="L46">              }</span>
+<span class="nc" id="L44">                setText(dbObject.toString());</span>
+<span class="nc" id="L45">              }</span>
             });
-<span class="nc" id="L48">  }</span>
+<span class="nc" id="L47">  }</span>
 
   @FXML
   public void switchTable() throws SQLException {
-<span class="nc" id="L52">    String selectedText = tableComboBox.getValue().toString();</span>
-<span class="nc" id="L53">    currentType = DataBaseObjectType.getValue(selectedText);</span>
+<span class="nc" id="L51">    String selectedText = tableComboBox.getValue().toString();</span>
+<span class="nc" id="L52">    currentType = DataBaseObjectType.getValue(selectedText);</span>
+<span class="nc" id="L53">    searchTextBox.clear();</span>
+<span class="nc" id="L54">    updateListView();</span>
+<span class="nc" id="L55">  }</span>
 
-<span class="nc" id="L55">    itemsList = DBManager.getInstance().getManager(currentType).getDeleted();</span>
-<span class="nc" id="L56">    itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());</span>
-<span class="nc" id="L57">    searchTextBox.clear();</span>
-<span class="nc" id="L58">    updateListView();</span>
-<span class="nc" id="L59">  }</span>
+  private void updateListView() throws SQLException {
+    // Empty the result view at start
+<span class="nc" id="L59">    resultView.setItems(FXCollections.observableArrayList(new ArrayList&lt;&gt;()));</span>
+<span class="nc" id="L60">    resultView.applyCss();</span>
 
-  private void updateListView() {
-    // Empty the result view
-<span class="nc" id="L63">    resultView.setItems(FXCollections.observableArrayList(new ArrayList&lt;&gt;()));</span>
-<span class="nc" id="L64">    resultView.applyCss();</span>
+<span class="nc" id="L62">    List&lt;ISQLSerializable&gt; itemsList = DBManager.getInstance().getManager(currentType).getDeleted();</span>
+<span class="nc" id="L63">    itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());</span>
 
-<span class="nc bnc" id="L66" title="All 2 branches missed.">    if (itemsList.isEmpty()) {</span>
-<span class="nc" id="L67">      resultView.setItems(FXCollections.observableArrayList(new ArrayList&lt;&gt;()));</span>
-<span class="nc" id="L68">      return;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">    if (itemsList.isEmpty()) {</span>
+<span class="nc" id="L66">      resultView.setItems(FXCollections.observableArrayList(new ArrayList&lt;&gt;()));</span>
+<span class="nc" id="L67">      return;</span>
     }
 
-<span class="nc" id="L71">    String searchQuery = searchTextBox.getText().trim();</span>
-<span class="nc" id="L72">    List&lt;ISQLSerializable&gt; newItemsList = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L73" title="All 2 branches missed.">    for (ISQLSerializable item : itemsList) {</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">      if (item.toString().contains(searchQuery)) {</span>
-<span class="nc" id="L75">        newItemsList.add(item);</span>
+<span class="nc" id="L70">    String searchQuery = searchTextBox.getText().trim();</span>
+<span class="nc" id="L71">    List&lt;ISQLSerializable&gt; newItemsList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">    for (ISQLSerializable item : itemsList) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">      if (item.toString().contains(searchQuery)) {</span>
+<span class="nc" id="L74">        newItemsList.add(item);</span>
       }
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L76">    }</span>
 
-<span class="nc" id="L79">    resultView.setItems(FXCollections.observableArrayList(newItemsList));</span>
-<span class="nc" id="L80">    resultView.applyCss();</span>
-<span class="nc" id="L81">  }</span>
+<span class="nc" id="L78">    resultView.setItems(FXCollections.observableArrayList(newItemsList));</span>
+<span class="nc" id="L79">    resultView.applyCss();</span>
+<span class="nc" id="L80">  }</span>
 
   @FXML
   public void deleteFromDB() throws SQLException {
-<span class="nc" id="L85">    int selectedIndex = resultView.getSelectionModel().getSelectedIndex();</span>
-<span class="nc" id="L86">    ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);</span>
-<span class="nc" id="L87">    DBManager.getManager(currentType).remove(dbObject.getId());</span>
+<span class="nc" id="L84">    int selectedIndex = resultView.getSelectionModel().getSelectedIndex();</span>
+<span class="nc" id="L85">    ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);</span>
+<span class="nc" id="L86">    DBManager.getInstance().getManager(currentType).remove(dbObject.getId());</span>
 
-<span class="nc" id="L89">    updateListView();</span>
-<span class="nc" id="L90">  }</span>
+<span class="nc" id="L88">    updateListView();</span>
+<span class="nc" id="L89">  }</span>
 
   @FXML
   public void restoreToDB() throws SQLException {
-<span class="nc" id="L94">    int selectedIndex = resultView.getSelectionModel().getSelectedIndex();</span>
-<span class="nc" id="L95">    ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);</span>
-<span class="nc" id="L96">    DBManager.getManager(currentType).restore(dbObject.getId());</span>
+<span class="nc" id="L93">    int selectedIndex = resultView.getSelectionModel().getSelectedIndex();</span>
+<span class="nc" id="L94">    ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);</span>
+<span class="nc" id="L95">    DBManager.getInstance().getManager(currentType).restore(dbObject.getId());</span>
 
-<span class="nc" id="L98">    updateListView();</span>
-<span class="nc" id="L99">  }</span>
-
-  @FXML
-  public void searchBoxChanged() {
-<span class="nc" id="L103">    updateListView();</span>
-<span class="nc" id="L104">  }</span>
+<span class="nc" id="L97">    updateListView();</span>
+<span class="nc" id="L98">  }</span>
 
   @FXML
-  public void searchButtonClick() {
-<span class="nc" id="L108">    updateListView();</span>
-<span class="nc" id="L109">  }</span>
+  public void searchBoxChanged() throws SQLException {
+<span class="nc" id="L102">    updateListView();</span>
+<span class="nc" id="L103">  }</span>
+
+  @FXML
+  public void searchButtonClick() throws SQLException {
+<span class="nc" id="L107">    updateListView();</span>
+<span class="nc" id="L108">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
