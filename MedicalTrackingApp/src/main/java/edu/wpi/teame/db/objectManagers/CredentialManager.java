@@ -61,9 +61,8 @@ public final class CredentialManager {
       return false;
     }
 
-    // TODO: load in the correct access level and fix the select above ^^. Done
+    // Save current user access leval
     currentUserLevel = AccessLevel.values()[getQueryResultSet.getInt("accessLevel")];
-    //        Objects.equals(username, "admin") ? AccessLevel.Admin : AccessLevel.Staff;
     return true;
   }
 

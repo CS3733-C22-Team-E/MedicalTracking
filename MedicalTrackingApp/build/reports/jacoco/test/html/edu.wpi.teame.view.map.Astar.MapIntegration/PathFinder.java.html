@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Astar.MapIntegration</a> &gt; <span class="el_source">PathFinder.java</span></div><h1>PathFinder.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Astar.MapIntegration;
+
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.EdgeManager;
+import edu.wpi.teame.model.Edge;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.map.Astar.AstarVisualizer;
+import edu.wpi.teame.view.map.Astar.Graph;
+import edu.wpi.teame.view.map.Astar.RouteFinder;
+import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
+import java.sql.SQLException;
+import java.util.*;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+
+public class PathFinder {
+  private Graph&lt;Location&gt; locationGraph;
+  private RouteFinder&lt;Location&gt; routeFinder;
+<span class="nc" id="L21">  private Set&lt;Location&gt; locations = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L22">  private Map&lt;Integer, Set&lt;Integer&gt;&gt; connections = new HashMap&lt;&gt;();</span>
+  private AstarVisualizer Visual;
+  private StackPane DrawPane;
+  private Location startTest;
+  private Location endTest;
+<span class="nc" id="L27">  private ArrayList&lt;Rectangle&gt; routeVisual = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L28">  private List&lt;Edge&gt; edgeList = null;</span>
+
+<span class="nc" id="L30">  public PathFinder(StackPane Draw, double MapWidth, double MapHeight) throws SQLException {</span>
+<span class="nc" id="L31">    DrawPane = Draw;</span>
+<span class="nc" id="L32">    Visual = new AstarVisualizer(Draw, MapWidth, MapHeight);</span>
+<span class="nc" id="L33">    createConnections();</span>
+<span class="nc" id="L34">    locationGraph = new Graph&lt;&gt;(locations, connections);</span>
+<span class="nc" id="L35">    routeFinder =</span>
+        new RouteFinder&lt;&gt;(
+            locationGraph, new EuclideanDistanceHeuristic(), new EuclideanDistanceHeuristic());
+<span class="nc" id="L38">  }</span>
+
+  public void refreshLocationsFromDB() throws SQLException {
+<span class="nc" id="L41">    locations.addAll(DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll());</span>
+<span class="nc" id="L42">  }</span>
+
+  public void createConnections() throws SQLException {
+<span class="nc" id="L45">    connections.clear();</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">    if (edgeList == null || edgeList.size() == 0) {</span>
+<span class="nc" id="L47">      edgeList =</span>
+<span class="nc" id="L48">          ((EdgeManager) DBManager.getInstance().getManager(DataBaseObjectType.Edge)).getAll();</span>
+    }
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">    for (Edge edge : edgeList) {</span>
+<span class="nc" id="L52">      connections.put(edge.getStart().getId(), new HashSet&lt;Integer&gt;());</span>
+<span class="nc" id="L53">    }</span>
+
+<span class="nc bnc" id="L55" title="All 2 branches missed.">    for (Edge edge : edgeList) {</span>
+<span class="nc" id="L56">      connections.get(edge.getStart().getId()).add(edge.getEnd().getId());</span>
+<span class="nc" id="L57">    }</span>
+<span class="nc" id="L58">  }</span>
+
+  public void SelectFloor(double WIDTH, double HEIGHT) throws SQLException {
+<span class="nc" id="L61">    Visual.clearConnections();</span>
+<span class="nc" id="L62">    Visual.setMap(WIDTH, HEIGHT);</span>
+<span class="nc" id="L63">  }</span>
+
+  public void RemoveRoute() {
+<span class="nc" id="L66">    DrawPane.getChildren().removeAll(routeVisual);</span>
+<span class="nc" id="L67">    routeVisual.clear();</span>
+<span class="nc" id="L68">  }</span>
+
+  public List&lt;Location&gt; FindAndDrawRoute(int StartID, int EndID) throws SQLException {
+    // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getManager(DataBaseObjectType.Location).get(StartID);
+<span class="nc" id="L74">    Visual.clearConnections();</span>
+<span class="nc" id="L75">    locations.stream()</span>
+<span class="nc" id="L76">        .forEach(</span>
+            node -&gt; {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L79">                startTest = node;</span>
+<span class="nc" id="L80">                System.out.println(&quot;Hit Start&quot;);</span>
+              }
+<span class="nc bnc" id="L82" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L83">                endTest = node;</span>
+<span class="nc" id="L84">                System.out.println(&quot;Hit End&quot;);</span>
+              }
+<span class="nc" id="L86">            });</span>
+<span class="nc" id="L87">    Location From = startTest;</span>
+<span class="nc" id="L88">    Location To = endTest;</span>
+    try {
+<span class="nc" id="L90">      List&lt;Location&gt; route = routeFinder.findRoute(From, To);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">      for (int i = 1; i &lt; route.size(); i++) {</span>
+<span class="nc" id="L92">        Location initNode = route.get(i - 1);</span>
+<span class="nc" id="L93">        Location endNode = route.get(i);</span>
+<span class="nc" id="L94">        routeVisual.add(</span>
+<span class="nc" id="L95">            Visual.createConnection(</span>
+<span class="nc" id="L96">                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));</span>
+      }
+<span class="nc" id="L98">      System.out.println(route.size());</span>
+<span class="nc" id="L99">      return route;</span>
+<span class="nc" id="L100">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L101">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
+    }
+<span class="nc" id="L103">    return null;</span>
+  }
+
+  public List&lt;Location&gt; FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
+    // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+<span class="nc" id="L110">    Visual.clearConnections();</span>
+<span class="nc" id="L111">    locations.stream()</span>
+<span class="nc" id="L112">        .forEach(</span>
+            node -&gt; {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L115">                startTest = node;</span>
+<span class="nc" id="L116">                System.out.println(&quot;Hit Start: &quot; + node.getId());</span>
+              }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L119">                endTest = node;</span>
+<span class="nc" id="L120">                System.out.println(&quot;Hit End: &quot; + node.getId());</span>
+              }
+<span class="nc" id="L122">            });</span>
+<span class="nc" id="L123">    Location From = startTest;</span>
+<span class="nc" id="L124">    Location To = endTest;</span>
+    List&lt;Location&gt; route;
+    try {
+<span class="nc" id="L127">      route = routeFinder.findRoute(From, To);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">      for (int i = 1; i &lt; route.size(); i++) {</span>
+<span class="nc" id="L129">        Location initNode = route.get(i - 1);</span>
+<span class="nc" id="L130">        Location endNode = route.get(i);</span>
+<span class="nc" id="L131">        routeVisual.add(</span>
+<span class="nc" id="L132">            Visual.createConnection(</span>
+<span class="nc" id="L133">                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY(), color));</span>
+      }
+<span class="nc" id="L135">      return route;</span>
+<span class="nc" id="L136">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L137">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
+<span class="nc" id="L138">      return null;</span>
+    }
+  }
+
+  public void FindAndDrawRoute(
+      int StartID, int EndID, MapEquipmentIcon iconToBeMoved, double timerSeconds)
+      throws SQLException {
+    // TODO there's gotta be a better way to do this -&gt;tried call DBManager....get(ID) and it kept
+    // returning null
+    // DBManager.getInstance().getLocationManager().get(StartID);
+<span class="nc" id="L148">    Visual.clearConnections();</span>
+<span class="nc" id="L149">    locations.stream()</span>
+<span class="nc" id="L150">        .forEach(</span>
+            node -&gt; {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">              if (node.getId() == StartID) {</span>
+<span class="nc" id="L153">                startTest = node;</span>
+<span class="nc" id="L154">                System.out.println(&quot;Hit Start&quot;);</span>
+              }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">              if (node.getId() == EndID) {</span>
+<span class="nc" id="L157">                endTest = node;</span>
+<span class="nc" id="L158">                System.out.println(&quot;Hit End&quot;);</span>
+              }
+<span class="nc" id="L160">            });</span>
+<span class="nc" id="L161">    Location From = startTest;</span>
+<span class="nc" id="L162">    Location To = endTest;</span>
+<span class="nc" id="L163">    List&lt;Location&gt; route = null;</span>
+    try {
+<span class="nc" id="L165">      route = routeFinder.findRoute(From, To);</span>
+<span class="nc" id="L166">    } catch (IllegalStateException e) {</span>
+<span class="nc" id="L167">      System.out.println(&quot;No Valid Route From &quot; + From.getId() + &quot; To &quot; + To.getId());</span>
+<span class="nc" id="L168">    }</span>
+<span class="nc" id="L169">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

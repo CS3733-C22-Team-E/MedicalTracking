@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RouteFinder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.view.map.Astar</a> &gt; <span class="el_source">RouteFinder.java</span></div><h1>RouteFinder.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.view.map.Astar;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+
+<span class="nc" id="L12">@Slf4j</span>
+public class RouteFinder&lt;T extends GraphNode&gt; {
+  private final Graph&lt;T&gt; graph;
+  private final Heuristic&lt;T&gt; nextNodeHeuristic;
+  private final Heuristic&lt;T&gt; targetHeuristic;
+
+<span class="nc" id="L18">  public RouteFinder(Graph&lt;T&gt; graph, Heuristic&lt;T&gt; nextNodeHeuristic, Heuristic&lt;T&gt; targetHeuristic) {</span>
+<span class="nc" id="L19">    this.graph = graph;</span>
+<span class="nc" id="L20">    this.nextNodeHeuristic = nextNodeHeuristic;</span>
+<span class="nc" id="L21">    this.targetHeuristic = targetHeuristic;</span>
+<span class="nc" id="L22">  }</span>
+
+  public List&lt;T&gt; findRoute(T from, T to) {
+<span class="nc" id="L25">    Map&lt;T, RouteNode&lt;T&gt;&gt; allNodes = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L26">    Queue&lt;RouteNode&gt; openSet = new PriorityQueue&lt;&gt;();</span>
+
+<span class="nc" id="L28">    RouteNode&lt;T&gt; start = new RouteNode&lt;&gt;(from, null, 0d, targetHeuristic.computeCost(from, to));</span>
+<span class="nc" id="L29">    allNodes.put(from, start);</span>
+<span class="nc" id="L30">    openSet.add(start);</span>
+
+<span class="nc bnc" id="L32" title="All 2 branches missed.">    while (!openSet.isEmpty()) {</span>
+<span class="nc" id="L33">      log.debug(</span>
+          &quot;Open Set contains: &quot;
+<span class="nc" id="L35">              + openSet.stream().map(RouteNode::getCurrent).collect(Collectors.toSet()));</span>
+<span class="nc" id="L36">      RouteNode&lt;T&gt; next = openSet.poll();</span>
+<span class="nc" id="L37">      log.debug(&quot;Looking at node: &quot; + next);</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">      if (next.getCurrent().equals(to)) {</span>
+<span class="nc" id="L39">        log.debug(&quot;Found our destination!&quot;);</span>
+
+<span class="nc" id="L41">        List&lt;T&gt; route = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L42">        RouteNode&lt;T&gt; current = next;</span>
+        do {
+<span class="nc" id="L44">          route.add(0, current.getCurrent());</span>
+<span class="nc" id="L45">          current = allNodes.get(current.getPrevious());</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        } while (current != null);</span>
+
+<span class="nc" id="L48">        log.debug(&quot;Route: &quot; + route);</span>
+<span class="nc" id="L49">        return route;</span>
+      }
+
+<span class="nc" id="L52">      graph</span>
+<span class="nc" id="L53">          .getConnections(next.getCurrent())</span>
+<span class="nc" id="L54">          .forEach(</span>
+              connection -&gt; {
+<span class="nc" id="L56">                double newScore =</span>
+<span class="nc" id="L57">                    next.getRouteScore()</span>
+<span class="nc" id="L58">                        + nextNodeHeuristic.computeCost(next.getCurrent(), connection);</span>
+<span class="nc" id="L59">                RouteNode&lt;T&gt; nextNode =</span>
+<span class="nc" id="L60">                    allNodes.getOrDefault(connection, new RouteNode&lt;&gt;(connection));</span>
+<span class="nc" id="L61">                allNodes.put(connection, nextNode);</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (nextNode.getRouteScore() &gt; newScore) {</span>
+<span class="nc" id="L64">                  nextNode.setPrevious(next.getCurrent());</span>
+<span class="nc" id="L65">                  nextNode.setRouteScore(newScore);</span>
+<span class="nc" id="L66">                  nextNode.setEstimatedScore(</span>
+<span class="nc" id="L67">                      newScore + targetHeuristic.computeCost(connection, to));</span>
+<span class="nc" id="L68">                  openSet.add(nextNode);</span>
+<span class="nc" id="L69">                  log.debug(&quot;Found a better route to node: &quot; + nextNode);</span>
+                }
+<span class="nc" id="L71">              });</span>
+<span class="nc" id="L72">    }</span>
+
+<span class="nc" id="L74">    throw new IllegalStateException(&quot;No route found&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

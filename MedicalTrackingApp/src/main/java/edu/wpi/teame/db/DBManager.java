@@ -421,7 +421,9 @@ public final class DBManager {
       throws SQLException, IOException, CsvValidationException, ParseException {
 
     // Write to CSV
-    DBManager.getInstance().writeDBToCSV(false);
+    if (currentType != DBType.AzureCloud) {
+      DBManager.getInstance().writeDBToCSV(false);
+    }
 
     // Switch Edge
     String connectionString = "";

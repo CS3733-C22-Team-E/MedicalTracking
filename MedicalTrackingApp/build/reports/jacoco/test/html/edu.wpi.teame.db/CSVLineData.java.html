@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CSVLineData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.db</a> &gt; <span class="el_source">CSVLineData.java</span></div><h1>CSVLineData.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.db;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CSVLineData {
+<span class="nc" id="L15">  private List&lt;String&gt; headers = null;</span>
+<span class="nc" id="L16">  private CSVReader csvReader = null;</span>
+<span class="nc" id="L17">  private String[] parsedData = null;</span>
+
+<span class="nc" id="L19">  public CSVLineData(CSVReader reader) throws IOException, CsvValidationException {</span>
+<span class="nc" id="L20">    String[] headerStrings = reader.readNext();</span>
+<span class="nc bnc" id="L21" title="All 4 branches missed.">    if (headerStrings == null || headerStrings.length == 0) {</span>
+<span class="nc" id="L22">      return;</span>
+    }
+
+<span class="nc" id="L25">    this.headers = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L26">    this.headers.addAll(List.of(headerStrings));</span>
+<span class="nc" id="L27">    this.csvReader = reader;</span>
+<span class="nc" id="L28">  }</span>
+
+  public boolean readNext() throws CsvValidationException, IOException {
+<span class="nc" id="L31">    parsedData = csvReader.readNext();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">    if (parsedData == null) {</span>
+<span class="nc" id="L33">      return false;</span>
+    }
+<span class="nc bnc" id="L35" title="All 2 branches missed.">    return parsedData.length != 0;</span>
+  }
+
+  public boolean readHeaders() {
+<span class="nc bnc" id="L39" title="All 4 branches missed.">    return headers != null &amp;&amp; headers.size() &gt; 0;</span>
+  }
+
+  public ISQLSerializable getDBObject(DataBaseObjectType objectType, String columnName)
+      throws SQLException {
+<span class="nc" id="L44">    int employeeCSVID = getColumnInt(columnName);</span>
+<span class="nc" id="L45">    int employeeID = CSVManager.getInstance().getDBId(objectType, employeeCSVID);</span>
+<span class="nc" id="L46">    return DBManager.getInstance().getManager(objectType).get(employeeID);</span>
+  }
+
+  public Date getColumnDate(String columnName) throws ParseException {
+<span class="nc" id="L50">    String columnString = getSanitizedString(columnName);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">    if (columnString == null) {</span>
+<span class="nc" id="L52">      return null;</span>
+    }
+
+    long time;
+<span class="nc bnc" id="L56" title="All 2 branches missed.">    if (columnString.length() &gt; 11) {</span>
+<span class="nc" id="L57">      time = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;).parse(columnString).getTime();</span>
+    } else {
+<span class="nc" id="L59">      time = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(columnString).getTime();</span>
+    }
+<span class="nc" id="L61">    return new Date(time);</span>
+  }
+
+  public boolean getColumnBoolean(String columnName) {
+<span class="nc" id="L65">    String columnString = getSanitizedString(columnName);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    if (columnString == null) {</span>
+<span class="nc" id="L67">      return false;</span>
+    }
+<span class="nc" id="L69">    return Boolean.parseBoolean(columnString);</span>
+  }
+
+  public int getColumnInt(String columnName) {
+<span class="nc" id="L73">    String columnString = getSanitizedString(columnName);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">    if (columnString == null) {</span>
+<span class="nc" id="L75">      return 0;</span>
+    }
+<span class="nc" id="L77">    return Integer.parseInt(columnString);</span>
+  }
+
+  public String getColumnString(String columnName) {
+<span class="nc" id="L81">    return getSanitizedString(columnName);</span>
+  }
+
+  private String getSanitizedString(String columnName) {
+<span class="nc" id="L85">    String columnString = parsedData[headers.indexOf(columnName)].trim();</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">    if (columnString.isEmpty() || columnString.isBlank()) {</span>
+<span class="nc" id="L87">      return null;</span>
+    }
+<span class="nc" id="L89">    return columnString;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

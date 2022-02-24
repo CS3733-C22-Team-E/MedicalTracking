@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientTransportationServiceRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MedicalTrackingApp</a> &gt; <a href="index.source.html" class="el_package">edu.wpi.teame.model.serviceRequests</a> &gt; <span class="el_source">PatientTransportationServiceRequest.java</span></div><h1>PatientTransportationServiceRequest.java</h1><pre class="source lang-java linenums">package edu.wpi.teame.model.serviceRequests;
+
+import edu.wpi.teame.db.CSVLineData;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Employee;
+import edu.wpi.teame.model.Equipment;
+import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.enums.ServiceRequestPriority;
+import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class PatientTransportationServiceRequest extends ServiceRequest {
+  private Location destination;
+  private Equipment equipment;
+  private Patient patient;
+
+  public PatientTransportationServiceRequest(
+      boolean isInternal,
+      ServiceRequestPriority priority,
+      ServiceRequestStatus status,
+      String additionalInfo,
+      Employee assignee,
+      Location location,
+      Date requestDate,
+      Date closeDate,
+      Date openDate,
+      String title,
+      int id,
+      Location destination,
+      Equipment equipment,
+      Patient patient) {
+<span class="nc" id="L39">    super(</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        isInternal</span>
+<span class="nc" id="L41">            ? DataBaseObjectType.InternalPatientTransferSR</span>
+<span class="nc" id="L42">            : DataBaseObjectType.ExternalPatientSR,</span>
+        priority,
+        status,
+        additionalInfo,
+        assignee,
+        location,
+        requestDate,
+        closeDate,
+        openDate,
+        title,
+        id);
+<span class="nc" id="L53">    this.destination = destination;</span>
+<span class="nc" id="L54">    this.equipment = equipment;</span>
+<span class="nc" id="L55">    this.patient = patient;</span>
+<span class="nc" id="L56">  }</span>
+
+  public PatientTransportationServiceRequest(ResultSet resultSet, boolean isInternal)
+      throws SQLException {
+<span class="nc" id="L60">    super(</span>
+        resultSet,
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        isInternal</span>
+<span class="nc" id="L63">            ? DataBaseObjectType.InternalPatientTransferSR</span>
+<span class="nc" id="L64">            : DataBaseObjectType.ExternalPatientSR);</span>
+<span class="nc" id="L65">    this.destination =</span>
+        (Location)
+<span class="nc" id="L67">            DBManager.getInstance()</span>
+<span class="nc" id="L68">                .getManager(DataBaseObjectType.Location)</span>
+<span class="nc" id="L69">                .get(resultSet.getInt(&quot;destinationID&quot;));</span>
+<span class="nc" id="L70">    this.equipment =</span>
+        (Equipment)
+<span class="nc" id="L72">            DBManager.getInstance()</span>
+<span class="nc" id="L73">                .getManager(DataBaseObjectType.Equipment)</span>
+<span class="nc" id="L74">                .get(resultSet.getInt(&quot;equipmentID&quot;));</span>
+<span class="nc" id="L75">    this.patient =</span>
+        (Patient)
+<span class="nc" id="L77">            DBManager.getInstance()</span>
+<span class="nc" id="L78">                .getManager(DataBaseObjectType.Patient)</span>
+<span class="nc" id="L79">                .get(resultSet.getInt(&quot;patientID&quot;));</span>
+<span class="nc" id="L80">  }</span>
+
+  public PatientTransportationServiceRequest(CSVLineData lineData, boolean isInternal)
+      throws SQLException, ParseException {
+<span class="nc" id="L84">    super(</span>
+        lineData,
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        isInternal</span>
+<span class="nc" id="L87">            ? DataBaseObjectType.InternalPatientTransferSR</span>
+<span class="nc" id="L88">            : DataBaseObjectType.ExternalPatientSR);</span>
+<span class="nc" id="L89">    this.destination =</span>
+<span class="nc" id="L90">        (Location) lineData.getDBObject(DataBaseObjectType.Location, &quot;destinationID&quot;);</span>
+<span class="nc" id="L91">    this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, &quot;equipmentID&quot;);</span>
+<span class="nc" id="L92">    this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, &quot;patientID&quot;);</span>
+<span class="nc" id="L93">  }</span>
+
+  @Override
+  public String getSQLUpdateString() {
+<span class="nc" id="L97">    return getRawUpdateString()</span>
+        + &quot;, &quot;
+        + &quot;destinationID = &quot;
+<span class="nc" id="L100">        + destination.getId()</span>
+        + &quot;, &quot;
+        + &quot;equipmentID = &quot;
+<span class="nc" id="L103">        + equipment.getId()</span>
+        + &quot;, &quot;
+        + &quot;patientID = &quot;
+<span class="nc" id="L106">        + patient.getId()</span>
+        + &quot; WHERE id = &quot;
+        + id;
+  }
+
+  @Override
+  public String getSQLInsertString() {
+<span class="nc" id="L113">    return super.getSQLInsertString()</span>
+        + &quot;, &quot;
+<span class="nc" id="L115">        + destination.getId()</span>
+        + &quot;, &quot;
+<span class="nc" id="L117">        + equipment.getId()</span>
+        + &quot;, &quot;
+<span class="nc" id="L119">        + patient.getId();</span>
+  }
+
+  @Override
+  public String[] toCSVData() {
+<span class="nc" id="L124">    List&lt;String&gt; csvData = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L125">    csvData.addAll(List.of(super.toCSVData()));</span>
+<span class="nc" id="L126">    csvData.add(Integer.toString(destination.getId()));</span>
+<span class="nc" id="L127">    csvData.add(Integer.toString(patient.getId()));</span>
+<span class="nc" id="L128">    csvData.add(Integer.toString(equipment.getId()));</span>
+
+<span class="nc" id="L130">    String[] retArr = new String[csvData.size()];</span>
+<span class="nc" id="L131">    return csvData.toArray(retArr);</span>
+  }
+
+  @Override
+  public String[] getCSVHeaders() {
+<span class="nc" id="L136">    List&lt;String&gt; csvHeaders = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L137">    csvHeaders.addAll(List.of(super.getCSVHeaders()));</span>
+<span class="nc" id="L138">    csvHeaders.add(&quot;destinationID&quot;);</span>
+<span class="nc" id="L139">    csvHeaders.add(&quot;patientID&quot;);</span>
+<span class="nc" id="L140">    csvHeaders.add(&quot;equipmentID&quot;);</span>
+
+<span class="nc" id="L142">    String[] retArr = new String[csvHeaders.size()];</span>
+<span class="nc" id="L143">    return csvHeaders.toArray(retArr);</span>
+  }
+
+  @Override
+  public String getTableColumns() {
+<span class="nc" id="L148">    return &quot;(locationID, assigneeID, openDate, closeDate, status, title, additionalInfo, priority, requestDate, destinationID, equipmentID, patientID)&quot;;</span>
+  }
+
+  // Getters and Setters
+  public Location getDestination() {
+<span class="nc" id="L153">    return destination;</span>
+  }
+
+  public void setDestination(Location destination) {
+<span class="nc" id="L157">    this.destination = destination;</span>
+<span class="nc" id="L158">  }</span>
+
+  public Equipment getEquipment() {
+<span class="nc" id="L161">    return equipment;</span>
+  }
+
+  public void setEquipment(Equipment equipment) {
+<span class="nc" id="L165">    this.equipment = equipment;</span>
+<span class="nc" id="L166">  }</span>
+
+  public Patient getPatient() {
+<span class="nc" id="L169">    return patient;</span>
+  }
+
+  public void setPatient(Patient patient) {
+<span class="nc" id="L173">    this.patient = patient;</span>
+<span class="nc" id="L174">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
