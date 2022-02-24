@@ -421,7 +421,7 @@ public final class DBManager {
       throws SQLException, IOException, CsvValidationException, ParseException {
 
     // Write to CSV
-    //DBManager.getInstance().writeDBToCSV(false);
+    DBManager.getInstance().writeDBToCSV(false);
 
     // Switch Edge
     String connectionString = "";
@@ -505,6 +505,7 @@ public final class DBManager {
   public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
     // Add server drivers
     try {
+      Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
       Class.forName("org.apache.derby.jdbc.ClientDriver");
     } catch (ClassNotFoundException e) {
