@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public final class LocationManager extends ObjectManager<Location> {
   public LocationManager() throws SQLException {
-    super(DataBaseObjectType.Location);
+    super(DataBaseObjectType.Location, 5);
   }
 
   public Location getByName(String longName) throws SQLException {

@@ -58,37 +58,41 @@ public class ServiceRequestBacklog {
     System.out.println("Getting SR");
     serviceRequestsFromDB.clear();
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.FacilitiesMaintenanceSR).getAll());
+        DBManager.getInstance()
+            .getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
+            .forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.InternalPatientTransferSR).getAll());
+        DBManager.getInstance()
+            .getManager(DataBaseObjectType.InternalPatientTransferSR)
+            .forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).getAll());
+        DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).forceGetAll());
   }
 
   public Parent getBacklogScene() throws SQLException {

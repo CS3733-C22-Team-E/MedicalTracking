@@ -16,6 +16,7 @@ public class Main {
 
     // Setup the DB
     DBManager.getInstance().setupDB();
+    DBManager.getInstance().loadDB();
     CredentialManager.getInstance().readCSV("backup/Credentials.csv");
 
     // Launch App

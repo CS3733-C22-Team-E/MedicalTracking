@@ -12,6 +12,8 @@ public interface IManager<T extends ISQLSerializable> {
 
   public List<T> getAll() throws SQLException;
 
+  public List<T> forceGetAll() throws SQLException;
+
   public List<T> getDeleted() throws SQLException;
 
   public T insert(T newObject) throws SQLException;

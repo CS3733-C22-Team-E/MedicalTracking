@@ -18,23 +18,34 @@ import java.io.InputStreamReader;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   protected DataBaseObjectType objectType;
-  private Connection connection;
-  private Statement statement;
+  private Date lastLoaded = new Date(0);
+  private List<T> loadedObjects;
+  private long refreshInterval;
 
-  public ObjectManager(DataBaseObjectType objectType) throws SQLException {
-    connection = DBManager.getInstance().getConnection();
-    statement = connection.createStatement();
+  public ObjectManager(DataBaseObjectType objectType, long refreshInterval) {
+    this.refreshInterval = refreshInterval;
+    loadedObjects = new ArrayList<>();
     this.objectType = objectType;
   }
 
   @Override
   public List<T> getAll() throws SQLException {
-    return getBy(" WHERE isDeleted = 0");
+    if (shouldReload()) {
+      loadedObjects = getBy(" WHERE isDeleted = 0");
+    }
+    return loadedObjects;
+  }
+
+  @Override
+  public List<T> forceGetAll() throws SQLException {
+    lastLoaded = new Date(0);
+    return getAll();
   }
 
   @Override
@@ -44,16 +55,19 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public T get(int id) throws SQLException {
-    List<T> results = getBy(" WHERE ID = " + id);
-    if (results.isEmpty()) {
-      return null;
+    getAll();
+    for (T object : loadedObjects) {
+      if (object.getId() == id) {
+        return object;
+      }
     }
-    return results.get(0);
+    return null;
   }
 
   protected List<T> getBy(String whereClause) throws SQLException {
     String getQuery = "SELECT * FROM " + objectType.toTableName() + " " + whereClause;
-    ResultSet resultSet = statement.executeQuery(getQuery);
+    ResultSet resultSet =
+        DBManager.getInstance().getConnection().createStatement().executeQuery(getQuery);
     List<T> listResult = new LinkedList<>();
     while (resultSet.next()) {
       listResult.add(getCastedType(resultSet));
@@ -69,12 +83,15 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     insertQuery.append(newObject.getSQLInsertString()).append(")");
     System.out.println(insertQuery);
     PreparedStatement insertStatement =
-        connection.prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
+        DBManager.getInstance()
+            .getConnection()
+            .prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
     int rowsAffected = insertStatement.executeUpdate();
     ResultSet resultSet = insertStatement.getGeneratedKeys();
 
     resultSet.next();
     long id = resultSet.getLong(1);
+    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     return get((int) id);
   }
 
@@ -83,7 +100,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     StringBuilder updateQuery = new StringBuilder("UPDATE ");
     updateQuery.append(objectType.toTableName()).append(" SET ");
     updateQuery.append(updatedObject.getSQLUpdateString());
-    statement.executeUpdate(updateQuery.toString());
+    DBManager.getInstance().getConnection().createStatement().executeUpdate(updateQuery.toString());
+    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
   }
 
   @Override
@@ -94,7 +112,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         .append(" SET isDeleted = 1")
         .append(" WHERE id = ")
         .append(id);
-    statement.executeUpdate(markIsDeleted.toString());
+    DBManager.getInstance()
+        .getConnection()
+        .createStatement()
+        .executeUpdate(markIsDeleted.toString());
+    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
   }
 
   @Override
@@ -105,7 +127,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         .append(" SET isDeleted = 0")
         .append(" WHERE id = ")
         .append(id);
-    statement.executeUpdate(restoreQuery.toString());
+    DBManager.getInstance()
+        .getConnection()
+        .createStatement()
+        .executeUpdate(restoreQuery.toString());
+    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
   }
 
   @Override
@@ -154,6 +180,48 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     writer.close();
   }
 
+  private T getCastedType(CSVLineData lineData) throws SQLException, ParseException {
+    switch (objectType) {
+      case AudioVisualSR:
+      case ComputerSR:
+      case DeceasedBodySR:
+      case FacilitiesMaintenanceSR:
+      case LaundrySR:
+      case SanitationSR:
+      case SecuritySR:
+      case MentalHealthSR:
+      case PatientDischargeSR:
+        return (T) new ServiceRequest(lineData, objectType);
+      case ExternalPatientSR:
+        return (T) new PatientTransportationServiceRequest(lineData, false);
+      case FoodDeliverySR:
+        return (T) new FoodDeliveryServiceRequest(lineData);
+      case GiftAndFloralSR:
+        return (T) new GiftAndFloralServiceRequest(lineData);
+      case InternalPatientTransferSR:
+        return (T) new PatientTransportationServiceRequest(lineData, true);
+      case LanguageInterpreterSR:
+        return (T) new LanguageInterpreterServiceRequest(lineData);
+      case MedicalEquipmentSR:
+        return (T) new MedicalEquipmentServiceRequest(lineData);
+      case MedicineDeliverySR:
+        return (T) new MedicineDeliveryServiceRequest(lineData);
+      case ReligiousSR:
+        return (T) new ReligiousServiceRequest(lineData);
+      case Location:
+        return (T) new Location(lineData);
+      case Equipment:
+        return (T) new Equipment(lineData);
+      case Employee:
+        return (T) new Employee(lineData);
+      case Patient:
+        return (T) new Patient(lineData);
+      case Edge:
+        return (T) new Edge(lineData);
+    }
+    return null;
+  }
+
   private T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
@@ -196,45 +264,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     return null;
   }
 
-  private T getCastedType(CSVLineData lineData) throws SQLException, ParseException {
-    switch (objectType) {
-      case AudioVisualSR:
-      case ComputerSR:
-      case DeceasedBodySR:
-      case FacilitiesMaintenanceSR:
-      case LaundrySR:
-      case SanitationSR:
-      case SecuritySR:
-      case MentalHealthSR:
-      case PatientDischargeSR:
-        return (T) new ServiceRequest(lineData, objectType);
-      case ExternalPatientSR:
-        return (T) new PatientTransportationServiceRequest(lineData, false);
-      case FoodDeliverySR:
-        return (T) new FoodDeliveryServiceRequest(lineData);
-      case GiftAndFloralSR:
-        return (T) new GiftAndFloralServiceRequest(lineData);
-      case InternalPatientTransferSR:
-        return (T) new PatientTransportationServiceRequest(lineData, true);
-      case LanguageInterpreterSR:
-        return (T) new LanguageInterpreterServiceRequest(lineData);
-      case MedicalEquipmentSR:
-        return (T) new MedicalEquipmentServiceRequest(lineData);
-      case MedicineDeliverySR:
-        return (T) new MedicineDeliveryServiceRequest(lineData);
-      case ReligiousSR:
-        return (T) new ReligiousServiceRequest(lineData);
-      case Location:
-        return (T) new Location(lineData);
-      case Equipment:
-        return (T) new Equipment(lineData);
-      case Employee:
-        return (T) new Employee(lineData);
-      case Patient:
-        return (T) new Patient(lineData);
-      case Edge:
-        return (T) new Edge(lineData);
+  private boolean shouldReload() {
+    long millisPassed = new Date().getTime() - lastLoaded.getTime();
+    long minutesPassed = (millisPassed / 1000) / 60;
+    boolean shouldReload = minutesPassed > refreshInterval;
+
+    if (shouldReload) {
+      lastLoaded = new Date();
     }
-    return null;
+    return shouldReload;
   }
 }

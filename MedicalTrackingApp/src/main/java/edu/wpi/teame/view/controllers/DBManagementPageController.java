@@ -54,6 +54,7 @@ public class DBManagementPageController implements Initializable {
 
     itemsList = DBManager.getInstance().getManager(currentType).getDeleted();
     itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());
+
     searchTextBox.clear();
     updateListView();
   }

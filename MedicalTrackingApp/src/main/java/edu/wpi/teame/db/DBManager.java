@@ -7,6 +7,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
+import java.util.HashMap;
 
 public final class DBManager {
   private final String AzureCloudServerConnectionString =
@@ -16,6 +17,7 @@ public final class DBManager {
   private final String EmbeddedConnectionString =
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
+  private HashMap<DataBaseObjectType, ObjectManager> managers;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
@@ -29,14 +31,6 @@ public final class DBManager {
   }
 
   private DBManager() {}
-
-  public Connection getConnection() {
-    return connection;
-  }
-
-  public DBType getCurrentType() {
-    return currentType;
-  }
 
   private void createDBTables() throws SQLException {
     // <editor-fold desc="Create Standard Types on DB">
@@ -423,68 +417,6 @@ public final class DBManager {
     System.out.println("SecuritySR Table created");
   }
 
-  public void loadDBFromCSV(boolean fromBackup)
-      throws CsvValidationException, SQLException, IOException, ParseException {
-    String subFolder = "switchFiles/";
-    if (fromBackup) {
-      cleanDBTables(); // Erase the tables in the DB to restore from CSV
-      subFolder = "backup/";
-    }
-
-    try {
-      CredentialManager.getInstance().readCSV("backup/Credentials.csv");
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-
-    for (DataBaseObjectType type : DataBaseObjectType.values()) {
-      getManager(type).readCSV(subFolder + type.toTableName() + ".csv");
-    }
-  }
-
-  public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
-    String subFolder = "switchFiles/";
-    if (isBackup) {
-      subFolder = "backup/";
-    }
-
-    for (DataBaseObjectType type : DataBaseObjectType.values()) {
-      getManager(type).writeToCSV(subFolder + type.toTableName() + ".csv");
-    }
-  }
-
-  public void setupDB() throws SQLException {
-    // add embedded driver
-    try {
-      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-      return;
-    }
-
-    // add client-server driver
-    try {
-      Class.forName("org.apache.derby.jdbc.ClientDriver");
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-      return;
-    }
-
-    // Connect to Client/Server... that DB may already have the tables
-    try {
-      connection = DriverManager.getConnection(ClientServerConnectionString);
-      stmt = connection.createStatement();
-      createDBTables();
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-    }
-
-    // Default connect to Embedded Server
-    connection = DriverManager.getConnection(EmbeddedConnectionString);
-    stmt = connection.createStatement();
-    createDBTables();
-  }
-
   public void switchConnection(DBType type)
       throws SQLException, IOException, CsvValidationException, ParseException {
 
@@ -515,6 +447,94 @@ public final class DBManager {
       cleanDBTables();
       DBManager.getInstance().loadDBFromCSV(false);
     }
+
+    // Load up the data from DB
+    loadDB();
+  }
+
+  private ObjectManager createManager(DataBaseObjectType dbType) throws SQLException {
+    switch (dbType) {
+      case Location:
+        return new LocationManager();
+      case Equipment:
+        return new EquipmentManager();
+      case Patient:
+        return new PatientManager();
+      case Employee:
+        return new EmployeeManager();
+      case Edge:
+        return new EdgeManager();
+    }
+    return new ServiceRequestManager(dbType);
+  }
+
+  public void loadDBFromCSV(boolean fromBackup)
+      throws CsvValidationException, SQLException, IOException, ParseException {
+    String subFolder = "switchFiles/";
+    if (fromBackup) {
+      cleanDBTables(); // Erase the tables in the DB to restore from CSV
+      subFolder = "backup/";
+    }
+
+    try {
+      CredentialManager.getInstance().readCSV("backup/Credentials.csv");
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+
+    for (DataBaseObjectType type : DataBaseObjectType.values()) {
+      getManager(type).readCSV(subFolder + type.toTableName() + ".csv");
+    }
+  }
+
+  public void writeDBToCSV(boolean isBackup) throws SQLException, IOException {
+    String subFolder = "switchFiles/";
+    if (isBackup) {
+      subFolder = "backup/";
+    }
+
+    for (DataBaseObjectType type : DataBaseObjectType.values()) {
+      getManager(type).writeToCSV(subFolder + type.toTableName() + ".csv");
+    }
+  }
+
+  public ObjectManager getManager(DataBaseObjectType dbType) throws SQLException {
+    return managers.get(dbType);
+  }
+
+  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
+    // Add server drivers
+    try {
+      Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+      Class.forName("org.apache.derby.jdbc.ClientDriver");
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+      return;
+    }
+
+    // Connect to Client/Server... that DB may already have the tables
+    try {
+      connection = DriverManager.getConnection(ClientServerConnectionString);
+      stmt = connection.createStatement();
+      createDBTables();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
+    // Default connect to Embedded Server
+    connection = DriverManager.getConnection(EmbeddedConnectionString);
+    stmt = connection.createStatement();
+    createDBTables();
+
+    // Create the object managers
+    managers = new HashMap<>();
+    for (DataBaseObjectType dbType : DataBaseObjectType.values()) {
+      ObjectManager manager = createManager(dbType);
+      managers.put(dbType, manager);
+    }
+
+    // Connect to Azure by default
+    switchConnection(DBType.AzureCloud);
   }
 
   private void cleanDBTables() throws SQLException {
@@ -529,37 +549,17 @@ public final class DBManager {
     }
   }
 
-  public ObjectManager getManager(DataBaseObjectType managerType) throws SQLException {
-    switch (managerType) {
-      case Location:
-        return new LocationManager();
-      case Equipment:
-        return new EquipmentManager();
-      case Patient:
-        return new PatientManager();
-      case Employee:
-        return new EmployeeManager();
-      case Edge:
-        return new EdgeManager();
-      case LaundrySR:
-      case ComputerSR:
-      case SecuritySR:
-      case ReligiousSR:
-      case SanitationSR:
-      case AudioVisualSR:
-      case FoodDeliverySR:
-      case DeceasedBodySR:
-      case MentalHealthSR:
-      case GiftAndFloralSR:
-      case ExternalPatientSR:
-      case PatientDischargeSR:
-      case MedicalEquipmentSR:
-      case MedicineDeliverySR:
-      case LanguageInterpreterSR:
-      case FacilitiesMaintenanceSR:
-      case InternalPatientTransferSR:
-        return new ServiceRequestManager(managerType);
+  public void loadDB() throws SQLException {
+    for (DataBaseObjectType dbType : DataBaseObjectType.values()) {
+      managers.get(dbType).forceGetAll();
     }
-    return null;
+  }
+
+  public Connection getConnection() {
+    return connection;
+  }
+
+  public DBType getCurrentType() {
+    return currentType;
   }
 }
