@@ -697,7 +697,6 @@ public class Map {
                         Navigation.FindAndDrawRoute(
                             newSr.getEquipment().getLocation().getId(),
                             newSr.getLocation().getId(),
-                            Color.BLUE,
                             currFloor);
 
                     Timer newTimer = new Timer();
@@ -809,7 +808,6 @@ public class Map {
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getLocation().getId(),
                           PathFindingLocations.get(1).getLocation().getId(),
-                          Color.BLACK,
                           currFloor);
 
                     } catch (SQLException e) {
