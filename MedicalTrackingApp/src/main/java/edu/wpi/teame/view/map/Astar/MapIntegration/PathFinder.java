@@ -105,7 +105,8 @@ public class PathFinder {
     }
   }
 
-  public List<Location> FindAndDrawRoute(int StartID, int EndID, FloorType FloorBeingShown) throws SQLException {
+  public List<Location> FindAndDrawRoute(int StartID, int EndID, FloorType FloorBeingShown)
+      throws SQLException {
     Visual.clearConnections();
     locations.stream()
         .forEach(
@@ -195,5 +196,4 @@ public class PathFinder {
     }
     return null;
   }
-
 }
