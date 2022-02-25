@@ -1,9 +1,9 @@
 package edu.wpi.teame.view.map.Astar;
 
+import edu.wpi.teame.view.map.Astar.MapIntegration.VisualNode;
 import java.util.ArrayList;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class AstarVisualizer {
@@ -24,8 +24,7 @@ public class AstarVisualizer {
     MAPHEIGHT = MAPHEIGHT_;
   }
 
-  public Rectangle createConnection(
-      double StartX, double StartY, double EndX, double EndY, Paint color) {
+  public VisualNode createConnection(double StartX, double StartY, double EndX, double EndY) {
     System.out.println("Creating Edge");
     Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);
     double distance =
@@ -35,35 +34,13 @@ public class AstarVisualizer {
     double ProjectY = StartY + Math.sin(theta) * distance / 2;
     ProjectX = ProjectX - MAPWIDTH / 2;
     ProjectY = ProjectY - MAPHEIGHT / 2;
-    Rectangle connection = new Rectangle();
-    connection.setHeight(6);
-    connection.setWidth(distance);
-    connection.setTranslateX(ProjectX);
-    connection.setTranslateY(ProjectY);
-    connection.setRotate(Math.toDegrees(theta));
-    connection.setFill(color);
-    layout.getChildren().add(connection);
-    routeConnections.add(connection);
-    return connection;
-  }
-
-  public Rectangle createConnection(double StartX, double StartY, double EndX, double EndY) {
-    Point2D distancePoint = new Point2D(EndX - StartX, EndY - StartY);
-    double distance =
-        Math.sqrt(Math.pow(distancePoint.getX(), 2) + Math.pow(distancePoint.getY(), 2));
-    double theta = Math.atan2(distancePoint.getY(), distancePoint.getX());
-    double ProjectX = StartX + Math.cos(theta) * distance / 2;
-    double ProjectY = StartY + Math.sin(theta) * distance / 2;
-    ProjectX = ProjectX - MAPWIDTH / 2;
-    ProjectY = ProjectY - MAPHEIGHT / 2;
-    Rectangle connection = new Rectangle();
-    connection.setHeight(6);
+    VisualNode connection = new VisualNode();
+    connection.setHeight(MapConnectionWidth);
     connection.setWidth(distance);
     connection.setTranslateX(ProjectX);
     connection.setTranslateY(ProjectY);
     connection.setRotate(Math.toDegrees(theta));
     layout.getChildren().add(connection);
-    routeConnections.add(connection);
     return connection;
   }
 

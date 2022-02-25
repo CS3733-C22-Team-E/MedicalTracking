@@ -15,10 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 
 public class PathFinder {
   private Graph<Location> locationGraph;
@@ -118,32 +116,12 @@ public class PathFinder {
     try {
       List<Location> route = routeFinder.findRoute(From, To);
       RouteVisual currRoute = new RouteVisual(From.getId(), To.getId());
-      MenuItem delete = new MenuItem("Delete Route");
-      delete.setOnAction(
-          new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-              RemoveRoute(From, To);
-            }
-          });
-      ContextMenu DeleteMenu = new ContextMenu();
-      DeleteMenu.getItems().add(delete);
       for (int i = 1; i < route.size(); i++) {
         Location initNode = route.get(i - 1);
         Location endNode = route.get(i);
-//TODO ability to delete route
-        Rectangle Rect =
-            currRoute.addRectangle(
-                Visual.createConnection(
-                    initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()));
-//        Rect.setOnMouseEntered(
-//            new EventHandler<MouseEvent>() {
-//              @Override
-//              public void handle(MouseEvent event) {
-//                System.out.println("Show");
-//                DeleteMenu.show(Rect, event.getScreenX(), event.getScreenY());
-//              }
-//            });
+        currRoute.addRectangle(
+            Visual.createConnection(
+                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()), initNode.getFloor());
       }
       RoutesByFloor.get(From.getFloor()).add(currRoute);
     } catch (IllegalStateException e) {
@@ -180,7 +158,8 @@ public class PathFinder {
         Location endNode = route.get(i);
         currRoute.addRectangle(
             Visual.createConnection(
-                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY(), color));
+                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()),
+            initNode.getFloor());
       }
       RoutesByFloor.get(From.getFloor()).add(currRoute);
       return route;
