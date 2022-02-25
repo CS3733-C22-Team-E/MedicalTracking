@@ -191,6 +191,7 @@ public class PathFinder {
           RoutesByFloor.get(currFloor).add(Router.get(currFloor));
         }
       }
+      return route;
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
