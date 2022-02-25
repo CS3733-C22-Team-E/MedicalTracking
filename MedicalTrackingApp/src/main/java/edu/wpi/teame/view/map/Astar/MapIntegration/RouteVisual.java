@@ -16,6 +16,11 @@ public class RouteVisual {
     randomColor = Color.color(Math.random(), Math.random(), Math.random());
   }
 
+  public RouteVisual(int start, int end, Color RandomColor) {
+    this.StartID = start;
+    this.EndID = end;
+    this.randomColor = RandomColor;
+  }
 
   public VisualNode addRectangle(VisualNode node, FloorType floor) {
     node.setFill(randomColor);

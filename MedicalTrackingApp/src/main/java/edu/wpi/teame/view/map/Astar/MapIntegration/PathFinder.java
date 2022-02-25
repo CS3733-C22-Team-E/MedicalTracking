@@ -11,11 +11,8 @@ import edu.wpi.teame.view.map.Astar.Graph;
 import edu.wpi.teame.view.map.Astar.RouteFinder;
 import java.sql.SQLException;
 import java.util.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public class PathFinder {
@@ -94,7 +91,8 @@ public class PathFinder {
     }
   }
 
-  public List<Location> FindAndDrawRoute(int StartID, int EndID) throws SQLException {
+  public List<Location> FindAndDrawRoute(int StartID, int EndID, FloorType FloorBeingShown)
+      throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
     // DBManager.getInstance().getManager(DataBaseObjectType.Location).get(StartID);
@@ -115,22 +113,63 @@ public class PathFinder {
     Location To = endTest;
     try {
       List<Location> route = routeFinder.findRoute(From, To);
-      RouteVisual currRoute = new RouteVisual(From.getId(), To.getId());
+      //      RouteVisual currRoute = new RouteVisual(From.getId(), To.getId());
+      //      for (int i = 1; i < route.size(); i++) {
+      //        Location initNode = route.get(i - 1);
+      //        Location endNode = route.get(i);
+      //        currRoute.addRectangle(
+      //            Visual.createConnection(
+      //                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()),
+      // initNode.getFloor());
+      //      }
+      //      RoutesByFloor.get(From.getFloor()).add(currRoute);
+      HashMap<FloorType, RouteVisual> Router = new HashMap<>();
+      Color random = Color.color(Math.random(), Math.random(), Math.random());
       for (int i = 1; i < route.size(); i++) {
-        Location initNode = route.get(i - 1);
-        Location endNode = route.get(i);
-        currRoute.addRectangle(
-            Visual.createConnection(
-                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()), initNode.getFloor());
+        Location start = route.get(i - 1);
+        Location end = route.get(i);
+        if (start.getFloor() == end.getFloor()) {
+          if (Router.get(start.getFloor()) == null) {
+            Router.put(start.getFloor(), new RouteVisual(From.getId(), To.getId(), random));
+            Router.get(start.getFloor())
+                .addRectangle(
+                    Visual.createConnection(
+                        start.getX(),
+                        start.getY(),
+                        end.getX(),
+                        end.getY(),
+                        start.getFloor(),
+                        FloorBeingShown),
+                    start.getFloor());
+          } else {
+            Router.get(start.getFloor())
+                .addRectangle(
+                    Visual.createConnection(
+                        start.getX(),
+                        start.getY(),
+                        end.getX(),
+                        end.getY(),
+                        start.getFloor(),
+                        FloorBeingShown),
+                    start.getFloor());
+          }
+        } else {
+          System.out.println("Switching Floors");
+        }
       }
-      RoutesByFloor.get(From.getFloor()).add(currRoute);
+      for (FloorType currFloor : FloorType.values()) {
+        if (Router.get(currFloor) != null) {
+          RoutesByFloor.get(currFloor).add(Router.get(currFloor));
+        }
+      }
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());
     }
     return null;
   }
 
-  public List<Location> FindAndDrawRoute(int StartID, int EndID, Paint color) throws SQLException {
+  public List<Location> FindAndDrawRoute(
+      int StartID, int EndID, Paint color, FloorType FloorBeingShown) throws SQLException {
     // TODO there's gotta be a better way to do this ->tried call DBManager....get(ID) and it kept
     // returning null
     // DBManager.getInstance().getLocationManager().get(StartID);
@@ -149,19 +188,57 @@ public class PathFinder {
             });
     Location From = startTest;
     Location To = endTest;
-    List<Location> route;
-    RouteVisual currRoute = new RouteVisual(From.getId(), To.getId());
     try {
-      route = routeFinder.findRoute(From, To);
+      List<Location> route = routeFinder.findRoute(From, To);
+      //      RouteVisual currRoute = new RouteVisual(From.getId(), To.getId());
+      //      for (int i = 1; i < route.size(); i++) {
+      //        Location initNode = route.get(i - 1);
+      //        Location endNode = route.get(i);
+      //        currRoute.addRectangle(
+      //            Visual.createConnection(
+      //                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()),
+      // initNode.getFloor());
+      //      }
+      //      RoutesByFloor.get(From.getFloor()).add(currRoute);
+      HashMap<FloorType, RouteVisual> Router = new HashMap<>();
+      Color random = Color.color(Math.random(), Math.random(), Math.random());
       for (int i = 1; i < route.size(); i++) {
-        Location initNode = route.get(i - 1);
-        Location endNode = route.get(i);
-        currRoute.addRectangle(
-            Visual.createConnection(
-                initNode.getX(), initNode.getY(), endNode.getX(), endNode.getY()),
-            initNode.getFloor());
+        Location start = route.get(i - 1);
+        Location end = route.get(i);
+        if (start.getFloor() == end.getFloor()) {
+          if (Router.get(start.getFloor()) == null) {
+            Router.put(start.getFloor(), new RouteVisual(From.getId(), To.getId(), random));
+            Router.get(start.getFloor())
+                .addRectangle(
+                    Visual.createConnection(
+                        start.getX(),
+                        start.getY(),
+                        end.getX(),
+                        end.getY(),
+                        start.getFloor(),
+                        FloorBeingShown),
+                    start.getFloor());
+          } else {
+            Router.get(start.getFloor())
+                .addRectangle(
+                    Visual.createConnection(
+                        start.getX(),
+                        start.getY(),
+                        end.getX(),
+                        end.getY(),
+                        start.getFloor(),
+                        FloorBeingShown),
+                    start.getFloor());
+          }
+        } else {
+          System.out.println("Switching Floors");
+        }
       }
-      RoutesByFloor.get(From.getFloor()).add(currRoute);
+      for (FloorType currFloor : FloorType.values()) {
+        if (Router.get(currFloor) != null) {
+          RoutesByFloor.get(currFloor).add(Router.get(currFloor));
+        }
+      }
       return route;
     } catch (IllegalStateException e) {
       System.out.println("No Valid Route From " + From.getId() + " To " + To.getId());

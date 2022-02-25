@@ -697,7 +697,8 @@ public class Map {
                         Navigation.FindAndDrawRoute(
                             newSr.getEquipment().getLocation().getId(),
                             newSr.getLocation().getId(),
-                            Color.BLUE);
+                            Color.BLUE,
+                            currFloor);
 
                     Timer newTimer = new Timer();
                     mapIconsByFloor
@@ -808,20 +809,11 @@ public class Map {
                       Navigation.FindAndDrawRoute(
                           PathFindingLocations.get(0).getLocation().getId(),
                           PathFindingLocations.get(1).getLocation().getId(),
-                          Color.BLACK);
+                          Color.BLACK,
+                          currFloor);
 
                     } catch (SQLException e) {
                       e.printStackTrace();
-                    } catch (IllegalStateException e) {
-                      try {
-                        PathFindingLocations.get(1).getIcon().setFill(Color.YELLOW);
-                        PathFindingLocations.get(0).getIcon().setFill(Color.GREEN);
-                        Navigation.FindAndDrawRoute(
-                            PathFindingLocations.get(1).getLocation().getId(),
-                            PathFindingLocations.get(0).getLocation().getId());
-                      } catch (SQLException ex) {
-                        ex.printStackTrace();
-                      }
                     }
                   }
                 } else if (PathFindingLocations.size() == 2) {
