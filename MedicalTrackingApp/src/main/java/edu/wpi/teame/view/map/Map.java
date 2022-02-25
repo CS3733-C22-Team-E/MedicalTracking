@@ -115,7 +115,7 @@ public class Map {
     MAPWIDTH = backgroundImage.getWidth();
     updateLayoutChildren();
     if (Navigation != null) {
-      Navigation.RemoveRoute();
+      Navigation.switchFloors(floor);
       Navigation.SelectFloor(MAPWIDTH, MAPHEIGHT);
       System.out.println(MAPWIDTH + " " + MAPHEIGHT);
     }
@@ -227,6 +227,9 @@ public class Map {
       if (!layout.getChildren().contains(icon.progressIndicator)) {
         layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
       }
+    }
+    if (Navigation != null) {
+      Navigation.switchFloors(currFloor);
     }
     updateRadialMenus();
     createNewRadialMenus();
@@ -644,6 +647,7 @@ public class Map {
     }
     Navigation.refreshLocationsFromDB();
     Navigation.createConnections();
+    Navigation.switchFloors(currFloor);
   }
 
   public void RefreshSRfromDB() throws SQLException {
@@ -688,11 +692,13 @@ public class Map {
                   if (serviceRequest.getDBType() == DataBaseObjectType.MedicalEquipmentSR) {
                     MedicalEquipmentServiceRequest newSr =
                         (MedicalEquipmentServiceRequest) serviceRequest;
+                    Location InitEquipmentLocation = newSr.getEquipment().getLocation();
                     List<Location> routeSnap =
                         Navigation.FindAndDrawRoute(
                             newSr.getEquipment().getLocation().getId(),
                             newSr.getLocation().getId(),
                             Color.BLUE);
+
                     Timer newTimer = new Timer();
                     mapIconsByFloor
                         .get(newSr.getLocation().getFloor())
@@ -711,7 +717,8 @@ public class Map {
                                               @Override
                                               public void run() {
                                                 if (counter[0] > routeSnap.size() - 1) {
-                                                  Navigation.RemoveRoute();
+                                                  Navigation.RemoveRoute(
+                                                      InitEquipmentLocation, newSr.getLocation());
                                                   newTimer.cancel();
                                                 }
                                                 if (counter[0] <= routeSnap.size() - 1) {
@@ -778,7 +785,7 @@ public class Map {
     double y = location.getY() - mapHeightTest / 2;
     MapLocationDot newDot = new MapLocationDot(location, x, y);
     locationsByFloor.get(location.getFloor()).add(newDot);
-    Tooltip t = new Tooltip(location.getLongName() + x + y);
+    Tooltip t = new Tooltip(location.getLongName() + " ID: " + location.getId());
     Tooltip.install(newDot.getIcon(), t);
     updateLayoutChildren();
     newDot
@@ -818,7 +825,6 @@ public class Map {
                     }
                   }
                 } else if (PathFindingLocations.size() == 2) {
-                  Navigation.RemoveRoute();
                   PathFindingLocations.stream()
                       .forEach(
                           LocationDot -> {
@@ -838,8 +844,8 @@ public class Map {
     MapServiceRequestIcon newIcon = new MapServiceRequestIcon(SR, X, Y);
     newIcon.addToList(ActiveSRByFloor.get(currFloor));
     newIcon.startTimer(20);
-    updateLayoutChildren();
-
+    layout.getChildren().addAll(newIcon.getFillProgressIndicator(), newIcon.Icon);
+    // updateLayoutChildren();
     ContextMenu ServiceRequestMenu = new ContextMenu();
     ServiceRequestMenu.setStyle(
         "-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0)");
