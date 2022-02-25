@@ -105,6 +105,23 @@ public class PathFinder {
     }
   }
 
+  public void RemoveAllButRoute(Location start, Location end) {
+    List<RouteVisual> ToBeDeleted = new ArrayList<>();
+    for (FloorType currFloor : FloorType.values()) {
+      for (RouteVisual route : RoutesByFloor.get(currFloor)) {
+        if (route.StartID != start.getId() || route.EndID != end.getId()) {
+          ToBeDeleted.add(route);
+        }
+      }
+    }
+    for (RouteVisual route : ToBeDeleted) {
+      DrawPane.getChildren().removeAll(route.route);
+      for (FloorType currFloor : FloorType.values()) {
+        RoutesByFloor.get(currFloor).remove(route);
+      }
+    }
+  }
+
   public List<Location> FindAndDrawRoute(int StartID, int EndID, FloorType FloorBeingShown)
       throws SQLException {
     Visual.clearConnections();
@@ -128,11 +145,16 @@ public class PathFinder {
       Color random = Color.color(Math.random(), Math.random(), Math.random());
       ContextMenu DeleteMenu = new ContextMenu();
       MenuItem DeleteButton = new MenuItem("Delete Route");
+      MenuItem ShowOnlyButton = new MenuItem("Show Only this Route");
       DeleteButton.setOnAction(
           event -> {
             RemoveRoute(From, To);
           });
-      DeleteMenu.getItems().add(DeleteButton);
+      ShowOnlyButton.setOnAction(
+          event -> {
+            RemoveAllButRoute(From, To);
+          });
+      DeleteMenu.getItems().addAll(DeleteButton, ShowOnlyButton);
       for (int i = 1; i < route.size(); i++) {
         Location start = route.get(i - 1);
         Location end = route.get(i);
