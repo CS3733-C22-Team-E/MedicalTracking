@@ -537,7 +537,7 @@ public final class DBManager {
     }
 
     // Connect to Azure by default
-    switchConnection(DBType.AzureCloud);
+    // switchConnection(DBType.AzureCloud);
   }
 
   private void cleanDBTables() throws SQLException {
