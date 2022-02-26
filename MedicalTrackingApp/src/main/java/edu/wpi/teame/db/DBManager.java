@@ -18,6 +18,7 @@ public final class DBManager {
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
   private HashMap<DataBaseObjectType, ObjectManager> managers;
+  private final DBType startUpDB = DBType.Embedded;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
@@ -534,8 +535,11 @@ public final class DBManager {
       managers.put(dbType, manager);
     }
 
-    // Connect to Azure by default
-    // switchConnection(DBType.AzureCloud); // DOES NOT WORK ON IP-MASKED WIFI...
+    // Connect to default server and load up if needed
+    if (startUpDB != DBType.AzureCloud) {
+      loadDBFromCSV(true);
+    }
+    switchConnection(startUpDB);
   }
 
   private void cleanDBTables() throws SQLException {

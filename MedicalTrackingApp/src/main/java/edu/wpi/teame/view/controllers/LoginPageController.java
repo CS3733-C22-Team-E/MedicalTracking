@@ -2,11 +2,15 @@ package edu.wpi.teame.view.controllers;
 
 import static javafx.animation.Interpolator.EASE_OUT;
 
+import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -20,19 +24,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class LoginPageController implements Initializable {
 
@@ -49,16 +56,42 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView iconHole;
   @FXML private Text title;
 
+  // Face ID Stack Panes
+  @FXML private StackPane imageViewStackPane;
+  @FXML private ImageView cameraImageView;
+  @FXML private VBox credentialLogInVbox;
+  @FXML private VBox faceIDVbox;
+
+  // Face ID Requirements
+  private boolean useFaceID = false;
+  private Webcam webcam = null;
+
   private Scene landingPage = null;
   private Media loginSound = null;
 
   @FXML
   private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
-    String username = usernameTextInput.getText();
-    String password = passwordTextInput.getText();
-    boolean loggedIn =
-        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
-            .logIn(username, password);
+    boolean loggedIn = false;
+    if (!useFaceID) {
+      String username = usernameTextInput.getText();
+      String password = passwordTextInput.getText();
+      loggedIn =
+          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+              .logIn(username, password);
+    } else {
+      // get image
+      BufferedImage image = webcam.getImage();
+
+      // save image to PNG file
+      File imageFile =
+          new File(
+              App.class
+                  .getClassLoader()
+                  .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
+                  .getFile());
+      ImageIO.write(image, "PNG", imageFile);
+      cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
+    }
 
     // Check if we were able to log in.
     if (!loggedIn) {
@@ -96,6 +129,17 @@ public class LoginPageController implements Initializable {
     mediaPlayer.play();
     t1.play();
     r.play();
+    webcam.close();
+  }
+
+  @FXML
+  private void switchToFaceID() {
+    useFaceID = !useFaceID;
+    faceIDVbox.setVisible(useFaceID);
+    credentialLogInVbox.setVisible(!useFaceID);
+
+    // Set Image View
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.5);
   }
 
   private void loginFailedAnimation() {
@@ -260,6 +304,16 @@ public class LoginPageController implements Initializable {
       e.printStackTrace();
     }
 
+    // Set up face id
+    webcam = Webcam.getDefault();
+    Dimension[] supportedSizes = webcam.getViewSizes();
+    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
+    webcam.open();
+
+    // Set up window
+
+    faceIDVbox.setVisible(false);
+
     loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     usernameImage.setOnMousePressed(e -> checkFocus());
     passwordImage.setOnMousePressed(e -> checkFocus());
@@ -290,5 +344,6 @@ public class LoginPageController implements Initializable {
           return null;
         });
     dialog.showAndWait();
+    webcam.close();
   }
 }
