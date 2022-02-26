@@ -20,13 +20,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -49,16 +48,28 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView iconHole;
   @FXML private Text title;
 
+  // Face ID Stack Panes
+  @FXML private StackPane imageViewStackPane;
+  @FXML private ImageView cameraImageView;
+  @FXML private VBox credentialLogInVbox;
+  @FXML private VBox faceIDVbox;
+
+  // Face ID Requirements
+  private boolean useFaceID = false;
+
   private Scene landingPage = null;
   private Media loginSound = null;
 
   @FXML
   private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
-    String username = usernameTextInput.getText();
-    String password = passwordTextInput.getText();
-    boolean loggedIn =
-        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
-            .logIn(username, password);
+    boolean loggedIn = false;
+    if (!useFaceID) {
+      String username = usernameTextInput.getText();
+      String password = passwordTextInput.getText();
+      loggedIn =
+          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+              .logIn(username, password);
+    }
 
     // Check if we were able to log in.
     if (!loggedIn) {
@@ -96,6 +107,16 @@ public class LoginPageController implements Initializable {
     mediaPlayer.play();
     t1.play();
     r.play();
+  }
+
+  @FXML
+  private void switchToFaceID() {
+    useFaceID = !useFaceID;
+    faceIDVbox.setVisible(useFaceID);
+    credentialLogInVbox.setVisible(!useFaceID);
+
+    // Set Image View
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.2);
   }
 
   private void loginFailedAnimation() {
@@ -259,6 +280,9 @@ public class LoginPageController implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    // Set up face id
+    faceIDVbox.setVisible(false);
 
     loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     usernameImage.setOnMousePressed(e -> checkFocus());
