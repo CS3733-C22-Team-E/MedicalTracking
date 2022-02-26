@@ -129,6 +129,7 @@ public class LoginPageController implements Initializable {
     mediaPlayer.play();
     t1.play();
     r.play();
+    webcam.close();
   }
 
   @FXML
@@ -343,5 +344,6 @@ public class LoginPageController implements Initializable {
           return null;
         });
     dialog.showAndWait();
+    webcam.close();
   }
 }
