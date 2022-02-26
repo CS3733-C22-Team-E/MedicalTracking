@@ -210,6 +210,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicineDeliveryServiceRequest(lineData);
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(lineData);
+      case Credential:
+        return (T) new Credential(lineData);
       case Location:
         return (T) new Location(lineData);
       case Equipment:
@@ -252,6 +254,8 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new MedicineDeliveryServiceRequest(resultSet);
       case ReligiousSR:
         return (T) new ReligiousServiceRequest(resultSet);
+      case Credential:
+        return (T) new Credential(resultSet);
       case Location:
         return (T) new Location(resultSet);
       case Equipment:

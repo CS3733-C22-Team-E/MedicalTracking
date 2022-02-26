@@ -4,7 +4,9 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -54,7 +56,9 @@ public class LoginPageController implements Initializable {
   private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
     String username = usernameTextInput.getText();
     String password = passwordTextInput.getText();
-    boolean loggedIn = CredentialManager.getInstance().logIn(username, password);
+    boolean loggedIn =
+        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+            .logIn(username, password);
 
     // Check if we were able to log in.
     if (!loggedIn) {

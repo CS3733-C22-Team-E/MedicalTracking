@@ -1,8 +1,10 @@
 package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.App;
+import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.AccessLevel;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
@@ -175,7 +177,10 @@ public class LandingPageController implements Initializable {
 
   @FXML
   public void toggleAdminDBPage() throws SQLException, NoSuchAlgorithmException {
-    AccessLevel currentAccess = CredentialManager.getInstance().getCurrentUserLevel();
+    AccessLevel currentAccess =
+        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+            .getCurrentUser()
+            .getAccessLevel();
     switch (currentAccess) {
       case Admin:
         mainTabPane.getTabs().add(adminDBPage);

@@ -3,6 +3,7 @@ package edu.wpi.teame.model.enums;
 import javafx.scene.paint.Color;
 
 public enum DataBaseObjectType {
+  Credential,
   Location,
   Equipment,
   Patient,
@@ -68,6 +69,8 @@ public enum DataBaseObjectType {
         return "Patient";
       case Employee:
         return "Employee";
+      case Credential:
+        return "Credential";
       case Location:
         return "Location";
       case Equipment:
@@ -124,6 +127,8 @@ public enum DataBaseObjectType {
         return Equipment;
       case "Edge":
         return Edge;
+      case "Credential":
+        return Credential;
     }
     return null;
   }
@@ -174,6 +179,8 @@ public enum DataBaseObjectType {
         return "Patient";
       case Edge:
         return "Edge";
+      case Credential:
+        return "Credential";
     }
     return null;
   }
@@ -267,6 +274,8 @@ public enum DataBaseObjectType {
         return "Equipment";
       case Edge:
         return "Edge";
+      case Credential:
+        return "Credential";
     }
     return null;
   }

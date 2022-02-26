@@ -2,9 +2,7 @@ package edu.wpi.teame.view.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import edu.wpi.teame.db.objectManagers.CredentialManager;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,15 +23,8 @@ public class CredentialManagementPageController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {}
 
   @FXML
-  public void removeCredentialButtonClick() throws SQLException, NoSuchAlgorithmException {
-    String username = usernameBox.getText().trim();
-    CredentialManager.getInstance().remove(username);
-  }
+  public void removeCredentialButtonClick() throws SQLException {}
 
   @FXML
-  public void addCredentialButtonClick() throws SQLException, NoSuchAlgorithmException {
-    String username = usernameBox.getText().trim();
-    String password = passwordBox.getText().trim();
-    CredentialManager.getInstance().insert(username, password);
-  }
+  public void addCredentialButtonClick() throws SQLException {}
 }

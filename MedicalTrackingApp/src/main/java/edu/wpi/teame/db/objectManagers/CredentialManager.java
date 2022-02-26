@@ -1,169 +1,61 @@
 package edu.wpi.teame.db.objectManagers;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-import edu.wpi.teame.App;
-import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.model.Credential;
 import edu.wpi.teame.model.enums.AccessLevel;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.MessageDigest;
+import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
+import java.util.List;
 
-public final class CredentialManager {
-  private AccessLevel currentUserLevel = null;
-  private static CredentialManager instance;
-  private MessageDigest messageDigest;
-  private Connection connection;
-  private Statement statement;
+public final class CredentialManager extends ObjectManager<Credential> {
+  private Credential currentUser;
 
-  public static synchronized CredentialManager getInstance()
+  public CredentialManager() {
+    super(DataBaseObjectType.Credential, 0);
+  }
+
+  public boolean logIn(String username, String password)
       throws SQLException, NoSuchAlgorithmException {
-    if (instance == null) {
-      instance = new CredentialManager();
-    }
-    return instance;
-  }
-
-  private CredentialManager() throws NoSuchAlgorithmException, SQLException {
-    messageDigest = MessageDigest.getInstance("SHA-256");
-    connection = DBManager.getInstance().getConnection();
-    statement = connection.createStatement();
-  }
-
-  public boolean logIn(String username, String password) throws SQLException {
     // Get credential salt
-    String getSaltQuery = "SELECT * FROM Credential WHERE username = '" + username + "'";
-    ResultSet saltQueryResultSet = statement.executeQuery(getSaltQuery);
-    if (!saltQueryResultSet.next()) {
-      return false; // No Username found
-    }
-    String salt = saltQueryResultSet.getString("salt");
+    String salt = getSalt(username);
 
     // Check credential log in
-    String getQuery =
-        "SELECT accessLevel FROM Credential WHERE username = '"
-            + username
-            + "' AND password = '"
-            + hashPassword(password, stringToBytes(salt))
-            + "'";
-    ResultSet getQueryResultSet = statement.executeQuery(getQuery);
+    Credential credential = new Credential(0, salt, username, password, AccessLevel.Staff);
+    List<Credential> credentialList = getAll();
 
-    if (!getQueryResultSet.next()) {
-      return false;
+    for (Credential cred : credentialList) {
+      if (cred.equals(credential)) {
+        currentUser = cred;
+        return true;
+      }
     }
-
-    // Save current user access leval
-    currentUserLevel = AccessLevel.values()[getQueryResultSet.getInt("accessLevel")];
-    return true;
+    return false;
   }
 
-  public void insert(String username, String password)
-      throws SQLException, NoSuchAlgorithmException {
-    if (hasUsername(username)) {
-      return;
-    }
-
-    byte[] salt = createSalt();
-    String insertQuery =
-        "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"
-            + bytesToString(salt)
-            + "', '"
-            + username
-            + "', '"
-            + hashPassword(password, salt)
-            + "')";
-    statement.executeUpdate(insertQuery);
-  }
-
-  private void insert(String salt, String username, String hashedPassword)
-      throws SQLException, NoSuchAlgorithmException {
-    if (hasUsername(username)) {
-      return;
-    }
-
-    String insertQuery =
-        "INSERT INTO CREDENTIAL (salt, username, password) VALUES('"
-            + salt
-            + "', '"
-            + username
-            + "', '"
-            + hashedPassword
-            + "')";
-    statement.executeUpdate(insertQuery);
-  }
-
-  public void remove(String oldUsername) throws SQLException, NoSuchAlgorithmException {
-    String insertQuery = "DELETE FROM CREDENTIAL WHERE username = '" + oldUsername + "'";
-    statement.executeUpdate(insertQuery);
-  }
-
-  public boolean hasUsername(String username) throws SQLException, NoSuchAlgorithmException {
+  public boolean hasUsername(String username) throws SQLException {
     String hasUsernameQuery = "SELECT Salt FROM CREDENTIAL WHERE username = '" + username + "'";
-    ResultSet resultSet = statement.executeQuery(hasUsernameQuery);
+    ResultSet resultSet =
+        DBManager.getInstance().getConnection().createStatement().executeQuery(hasUsernameQuery);
     return resultSet.next();
   }
 
-  public void readCSV(String inputFileName)
-      throws IOException, SQLException, CsvValidationException, ParseException,
-          NoSuchAlgorithmException {
-    InputStream filePath = App.class.getResourceAsStream("csv/" + inputFileName);
-    CSVReader csvReader = new CSVReader(new InputStreamReader(filePath));
-    CSVLineData lineData = new CSVLineData(csvReader);
-
-    while (lineData.readNext()) {
-      String salt = lineData.getColumnString("salt");
-      String username = lineData.getColumnString("username");
-      String hashedPassword = lineData.getColumnString("password");
-      insert(salt, username, hashedPassword);
+  private String getSalt(String username) throws SQLException {
+    String getSaltQuery = "SELECT Salt FROM Credential WHERE username = '" + username + "'";
+    ResultSet saltQueryResultSet =
+        DBManager.getInstance().getConnection().createStatement().executeQuery(getSaltQuery);
+    if (!saltQueryResultSet.next()) {
+      return null; // No Username found
     }
-  }
-
-  private String hashPassword(String password, byte[] salt) {
-    messageDigest.update(salt);
-    byte[] bytes = messageDigest.digest(password.getBytes());
-    messageDigest.reset();
-    return bytesToString(bytes);
-  }
-
-  private String bytesToString(byte[] bytes) {
-    StringBuilder sb = new StringBuilder();
-    for (byte aByte : bytes) {
-      sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
-    }
-    return sb.toString();
-  }
-
-  private byte[] stringToBytes(String string) {
-    byte[] byteArr = new byte[string.length() / 2];
-    for (int i = 0; i < byteArr.length; i++) {
-      int index = i * 2;
-      int val = Integer.parseInt(string.substring(index, index + 2), 16);
-      byteArr[i] = (byte) val;
-    }
-    return byteArr;
-  }
-
-  private byte[] createSalt() {
-    SecureRandom random = new SecureRandom();
-    byte[] salt = new byte[4];
-    random.nextBytes(salt);
-    return salt;
+    return saltQueryResultSet.getString("salt");
   }
 
   public void logOut() {
-    currentUserLevel = null;
+    currentUser = null;
   }
 
-  public AccessLevel getCurrentUserLevel() {
-    return currentUserLevel;
+  public Credential getCurrentUser() {
+    return currentUser;
   }
 }
