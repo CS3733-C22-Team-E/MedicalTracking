@@ -5,7 +5,6 @@ import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -85,7 +84,7 @@ public final class DBManager {
             + "username VARCHAR(50) UNIQUE NOT NULL, "
             + "password VARCHAR(64), "
             + "accessLevel int, "
-            + "imageURL VARCHAR(MAX), "
+            + "imageURL VARCHAR(5000), "
             + "isDeleted int DEFAULT 0)";
     statement.execute(createCredentialTable);
     System.out.println("Credential Table created");
@@ -503,9 +502,7 @@ public final class DBManager {
     return managers.get(dbType);
   }
 
-  public void setupDB()
-      throws SQLException, CsvValidationException, IOException, ParseException,
-          NoSuchAlgorithmException {
+  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
     // Add server drivers
     try {
       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

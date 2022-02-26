@@ -24,6 +24,7 @@ public class Credential implements ISQLSerializable {
       int id, String salt, String username, String password, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
+    this.imageURL = "";
     this.isDeleted = false;
     this.username = username;
     this.salt = stringToBytes(salt);
@@ -34,6 +35,7 @@ public class Credential implements ISQLSerializable {
   public Credential(int id, String username, String password, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
+    this.imageURL = "";
     this.isDeleted = false;
     this.salt = createSalt();
     this.username = username;
@@ -44,6 +46,7 @@ public class Credential implements ISQLSerializable {
   public Credential(CSVLineData lineData) {
     createHasher();
     this.id = lineData.getColumnInt("id");
+    this.imageURL = lineData.getColumnString("imageURL");
     this.username = lineData.getColumnString("username");
     this.password = lineData.getColumnString("password");
     this.isDeleted = lineData.getColumnBoolean("isDeleted");
@@ -54,6 +57,7 @@ public class Credential implements ISQLSerializable {
   public Credential(ResultSet resultSet) throws SQLException {
     createHasher();
     this.id = resultSet.getInt("id");
+    this.imageURL = resultSet.getString("imageURL");
     this.username = resultSet.getString("username");
     this.password = resultSet.getString("password");
     this.isDeleted = resultSet.getBoolean("isDeleted");
@@ -94,12 +98,17 @@ public class Credential implements ISQLSerializable {
   @Override
   public String getSQLInsertString() {
     return new StringBuilder()
+        .append("'")
         .append(bytesToString(salt))
+        .append("', '")
         .append(username)
-        .append(", ")
+        .append("', '")
         .append(password)
+        .append("', ")
         .append(accessLevel.ordinal())
+        .append(", '")
         .append(imageURL)
+        .append("'")
         .toString();
   }
 
