@@ -18,7 +18,7 @@ public final class DBManager {
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
   private HashMap<DataBaseObjectType, ObjectManager> managers;
-  private final DBType startUpDB = DBType.Embedded;
+  private final DBType startUpDB = DBType.AzureCloud;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;

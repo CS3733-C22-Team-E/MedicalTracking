@@ -38,15 +38,25 @@ dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
 
     implementation(
-            files("src/libraries/commons-collections4-4.4.jar"),
+            files("src/libraries/bridj-0.7.0.jar"),
             files("src/libraries/commons-beanutils-1.9.4.jar"),
+            files("src/libraries/commons-cli-1.4.jar"),
+            files("src/libraries/commons-codec-1.15.jar"),
+            files("src/libraries/commons-collections4-4.4.jar"),
             files("src/libraries/commons-lang3-3.12.0.jar"),
             files("src/libraries/commons-text-1.9.jar"),
-            files("src/libraries/opencsv-5.5.2.jar"),
-            files("src/libraries/bridj-0.7.0.jar"),
-            files("src/libraries/slf4j-api-1.7.2.jar"),
+            files("src/libraries/httpclient5-5.1.3.jar"),
+            files("src/libraries/httpcore5-5.1.3.jar"),
+            files("src/libraries/jna-5.2.0.jar"),
+            files("src/libraries/jna-platform-5.2.0.jar"),
             files("src/libraries/mssql-jdbc-10.2.0.jre11.jar"),
-            files("src/libraries/webcam-capture-0.3.12.jar"))
+            files("src/libraries/opencsv-5.5.2.jar"),
+            files("src/libraries/reactive-streams-1.0.3.jar"),
+            files("src/libraries/rxjava-2.2.8.jar"),
+            files("src/libraries/slf4j-api-1.7.2.jar"),
+            files("src/libraries/slf4j-api-1.7.25.jar"),
+            files("src/libraries/webcam-capture-0.3.12.jar")
+    )
 
     testCompile(
             "org.testfx:testfx-core:4.0.16-alpha",

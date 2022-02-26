@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -40,6 +39,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import org.apache.hc.core5.http.ParseException;
 
 public class LoginPageController implements Initializable {
 
@@ -70,7 +70,8 @@ public class LoginPageController implements Initializable {
   private Media loginSound = null;
 
   @FXML
-  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
+  private void loginButtonPressed()
+      throws SQLException, NoSuchAlgorithmException, IOException, ParseException {
     boolean loggedIn = false;
     if (!useFaceID) {
       String username = usernameTextInput.getText();
@@ -91,6 +92,11 @@ public class LoginPageController implements Initializable {
                   .getFile());
       ImageIO.write(image, "PNG", imageFile);
       cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
+
+      // Log in with image
+      loggedIn =
+          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+              .logIn(imageFile.getAbsolutePath());
     }
 
     // Check if we were able to log in.

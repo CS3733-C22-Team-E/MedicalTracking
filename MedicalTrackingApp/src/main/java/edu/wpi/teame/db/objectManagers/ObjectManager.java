@@ -25,7 +25,7 @@ import java.util.List;
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   protected DataBaseObjectType objectType;
   private Date lastLoaded = new Date(0);
-  private List<T> loadedObjects;
+  protected List<T> loadedObjects;
   private long refreshInterval;
 
   public ObjectManager(DataBaseObjectType objectType, long refreshInterval) {
