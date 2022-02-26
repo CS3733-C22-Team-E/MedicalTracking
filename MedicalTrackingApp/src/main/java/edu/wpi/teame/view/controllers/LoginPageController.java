@@ -2,11 +2,15 @@ package edu.wpi.teame.view.controllers;
 
 import static javafx.animation.Interpolator.EASE_OUT;
 
+import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +25,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,6 +38,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class LoginPageController implements Initializable {
 
@@ -56,6 +64,7 @@ public class LoginPageController implements Initializable {
 
   // Face ID Requirements
   private boolean useFaceID = false;
+  private Webcam webcam = null;
 
   private Scene landingPage = null;
   private Media loginSound = null;
@@ -69,6 +78,19 @@ public class LoginPageController implements Initializable {
       loggedIn =
           ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
               .logIn(username, password);
+    } else {
+      // get image
+      BufferedImage image = webcam.getImage();
+
+      // save image to PNG file
+      File imageFile =
+          new File(
+              App.class
+                  .getClassLoader()
+                  .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
+                  .getFile());
+      ImageIO.write(image, "PNG", imageFile);
+      cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
     }
 
     // Check if we were able to log in.
@@ -116,7 +138,7 @@ public class LoginPageController implements Initializable {
     credentialLogInVbox.setVisible(!useFaceID);
 
     // Set Image View
-    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.2);
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.5);
   }
 
   private void loginFailedAnimation() {
@@ -282,6 +304,13 @@ public class LoginPageController implements Initializable {
     }
 
     // Set up face id
+    webcam = Webcam.getDefault();
+    Dimension[] supportedSizes = webcam.getViewSizes();
+    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
+    webcam.open();
+
+    // Set up window
+
     faceIDVbox.setVisible(false);
 
     loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());

@@ -159,9 +159,6 @@
                   <StackPane fx:id="imageViewStackPane" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <ImageView fx:id="cameraImageView" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
-                           <image>
-                              <Image url="https://cs3733storage.blob.core.windows.net/fr-images/WilsonWongMaster.png" />
-                           </image>
                            <viewport>
                               <Rectangle2D />
                            </viewport>
