@@ -535,7 +535,7 @@ public final class DBManager {
     }
 
     // Connect to Azure by default
-    // switchConnection(DBType.AzureCloud); // DOES NOT WORK ON IP-MASKED WIFI...
+    switchConnection(DBType.AzureCloud); // DOES NOT WORK ON IP-MASKED WIFI...
   }
 
   private void cleanDBTables() throws SQLException {

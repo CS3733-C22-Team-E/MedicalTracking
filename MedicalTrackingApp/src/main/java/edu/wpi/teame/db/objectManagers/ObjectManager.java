@@ -167,7 +167,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
             CSVWriter.DEFAULT_LINE_END);
 
-    List<T> dbObjectList = getAll();
+    List<T> dbObjectList = forceGetAll();
     List<String[]> data = new ArrayList<String[]>();
 
     if (dbObjectList.isEmpty()) {
