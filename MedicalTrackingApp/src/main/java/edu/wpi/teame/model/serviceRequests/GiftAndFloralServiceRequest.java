@@ -59,7 +59,9 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
-  public GiftAndFloralServiceRequest() {}
+  public GiftAndFloralServiceRequest() {
+    dbType = DataBaseObjectType.GiftAndFloralSR;
+  }
 
   @Override
   public String getSQLUpdateString() {
@@ -101,6 +103,4 @@ public final class GiftAndFloralServiceRequest extends ServiceRequest {
   public void setPatient(Patient patient) {
     this.patient = patient;
   }
-
-
 }

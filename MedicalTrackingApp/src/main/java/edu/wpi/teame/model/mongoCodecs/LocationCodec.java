@@ -1,6 +1,5 @@
 package edu.wpi.teame.model.mongoCodecs;
 
-
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.enums.BuildingType;
 import edu.wpi.teame.model.enums.FloorType;
@@ -8,7 +7,6 @@ import edu.wpi.teame.model.enums.LocationType;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonWriter;
-import org.bson.Document;
 import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
