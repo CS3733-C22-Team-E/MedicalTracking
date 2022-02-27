@@ -37,6 +37,8 @@ public class Employee implements ISQLSerializable {
     this.name = lineData.getColumnString("name");
   }
 
+  public Employee() {}
+
   @Override
   public String toString() {
     return new StringBuilder()

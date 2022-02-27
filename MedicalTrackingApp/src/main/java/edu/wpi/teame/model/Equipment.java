@@ -56,6 +56,11 @@ public class Equipment implements ISQLSerializable {
     this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, "locationNodeID");
   }
 
+
+  //in order for a Codec registry to work properly, this constructor needs to exist
+  //for now, it won't instantiate any variables
+  public Equipment() {}
+
   @Override
   public String toString() {
     String locId = location == null ? "" : "" + location.getId();
@@ -186,5 +191,13 @@ public class Equipment implements ISQLSerializable {
 
   public void setClean(boolean clean) {
     isClean = clean;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }

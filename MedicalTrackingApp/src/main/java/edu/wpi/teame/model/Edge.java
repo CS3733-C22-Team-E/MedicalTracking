@@ -41,6 +41,8 @@ public class Edge implements ISQLSerializable {
     this.isDeleted = false;
   }
 
+  public Edge() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -119,5 +121,9 @@ public class Edge implements ISQLSerializable {
 
   public void setEnd(Location end) {
     this.end = end;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }

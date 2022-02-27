@@ -65,6 +65,8 @@ public class Credential implements ISQLSerializable {
     this.accessLevel = AccessLevel.values()[resultSet.getInt("accessLevel")];
   }
 
+  public Credential() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -214,5 +216,57 @@ public class Credential implements ISQLSerializable {
 
   public String getImageURL() {
     return imageURL;
+  }
+
+  public MessageDigest getMessageDigest() {
+    return messageDigest;
+  }
+
+  public void setMessageDigest(MessageDigest messageDigest) {
+    this.messageDigest = messageDigest;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public void setAccessLevel(AccessLevel accessLevel) {
+    this.accessLevel = accessLevel;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
+  }
+
+  public byte[] getSalt() {
+    return salt;
+  }
+
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 }

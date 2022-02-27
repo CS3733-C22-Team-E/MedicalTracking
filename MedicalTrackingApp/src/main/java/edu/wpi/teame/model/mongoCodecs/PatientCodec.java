@@ -33,7 +33,7 @@ public class PatientCodec implements Codec<Patient> {
                 patient.setName(reader.readString());
             } else if(fieldName.equals("dateOfBirth")) {
                 String DOB = reader.readString();
-                SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 java.util.Date date;
                 try {
                     date = sfd.parse(DOB);
@@ -47,12 +47,13 @@ public class PatientCodec implements Codec<Patient> {
                     patient.setCurrentLocation((Location) DBManager.getInstance().getManager(DataBaseObjectType.Location).get(reader.readInt32()));
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    System.exit(2);
                 }
             } else if(fieldName.equals("isDeleted")) {
                 patient.setDeleted(reader.readInt32() == 1);
             }
         }
-
+        reader.readEndDocument();
         return patient;
     }
 
@@ -68,6 +69,6 @@ public class PatientCodec implements Codec<Patient> {
 
     @Override
     public Class<Patient> getEncoderClass() {
-        return null;
+        return Patient.class;
     }
 }
