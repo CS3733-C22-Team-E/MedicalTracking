@@ -38,7 +38,17 @@ public final class CredentialManager extends ObjectManager<Credential> {
     }
 
     Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.4);
-    return similarFace != null;
+    if (similarFace == null || similarFace.getImageURL() == null) {
+      return false;
+    }
+
+    for (Credential cred : loadedObjects) {
+      if (similarFace.getImageURL().equals(cred.getImageURL())) {
+        currentUser = cred;
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean logIn(String username, String password) throws SQLException {

@@ -170,7 +170,7 @@
                         </ImageView>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
+                        <Insets bottom="10.0" top="60.0" />
                      </VBox.margin>
                   </StackPane>
                   <StackPane fx:id="imageViewStackPane" minHeight="0.0" minWidth="0.0" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">

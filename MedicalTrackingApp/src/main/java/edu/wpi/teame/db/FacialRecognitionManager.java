@@ -62,6 +62,7 @@ public class FacialRecognitionManager {
       double confidence = jsonArray.optJSONObject(i).getDouble("confidence");
       if (confidence > highestConfidence) {
         mostSimilarFaceId = jsonArray.optJSONObject(i).getString("faceId");
+        System.out.println("Confidence: " + confidence);
         highestConfidence = confidence;
       }
     }

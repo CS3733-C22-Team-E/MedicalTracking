@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.*;
 import javafx.animation.RotateTransition;
@@ -72,21 +71,23 @@ public class LoginPageController implements Initializable {
   private boolean useFaceID = false;
   private Webcam webcam = null;
 
+  private LandingPageController Tabber;
   private Scene landingPage = null;
   private Media loginSound = null;
   private ImageView currentIcon;
 
   @FXML
   private void loginButtonPressed()
-      throws SQLException, NoSuchAlgorithmException, IOException, ParseException,
-          URISyntaxException, InvalidKeyException, StorageException {
+      throws SQLException, IOException, ParseException, URISyntaxException, InvalidKeyException,
+          StorageException {
     boolean loggedIn = false;
+    CredentialManager credentialManager =
+        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential));
+
     if (!useFaceID) {
       String username = usernameTextInput.getText();
       String password = passwordTextInput.getText();
-      loggedIn =
-          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
-              .logIn(username, password);
+      loggedIn = credentialManager.logIn(username, password);
     } else {
       // Get image from webcam
       BufferedImage image = webcam.getImage();
@@ -100,10 +101,9 @@ public class LoginPageController implements Initializable {
                   .getFile());
       ImageIO.write(image, "PNG", imageFile);
       cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
+      cameraImageView.applyCss();
 
       // Upload image to server
-      CredentialManager credentialManager =
-          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential));
       String imageURL = credentialManager.uploadImage(imageFile);
 
       // Log in with image
@@ -115,6 +115,10 @@ public class LoginPageController implements Initializable {
       loginFailedAnimation();
       return;
     }
+
+    // Set welcome message
+    ((HomePageController) Tabber.homeTabPage.controller)
+        .setWelcomeMessage("@" + credentialManager.getCurrentUser().getUsername());
 
     // Load the sound
     MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
@@ -156,7 +160,7 @@ public class LoginPageController implements Initializable {
     credentialLogInVbox.setVisible(!useFaceID);
 
     // Set Image View
-    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.65);
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.25);
     if (useFaceID) {
       currentIcon = icon1;
     } else {
@@ -186,6 +190,9 @@ public class LoginPageController implements Initializable {
     App.getAppPrimaryStage().setScene(landingPage);
     App.getAppPrimaryStage().show();
     App.getAppPrimaryStage().setFullScreen(true);
+
+    // Show welcome message
+    ((HomePageController) Tabber.homeTabPage.controller).showWelcomeMessage();
   }
 
   @FXML
@@ -317,11 +324,10 @@ public class LoginPageController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    FXMLLoader landingPageLoader = new FXMLLoader(App.class.getResource("view/LandingPage.fxml"));
     try {
-      landingPage =
-          new Scene(
-              FXMLLoader.load(
-                  Objects.requireNonNull(App.class.getResource("view/LandingPage.fxml"))));
+      landingPage = new Scene(landingPageLoader.load());
+      Tabber = landingPageLoader.getController();
     } catch (IOException e) {
       e.printStackTrace();
     }
