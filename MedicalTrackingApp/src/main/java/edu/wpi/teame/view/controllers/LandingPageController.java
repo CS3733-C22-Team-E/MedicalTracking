@@ -8,7 +8,7 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
-import edu.wpi.teame.view.animations.TabHoverAnimation;
+import edu.wpi.teame.view.style.TabHoverAnimation;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
 import edu.wpi.teame.view.map.MapSideView;

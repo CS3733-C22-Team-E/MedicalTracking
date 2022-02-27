@@ -305,10 +305,10 @@ public class LoginPageController implements Initializable {
     }
 
     // Set up face id
-    webcam = Webcam.getDefault();
-    Dimension[] supportedSizes = webcam.getViewSizes();
-    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
-    webcam.open();
+    //    webcam = Webcam.getDefault();
+    //    Dimension[] supportedSizes = webcam.getViewSizes();
+    //    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
+    //    webcam.open();
 
     // Set up window
 
