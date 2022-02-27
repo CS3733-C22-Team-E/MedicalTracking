@@ -4,6 +4,7 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.JFXButton;
+import com.microsoft.azure.storage.StorageException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
@@ -12,7 +13,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.*;
@@ -25,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -46,6 +50,7 @@ public class LoginPageController implements Initializable {
   @FXML private JFXButton loginButton;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
+  @FXML private Label switchToFaceIdButton;
   @FXML private Text usernameText;
   @FXML private Text passwordText;
   @FXML private Line usernameFillLine;
@@ -71,7 +76,8 @@ public class LoginPageController implements Initializable {
 
   @FXML
   private void loginButtonPressed()
-      throws SQLException, NoSuchAlgorithmException, IOException, ParseException {
+      throws SQLException, NoSuchAlgorithmException, IOException, ParseException,
+          URISyntaxException, InvalidKeyException, StorageException {
     boolean loggedIn = false;
     if (!useFaceID) {
       String username = usernameTextInput.getText();
@@ -80,10 +86,10 @@ public class LoginPageController implements Initializable {
           ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
               .logIn(username, password);
     } else {
-      // get image
+      // Get image from webcam
       BufferedImage image = webcam.getImage();
 
-      // save image to PNG file
+      // Save image to PNG file
       File imageFile =
           new File(
               App.class
@@ -93,10 +99,13 @@ public class LoginPageController implements Initializable {
       ImageIO.write(image, "PNG", imageFile);
       cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
 
+      // Upload image to server
+      CredentialManager credentialManager =
+          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential));
+      String imageURL = credentialManager.uploadImage(imageFile);
+
       // Log in with image
-      loggedIn =
-          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
-              .logIn(imageFile.getAbsolutePath());
+      loggedIn = credentialManager.logIn(imageURL);
     }
 
     // Check if we were able to log in.
@@ -312,13 +321,15 @@ public class LoginPageController implements Initializable {
 
     // Set up face id
     webcam = Webcam.getDefault();
-    Dimension[] supportedSizes = webcam.getViewSizes();
-    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
-    webcam.open();
-
-    // Set up window
-
-    faceIDVbox.setVisible(false);
+    if (webcam != null) {
+      Dimension[] supportedSizes = webcam.getViewSizes();
+      webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
+      faceIDVbox.setVisible(false);
+      webcam.open();
+    } else {
+      // We do not have a webcam
+      switchToFaceIdButton.setVisible(false);
+    }
 
     loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     usernameImage.setOnMousePressed(e -> checkFocus());

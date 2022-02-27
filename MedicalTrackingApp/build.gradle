@@ -37,6 +37,9 @@ dependencies {
     )
     implementation 'org.jetbrains:annotations:20.1.0'
 
+    // https://mvnrepository.com/artifact/com.azure/azure-storage-blob
+    implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.0.0'
+
     implementation(
             files("src/libraries/bridj-0.7.0.jar"),
             files("src/libraries/commons-beanutils-1.9.4.jar"),
@@ -55,6 +58,8 @@ dependencies {
             files("src/libraries/rxjava-2.2.8.jar"),
             files("src/libraries/slf4j-api-1.7.2.jar"),
             files("src/libraries/slf4j-api-1.7.25.jar"),
+            files("src/libraries/json-20211205.jar"),
+            files("src/libraries/azure/azure-storage-blob-12.14.4.jar"),
             files("src/libraries/webcam-capture-0.3.12.jar")
     )
 

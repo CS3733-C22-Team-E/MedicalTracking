@@ -144,7 +144,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </JFXButton>
-                  <Label onMouseClicked="#switchToFaceID" text="Log In With Face ID" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
+                  <Label fx:id="switchToFaceIdButton" onMouseClicked="#switchToFaceID" text="Log In With Face ID" textAlignment="CENTER" textFill="WHITE" VBox.vgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>

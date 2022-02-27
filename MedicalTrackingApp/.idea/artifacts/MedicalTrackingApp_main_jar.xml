@@ -19,7 +19,6 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/bridj-0.7.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/commons-beanutils-1.9.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/commons-collections4-4.4.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/commons-lang3-3.12.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/commons-text-1.9.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/mssql-jdbc-10.2.0.jre11.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/opencsv-5.5.2.jar" path-in-jar="/" />
@@ -34,6 +33,8 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/reactive-streams-1.0.3.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/rxjava-2.2.8.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/slf4j-api-1.7.25.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/json-20211205.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/libraries/commons-lang3-3.4.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

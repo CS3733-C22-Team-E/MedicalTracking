@@ -421,7 +421,8 @@ public final class DBManager {
   }
 
   public void switchConnection(DBType type)
-      throws SQLException, IOException, CsvValidationException, ParseException {
+      throws SQLException, IOException, CsvValidationException, ParseException,
+          org.apache.hc.core5.http.ParseException {
 
     // Write to CSV
     if (currentType != DBType.AzureCloud) {
@@ -503,7 +504,9 @@ public final class DBManager {
     return managers.get(dbType);
   }
 
-  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
+  public void setupDB()
+      throws SQLException, CsvValidationException, IOException, ParseException,
+          org.apache.hc.core5.http.ParseException {
     // Add server drivers
     try {
       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -554,10 +557,12 @@ public final class DBManager {
     }
   }
 
-  public void loadDB() throws SQLException {
+  public void loadDB() throws SQLException, IOException, org.apache.hc.core5.http.ParseException {
     for (DataBaseObjectType dbType : DataBaseObjectType.values()) {
       managers.get(dbType).forceGetAll();
     }
+
+    ((CredentialManager) managers.get(DataBaseObjectType.Credential)).setupDBFaces();
   }
 
   public Connection getConnection() {
