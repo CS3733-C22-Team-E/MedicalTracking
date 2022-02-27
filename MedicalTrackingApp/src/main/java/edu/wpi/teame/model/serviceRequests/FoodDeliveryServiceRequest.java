@@ -8,6 +8,8 @@ import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
+import edu.wpi.teame.model.mongoCodecs.FoodDeliveryServiceRequestCodec;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,6 +65,8 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
     this.food = lineData.getColumnString("food");
   }
+
+  public FoodDeliveryServiceRequest() {}
 
   @Override
   public String getSQLUpdateString() {

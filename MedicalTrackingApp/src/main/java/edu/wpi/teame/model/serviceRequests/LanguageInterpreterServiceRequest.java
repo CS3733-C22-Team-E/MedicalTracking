@@ -66,6 +66,8 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
     this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 
+  public LanguageInterpreterServiceRequest() {}
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
@@ -127,4 +129,6 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   public void setPatient(Patient patient) {
     this.patient = patient;
   }
+
+
 }

@@ -92,6 +92,8 @@ public class ServiceRequest implements ISQLSerializable {
     this.dbType = type;
   }
 
+  public ServiceRequest() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -311,5 +313,13 @@ public class ServiceRequest implements ISQLSerializable {
 
   public boolean getIsDeleted() {
     return isDeleted;
+  }
+
+  public void setDbType(DataBaseObjectType dbType) {
+    this.dbType = dbType;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }
