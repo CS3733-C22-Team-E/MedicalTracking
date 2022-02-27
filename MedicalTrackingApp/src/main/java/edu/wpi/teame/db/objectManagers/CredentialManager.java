@@ -37,8 +37,8 @@ public final class CredentialManager extends ObjectManager<Credential> {
       index++;
     }
 
-    Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.8);
-    return false;
+    Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.4);
+    return similarFace != null;
   }
 
   public boolean logIn(String username, String password) throws SQLException {
@@ -62,7 +62,9 @@ public final class CredentialManager extends ObjectManager<Credential> {
     forceGetAll();
     DBFaces = new HashMap<>(loadedObjects.size());
     for (Credential user : loadedObjects) {
-      if (!user.getImageURL().isEmpty()) {
+      if (user.getImageURL() != null
+          && !user.getImageURL().isEmpty()
+          && user.getImageURL().startsWith("https://")) {
         DBFaces.put(faceRecognizer.getFaceID(user.getImageURL()), user.getUsername());
       }
     }

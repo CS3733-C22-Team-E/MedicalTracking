@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 public class FacialRecognitionManager {
   private final String faceIdPath =
-      "detect?detectionModel=detection_01&faceIDTimeToLive=1800&returnFaceAttributes=occlusion&returnFaceId=true";
+      "detect?detectionModel=detection_01&returnFaceAttributes=occlusion&returnFaceId=true";
   private final String storageConnectionString =
       "DefaultEndpointsProtocol=https;AccountName=cs3733storage;AccountKey=0iJAxNWYXnUaeJj6qsRxAX+9+5i3zkbL7V+MiUK0jm/s9stlSAnBFUIPEUxYOvQATvI9KjX8dZm0+AStOcN1+A==;EndpointSuffix=core.windows.net";
   private final String azureEndpoint =
@@ -45,8 +46,8 @@ public class FacialRecognitionManager {
     }
 
     JSONObject combined = new JSONObject();
-    combined.put("faceId", testFace.getFaceId());
     combined.put("faceIds", faceIds);
+    combined.put("faceId", testFace.getFaceId());
 
     StringEntity jsonInput = new StringEntity(combined.toString());
     request.setEntity(jsonInput);
@@ -100,12 +101,15 @@ public class FacialRecognitionManager {
       throws IOException, URISyntaxException, StorageException, InvalidKeyException {
     CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
     CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-    CloudBlobContainer container = blobClient.getContainerReference("fr-images");
+    CloudBlobContainer container = blobClient.getContainerReference("login-images");
+
+    String imageName = UUID.randomUUID() + ".png";
+    String imageURL = "https://cs3733storage.blob.core.windows.net/login-images/" + imageName;
 
     container.createIfNotExists(
         BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());
-    CloudBlockBlob blob = container.getBlockBlobReference(imageFile.getName());
+    CloudBlockBlob blob = container.getBlockBlobReference(imageName);
     blob.uploadFromFile(imageFile.getAbsolutePath());
-    return "";
+    return imageURL;
   }
 }

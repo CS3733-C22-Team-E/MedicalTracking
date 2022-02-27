@@ -58,6 +58,7 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView usernameImage;
   @FXML private ImageView passwordImage;
   @FXML private ImageView icon;
+  @FXML private ImageView icon1;
   @FXML private ImageView iconHole;
   @FXML private Text title;
 
@@ -73,6 +74,7 @@ public class LoginPageController implements Initializable {
 
   private Scene landingPage = null;
   private Media loginSound = null;
+  private ImageView currentIcon;
 
   @FXML
   private void loginButtonPressed()
@@ -118,7 +120,7 @@ public class LoginPageController implements Initializable {
     MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
     mediaPlayer.setVolume(0.3);
 
-    TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
+    TranslateTransition t2 = new TranslateTransition(new Duration(100), currentIcon);
     t2.setFromY(-50);
     t2.setToY(0);
     t2.setOnFinished(
@@ -126,7 +128,7 @@ public class LoginPageController implements Initializable {
           switchToLandingPage();
         });
 
-    RotateTransition r = new RotateTransition(new Duration(300), icon);
+    RotateTransition r = new RotateTransition(new Duration(300), currentIcon);
     r.setFromAngle(0);
     r.setToAngle(360);
     r.setInterpolator(EASE_OUT);
@@ -135,7 +137,7 @@ public class LoginPageController implements Initializable {
           t2.play();
         });
 
-    TranslateTransition t1 = new TranslateTransition(new Duration(200), icon);
+    TranslateTransition t1 = new TranslateTransition(new Duration(200), currentIcon);
     t1.setInterpolator(EASE_OUT);
     t1.setFromY(0);
     t1.setToY(-50);
@@ -154,24 +156,29 @@ public class LoginPageController implements Initializable {
     credentialLogInVbox.setVisible(!useFaceID);
 
     // Set Image View
-    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.5);
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.65);
+    if (useFaceID) {
+      currentIcon = icon1;
+    } else {
+      currentIcon = icon;
+    }
   }
 
   private void loginFailedAnimation() {
-    RotateTransition r3 = new RotateTransition(new Duration(50), icon);
+    RotateTransition r3 = new RotateTransition(new Duration(50), currentIcon);
     r3.setFromAngle(15);
     r3.setToAngle(0);
-    r3.setOnFinished(e -> icon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));
-    RotateTransition r2 = new RotateTransition(new Duration(100), icon);
+    r3.setOnFinished(e -> currentIcon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));
+    RotateTransition r2 = new RotateTransition(new Duration(100), currentIcon);
     r2.setFromAngle(-15);
     r2.setToAngle(15);
     r2.setOnFinished(r -> r3.play());
-    RotateTransition r1 = new RotateTransition(new Duration(50), icon);
+    RotateTransition r1 = new RotateTransition(new Duration(50), currentIcon);
     r1.setFromAngle(0);
     r1.setToAngle(-15);
     r1.setOnFinished(e -> r2.play());
     r1.play();
-    icon.setEffect(new DropShadow(30, 0, 0, Color.RED));
+    currentIcon.setEffect(new DropShadow(30, 0, 0, Color.RED));
   }
 
   private void switchToLandingPage() {
