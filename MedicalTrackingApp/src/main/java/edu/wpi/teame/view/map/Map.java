@@ -25,7 +25,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -56,8 +55,9 @@ public class Map {
   private final HashMap<FloorType, ArrayList<MapEquipmentIcon>> mapIconsByFloor = new HashMap<>();
   private final HashMap<FloorType, ArrayList<MapLocationDot>> locationsByFloor = new HashMap<>();
   private final HashMap<EquipmentType, Image> TypeGraphics = new HashMap<>();
-  private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor = new HashMap<>();
-//  private final HashMap<FloorType, HashSet<Radial>>
+  private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor =
+      new HashMap<>();
+  //  private final HashMap<FloorType, HashSet<Radial>>
   private final ContextMenu EquipmentClicked = new ContextMenu();
   private final ContextMenu PaneMenu = new ContextMenu();
   private final StackPane layout = new StackPane();
@@ -323,6 +323,7 @@ public class Map {
     locationsCheckBox.setTranslateY(
         -30 * retval.size() - Screen.getPrimary().getVisualBounds().getHeight() / 2.8);
     locationsCheckBox.setTranslateX(Screen.getPrimary().getVisualBounds().getWidth() / 3.4);
+    locationsCheckBox.setSelected(true);
     retval.add(locationsCheckBox);
 
     JFXCheckBox serviceRequestsCheckbox = new JFXCheckBox("Service Requests");
@@ -497,6 +498,7 @@ public class Map {
     Tooltip tooltip = new Tooltip(equipment.getName());
     Tooltip.install(Icon, tooltip);
     MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
+
     draggable(newMapIcon);
     mapIconsByFloor.get(equipment.getLocation().getFloor()).add(newMapIcon);
     updateLayoutChildren();
@@ -582,7 +584,6 @@ public class Map {
               }
             }
             updateLayoutChildren();
-
           }
         });
 
@@ -619,14 +620,16 @@ public class Map {
   }
 
   public void getFromDB() throws SQLException {
-    List<Equipment> equipment = DBManager.getInstance().getManager(DataBaseObjectType.Equipment).getAll();
+    List<Equipment> equipment =
+        DBManager.getInstance().getManager(DataBaseObjectType.Equipment).getAll();
     mapIconsByFloor.get(currFloor).clear();
     locationsByFloor.get(currFloor).clear();
     for (Equipment currEquipment : equipment) {
       addEquipmentToMap(currEquipment);
     }
 
-    List<Location> locations = DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    List<Location> locations =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
     for (Location currLocation : locations) {
       locationToMapElement(currLocation);
     }
@@ -811,6 +814,33 @@ public class Map {
                 }
               }
             });
+
+    newDot
+        .getIcon()
+        .setOnMouseEntered(
+            new EventHandler<MouseEvent>() {
+              @Override
+              public void handle(MouseEvent event) {
+                DisplayRadialMenu(checkLocationForSharedEquipment(location));
+              }
+            });
+    newDot
+        .getIcon()
+        .setOnMouseExited(
+            new EventHandler<MouseEvent>() {
+              @Override
+              public void handle(MouseEvent event) {
+                Timer close = new Timer();
+                close.schedule(
+                    new TimerTask() {
+                      @Override
+                      public void run() {
+                        CloseRadialMenu(checkLocationForSharedEquipment(location));
+                      }
+                    },
+                    1250);
+              }
+            });
   }
 
   private void ServiceRequestToMapElement(ServiceRequest SR) throws SQLException {
@@ -906,6 +936,47 @@ public class Map {
         });
   }
 
+  private ArrayList<MapEquipmentIcon> checkLocationForSharedEquipment(Location location) {
+    AtomicInteger count = new AtomicInteger();
+    ArrayList<MapEquipmentIcon> SharedAtLocation = new ArrayList<>();
+    mapIconsByFloor
+        .get(location.getFloor())
+        .forEach(
+            equipment -> {
+              if (equipment.getEquipment().getLocation().getId() == location.getId()) {
+                SharedAtLocation.add(equipment);
+              }
+            });
+    return SharedAtLocation;
+  }
+
+  private void DisplayRadialMenu(ArrayList<MapEquipmentIcon> EquipAtLocation) {
+    int size = EquipAtLocation.size();
+    int radius = 35;
+    if (size > 1) {
+      double angle = 2 * Math.PI / size;
+      for (int i = 0; i < size; i++) {
+        double currX = EquipAtLocation.get(i).getButton().getTranslateX();
+        double currY = EquipAtLocation.get(i).getButton().getTranslateY();
+        currX += radius * Math.cos(i * angle);
+        currY += radius * Math.sin(i * angle);
+        EquipAtLocation.get(i).getButton().setTranslateX(currX);
+        EquipAtLocation.get(i).getButton().setTranslateY(currY);
+      }
+    } else {
+      return;
+    }
+  }
+
+  private void CloseRadialMenu(ArrayList<MapEquipmentIcon> EquipAtLocation) {
+    for (MapEquipmentIcon icon : EquipAtLocation) {
+      icon.getButton()
+          .setTranslateX(icon.getEquipment().getLocation().getX() - backgroundImage.getWidth() / 2);
+      icon.getButton()
+          .setTranslateY(
+              icon.getEquipment().getLocation().getY() - backgroundImage.getHeight() / 2);
+    }
+  }
 
   private static class Position {
     double x;
