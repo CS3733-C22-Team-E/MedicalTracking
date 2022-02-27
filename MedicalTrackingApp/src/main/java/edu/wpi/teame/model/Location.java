@@ -62,6 +62,8 @@ public class Location implements ISQLSerializable, GraphNode {
     this.building = BuildingType.valueOf(lineData.getColumnString("building"));
   }
 
+  public Location() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -223,5 +225,13 @@ public class Location implements ISQLSerializable, GraphNode {
 
   public void setY(int y) {
     this.y = y;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }

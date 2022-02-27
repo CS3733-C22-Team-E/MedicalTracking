@@ -44,6 +44,8 @@ public class Patient implements ISQLSerializable {
         (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
   }
 
+  public Patient() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -134,5 +136,9 @@ public class Patient implements ISQLSerializable {
 
   public boolean getIsDeleted() {
     return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }
