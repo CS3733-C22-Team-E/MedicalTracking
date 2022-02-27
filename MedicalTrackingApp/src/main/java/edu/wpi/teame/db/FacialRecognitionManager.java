@@ -89,6 +89,8 @@ public class FacialRecognitionManager {
     jsonString = jsonString.replace("[", "").replace("]", "");
 
     JSONObject jsonObject = new JSONObject(jsonString);
+    System.out.println(jsonString);
+
     String faceId = jsonObject.getString("faceId");
     boolean mouthOccluded =
         jsonObject

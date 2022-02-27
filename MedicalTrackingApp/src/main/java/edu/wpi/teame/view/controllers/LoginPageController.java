@@ -21,6 +21,7 @@ import java.util.*;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -69,6 +70,9 @@ public class LoginPageController implements Initializable {
 
   // Face ID Requirements
   private boolean useFaceID = false;
+  private String username = null;
+  private String password = null;
+  private File imageFile = null;
   private Webcam webcam = null;
 
   private LandingPageController Tabber;
@@ -77,37 +81,44 @@ public class LoginPageController implements Initializable {
   private ImageView currentIcon;
 
   @FXML
-  private void loginButtonPressed()
-      throws SQLException, IOException, ParseException, URISyntaxException, InvalidKeyException,
-          StorageException {
-    boolean loggedIn = false;
+  private void loginButtonPressed() throws IOException {
+    username = null;
+    password = null;
+    imageFile = null;
+
+    // Get info from user screen
+    if (!useFaceID) {
+      username = usernameTextInput.getText();
+      password = passwordTextInput.getText();
+    } else {
+      imageFile = getImageFromWebcam();
+      cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
+    }
+
+    // Run log in async
+    Platform.runLater(
+        () -> {
+          try {
+            processLogIn(username, password, imageFile);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        });
+  }
+
+  private void processLogIn(String username, String password, File imageFile)
+      throws SQLException, IOException, URISyntaxException, InvalidKeyException, StorageException,
+          ParseException {
     CredentialManager credentialManager =
         ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential));
 
-    if (!useFaceID) {
-      String username = usernameTextInput.getText();
-      String password = passwordTextInput.getText();
-      loggedIn = credentialManager.logIn(username, password);
-    } else {
-      // Get image from webcam
-      BufferedImage image = webcam.getImage();
-
-      // Save image to PNG file
-      File imageFile =
-          new File(
-              App.class
-                  .getClassLoader()
-                  .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
-                  .getFile());
-      ImageIO.write(image, "PNG", imageFile);
-      cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
-      cameraImageView.applyCss();
-
-      // Upload image to server
+    // Run log in
+    boolean loggedIn = false;
+    if (useFaceID && imageFile != null) {
       String imageURL = credentialManager.uploadImage(imageFile);
-
-      // Log in with image
       loggedIn = credentialManager.logIn(imageURL);
+    } else if (!username.isEmpty() && !password.isEmpty()) {
+      loggedIn = credentialManager.logIn(username, password);
     }
 
     // Check if we were able to log in.
@@ -150,7 +161,6 @@ public class LoginPageController implements Initializable {
     mediaPlayer.play();
     t1.play();
     r.play();
-    webcam.close();
   }
 
   @FXML
@@ -160,7 +170,7 @@ public class LoginPageController implements Initializable {
     credentialLogInVbox.setVisible(!useFaceID);
 
     // Set Image View
-    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.25);
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight());
     if (useFaceID) {
       currentIcon = icon1;
     } else {
@@ -338,7 +348,6 @@ public class LoginPageController implements Initializable {
       Dimension[] supportedSizes = webcam.getViewSizes();
       webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
       faceIDVbox.setVisible(false);
-      webcam.open();
     } else {
       // We do not have a webcam
       switchToFaceIdButton.setVisible(false);
@@ -374,6 +383,23 @@ public class LoginPageController implements Initializable {
           return null;
         });
     dialog.showAndWait();
+  }
+
+  private File getImageFromWebcam() throws IOException {
+    // Get image from webcam
+    webcam.open();
+    BufferedImage image = webcam.getImage();
+
+    // Save image to PNG file
+    File imageFile =
+        new File(
+            App.class
+                .getClassLoader()
+                .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
+                .getFile());
+    ImageIO.write(image, "PNG", imageFile);
+    cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
     webcam.close();
+    return imageFile;
   }
 }
