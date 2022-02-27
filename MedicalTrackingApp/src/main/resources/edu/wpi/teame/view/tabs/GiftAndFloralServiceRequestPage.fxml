@@ -114,7 +114,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Text>
-            <AutoCompleteTextField fx:id="patientName" promptText="Enter a location..." GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <AutoCompleteTextField fx:id="patientName" promptText="Enter patient name..." GridPane.columnIndex="1" GridPane.rowIndex="4">
                 <GridPane.margin>
                     <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
                 </GridPane.margin>
