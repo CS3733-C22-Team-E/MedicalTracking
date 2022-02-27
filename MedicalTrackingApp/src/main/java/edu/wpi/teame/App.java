@@ -41,8 +41,7 @@ public class App extends Application {
     Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
     Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.37647058823);
     setColorScheme(
-        new ColorScheme(
-            App.class.getResource("css/mainStyle.css").toString(), spotifyBlack, spotifyGreen));
+        new ColorScheme("spotify", spotifyBlack, spotifyGreen));
     colorScheme.replaceCSS();
 
     appPrimaryStage = primaryStage;

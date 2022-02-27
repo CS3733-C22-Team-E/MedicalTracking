@@ -6,17 +6,15 @@ import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class ColorScheme {
-  private final File css;
+  private final File mainCSS;
+  private final File loginCSS;
   private final Color color1, color2;
 
-  public ColorScheme(String cssPath, Color color1, Color color2) {
-    this.css = new File(cssPath);
+  public ColorScheme(String schemeName, Color color1, Color color2) {
+    this.mainCSS = new File(App.class.getResource("css/schemes/" + schemeName + "Main.css").toString());
+    this.loginCSS = new File(App.class.getResource("css/schemes/" + schemeName + "Login.css").toString());
     this.color1 = color1;
     this.color2 = color2;
-  }
-
-  public File getCSS() {
-    return this.css;
   }
 
   public Color getColor1() {
@@ -63,7 +61,7 @@ public class ColorScheme {
       return;
       // TODO figure out why this method is busted. I'll have to talk with Amitai, probably.
     {
-      FileInputStream in = new FileInputStream(this.css);
+      FileInputStream in = new FileInputStream(this.mainCSS);
       FileOutputStream out = new FileOutputStream(App.class.getResource("css/mainStyle.css").toString());
       try {
         int n;
