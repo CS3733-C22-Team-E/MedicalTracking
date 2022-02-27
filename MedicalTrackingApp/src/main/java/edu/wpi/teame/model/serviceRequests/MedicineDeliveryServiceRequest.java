@@ -52,6 +52,10 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     this.patient = patient;
   }
 
+  public MedicineDeliveryServiceRequest() {
+    dbType = DataBaseObjectType.MedicineDeliverySR;
+  }
+
   public MedicineDeliveryServiceRequest(ResultSet resultSet) throws SQLException {
     super(resultSet, DataBaseObjectType.MedicineDeliverySR);
     this.patient =

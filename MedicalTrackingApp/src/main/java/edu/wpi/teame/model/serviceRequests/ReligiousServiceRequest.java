@@ -64,6 +64,10 @@ public final class ReligiousServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  public ReligiousServiceRequest() {
+    dbType = DataBaseObjectType.ReligiousSR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()

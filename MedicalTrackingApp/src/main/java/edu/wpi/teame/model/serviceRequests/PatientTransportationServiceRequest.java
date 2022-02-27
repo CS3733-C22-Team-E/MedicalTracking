@@ -92,6 +92,8 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  public PatientTransportationServiceRequest() {}
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()

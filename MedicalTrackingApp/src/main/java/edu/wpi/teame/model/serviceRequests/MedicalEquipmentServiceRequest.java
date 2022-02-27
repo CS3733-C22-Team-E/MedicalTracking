@@ -57,6 +57,10 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
     this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
   }
 
+  public MedicalEquipmentServiceRequest() {
+    dbType = DataBaseObjectType.MedicalEquipmentSR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + ", equipmentID = " + equipment.getId() + " WHERE id = " + id;
