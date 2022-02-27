@@ -1,4 +1,4 @@
-package edu.wpi.teame.view.animations;
+package edu.wpi.teame.view.style;
 
 import edu.wpi.teame.view.StyledTab;
 import javafx.animation.ScaleTransition;
