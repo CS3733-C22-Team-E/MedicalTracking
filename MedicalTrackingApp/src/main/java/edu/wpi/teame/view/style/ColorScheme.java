@@ -11,8 +11,10 @@ public class ColorScheme {
   private final Color color1, color2;
 
   public ColorScheme(String schemeName, Color color1, Color color2) {
-    this.mainCSS = new File(App.class.getResource("css/schemes/" + schemeName + "Main.css").toString());
-    this.loginCSS = new File(App.class.getResource("css/schemes/" + schemeName + "Login.css").toString());
+    this.mainCSS =
+        new File(App.class.getResource("css/schemes/" + schemeName + "Main.css").toString());
+    this.loginCSS =
+        new File(App.class.getResource("css/schemes/" + schemeName + "Login.css").toString());
     this.color1 = color1;
     this.color2 = color2;
   }
@@ -59,25 +61,26 @@ public class ColorScheme {
 
   public void replaceCSS() throws IOException {
     // TODO figure out why this method is busted. I'll have to talk with Amitai, probably.
-//    {
-//      FileInputStream in = new FileInputStream(this.mainCSS);
-//      FileOutputStream out = new FileOutputStream(App.class.getResource("css/mainStyle.css").toString());
-//      try {
-//        int n;
-//        while ((n = in.read()) != -1) {
-//          out.write(n);
-//        }
-//      } catch (IOException e) {
-//        e.printStackTrace();
-//      } finally {
-//        if (in != null) {
-//          in.close();
-//        }
-//        if (out != null) {
-//          out.close();
-//        }
-//      }
-//      System.out.println("File Overwritten");
-//    }
+    //    {
+    //      FileInputStream in = new FileInputStream(this.mainCSS);
+    //      FileOutputStream out = new
+    // FileOutputStream(App.class.getResource("css/mainStyle.css").toString());
+    //      try {
+    //        int n;
+    //        while ((n = in.read()) != -1) {
+    //          out.write(n);
+    //        }
+    //      } catch (IOException e) {
+    //        e.printStackTrace();
+    //      } finally {
+    //        if (in != null) {
+    //          in.close();
+    //        }
+    //        if (out != null) {
+    //          out.close();
+    //        }
+    //      }
+    //      System.out.println("File Overwritten");
+    //    }
   }
 }
