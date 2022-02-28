@@ -133,5 +133,5 @@
 
 .circle {
   -fx-stroke: -fx-secondary-color;
-  -fx-stroke-width: 3px;
+  -fx-stroke-width: 2px;
 }
