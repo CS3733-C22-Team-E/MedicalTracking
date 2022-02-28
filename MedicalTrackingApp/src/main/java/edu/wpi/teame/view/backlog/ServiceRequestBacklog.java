@@ -21,9 +21,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -48,7 +45,7 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    CARDWIDTH = SCENEWIDTH;
+    CARDWIDTH = SCENEWIDTH - 20;
   }
 
   public static void main(String[] args) {
@@ -110,17 +107,9 @@ public class ServiceRequestBacklog {
     title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    // This is an example of pulling color from colorscheme programmatically
-    // We will replace this grandient. This is just a test
-    HashMap<String, Double> color1 = App.getColorScheme().getColor1RGB();
-    HashMap<String, Double> color2 = App.getColorScheme().getColor2RGB();
-    Stop[] stops =
-        new Stop[] {
-          new Stop(0, Color.color(color1.get("r"), color1.get("g"), color1.get("b"))),
-          new Stop(1, Color.color(color2.get("r"), color2.get("g"), color2.get("b")))
-        };
-    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
+    tBox.setBackground(
+        new Background(
+            new BackgroundFill(App.getColorScheme().getColor2(), CornerRadii.EMPTY, Insets.EMPTY)));
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
@@ -132,6 +121,9 @@ public class ServiceRequestBacklog {
     System.out.println("g");
     getSecurityRequests();
     GridPane requestHolder = new GridPane();
+    requestHolder.setBackground(
+        new Background(
+            new BackgroundFill(App.getColorScheme().getColor1(), CornerRadii.EMPTY, Insets.EMPTY)));
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();
