@@ -54,8 +54,8 @@ public class CredentialManagementPageController implements Initializable {
     Stage stage = new Stage();
     stage.setTitle("Test");
     stage.setScene(scene);
-    stage.show();
     stage.initModality(Modality.WINDOW_MODAL);
     stage.initStyle(StageStyle.UNDECORATED);
+    stage.show();
   }
 }
