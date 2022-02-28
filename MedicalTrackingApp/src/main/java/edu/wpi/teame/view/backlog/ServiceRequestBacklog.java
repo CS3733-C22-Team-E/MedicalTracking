@@ -21,9 +21,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -59,41 +56,41 @@ public class ServiceRequestBacklog {
     System.out.println("Getting SR");
     serviceRequestsFromDB.clear();
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.SecuritySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.MedicineDeliverySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.MedicalEquipmentSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.AudioVisualSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.ExternalPatientSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.ComputerSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance()
-            .getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
-            .forceGetAll());
+            DBManager.getInstance()
+                    .getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
+                    .forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance()
-            .getManager(DataBaseObjectType.InternalPatientTransferSR)
-            .forceGetAll());
+            DBManager.getInstance()
+                    .getManager(DataBaseObjectType.InternalPatientTransferSR)
+                    .forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.LanguageInterpreterSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.LaundrySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).forceGetAll());
     serviceRequestsFromDB.addAll(
-        DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).forceGetAll());
+            DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).forceGetAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -110,17 +107,9 @@ public class ServiceRequestBacklog {
     title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    // This is an example of pulling color from colorscheme programmatically
-    // We will replace this grandient. This is just a test
-    HashMap<String, Double> color1 = App.getColorScheme().getColor1RGB();
-    HashMap<String, Double> color2 = App.getColorScheme().getColor2RGB();
-    Stop[] stops =
-        new Stop[] {
-          new Stop(0, Color.color(color1.get("r"), color1.get("g"), color1.get("b"))),
-          new Stop(1, Color.color(color2.get("r"), color2.get("g"), color2.get("b")))
-        };
-    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
+    tBox.setBackground(
+            new Background(
+                    new BackgroundFill(App.getColorScheme().getColor2(), CornerRadii.EMPTY, Insets.EMPTY)));
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
@@ -133,8 +122,8 @@ public class ServiceRequestBacklog {
     getSecurityRequests();
     GridPane requestHolder = new GridPane();
     requestHolder.setBackground(
-        new Background(
-            new BackgroundFill(App.getColorScheme().getColor1(), CornerRadii.EMPTY, Insets.EMPTY)));
+            new Background(
+                    new BackgroundFill(App.getColorScheme().getColor1(), CornerRadii.EMPTY, Insets.EMPTY)));
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();
@@ -142,7 +131,7 @@ public class ServiceRequestBacklog {
     System.out.println(serviceRequestsFromDB.size());
     for (ServiceRequest sr : serviceRequestsFromDB) {
       if (sr.getStatus().equals(ServiceRequestStatus.CLOSED)
-          || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {
+              || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {
         deadServiceRequests.add(sr);
       } else {
         ServiceRequestCard card = new ServiceRequestCard(sr, this);
@@ -188,46 +177,46 @@ public class ServiceRequestBacklog {
     refreshBar.getChildren().add(refreshText);
     refreshBar.setAlignment(Pos.CENTER);
     Background noHoverBG =
-        new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+            new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
     refreshBar.setBackground(noHoverBG);
     Background hoverBG =
-        new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY));
+            new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY));
     refreshBar.setOnMouseExited(
-        e -> {
-          refreshBar.setBackground(noHoverBG);
-        });
+            e -> {
+              refreshBar.setBackground(noHoverBG);
+            });
     refreshBar.setOnMouseEntered(
-        e -> {
-          refreshBar.setBackground(hoverBG);
-        });
+            e -> {
+              refreshBar.setBackground(hoverBG);
+            });
     refreshBar.setOnMouseClicked(
-        e -> {
-          ((Text) refreshBar.getChildren().get(0)).setText("Refreshing...");
-          // I'm trying to get this done quickly and have no idea how to make a timer
-          // so I'm gonna do something really stupid but I know it'll work.
-          ScaleTransition wait2 = new ScaleTransition(new Duration(200), refreshText);
-          wait2.setOnFinished(
-              ev -> {
-                try {
-                  scrollWrapper.setContent(getRequestHolder());
-                } catch (SQLException ex) {
-                  ex.printStackTrace();
-                }
-              });
-          ScaleTransition wait1 = new ScaleTransition(new Duration(500), refreshText);
-          wait1.setOnFinished(
-              ev -> {
-                ((Text) refreshBar.getChildren().get(0)).setText("Done!");
-                wait2.play();
-              });
-          wait1.play();
-          // lol
-        });
+            e -> {
+              ((Text) refreshBar.getChildren().get(0)).setText("Refreshing...");
+              // I'm trying to get this done quickly and have no idea how to make a timer
+              // so I'm gonna do something really stupid but I know it'll work.
+              ScaleTransition wait2 = new ScaleTransition(new Duration(200), refreshText);
+              wait2.setOnFinished(
+                      ev -> {
+                        try {
+                          scrollWrapper.setContent(getRequestHolder());
+                        } catch (SQLException ex) {
+                          ex.printStackTrace();
+                        }
+                      });
+              ScaleTransition wait1 = new ScaleTransition(new Duration(500), refreshText);
+              wait1.setOnFinished(
+                      ev -> {
+                        ((Text) refreshBar.getChildren().get(0)).setText("Done!");
+                        wait2.play();
+                      });
+              wait1.play();
+              // lol
+            });
     return refreshBar;
   }
 
   private LinkedList<ServiceRequest> sortServiceRequestsFromDB(
-      List<ServiceRequest> l) { // DB Sees all SR as critical
+          List<ServiceRequest> l) { // DB Sees all SR as critical
     LinkedList<ServiceRequest> p1 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p2 = new LinkedList<ServiceRequest>();
     LinkedList<ServiceRequest> p3 = new LinkedList<ServiceRequest>();
@@ -251,45 +240,45 @@ public class ServiceRequestBacklog {
       }
     }
     p1.sort(
-        new Comparator<ServiceRequest>() {
-          @Override
-          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
-            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
-              return 0;
-            }
-            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
-          }
-        });
+            new Comparator<ServiceRequest>() {
+              @Override
+              public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+                if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+                  return 0;
+                }
+                return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+              }
+            });
     p2.sort(
-        new Comparator<ServiceRequest>() {
-          @Override
-          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
-            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
-              return 0;
-            }
-            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
-          }
-        });
+            new Comparator<ServiceRequest>() {
+              @Override
+              public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+                if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+                  return 0;
+                }
+                return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+              }
+            });
     p3.sort(
-        new Comparator<ServiceRequest>() {
-          @Override
-          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
-            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
-              return 0;
-            }
-            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
-          }
-        });
+            new Comparator<ServiceRequest>() {
+              @Override
+              public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+                if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+                  return 0;
+                }
+                return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+              }
+            });
     p4.sort(
-        new Comparator<ServiceRequest>() {
-          @Override
-          public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
-            if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
-              return 0;
-            }
-            return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
-          }
-        });
+            new Comparator<ServiceRequest>() {
+              @Override
+              public int compare(ServiceRequest serviceRequest, ServiceRequest t1) {
+                if (serviceRequest.getOpenDate().getTime() == t1.getOpenDate().getTime()) {
+                  return 0;
+                }
+                return serviceRequest.getOpenDate().getTime() > t1.getOpenDate().getTime() ? 1 : -1;
+              }
+            });
     preFilterList.addAll(p1);
     preFilterList.addAll(p2);
     preFilterList.addAll(p3);
@@ -313,8 +302,8 @@ public class ServiceRequestBacklog {
     filterBar.setAlignment(Pos.CENTER);
     filterBar.setSpacing(10);
     List<Object> DBEmployeeList =
-        Objects.requireNonNull(DBManager.getInstance().getManager(DataBaseObjectType.Employee))
-            .getAll();
+            Objects.requireNonNull(DBManager.getInstance().getManager(DataBaseObjectType.Employee))
+                    .getAll();
     if (DBEmployeeList.isEmpty()) {
       Text t = new Text("No employees loaded to filter.");
       filterBar.getChildren().add(t);
@@ -335,15 +324,15 @@ public class ServiceRequestBacklog {
         eBox.setSelected(true);
       }
       eBox.setOnAction(
-          ev -> {
-            Boolean oldVal = filterMap.get(e.getName());
-            filterMap.replace(e.getName(), !oldVal);
-            try {
-              scrollWrapper.setContent(getRequestHolder());
-            } catch (SQLException ex) {
-              ex.printStackTrace();
-            }
-          });
+              ev -> {
+                Boolean oldVal = filterMap.get(e.getName());
+                filterMap.replace(e.getName(), !oldVal);
+                try {
+                  scrollWrapper.setContent(getRequestHolder());
+                } catch (SQLException ex) {
+                  ex.printStackTrace();
+                }
+              });
       filterBar.getChildren().add(eBox);
     }
     return filterBar;
