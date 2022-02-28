@@ -20,7 +20,7 @@
 
 <AnchorPane styleClass="anchor-pane" stylesheets="@../css/loginStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.LoginPageController">
     <children>
-        <GridPane fx:id="mainGridPane" layoutY="7.0" prefHeight="800.0" prefWidth="1000.0" style="-fx-opacity: 75%;" styleClass="title-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <GridPane fx:id="mainGridPane" layoutY="7.0" prefHeight="800.0" prefWidth="1000.0" styleClass="title-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" prefWidth="250.0" />
@@ -32,7 +32,7 @@
                 <RowConstraints maxHeight="76.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
             </rowConstraints>
          <children>
-            <VBox fx:id="credentialLogInVbox" alignment="CENTER" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox fx:id="credentialLogInVbox" alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <StackPane fx:id="logoStackPane" prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -92,8 +92,8 @@
                   </StackPane>
                   <StackPane fx:id="usernameStackPane2">
                      <children>
-                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
-                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="usernameBackgroundLine" endX="100.0" opacity="0.25" startX="-220.0" strokeWidth="3.0" />
+                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" strokeWidth="3.0" />
                      </children>
                   </StackPane>
                   <StackPane fx:id="passwordStackPane" alignment="CENTER_LEFT" onMouseClicked="#passwordTextSelected" onMouseEntered="#passwordMouseEnter" onMouseExited="#passwordMouseExit">
@@ -132,11 +132,11 @@
                   </StackPane>
                   <StackPane fx:id="passwordStackPane2">
                      <children>
-                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
-                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="passwordBackgroundLine" endX="100.0" opacity="0.25" startX="-220.0" strokeWidth="3.0" />
+                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-220.0" strokeWidth="3.0" />
                      </children>
                   </StackPane>
-                  <JFXButton fx:id="loginButton" buttonType="RAISED" disable="true" onAction="#loginButtonPressed" prefHeight="40.0" prefWidth="100.0" ripplerFill="WHITE" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;" text="Login" textAlignment="CENTER">
+                  <JFXButton fx:id="loginButton" buttonType="RAISED" disable="true" onAction="#loginButtonPressed" prefHeight="40.0" prefWidth="100.0" ripplerFill="WHITE" text="Login" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets top="60.0" />
                      </VBox.margin>
