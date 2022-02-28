@@ -355,9 +355,11 @@ public class Map {
     Floor.setFitWidth(30);
     RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
+      ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
+      CurrImageView.setFitWidth(35);
+      CurrImageView.setFitHeight(35);
       RadialCheckMenuItem tobeadded =
-          new RadialCheckMenuItem(
-              45, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
+          new RadialCheckMenuItem(45, CurrImageView, true, Color.LIGHTGREEN);
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -366,7 +368,21 @@ public class Map {
 
       FilterCheckBoxes.addMenuItem(tobeadded);
     }
-    RadialCheckMenuItem Locations = new RadialCheckMenuItem(45,new ImageView(Location),true,Color.GREEN);
+    ImageView LocationImageView = new ImageView(Location);
+    LocationImageView.setFitHeight(35);
+    LocationImageView.setFitWidth(35);
+    RadialCheckMenuItem Locations =
+        new RadialCheckMenuItem(45, LocationImageView, true, Color.LIGHTGREEN);
+    Locations.setOnMouseClicked(
+        event -> {
+          Locations.setSelected(!Locations.isSelected());
+          for (FloorType currFloor : FloorType.values()) {
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getIcon().setVisible(!dot.getIcon().isVisible());
+            }
+          }
+        });
+    FilterCheckBoxes.addMenuItem(Locations);
     for (FloorType currFloor : FloorType.values()) {
       ImageView floorer =
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
@@ -401,7 +417,7 @@ public class Map {
             85,
             3,
             Color.GREY,
-            Color.GREEN,
+            Color.LIGHTGREEN,
             Color.WHITESMOKE,
             Color.PAPAYAWHIP,
             false,

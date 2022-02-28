@@ -273,12 +273,9 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.backgroundVisible.addListener(this);
 
     this.centerGroup = new Group();
-
-    // this.centerGroup.getChildren().add(this.centerStrokeShape);
     this.centerGroup.getChildren().addAll(this.centerStrokeShape);
     this.centerGroup.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
             RadialMenu.this.mouseOn = true;
@@ -298,7 +295,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(final MouseEvent event) {
-            if(event.getButton() == MouseButton.PRIMARY){
+            if (event.getButton() == MouseButton.PRIMARY) {
               final boolean visible = RadialMenu.this.itemGroup.isVisible();
               if (visible) {
                 RadialMenu.this.hideRadialMenu();
@@ -309,11 +306,22 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
             }
           }
         });
+    this.centerGroup.addEventHandler(
+        MouseEvent.MOUSE_DRAGGED,
+        event -> {
+          System.out.println("Init");
+        });
 
     this.getChildren().add(this.centerGroup);
     this.centerGraphic = new SimpleObjectProperty<Node>(centerGraphic);
-    centerGraphic.setTranslateX(this.centerStrokeShape.getTranslateX() - 45 / 2);
-    centerGraphic.setTranslateY(this.centerStrokeShape.getTranslateY() - 45 / 2);
+    centerGraphic
+        .translateXProperty()
+        .bind(this.centerStrokeShape.translateXProperty().subtract(45 / 2));
+    centerGraphic
+        .translateYProperty()
+        .bind(this.centerStrokeShape.translateYProperty().subtract(45 / 2));
+    //    centerGraphic.setTranslateX(this.centerStrokeShape.translateXProperty().get() - 45 / 2);
+    //    centerGraphic.setTranslateY(this.centerStrokeShape. - 45 / 2);
     this.setCenterGraphic(centerGraphic);
 
     this.saveStateBeforeAnimation();
