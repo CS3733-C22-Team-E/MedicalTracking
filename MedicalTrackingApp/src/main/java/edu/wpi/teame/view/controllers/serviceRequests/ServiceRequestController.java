@@ -1,10 +1,11 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import edu.wpi.teame.view.style.IStyleable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javafx.fxml.Initializable;
 
-public abstract class ServiceRequestController implements Initializable {
+public abstract class ServiceRequestController implements Initializable, IStyleable {
   static ArrayList<String> createTime() {
     ArrayList<String> list = new ArrayList<String>();
     for (int i = 0; i < 96; i++) {
