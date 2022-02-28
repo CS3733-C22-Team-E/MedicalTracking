@@ -15,7 +15,7 @@
 }
 
 /* Basic UI Elements */
-.title {
+label.title {
   -fx-font-weight: bold;
   -fx-font-size: 72px;
 }

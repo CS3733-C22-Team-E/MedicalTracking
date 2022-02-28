@@ -24,7 +24,7 @@ import javafx.util.Duration;
 public class HomePageController implements Initializable, IStyleable {
   @FXML private Label welcomeLabel;
   @FXML private VBox welcomeBox;
-  @FXML private VBox welcomeBox;
+  @FXML private Label titleText;
 
   public void showWelcomeMessage() {
     FadeTransition fadeTransition = new FadeTransition(new Duration(2500), welcomeBox);
@@ -58,15 +58,15 @@ public class HomePageController implements Initializable, IStyleable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    welcomeBox.setVisible(false);
-
     StyleManager.getInstance().subscribe(this);
+    welcomeBox.setVisible(false);
   }
 
   @Override
   public void updateStyle() {
     welcomeLabel.setTextFill(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
     welcomeBox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-
+    titleText.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+    titleText.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
   }
 }
