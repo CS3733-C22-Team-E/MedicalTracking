@@ -23,7 +23,7 @@
 
 /* UI Specific Elements */
 .title-background {
-  -fx-background-image: url("../images/hospitalBackgroundImage.png");
+  -fx-background-image: url("../images/hospitalBackgroundImageSepia.png");
   -fx-background-position: top left;
   -fx-background-repeat: no-repeat;
   -fx-background-color: #ffffff;
@@ -100,9 +100,14 @@
 }
 
 /* Panes and Backgrounds */
-.tab-pane,
 .anchor-pane {
-  -fx-background-color: black;
+  -fx-background-color: #272522;
+}
+
+.tab-pane,
+.tab-header-area,
+.tab-header-background {
+  -fx-background-color: #272522;
 }
 
 .grid-pane {
@@ -124,4 +129,9 @@
   -fx-text-fill: -fx-text-color;
   -fx-alignment: CENTER;
   -fx-font-size: 16px;
+}
+
+.circle {
+  -fx-stroke: -fx-secondary-color;
+  -fx-stroke-width: 2px;
 }
