@@ -10,6 +10,8 @@ import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
 import edu.wpi.teame.view.map.MapSideView;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import edu.wpi.teame.view.style.StyledTab;
 import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
@@ -21,6 +23,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -28,7 +31,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
-public class LandingPageController implements Initializable {
+public class LandingPageController implements Initializable, IStyleable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
 
@@ -44,6 +47,9 @@ public class LandingPageController implements Initializable {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
+
+    // Set style
+    StyleManager.getInstance().subscribe(this);
 
     // Get the tab content size using our init tab
     double tabContentHeight =
@@ -211,5 +217,17 @@ public class LandingPageController implements Initializable {
     for (Tab tab : mainTabPane.getTabs()) {
       ((StyledTab) tab).toggleTabSize(!shouldEnlarge);
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    Background colorBG =
+        new Background(
+            new BackgroundFill(
+                StyleManager.getInstance().getCurrentStyle().getBackground(),
+                new CornerRadii(10),
+                Insets.EMPTY));
+
+    mainTabPane.setBackground(colorBG);
   }
 }

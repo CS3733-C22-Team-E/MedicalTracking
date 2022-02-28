@@ -5,12 +5,16 @@ import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class ColorScheme {
+  private final Color secondaryBackground;
   private final Color background;
   private final Color foreground;
+  private final Color textColor;
 
-  public ColorScheme(Color background, Color foreground) {
+  public ColorScheme(Color background, Color secondaryBackground, Color foreground, Color textColor) {
+    this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;
+    this.textColor = textColor;
   }
 
   public Color getBackground() {

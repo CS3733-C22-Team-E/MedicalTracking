@@ -428,6 +428,7 @@ public class LoginPageController implements Initializable, IStyleable {
     return imageFile;
   }
 
+  @Override
   public void updateStyle() {
     Background colorBG =
         new Background(

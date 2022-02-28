@@ -26,7 +26,9 @@ public class StyleManager {
   public void loadStyles() {
     Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
     Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.37647058823);
-    colorSchemes.put("spotify", new ColorScheme(spotifyBlack, spotifyGreen));
+    Color spotifyText = Color.color(0.509803922, 0.509803922, 0.509803922);
+    Color spotifyGray = Color.color(0.581, 0.741, 0);
+    colorSchemes.put("spotify", new ColorScheme(spotifyBlack, spotifyGray, spotifyGreen, spotifyText));
     currentStyle = colorSchemes.get("spotify");
   }
 

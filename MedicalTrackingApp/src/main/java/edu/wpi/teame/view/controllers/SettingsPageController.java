@@ -6,6 +6,7 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.LanguageType;
+import edu.wpi.teame.view.style.IStyleable;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import lombok.SneakyThrows;
 
-public class SettingsPageController implements Initializable {
+public class SettingsPageController implements Initializable, IStyleable {
   @FXML public ComboBox accessibilityComboBox;
   @FXML private ComboBox dbSwitchComboBox;
   @FXML public ComboBox languageComboBox;
@@ -185,4 +186,7 @@ public class SettingsPageController implements Initializable {
     dialog.showAndWait();
     return dialog.getResult() == OK;
   }
+
+  @Override
+  public void updateStyle() {}
 }
