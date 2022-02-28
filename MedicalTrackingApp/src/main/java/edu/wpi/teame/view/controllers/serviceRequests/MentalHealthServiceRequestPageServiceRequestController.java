@@ -10,8 +10,8 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import edu.wpi.teame.view.style.SRSentAnimation;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -33,6 +33,7 @@ public class MentalHealthServiceRequestPageServiceRequestController
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
+  @FXML private AutoCompleteTextField patientName;
   @FXML private JFXComboBox priority;
   @FXML private JFXComboBox status;
   @FXML private TextArea additionalInfo;
@@ -129,9 +130,7 @@ public class MentalHealthServiceRequestPageServiceRequestController
             new Date(new java.util.Date().getTime()),
             "",
             0);
-    DBManager.getInstance()
-        .getManager(DataBaseObjectType.FacilitiesMaintenanceSR)
-        .insert(serviceRequest);
+    DBManager.getInstance().getManager(DataBaseObjectType.MentalHealthSR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
