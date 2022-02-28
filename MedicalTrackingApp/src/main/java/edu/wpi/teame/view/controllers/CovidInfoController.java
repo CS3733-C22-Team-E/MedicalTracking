@@ -29,7 +29,6 @@ public class CovidInfoController implements Initializable {
         });
   }
 
-  // TODO
   // When infoButton is pressed it opens up the CDC covid site
   // https://www.cdc.gov/coronavirus/2019-ncov/index.html
   public void openCovidWebsite() throws URISyntaxException, IOException {
