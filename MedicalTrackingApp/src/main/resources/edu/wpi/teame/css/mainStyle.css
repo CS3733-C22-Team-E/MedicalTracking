@@ -7,24 +7,23 @@
 
 * {
   -fx-text-box-background-color: #ffffff;
-  -fx-button-background-color: #ffffff;
-  -fx-pane-background-color: #ffffff;
 
   -fx-text-box-text-color: #ffffff;
-  -fx-button-text-color: black;
+  -fx-button-text-color: #ffffff;
   -fx-header-color: #ffffff;
   -fx-text-color: #e0eef4;
 
-  -fx-text-fill-color: #b8b8b8;
+  -fx-text-fill-color: #ffffff;
 
-  -fx-highlight-color: #5579c5;
-  -fx-secondary-color: #90b4ce;
-  -fx-tertiary-color: #ef4565;
+  -fx-highlight-color: #127334;
+  -fx-secondary-color: #1DB954;
+  -fx-primary-color: #191414;
+  -fx-accent-color: #797979;
 }
 
 /* UI Specific Elements */
 .title-background {
-  -fx-background-image: url("../images/hospitalBackgroundImage.png");
+  -fx-background-image: url("../images/hospitalBackgroundImageSepia.png");
   -fx-background-position: top left;
   -fx-background-repeat: no-repeat;
   -fx-background-color: #ffffff;
@@ -45,34 +44,41 @@
 }
 
 .button {
-  -fx-background-color: -fx-button-background-color;
+  -fx-background-color: -fx-secondary-color;
   -fx-background-radius: 5;
 }
 
 .jfx-combo-box .list-cell {
-  -fx-background-color: -fx-button-background-color;
+  -fx-background-color: -fx-secondary-color;
   -fx-text-fill: -fx-button-text-color;
 }
 
 .jfx-combo-box {
-  -fx-prompt-text-fill: #b8b8b8;
-  -fx-background-color: -fx-button-background-color;
+  -fx-prompt-text-fill: #ffffff;
+  -fx-background-color: -fx-accent-color;
   -fx-text-fill: -fx-button-text-color;
   -fx-background-radius: 10;
 }
 
 .text-box {
-  -fx-background-color: -fx-text-box-background-color;
+  -fx-background-color: -fx-accent-color;
+  -fx-text-fill: -fx-text-fill-color;
+}
+
+.text-field {
+  -fx-background-color: -fx-accent-color;
   -fx-text-fill: -fx-text-fill-color;
 }
 
 .text-area {
-  -fx-background-color: transparent, transparent, transparent, transparent;
+  -fx-background-color: -fx-accent-color;
+  -fx-text-fill: -fx-text-fill-color;
 }
 
 .text-area .content {
-  -fx-background-color: -fx-text-box-background-color;
+  -fx-background-color: -fx-accent-color;
   -fx-background-radius: 5 5 5 5;
+  -fx-text-fill: -fx-text-fill-color;
 }
 
 .text-area .scroll-pane .viewport {
@@ -94,27 +100,24 @@
 }
 
 /* Panes and Backgrounds */
-.tab-pane,
 .anchor-pane {
-  -fx-background-color: -fx-pane-background-color;
+  -fx-background-color: #272522;
+}
+
+.tab-pane,
+.tab-header-area,
+.tab-header-background {
+  -fx-background-color: #272522;
 }
 
 .grid-pane {
-  -fx-background-color: linear-gradient(
-    from 25% 25% to 100% 100%,
-    #7579ff,
-    #b224ef
-  );
+  -fx-background-color: -fx-primary-color;
   -fx-background-radius: 20px;
 }
 
 /* Tab View */
 .tab {
-  -fx-background-color: linear-gradient(
-    from 25% 25% to 100% 100%,
-    #7579ff,
-    #b224ef
-  );
+  -fx-background-color: -fx-secondary-color;
   -fx-background-radius: 5px;
 }
 
@@ -126,4 +129,9 @@
   -fx-text-fill: -fx-text-color;
   -fx-alignment: CENTER;
   -fx-font-size: 16px;
+}
+
+.circle {
+  -fx-stroke: -fx-secondary-color;
+  -fx-stroke-width: 2px;
 }
