@@ -5,18 +5,21 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.io.IOException;
+import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class HomePageController {
+public class HomePageController implements Initializable {
   @FXML private Label welcomeLabel;
   @FXML private VBox welcomeBox;
 
@@ -48,5 +51,10 @@ public class HomePageController {
     Scene scene = new Scene(FXMLLoader.load(App.class.getResource("view/tabs/AboutPage.fxml")));
     App.getAppPrimaryStage().setScene(scene);
     App.getAppPrimaryStage().setFullScreen(true);
+  }
+
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    welcomeBox.setVisible(false);
   }
 }

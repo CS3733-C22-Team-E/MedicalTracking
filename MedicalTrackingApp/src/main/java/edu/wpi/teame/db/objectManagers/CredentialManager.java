@@ -20,6 +20,7 @@ import org.apache.hc.core5.http.ParseException;
 public final class CredentialManager extends ObjectManager<Credential> {
   private FacialRecognitionManager faceRecognizer = null;
   private HashMap<Face, String> DBFaces = null;
+  private Face lastScannedFace = null;
   private Credential currentUser;
 
   public CredentialManager() {
@@ -28,7 +29,10 @@ public final class CredentialManager extends ObjectManager<Credential> {
   }
 
   public boolean logIn(String imageURL) throws IOException, ParseException {
-    Face userFace = faceRecognizer.getFaceID(imageURL);
+    lastScannedFace = faceRecognizer.getFaceID(imageURL);
+    if (lastScannedFace == null) {
+      return false;
+    }
 
     int index = 0;
     Face[] masterFaces = new Face[DBFaces.size()];
@@ -37,7 +41,7 @@ public final class CredentialManager extends ObjectManager<Credential> {
       index++;
     }
 
-    Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.5);
+    Face similarFace = faceRecognizer.findSimilar(lastScannedFace, masterFaces, 0.5);
     if (similarFace == null || similarFace.getImageURL() == null) {
       return false;
     }
@@ -108,5 +112,9 @@ public final class CredentialManager extends ObjectManager<Credential> {
 
   public Credential getCurrentUser() {
     return currentUser;
+  }
+
+  public Face getLastScannedFace() {
+    return lastScannedFace;
   }
 }

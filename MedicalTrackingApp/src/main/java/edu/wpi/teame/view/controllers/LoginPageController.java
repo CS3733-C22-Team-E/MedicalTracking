@@ -18,9 +18,7 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.sql.SQLException;
 import java.util.*;
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,11 +44,12 @@ import javax.swing.*;
 import org.apache.hc.core5.http.ParseException;
 
 public class LoginPageController implements Initializable {
-
   @FXML private JFXButton loginButton;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
   @FXML private Label switchToFaceIdButton;
+  @FXML private Label errorMessageLabel;
+  @FXML private VBox errorMessageVbox;
   @FXML private Text usernameText;
   @FXML private Text passwordText;
   @FXML private Line usernameFillLine;
@@ -59,8 +58,6 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView passwordImage;
   @FXML private ImageView icon;
   @FXML private ImageView icon1;
-  @FXML private ImageView iconHole;
-  @FXML private Text title;
 
   // Face ID Stack Panes
   @FXML private StackPane imageViewStackPane;
@@ -119,6 +116,21 @@ public class LoginPageController implements Initializable {
       loggedIn = credentialManager.logIn(imageURL);
     } else if (!username.isEmpty() && !password.isEmpty()) {
       loggedIn = credentialManager.logIn(username, password);
+    }
+
+    // Check for bad faceId log in with mask on
+    boolean isMaskOn =
+        credentialManager.getLastScannedFace() == null
+            || credentialManager.getLastScannedFace().isMouthOccluded();
+    if (useFaceID && !loggedIn && isMaskOn) {
+      errorMessageLabel.setText("Please remove your mask for better results...");
+      errorMessageVbox.setVisible(true);
+
+      FadeTransition fadeTransition = new FadeTransition(new Duration(2500), errorMessageVbox);
+      fadeTransition.setInterpolator(Interpolator.DISCRETE);
+      fadeTransition.setFromValue(1);
+      fadeTransition.setToValue(0);
+      fadeTransition.play();
     }
 
     // Check if we were able to log in.
@@ -360,6 +372,7 @@ public class LoginPageController implements Initializable {
     usernameTextInput.setOnMousePressed(e -> checkFocus());
     passwordTextInput.setOnMousePressed(e -> checkFocus());
 
+    errorMessageVbox.setVisible(false);
     passwordText.setScaleX(1.5);
     passwordText.setScaleY(1.5);
 

@@ -87,10 +87,11 @@ public class FacialRecognitionManager {
     CloseableHttpResponse response = httpClient.execute(request);
     String jsonString = EntityUtils.toString(response.getEntity(), "UTF-8");
     jsonString = jsonString.replace("[", "").replace("]", "");
+    if (jsonString.isEmpty()) {
+      return null;
+    }
 
     JSONObject jsonObject = new JSONObject(jsonString);
-    System.out.println(jsonString);
-
     String faceId = jsonObject.getString("faceId");
     boolean mouthOccluded =
         jsonObject
