@@ -140,7 +140,7 @@ public enum DataBaseObjectType {
       case ComputerSR:
         return "ComputerSR";
       case DeceasedBodySR:
-        return "DeceasedBodyRemovalSR";
+        return "DeceasedBodySR";
       case FoodDeliverySR:
         return "FoodDeliverySR";
       case GiftAndFloralSR:

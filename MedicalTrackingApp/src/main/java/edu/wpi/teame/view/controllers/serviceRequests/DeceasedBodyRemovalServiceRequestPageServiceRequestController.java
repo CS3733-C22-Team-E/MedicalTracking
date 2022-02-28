@@ -4,12 +4,14 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.DeceasedBodyRemovalServiceRequest;
 import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import java.net.URL;
@@ -64,6 +66,13 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
           validateSubmitButton();
         });
 
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
     priority
         .valueProperty()
         .addListener(
@@ -92,6 +101,14 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
     List<Employee> employees =
         DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
 
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
+
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
       locationNames.add(loc.getLongName());
@@ -114,10 +131,12 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
     Location location =
         ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
+    Patient patient =
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
+            .getByName(patientName.getText());
 
-    ServiceRequest serviceRequest =
-        new ServiceRequest(
-            DataBaseObjectType.DeceasedBodySR,
+    DeceasedBodyRemovalServiceRequest serviceRequest =
+        new DeceasedBodyRemovalServiceRequest(
             ServiceRequestPriority.valueOf(priority.getValue().toString()),
             ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
@@ -129,7 +148,9 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
-            0);
+            0,
+            patient);
+    System.out.println(DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR));
     DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).insert(serviceRequest);
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
@@ -145,7 +166,8 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty());
   }
 
   public void clearText() {
@@ -156,5 +178,6 @@ public class DeceasedBodyRemovalServiceRequestPageServiceRequestController
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
   }
 }
