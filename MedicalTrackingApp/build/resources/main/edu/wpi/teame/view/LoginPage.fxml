@@ -34,7 +34,7 @@
             <RowConstraints maxHeight="76.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox fx:id="errorMessageVbox" alignment="TOP_CENTER" minWidth="-Infinity" opacity="0.85" prefWidth="500.0" styleClass="tab" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
+            <VBox fx:id="errorMessageVbox" alignment="TOP_CENTER" minWidth="-Infinity" opacity="0.85" prefWidth="500.0" styleClass="tab" stylesheets="@../css/mainStyle.css" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                <children>
                   <Label fx:id="errorMessageLabel" styleClass="text" text="Error Message" textAlignment="CENTER" textFill="WHITE">
                      <font>
