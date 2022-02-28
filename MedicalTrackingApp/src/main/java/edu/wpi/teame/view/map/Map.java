@@ -309,28 +309,42 @@ public class Map {
         new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
     Material.setFitHeight(45);
     Material.setFitWidth(45);
-    RadialMenuItem ZoomIn = new RadialMenuItem(45, ZoomIN);
-    ZoomIn.setOnMouseClicked(
-        event -> {
-          zoomIn(1);
-        });
-    RadialMenuItem ZoomOut = new RadialMenuItem(45, ZoomOUT);
-    ZoomOut.setOnMouseClicked(
-        event -> {
-          zoomOut(1);
-        });
-    RadialMenuItem Refresh = new RadialMenuItem(45, REFRESH);
-    Refresh.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-            try {
-              RefreshSRfromDB();
-            } catch (SQLException e) {
-              e.printStackTrace();
-            }
-          }
-        });
+    RadialMenuItem ZoomIn =
+        new RadialMenuItem(
+            45,
+            ZoomIN,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                zoomIn(1);
+              }
+            });
+    ZoomIn.ZoomButton = true;
+    RadialMenuItem ZoomOut =
+        new RadialMenuItem(
+            45,
+            ZoomOUT,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                zoomOut(1);
+              }
+            });
+    ZoomOut.ZoomButton = true;
+    RadialMenuItem Refresh =
+        new RadialMenuItem(
+            45,
+            REFRESH,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                try {
+                  RefreshSRfromDB();
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                }
+              }
+            });
     RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));

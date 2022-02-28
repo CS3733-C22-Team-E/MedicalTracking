@@ -113,6 +113,8 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
   protected String text;
 
+  public boolean ZoomButton;
+
   public RadialMenuItem() {
     this.menuSize = 45;
     this.innerRadius.addListener(this);
@@ -144,7 +146,6 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
     this.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent arg0) {
             RadialMenuItem.this.mouseOn = true;
@@ -154,7 +155,6 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
     this.setOnMouseExited(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent arg0) {
             RadialMenuItem.this.mouseOn = false;
@@ -175,17 +175,15 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
   public RadialMenuItem(
       final double menuSize, final Node graphic, final EventHandler<ActionEvent> actionHandler) {
-
     this(menuSize, graphic);
-    //    this.addEventHandler(
-    //        MouseEvent.MOUSE_CLICKED,
-    //        new EventHandler<MouseEvent>() {
-    //
-    //          @Override
-    //          public void handle(final MouseEvent paramT) {
-    //            actionHandler.handle(new ActionEvent(paramT.getSource(), paramT.getTarget()));
-    //          }
-    //        });
+    this.addEventHandler(
+        MouseEvent.MOUSE_CLICKED,
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(final MouseEvent paramT) {
+            actionHandler.handle(new ActionEvent(paramT.getSource(), paramT.getTarget()));
+          }
+        });
     this.redraw();
   }
 

@@ -425,7 +425,9 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         }
       }
       if (!item.isSelected()) {
-        this.hideRadialMenu();
+        if (!item.ZoomButton) {
+          this.hideRadialMenu();
+        }
       }
       event.consume();
     }
