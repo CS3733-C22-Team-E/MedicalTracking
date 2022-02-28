@@ -355,7 +355,8 @@ public class LoginPageController implements Initializable {
   private void applyStyle() {
     Background colorBG =
         new Background(
-            new BackgroundFill(App.getColorScheme().getColor1(), CornerRadii.EMPTY, Insets.EMPTY));
+            new BackgroundFill(
+                App.getColorScheme().getColor1(), new CornerRadii(10), Insets.EMPTY));
     credentialLogInVbox.setBackground(colorBG);
     usernameFillLine.setStroke(App.getColorScheme().getColor2());
     passwordFillLine.setStroke(App.getColorScheme().getColor2());
