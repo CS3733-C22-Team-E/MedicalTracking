@@ -32,7 +32,7 @@
                 <RowConstraints maxHeight="76.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
             </rowConstraints>
          <children>
-            <VBox fx:id="credentialLogInVbox" alignment="CENTER" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox fx:id="credentialLogInVbox" alignment="CENTER" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <StackPane fx:id="logoStackPane" prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -92,8 +92,8 @@
                   </StackPane>
                   <StackPane fx:id="usernameStackPane2">
                      <children>
-                        <Line fx:id="usernameBackgroundLine" endX="100.0" opacity="0.25" startX="-220.0" strokeWidth="3.0" />
-                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" strokeWidth="3.0" />
+                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="usernameFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </StackPane>
                   <StackPane fx:id="passwordStackPane" alignment="CENTER_LEFT" onMouseClicked="#passwordTextSelected" onMouseEntered="#passwordMouseEnter" onMouseExited="#passwordMouseExit">
@@ -132,8 +132,8 @@
                   </StackPane>
                   <StackPane fx:id="passwordStackPane2">
                      <children>
-                        <Line fx:id="passwordBackgroundLine" endX="100.0" opacity="0.25" startX="-220.0" strokeWidth="3.0" />
-                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-220.0" strokeWidth="3.0" />
+                        <Line endX="100.0" opacity="0.25" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
+                        <Line fx:id="passwordFillLine" endX="100.0" scaleX="0.0" startX="-220.0" stroke="WHITE" strokeWidth="3.0" />
                      </children>
                   </StackPane>
                   <JFXButton fx:id="loginButton" buttonType="RAISED" disable="true" onAction="#loginButtonPressed" prefHeight="40.0" prefWidth="100.0" ripplerFill="WHITE" style="-fx-background-color: #FFFFFF; -fx-background-radius: 20;" text="Login" textAlignment="CENTER">

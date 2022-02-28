@@ -35,10 +35,6 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
     )
-// https://mvnrepository.com/artifact/org.jfxtras/jfxtras-menu
-    implementation group: 'org.jfxtras', name: 'jfxtras-menu', version: '8.0-r6'
-
-
     implementation 'org.jetbrains:annotations:20.1.0'
 
     implementation(
