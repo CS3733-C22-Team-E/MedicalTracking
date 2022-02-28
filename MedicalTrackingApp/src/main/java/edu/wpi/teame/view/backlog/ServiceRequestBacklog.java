@@ -3,13 +3,13 @@ package edu.wpi.teame.view.backlog;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXCheckBox;
-import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.style.StyleManager;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.*;
@@ -100,7 +100,6 @@ public class ServiceRequestBacklog {
   }
 
   public HBox getTitle() throws SQLException {
-
     HBox tBox = new HBox();
     Text title = new Text("Service Request Backlog");
     title.setFont(Font.font("Arial", FontWeight.BOLD, 56));
@@ -109,21 +108,25 @@ public class ServiceRequestBacklog {
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
     tBox.setBackground(
         new Background(
-            new BackgroundFill(App.getColorScheme().getColor2(), CornerRadii.EMPTY, Insets.EMPTY)));
+            new BackgroundFill(
+                StyleManager.getInstance().getCurrentStyle().getBackground(),
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
-
     return tBox;
   }
 
   public GridPane getRequestHolder() throws SQLException {
-    System.out.println("g");
     getSecurityRequests();
     GridPane requestHolder = new GridPane();
     requestHolder.setBackground(
         new Background(
-            new BackgroundFill(App.getColorScheme().getColor1(), CornerRadii.EMPTY, Insets.EMPTY)));
+            new BackgroundFill(
+                StyleManager.getInstance().getCurrentStyle().getBackground(),
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();
@@ -145,8 +148,6 @@ public class ServiceRequestBacklog {
     requestHolder.add(getTitle(), 0, 0);
     requestHolder.add(getRefreshBar(), 0, 1);
     requestHolder.add(getFilterBar(), 0, 2);
-    //    GridPane titleGridPane = new GridPane();
-    //    titleGridPane.set
     return requestHolder;
   }
 

@@ -1,4 +1,4 @@
-package edu.wpi.teame.view;
+package edu.wpi.teame.view.style;
 
 import edu.wpi.teame.App;
 import edu.wpi.teame.model.enums.SortOrder;

@@ -2,7 +2,7 @@ package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.StyledTab;
+import edu.wpi.teame.view.style.StyledTab;
 import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
 import java.util.ArrayList;

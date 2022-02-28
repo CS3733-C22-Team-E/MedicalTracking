@@ -27,7 +27,7 @@
             <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox fx:id="welcomeBox" alignment="TOP_CENTER" opacity="0.85" prefHeight="400.0" prefWidth="100.0" styleClass="tab" stylesheets="@../css/titlePage.css" GridPane.columnIndex="1">
+            <VBox fx:id="welcomeBox" alignment="TOP_CENTER" opacity="0.85" prefHeight="400.0" prefWidth="100.0" styleClass="tab" stylesheets="@../css/mainStyle.css.css" GridPane.columnIndex="1">
                <children>
                   <Label fx:id="welcomeLabel" styleClass="text" text="Welcome, @" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -36,7 +36,7 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" maxHeight="80.0" maxWidth="600.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #7579ff, #b224ef); -fx-background-radius: 10px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" maxHeight="80.0" maxWidth="600.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text=" Medical Tracker " textAlignment="CENTER" />
                </children>

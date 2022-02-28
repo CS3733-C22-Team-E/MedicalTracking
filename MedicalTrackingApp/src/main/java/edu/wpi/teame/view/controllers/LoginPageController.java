@@ -9,6 +9,8 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -40,10 +42,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import org.apache.hc.core5.http.ParseException;
 
-public class LoginPageController implements Initializable {
+public class LoginPageController implements Initializable, IStyleable {
   @FXML private JFXButton loginButton;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
@@ -359,7 +360,7 @@ public class LoginPageController implements Initializable {
       e.printStackTrace();
     }
 
-    applyStyle();
+    StyleManager.getInstance().subscribe(this);
 
     // Set up face id
     webcam = Webcam.getDefault();
@@ -427,16 +428,19 @@ public class LoginPageController implements Initializable {
     return imageFile;
   }
 
-  private void applyStyle() {
+  public void updateStyle() {
     Background colorBG =
         new Background(
             new BackgroundFill(
-                App.getColorScheme().getColor1(), new CornerRadii(10), Insets.EMPTY));
+                StyleManager.getInstance().getCurrentStyle().getBackground(),
+                new CornerRadii(10),
+                Insets.EMPTY));
+
+    faceIDVbox.setBackground(colorBG);
     credentialLogInVbox.setBackground(colorBG);
-    usernameFillLine.setStroke(App.getColorScheme().getColor2());
-    passwordFillLine.setStroke(App.getColorScheme().getColor2());
-    usernameBackgroundLine.setStroke(App.getColorScheme().getColor2());
-    passwordBackgroundLine.setStroke(App.getColorScheme().getColor2());
-    // TODO overlay images or just reload with different ones if we have to
+    usernameFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
+    passwordFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
+    usernameBackgroundLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
+    passwordBackgroundLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
   }
 }

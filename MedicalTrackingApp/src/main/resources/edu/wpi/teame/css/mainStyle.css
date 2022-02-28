@@ -5,80 +5,43 @@
   src: url("../fonts/roboto/Roboto-Medium.ttf") format("truetype");
 }
 
-* {
-  -fx-text-box-background-color: #ffffff;
-
-  -fx-text-box-text-color: #ffffff;
-  -fx-button-text-color: #ffffff;
-  -fx-header-color: #ffffff;
-  -fx-text-color: #e0eef4;
-
-  -fx-text-fill-color: #ffffff;
-
-  -fx-highlight-color: #127334;
-  -fx-secondary-color: #1DB954;
-  -fx-primary-color: #191414;
-  -fx-accent-color: #797979;
-}
 
 /* UI Specific Elements */
 .title-background {
-  -fx-background-image: url("../images/hospitalBackgroundImageSepia.png");
+  -fx-background-image: url("../images/hospitalBackgroundImage.png");
   -fx-background-position: top left;
   -fx-background-repeat: no-repeat;
-  -fx-background-color: #ffffff;
   -fx-background-size: cover;
 }
 
 /* Basic UI Elements */
 .title {
-  -fx-fill: -fx-header-color;
   -fx-font-weight: bold;
   -fx-font-size: 72px;
 }
 
 .header {
-  -fx-fill: -fx-header-color;
   -fx-font-weight: bold;
   -fx-font-size: 32px;
 }
 
-.button {
-  -fx-background-color: -fx-secondary-color;
-  -fx-background-radius: 5;
+.text {
+  -fx-font-size: 16px;
 }
 
-.jfx-combo-box .list-cell {
-  -fx-background-color: -fx-secondary-color;
-  -fx-text-fill: -fx-button-text-color;
+.button {
+  -fx-background-color: #1DB954;
+  -fx-background-radius: 20;
+  -fx-text-fill: white;
 }
 
 .jfx-combo-box {
   -fx-prompt-text-fill: #ffffff;
-  -fx-background-color: -fx-accent-color;
-  -fx-text-fill: -fx-button-text-color;
   -fx-background-radius: 10;
 }
 
-.text-box {
-  -fx-background-color: -fx-accent-color;
-  -fx-text-fill: -fx-text-fill-color;
-}
-
-.text-field {
-  -fx-background-color: -fx-accent-color;
-  -fx-text-fill: -fx-text-fill-color;
-}
-
-.text-area {
-  -fx-background-color: -fx-accent-color;
-  -fx-text-fill: -fx-text-fill-color;
-}
-
 .text-area .content {
-  -fx-background-color: -fx-accent-color;
   -fx-background-radius: 5 5 5 5;
-  -fx-text-fill: -fx-text-fill-color;
 }
 
 .text-area .scroll-pane .viewport {
@@ -86,52 +49,24 @@
 }
 
 .check-box {
-  -fx-text-fill: -fx-button-text-color;
   -fx-background-radius: 5;
 }
 
-.calendar-picker {
-  -fx-background-color: -fx-text-box-background-color;
-  -fx-text-fill: -fx-text-color;
-}
-
-.text {
-  -fx-text-fill: -fx-text-color;
-}
-
 /* Panes and Backgrounds */
-.anchor-pane {
-  -fx-background-color: #272522;
-}
-
-.tab-pane,
-.tab-header-area,
-.tab-header-background {
-  -fx-background-color: #272522;
-}
-
 .grid-pane {
-  -fx-background-color: -fx-primary-color;
   -fx-background-radius: 20px;
 }
 
 /* Tab View */
 .tab {
-  -fx-background-color: -fx-secondary-color;
   -fx-background-radius: 5px;
 }
 
-.tab:selected {
-  -fx-background-color: -fx-highlight-color;
-}
-
 .tab .tab-label {
-  -fx-text-fill: -fx-text-color;
   -fx-alignment: CENTER;
   -fx-font-size: 16px;
 }
 
 .circle {
-  -fx-stroke: -fx-secondary-color;
   -fx-stroke-width: 2px;
 }
