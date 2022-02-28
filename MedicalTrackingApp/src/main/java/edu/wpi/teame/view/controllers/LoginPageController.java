@@ -4,6 +4,7 @@ import static javafx.animation.Interpolator.EASE_OUT;
 
 import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.JFXButton;
+import com.microsoft.azure.storage.StorageException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
@@ -12,20 +13,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
+import java.security.InvalidKeyException;
 import java.sql.SQLException;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import javafx.animation.RotateTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -40,12 +43,14 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import org.apache.hc.core5.http.ParseException;
 
 public class LoginPageController implements Initializable {
 
   @FXML private JFXButton loginButton;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
+  @FXML private Label switchToFaceIdButton;
   @FXML private Text usernameText;
   @FXML private Text passwordText;
   @FXML private Line usernameFillLine;
@@ -53,6 +58,7 @@ public class LoginPageController implements Initializable {
   @FXML private ImageView usernameImage;
   @FXML private ImageView passwordImage;
   @FXML private ImageView icon;
+  @FXML private ImageView icon1;
   @FXML private ImageView iconHole;
   @FXML private Text title;
 
@@ -64,33 +70,55 @@ public class LoginPageController implements Initializable {
 
   // Face ID Requirements
   private boolean useFaceID = false;
+  private String username = null;
+  private String password = null;
+  private File imageFile = null;
   private Webcam webcam = null;
 
+  private LandingPageController Tabber;
   private Scene landingPage = null;
   private Media loginSound = null;
+  private ImageView currentIcon;
 
   @FXML
-  private void loginButtonPressed() throws SQLException, NoSuchAlgorithmException, IOException {
-    boolean loggedIn = false;
-    if (!useFaceID) {
-      String username = usernameTextInput.getText();
-      String password = passwordTextInput.getText();
-      loggedIn =
-          ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
-              .logIn(username, password);
-    } else {
-      // get image
-      BufferedImage image = webcam.getImage();
+  private void loginButtonPressed() throws IOException {
+    username = null;
+    password = null;
+    imageFile = null;
 
-      // save image to PNG file
-      File imageFile =
-          new File(
-              App.class
-                  .getClassLoader()
-                  .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
-                  .getFile());
-      ImageIO.write(image, "PNG", imageFile);
+    // Get info from user screen
+    if (!useFaceID) {
+      username = usernameTextInput.getText();
+      password = passwordTextInput.getText();
+    } else {
+      imageFile = getImageFromWebcam();
       cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
+    }
+
+    // Run log in async
+    Platform.runLater(
+        () -> {
+          try {
+            processLogIn(username, password, imageFile);
+          } catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        });
+  }
+
+  private void processLogIn(String username, String password, File imageFile)
+      throws SQLException, IOException, URISyntaxException, InvalidKeyException, StorageException,
+          ParseException {
+    CredentialManager credentialManager =
+        ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential));
+
+    // Run log in
+    boolean loggedIn = false;
+    if (useFaceID && imageFile != null) {
+      String imageURL = credentialManager.uploadImage(imageFile);
+      loggedIn = credentialManager.logIn(imageURL);
+    } else if (!username.isEmpty() && !password.isEmpty()) {
+      loggedIn = credentialManager.logIn(username, password);
     }
 
     // Check if we were able to log in.
@@ -99,11 +127,15 @@ public class LoginPageController implements Initializable {
       return;
     }
 
+    // Set welcome message
+    ((HomePageController) Tabber.homeTabPage.controller)
+        .setWelcomeMessage("@" + credentialManager.getCurrentUser().getUsername());
+
     // Load the sound
     MediaPlayer mediaPlayer = new MediaPlayer(loginSound);
     mediaPlayer.setVolume(0.3);
 
-    TranslateTransition t2 = new TranslateTransition(new Duration(100), icon);
+    TranslateTransition t2 = new TranslateTransition(new Duration(100), currentIcon);
     t2.setFromY(-50);
     t2.setToY(0);
     t2.setOnFinished(
@@ -111,7 +143,7 @@ public class LoginPageController implements Initializable {
           switchToLandingPage();
         });
 
-    RotateTransition r = new RotateTransition(new Duration(300), icon);
+    RotateTransition r = new RotateTransition(new Duration(300), currentIcon);
     r.setFromAngle(0);
     r.setToAngle(360);
     r.setInterpolator(EASE_OUT);
@@ -120,7 +152,7 @@ public class LoginPageController implements Initializable {
           t2.play();
         });
 
-    TranslateTransition t1 = new TranslateTransition(new Duration(200), icon);
+    TranslateTransition t1 = new TranslateTransition(new Duration(200), currentIcon);
     t1.setInterpolator(EASE_OUT);
     t1.setFromY(0);
     t1.setToY(-50);
@@ -129,7 +161,6 @@ public class LoginPageController implements Initializable {
     mediaPlayer.play();
     t1.play();
     r.play();
-    webcam.close();
   }
 
   @FXML
@@ -139,24 +170,29 @@ public class LoginPageController implements Initializable {
     credentialLogInVbox.setVisible(!useFaceID);
 
     // Set Image View
-    cameraImageView.setFitHeight(imageViewStackPane.getHeight() / 1.5);
+    cameraImageView.setFitHeight(imageViewStackPane.getHeight());
+    if (useFaceID) {
+      currentIcon = icon1;
+    } else {
+      currentIcon = icon;
+    }
   }
 
   private void loginFailedAnimation() {
-    RotateTransition r3 = new RotateTransition(new Duration(50), icon);
+    RotateTransition r3 = new RotateTransition(new Duration(50), currentIcon);
     r3.setFromAngle(15);
     r3.setToAngle(0);
-    r3.setOnFinished(e -> icon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));
-    RotateTransition r2 = new RotateTransition(new Duration(100), icon);
+    r3.setOnFinished(e -> currentIcon.setEffect(new DropShadow(0, 0, 0, Color.TRANSPARENT)));
+    RotateTransition r2 = new RotateTransition(new Duration(100), currentIcon);
     r2.setFromAngle(-15);
     r2.setToAngle(15);
     r2.setOnFinished(r -> r3.play());
-    RotateTransition r1 = new RotateTransition(new Duration(50), icon);
+    RotateTransition r1 = new RotateTransition(new Duration(50), currentIcon);
     r1.setFromAngle(0);
     r1.setToAngle(-15);
     r1.setOnFinished(e -> r2.play());
     r1.play();
-    icon.setEffect(new DropShadow(30, 0, 0, Color.RED));
+    currentIcon.setEffect(new DropShadow(30, 0, 0, Color.RED));
   }
 
   private void switchToLandingPage() {
@@ -164,6 +200,9 @@ public class LoginPageController implements Initializable {
     App.getAppPrimaryStage().setScene(landingPage);
     App.getAppPrimaryStage().show();
     App.getAppPrimaryStage().setFullScreen(true);
+
+    // Show welcome message
+    ((HomePageController) Tabber.homeTabPage.controller).showWelcomeMessage();
   }
 
   @FXML
@@ -295,24 +334,24 @@ public class LoginPageController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    FXMLLoader landingPageLoader = new FXMLLoader(App.class.getResource("view/LandingPage.fxml"));
     try {
-      landingPage =
-          new Scene(
-              FXMLLoader.load(
-                  Objects.requireNonNull(App.class.getResource("view/LandingPage.fxml"))));
+      landingPage = new Scene(landingPageLoader.load());
+      Tabber = landingPageLoader.getController();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
     // Set up face id
-    //    webcam = Webcam.getDefault();
-    //    Dimension[] supportedSizes = webcam.getViewSizes();
-    //    webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
-    //    webcam.open();
-
-    // Set up window
-
-    faceIDVbox.setVisible(false);
+    webcam = Webcam.getDefault();
+    if (webcam != null) {
+      Dimension[] supportedSizes = webcam.getViewSizes();
+      webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
+      faceIDVbox.setVisible(false);
+    } else {
+      // We do not have a webcam
+      switchToFaceIdButton.setVisible(false);
+    }
 
     loginSound = new Media(App.class.getResource("audio/Shoop.mp3").toString());
     usernameImage.setOnMousePressed(e -> checkFocus());
@@ -323,6 +362,10 @@ public class LoginPageController implements Initializable {
 
     passwordText.setScaleX(1.5);
     passwordText.setScaleY(1.5);
+
+    // Set default to credentials
+    useFaceID = true;
+    switchToFaceID();
   }
 
   @FXML
@@ -344,6 +387,23 @@ public class LoginPageController implements Initializable {
           return null;
         });
     dialog.showAndWait();
+  }
+
+  private File getImageFromWebcam() throws IOException {
+    // Get image from webcam
+    webcam.open();
+    BufferedImage image = webcam.getImage();
+
+    // Save image to PNG file
+    File imageFile =
+        new File(
+            App.class
+                .getClassLoader()
+                .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
+                .getFile());
+    ImageIO.write(image, "PNG", imageFile);
+    cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
     webcam.close();
+    return imageFile;
   }
 }

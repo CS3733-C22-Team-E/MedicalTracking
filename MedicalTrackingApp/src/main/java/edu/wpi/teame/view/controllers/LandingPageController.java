@@ -13,7 +13,6 @@ import edu.wpi.teame.view.map.Map;
 import edu.wpi.teame.view.map.MapSideView;
 import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ public class LandingPageController implements Initializable {
   private StyledTab credentialManagementPage = null;
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
+  public StyledTab homeTabPage = null;
   public StyledTab mapTabPage = null;
 
   @Override
@@ -57,14 +57,14 @@ public class LandingPageController implements Initializable {
     mainTabPane.setRotateGraphic(true);
 
     List<StyledTab> tabs = new ArrayList<>();
-    StyledTab homeTab =
+    homeTabPage =
         new StyledTab(
             "Home",
             SortOrder.First,
             "view/HomePage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/Home.png").toString()));
-    TabHoverAnimation.install(homeTab);
-    tabs.add(homeTab);
+    TabHoverAnimation.install(homeTabPage);
+    tabs.add(homeTabPage);
 
     StyledTab directoryTab =
         new StyledTab(
@@ -176,7 +176,7 @@ public class LandingPageController implements Initializable {
   }
 
   @FXML
-  public void toggleAdminDBPage() throws SQLException, NoSuchAlgorithmException {
+  public void toggleAdminDBPage() throws SQLException {
     AccessLevel currentAccess =
         ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
             .getCurrentUser()

@@ -14,6 +14,7 @@ public class Credential implements ISQLSerializable {
   private MessageDigest messageDigest;
   private boolean isDeleted = false;
   private AccessLevel accessLevel;
+
   private String username;
   private String password;
   private String imageURL;
@@ -212,7 +213,15 @@ public class Credential implements ISQLSerializable {
     return accessLevel;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
   public String getImageURL() {
+    if (imageURL == null) {
+      return "";
+    }
+
     return imageURL;
   }
 }

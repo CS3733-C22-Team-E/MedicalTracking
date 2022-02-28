@@ -130,7 +130,8 @@ public class SettingsPageController implements Initializable {
 
   @FXML
   private void changeDBConnection()
-      throws SQLException, IOException, CsvValidationException, ParseException {
+      throws SQLException, IOException, CsvValidationException, ParseException,
+          org.apache.hc.core5.http.ParseException {
     DBType dbType = DBType.valueOf(dbSwitchComboBox.getValue().toString());
     DBManager.getInstance().switchConnection(dbType);
   }
