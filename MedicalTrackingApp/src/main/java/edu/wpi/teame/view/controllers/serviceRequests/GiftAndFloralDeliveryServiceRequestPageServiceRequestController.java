@@ -179,4 +179,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     status.valueProperty().setValue(null);
     patientName.setText("");
   }
+
+  @Override
+  public void updateStyle() {}
 }

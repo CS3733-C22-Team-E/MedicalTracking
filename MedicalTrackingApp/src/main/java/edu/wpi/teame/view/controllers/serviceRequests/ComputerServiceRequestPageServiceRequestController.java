@@ -155,4 +155,7 @@ public class ComputerServiceRequestPageServiceRequestController extends ServiceR
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
   }
+
+  @Override
+  public void updateStyle() {}
 }

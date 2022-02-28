@@ -47,6 +47,11 @@ public class ColorScheme {
         new BackgroundFill(getSecondaryBackgroundColor(), new CornerRadii(10), Insets.EMPTY));
   }
 
+  public Background getForegroundAsBackground() {
+    return new Background(
+            new BackgroundFill(getForegroundColor(), new CornerRadii(10), Insets.EMPTY));
+  }
+
   public HashMap<String, Double> getColor1RGB() {
     HashMap<String, Double> rgb = new HashMap<>();
     rgb.put("r", background.getRed());

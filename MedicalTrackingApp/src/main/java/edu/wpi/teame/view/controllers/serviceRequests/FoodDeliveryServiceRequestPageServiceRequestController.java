@@ -191,4 +191,7 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
     patientName.setText("");
     food.setText("");
   }
+
+  @Override
+  public void updateStyle() {}
 }

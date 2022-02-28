@@ -159,4 +159,7 @@ public class PatientDischargeServiceRequestPageServiceRequestController
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
   }
+
+  @Override
+  public void updateStyle() {}
 }

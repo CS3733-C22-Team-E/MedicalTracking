@@ -209,4 +209,7 @@ public class MedicineDeliveryServiceRequestPageServiceRequestController
     medicineName.setText("");
     medicineQuantity.setText("");
   }
+
+  @Override
+  public void updateStyle() {}
 }

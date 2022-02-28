@@ -190,4 +190,7 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     patientName.setText("");
     religion.setText("");
   }
+
+  @Override
+  public void updateStyle() {}
 }

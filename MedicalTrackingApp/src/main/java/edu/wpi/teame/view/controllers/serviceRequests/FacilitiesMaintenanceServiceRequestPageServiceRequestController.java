@@ -159,4 +159,7 @@ public class FacilitiesMaintenanceServiceRequestPageServiceRequestController
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
   }
+
+  @Override
+  public void updateStyle() {}
 }

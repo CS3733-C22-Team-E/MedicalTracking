@@ -15,11 +15,6 @@
 }
 
 /* Basic UI Elements */
-label.title {
-  -fx-font-weight: bold;
-  -fx-font-size: 72px;
-}
-
 .header {
   -fx-font-weight: bold;
   -fx-font-size: 32px;

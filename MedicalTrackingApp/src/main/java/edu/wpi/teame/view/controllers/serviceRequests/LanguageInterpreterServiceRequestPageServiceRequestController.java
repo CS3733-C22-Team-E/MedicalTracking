@@ -195,4 +195,7 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
     patientName.setText("");
     language.valueProperty().setValue(null);
   }
+
+  @Override
+  public void updateStyle() {}
 }
