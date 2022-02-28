@@ -60,7 +60,6 @@ public class Map {
       new HashMap<>();
   //  private final HashMap<FloorType, HashSet<Radial>>
   private final ContextMenu EquipmentClicked = new ContextMenu();
-  private final ContextMenu PaneMenu = new ContextMenu();
   private final StackPane layout = new StackPane();
   private final LandingPageController appController;
   private Image backgroundImage;
