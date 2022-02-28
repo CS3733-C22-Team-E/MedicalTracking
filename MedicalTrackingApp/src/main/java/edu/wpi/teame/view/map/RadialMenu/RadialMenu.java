@@ -38,6 +38,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -211,6 +212,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.centerVisibility.set(visibility);
   }
 
+
   public RadialMenu() {}
 
   public StackPane stack = null;
@@ -274,6 +276,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
     this.centerGroup = new Group();
     this.centerGroup.getChildren().addAll(this.centerStrokeShape);
+
     this.centerGroup.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
           @Override
@@ -309,7 +312,11 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.centerGroup.addEventHandler(
         MouseEvent.MOUSE_DRAGGED,
         event -> {
-          System.out.println("Init");
+          Point2D updatedLocation =
+              stacker.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+          // System.out.println(updatedLocation.getX() + " " + updatedLocation.getY());
+          this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
+          this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
         });
 
     this.getChildren().add(this.centerGroup);
@@ -320,10 +327,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     centerGraphic
         .translateYProperty()
         .bind(this.centerStrokeShape.translateYProperty().subtract(45 / 2));
-    //    centerGraphic.setTranslateX(this.centerStrokeShape.translateXProperty().get() - 45 / 2);
-    //    centerGraphic.setTranslateY(this.centerStrokeShape. - 45 / 2);
     this.setCenterGraphic(centerGraphic);
-
     this.saveStateBeforeAnimation();
     RadialMenu.this.hideRadialMenu();
   }
