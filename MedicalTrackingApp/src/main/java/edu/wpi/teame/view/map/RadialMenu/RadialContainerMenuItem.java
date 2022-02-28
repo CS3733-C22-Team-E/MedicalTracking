@@ -43,7 +43,7 @@ public class RadialContainerMenuItem extends RadialMenuItem {
   private FadeTransition fadeIn = null;
   private FadeTransition fadeOut = null;
 
-  protected List<RadialMenuItem> items = new ArrayList<RadialMenuItem>();
+  public List<RadialMenuItem> items = new ArrayList<RadialMenuItem>();
   protected Polyline arrow = new Polyline(-5.0, -5.0, 5.0, 0.0, -5.0, 5.0, -5.0, -5.0);
 
   public RadialContainerMenuItem(final double menuSize, final Node graphic) {

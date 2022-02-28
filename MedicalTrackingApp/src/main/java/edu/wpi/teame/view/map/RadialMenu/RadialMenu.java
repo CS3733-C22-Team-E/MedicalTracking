@@ -224,7 +224,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
       final boolean clockwise,
       final CenterVisibility centerVisibility,
       final Node centerGraphic) {
-
     this.itemGroup = new Group();
     this.getChildren().add(this.itemGroup);
 
@@ -263,7 +262,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.centerStrokeShape.radiusProperty().bind(this.innerRadiusProperty());
     this.centerStrokeShape.setStroke(strokeFill);
     this.centerStrokeShape.setFill(bgFill);
-
     this.centerVisibility.addListener(this);
 
     this.strokeVisible.addListener(this);
@@ -271,8 +269,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
     this.centerGroup = new Group();
 
-    this.centerGroup.getChildren().add(this.centerStrokeShape);
-
+    // this.centerGroup.getChildren().add(this.centerStrokeShape);
+    this.centerGroup.getChildren().addAll(this.centerStrokeShape);
     this.centerGroup.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
 
@@ -298,7 +296,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
           public void handle(final MouseEvent event) {
             final boolean visible = RadialMenu.this.itemGroup.isVisible();
             if (visible) {
-              // RadialMenu.this.hideRadialMenu();
+              RadialMenu.this.hideRadialMenu();
             } else {
               RadialMenu.this.showRadialMenu();
             }
@@ -309,9 +307,12 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
     this.getChildren().add(this.centerGroup);
     this.centerGraphic = new SimpleObjectProperty<Node>(centerGraphic);
+    centerGraphic.setTranslateX(this.centerStrokeShape.getTranslateX() - 45 / 2);
+    centerGraphic.setTranslateY(this.centerStrokeShape.getTranslateY() - 45 / 2);
     this.setCenterGraphic(centerGraphic);
 
     this.saveStateBeforeAnimation();
+    RadialMenu.this.hideRadialMenu();
   }
 
   public void setOnMenuItemMouseClicked(final EventHandler<? super MouseEvent> paramEventHandler) {

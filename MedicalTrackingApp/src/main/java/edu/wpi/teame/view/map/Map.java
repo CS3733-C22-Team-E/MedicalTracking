@@ -307,12 +307,12 @@ public class Map {
     FILTER.setFitHeight(35);
     ImageView Material =
         new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
-    Material.setFitHeight(30);
-    Material.setFitWidth(30);
-    RadialMenuItem ZoomIn = new RadialMenuItem(35, ZoomIN);
-    RadialMenuItem ZoomOut = new RadialMenuItem(35, ZoomOUT);
-    RadialMenuItem Refresh = new RadialMenuItem(35, REFRESH);
-    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(35, FILTER);
+    Material.setFitHeight(45);
+    Material.setFitWidth(45);
+    RadialMenuItem ZoomIn = new RadialMenuItem(45, ZoomIN);
+    RadialMenuItem ZoomOut = new RadialMenuItem(45, ZoomOUT);
+    RadialMenuItem Refresh = new RadialMenuItem(45, REFRESH);
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
     Floor.setFitHeight(30);
@@ -321,7 +321,7 @@ public class Map {
     for (EquipmentType currEquipment : EquipmentType.values()) {
       RadialCheckMenuItem tobeadded =
           new RadialCheckMenuItem(
-              35, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
+              45, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -335,13 +335,20 @@ public class Map {
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
       floorer.setFitWidth(35);
       floorer.setFitHeight(35);
-      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false);
+      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false, Color.GREEN);
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
+      } else {
+        floor.setSelected(false);
       }
       floor.setOnMouseClicked(
           event -> {
-            floor.setSelected(!floor.isSelected());
+            FloorSwitch.items.forEach(
+                item -> {
+                  RadialCheckMenuItem i = (RadialCheckMenuItem) item;
+                  i.setSelected(false);
+                });
+            floor.setSelected(true);
             try {
               switchFloors(currFloor);
             } catch (SQLException e) {
@@ -354,13 +361,13 @@ public class Map {
         new RadialMenu(
             0,
             30,
-            90,
-            0,
+            85,
+            3,
             Color.GREY,
             Color.GREEN,
+            Color.WHITESMOKE,
             Color.PAPAYAWHIP,
-            Color.PAPAYAWHIP,
-            true,
+            false,
             RadialMenu.CenterVisibility.ALWAYS,
             Material);
     MainController.addMenuItem(ZoomIn);
