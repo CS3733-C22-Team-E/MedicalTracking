@@ -147,6 +147,15 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
+    StyledTab covidTab =
+        new StyledTab(
+            "Covid-19 Info",
+            SortOrder.ByName,
+            "view/tabs/CovidInfoPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
+    TabHoverAnimation.install(covidTab);
+    tabs.add(covidTab);
+
     StyledTab settingsTab =
         new StyledTab(
             "Settings",
