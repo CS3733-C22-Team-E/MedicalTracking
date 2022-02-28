@@ -63,6 +63,7 @@ public class PatientCodec implements Codec<Patient> {
     writer.writeInt32("_id", value.getId());
     writer.writeString("name", value.getName());
     writer.writeString("dateOfBirth", value.getDateOfBirth().toString());
+    writer.writeInt32("currentLocationID", value.getCurrentLocation().getId());
     writer.writeInt32("isDeleted", value.getIsDeleted() ? 1 : 0);
     writer.writeEndDocument();
   }

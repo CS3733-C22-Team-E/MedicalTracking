@@ -59,6 +59,8 @@ public final class MentalHealthServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  public MentalHealthServiceRequest() {}
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;

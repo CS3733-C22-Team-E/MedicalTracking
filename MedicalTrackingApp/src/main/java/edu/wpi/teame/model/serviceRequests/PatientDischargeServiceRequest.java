@@ -59,6 +59,8 @@ public final class PatientDischargeServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  public PatientDischargeServiceRequest() {}
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;
