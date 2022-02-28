@@ -362,6 +362,10 @@ public class LoginPageController implements Initializable {
 
     passwordText.setScaleX(1.5);
     passwordText.setScaleY(1.5);
+
+    // Set default to credentials
+    useFaceID = true;
+    switchToFaceID();
   }
 
   @FXML

@@ -23,7 +23,7 @@ public final class CredentialManager extends ObjectManager<Credential> {
   private Credential currentUser;
 
   public CredentialManager() {
-    super(DataBaseObjectType.Credential, 0);
+    super(DataBaseObjectType.Credential, 5);
     faceRecognizer = new FacialRecognitionManager();
   }
 
@@ -37,7 +37,7 @@ public final class CredentialManager extends ObjectManager<Credential> {
       index++;
     }
 
-    Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.4);
+    Face similarFace = faceRecognizer.findSimilar(userFace, masterFaces, 0.5);
     if (similarFace == null || similarFace.getImageURL() == null) {
       return false;
     }

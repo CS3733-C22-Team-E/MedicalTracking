@@ -37,9 +37,6 @@ dependencies {
     )
     implementation 'org.jetbrains:annotations:20.1.0'
 
-    // https://mvnrepository.com/artifact/com.azure/azure-storage-blob
-    implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.0.0'
-
     implementation(
             files("src/libraries/animal-sniffer-annotations-1.14.jar"),
             files("src/libraries/azure-core-1.25.0.jar"),

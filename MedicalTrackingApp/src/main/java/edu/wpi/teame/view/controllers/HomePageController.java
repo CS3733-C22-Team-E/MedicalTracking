@@ -1,7 +1,5 @@
 package edu.wpi.teame.view.controllers;
 
-// import com.opencsv.exceptions.CsvValidationException;
-
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
