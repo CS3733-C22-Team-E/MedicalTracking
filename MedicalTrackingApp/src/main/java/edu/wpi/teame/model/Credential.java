@@ -22,22 +22,28 @@ public class Credential implements ISQLSerializable {
   private int id;
 
   public Credential(
-      int id, String salt, String username, String password, AccessLevel accessLevel) {
+      int id,
+      String salt,
+      String username,
+      String password,
+      String imageURL,
+      AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.username = username;
     this.salt = stringToBytes(salt);
     this.accessLevel = accessLevel;
     this.password = hashPassword(password, this.salt);
   }
 
-  public Credential(int id, String username, String password, AccessLevel accessLevel) {
+  public Credential(
+      int id, String username, String password, String imageURL, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.salt = createSalt();
     this.username = username;
     this.accessLevel = accessLevel;
@@ -81,17 +87,17 @@ public class Credential implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return new StringBuilder()
-        .append("salt = ")
+        .append("salt = '")
         .append(bytesToString(salt))
-        .append("username = ")
+        .append("', username = '")
         .append(username)
-        .append("password = ")
+        .append("', password = '")
         .append(password)
-        .append("accessLevel = ")
+        .append("', accessLevel = ")
         .append(accessLevel.ordinal())
-        .append("imageURL = ")
+        .append(", imageURL = '")
         .append(imageURL)
-        .append(" WHERE id = ")
+        .append("' WHERE id = ")
         .append(id)
         .toString();
   }
@@ -223,5 +229,25 @@ public class Credential implements ISQLSerializable {
     }
 
     return imageURL;
+  }
+
+  public void setAccessLevel(AccessLevel accessLevel) {
+    this.accessLevel = accessLevel;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = hashPassword(password, this.salt);
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 }
