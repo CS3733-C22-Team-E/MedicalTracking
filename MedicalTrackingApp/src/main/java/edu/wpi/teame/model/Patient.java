@@ -44,6 +44,8 @@ public class Patient implements ISQLSerializable {
         (Location) lineData.getDBObject(DataBaseObjectType.Location, "currentLocation");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public Patient() {}
 
   @Override

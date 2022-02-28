@@ -52,6 +52,8 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
     this.patient = patient;
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public MedicineDeliveryServiceRequest() {
     dbType = DataBaseObjectType.MedicineDeliverySR;
   }

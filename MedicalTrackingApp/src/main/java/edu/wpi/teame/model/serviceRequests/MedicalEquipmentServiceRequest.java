@@ -57,6 +57,8 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
     this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public MedicalEquipmentServiceRequest() {
     dbType = DataBaseObjectType.MedicalEquipmentSR;
   }

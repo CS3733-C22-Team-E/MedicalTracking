@@ -92,6 +92,8 @@ public class ServiceRequest implements ISQLSerializable {
     this.dbType = type;
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
   public ServiceRequest() {}
 
   @Override

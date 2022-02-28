@@ -37,6 +37,8 @@ public class Employee implements ISQLSerializable {
     this.name = lineData.getColumnString("name");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
   public Employee() {}
 
   @Override

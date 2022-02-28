@@ -65,6 +65,8 @@ public class Credential implements ISQLSerializable {
     this.accessLevel = AccessLevel.values()[resultSet.getInt("accessLevel")];
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
   public Credential() {}
 
   @Override

@@ -66,6 +66,8 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
     this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public LanguageInterpreterServiceRequest() {
     dbType = DataBaseObjectType.LanguageInterpreterSR;
   }

@@ -62,6 +62,8 @@ public class Location implements ISQLSerializable, GraphNode {
     this.building = BuildingType.valueOf(lineData.getColumnString("building"));
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
   public Location() {}
 
   @Override

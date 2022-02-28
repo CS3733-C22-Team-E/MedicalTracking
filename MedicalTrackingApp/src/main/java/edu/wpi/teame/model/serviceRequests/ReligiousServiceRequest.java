@@ -64,6 +64,8 @@ public final class ReligiousServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public ReligiousServiceRequest() {
     dbType = DataBaseObjectType.ReligiousSR;
   }

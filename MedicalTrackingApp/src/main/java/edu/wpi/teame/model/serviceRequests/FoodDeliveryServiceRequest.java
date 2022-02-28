@@ -64,6 +64,8 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     this.food = lineData.getColumnString("food");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public FoodDeliveryServiceRequest() {
     dbType = DataBaseObjectType.FoodDeliverySR;
   }

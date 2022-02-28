@@ -60,6 +60,8 @@ public final class DeceasedBodyRemovalServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
   public DeceasedBodyRemovalServiceRequest() {
     dbType = DataBaseObjectType.DeceasedBodySR;
   }
