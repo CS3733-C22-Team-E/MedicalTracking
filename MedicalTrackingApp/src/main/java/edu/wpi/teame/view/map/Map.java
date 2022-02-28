@@ -313,33 +313,43 @@ public class Map {
     RadialMenuItem ZoomOut = new RadialMenuItem(35, ZoomOUT);
     RadialMenuItem Refresh = new RadialMenuItem(35, REFRESH);
     RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(35, FILTER);
-    //RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Material);
+    ImageView Floor =
+        new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
+    Floor.setFitHeight(30);
+    Floor.setFitWidth(30);
+    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
       RadialCheckMenuItem tobeadded =
-          new RadialCheckMenuItem(35, new ImageView(TypeGraphics.get(currEquipment)), true);
+          new RadialCheckMenuItem(
+              35, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
+            tobeadded.setSelected(!tobeadded.isSelected());
           });
 
       FilterCheckBoxes.addMenuItem(tobeadded);
     }
-//    for (FloorType currFloor : FloorType.values()) {
-//      ImageView floorer =
-//          new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
-//      floorer.setFitWidth(35);
-//      floorer.setFitHeight(35);
-//      RadialMenuItem floor = new RadialMenuItem(35, currFloor.toString(), floorer);
-//      floor.setOnMouseClicked(
-//          event -> {
-//            try {
-//              switchFloors(currFloor);
-//            } catch (SQLException e) {
-//              e.printStackTrace();
-//            }
-//          });
-//      FloorSwitch.addMenuItem(floor);
-//    }
+    for (FloorType currFloor : FloorType.values()) {
+      ImageView floorer =
+          new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
+      floorer.setFitWidth(35);
+      floorer.setFitHeight(35);
+      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false);
+      if (currFloor == FloorType.ThirdFloor) {
+        floor.setSelected(true);
+      }
+      floor.setOnMouseClicked(
+          event -> {
+            floor.setSelected(!floor.isSelected());
+            try {
+              switchFloors(currFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          });
+      FloorSwitch.addMenuItem(floor);
+    }
     RadialMenu MainController =
         new RadialMenu(
             0,
@@ -357,7 +367,7 @@ public class Map {
     MainController.addMenuItem(ZoomOut);
     MainController.addMenuItem(Refresh);
     MainController.addMenuItem(FilterCheckBoxes);
-    //MainController.addMenuItem(FloorSwitch);
+    MainController.addMenuItem(FloorSwitch);
     return MainController;
   }
 

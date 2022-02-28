@@ -85,13 +85,13 @@ public class RadialCheckMenuItem extends RadialMenuItem {
   }
 
   @Override
-  void setSelected(final boolean selected) {
+  public void setSelected(final boolean selected) {
     this.selected = selected;
     this.redraw();
   }
 
   @Override
-  boolean isSelected() {
+  public boolean isSelected() {
     return this.selected;
   }
 }
