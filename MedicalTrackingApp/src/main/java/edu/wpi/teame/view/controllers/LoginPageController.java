@@ -23,16 +23,16 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.*;
+import javafx.scene.image.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -54,10 +54,15 @@ public class LoginPageController implements Initializable {
   @FXML private Text passwordText;
   @FXML private Line usernameFillLine;
   @FXML private Line passwordFillLine;
+  @FXML private Line usernameBackgroundLine;
+  @FXML private Line passwordBackgroundLine;
   @FXML private ImageView usernameImage;
   @FXML private ImageView passwordImage;
   @FXML private ImageView icon;
   @FXML private ImageView icon1;
+  @FXML private ImageView iconHole;
+  @FXML private Text title;
+  @FXML private GridPane mainGridPane;
 
   // Face ID Stack Panes
   @FXML private StackPane imageViewStackPane;
@@ -354,6 +359,8 @@ public class LoginPageController implements Initializable {
       e.printStackTrace();
     }
 
+    applyStyle();
+
     // Set up face id
     webcam = Webcam.getDefault();
     if (webcam != null) {
@@ -418,5 +425,18 @@ public class LoginPageController implements Initializable {
     cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
     webcam.close();
     return imageFile;
+  }
+
+  private void applyStyle() {
+    Background colorBG =
+        new Background(
+            new BackgroundFill(
+                App.getColorScheme().getColor1(), new CornerRadii(10), Insets.EMPTY));
+    credentialLogInVbox.setBackground(colorBG);
+    usernameFillLine.setStroke(App.getColorScheme().getColor2());
+    passwordFillLine.setStroke(App.getColorScheme().getColor2());
+    usernameBackgroundLine.setStroke(App.getColorScheme().getColor2());
+    passwordBackgroundLine.setStroke(App.getColorScheme().getColor2());
+    // TODO overlay images or just reload with different ones if we have to
   }
 }

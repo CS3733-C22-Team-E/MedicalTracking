@@ -8,9 +8,14 @@
 
 /* UI Specific Elements */
 .title-background {
-  -fx-background-image: url("../images/hospitalBackgroundImage.png");
+  -fx-background-image: url("../images/hospitalBackgroundImageSepia.png");
   -fx-background-position: top left;
   -fx-background-repeat: no-repeat;
-  -fx-background-color: #ffffff;
   -fx-background-size: cover;
+}
+
+.button {
+  -fx-background-color: #1DB954;
+  -fx-background-radius: 20;
+  -fx-text-fill: white;
 }

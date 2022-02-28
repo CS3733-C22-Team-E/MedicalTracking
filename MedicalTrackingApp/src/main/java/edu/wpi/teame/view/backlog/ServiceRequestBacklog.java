@@ -3,6 +3,7 @@ package edu.wpi.teame.view.backlog;
 import static javafx.application.Application.launch;
 
 import com.jfoenix.controls.JFXCheckBox;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.Employee;
@@ -106,9 +107,17 @@ public class ServiceRequestBacklog {
     title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    tBox.setBackground(
-        new Background(
-            new BackgroundFill(App.getColorScheme().getColor2(), CornerRadii.EMPTY, Insets.EMPTY)));
+    // This is an example of pulling color from colorscheme programmatically
+    // We will replace this grandient. This is just a test
+    HashMap<String, Double> color1 = App.getColorScheme().getColor1RGB();
+    HashMap<String, Double> color2 = App.getColorScheme().getColor2RGB();
+    Stop[] stops =
+        new Stop[] {
+          new Stop(0, Color.color(color1.get("r"), color1.get("g"), color1.get("b"))),
+          new Stop(1, Color.color(color2.get("r"), color2.get("g"), color2.get("b")))
+        };
+    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
