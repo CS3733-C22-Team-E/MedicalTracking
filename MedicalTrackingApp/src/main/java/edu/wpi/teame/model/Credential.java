@@ -22,22 +22,28 @@ public class Credential implements ISQLSerializable {
   private int id;
 
   public Credential(
-      int id, String salt, String username, String password, AccessLevel accessLevel) {
+      int id,
+      String salt,
+      String username,
+      String password,
+      String imageURL,
+      AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.username = username;
     this.salt = stringToBytes(salt);
     this.accessLevel = accessLevel;
     this.password = hashPassword(password, this.salt);
   }
 
-  public Credential(int id, String username, String password, AccessLevel accessLevel) {
+  public Credential(
+      int id, String username, String password, String imageURL, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.salt = createSalt();
     this.username = username;
     this.accessLevel = accessLevel;

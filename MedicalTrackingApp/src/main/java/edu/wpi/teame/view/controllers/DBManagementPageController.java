@@ -24,7 +24,10 @@ public class DBManagementPageController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     DataBaseObjectType[] dbTables = DataBaseObjectType.values();
-    tableComboBox.setItems(FXCollections.observableArrayList(dbTables));
+    ArrayList<DataBaseObjectType> dbTablesList = new ArrayList<>(List.of(dbTables));
+    dbTablesList.remove(DataBaseObjectType.Credential); // Remove the credentials from this page
+
+    tableComboBox.setItems(FXCollections.observableArrayList(dbTablesList));
 
     resultView.setCellFactory(
         lv ->

@@ -87,9 +87,9 @@ public final class CredentialManager extends ObjectManager<Credential> {
     return resultSet.next();
   }
 
-  public String uploadImage(File imageFile)
+  public String uploadImage(File imageFile, boolean masterImage)
       throws IOException, URISyntaxException, InvalidKeyException, StorageException {
-    return faceRecognizer.uploadImage(imageFile);
+    return faceRecognizer.uploadImage(imageFile, masterImage);
   }
 
   private String getSalt(String username) throws SQLException {

@@ -115,7 +115,7 @@ public class LoginPageController implements Initializable {
     // Run log in
     boolean loggedIn = false;
     if (useFaceID && imageFile != null) {
-      String imageURL = credentialManager.uploadImage(imageFile);
+      String imageURL = credentialManager.uploadImage(imageFile, false);
       loggedIn = credentialManager.logIn(imageURL);
     } else if (!username.isEmpty() && !password.isEmpty()) {
       loggedIn = credentialManager.logIn(username, password);
