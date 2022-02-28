@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.model.Credential;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 
 public class CredentialManagementPageController implements Initializable {
+  private AddCredentialPopupPageController addCredentialController;
   public static Stage addCredentialStage = null;
   public Scene addCredentialScene = null;
 
@@ -33,8 +35,10 @@ public class CredentialManagementPageController implements Initializable {
   @Override
   @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
-    addCredentialScene =
-        new Scene(FXMLLoader.load(App.class.getResource("view/tabs/AddCredentialPopupPage.fxml")));
+    FXMLLoader loader =
+        new FXMLLoader(App.class.getResource("view/tabs/AddCredentialPopupPage.fxml"));
+    addCredentialScene = new Scene(loader.load());
+    addCredentialController = loader.getController();
 
     resultView.setCellFactory(
         lv ->
@@ -77,9 +81,24 @@ public class CredentialManagementPageController implements Initializable {
   }
 
   @FXML
+  public void editCredentialButtonClick() {
+    int selectedIndex = resultView.getSelectionModel().getSelectedIndex();
+    Credential credential = (Credential) resultView.getItems().get(selectedIndex);
+    addCredentialController.startEditCredential(credential);
+
+    addCredentialStage = new Stage();
+    addCredentialStage.setTitle("Add Credential");
+    addCredentialStage.setScene(addCredentialScene);
+
+    addCredentialStage.initModality(Modality.WINDOW_MODAL);
+    addCredentialStage.initStyle(StageStyle.UNDECORATED);
+    addCredentialStage.show();
+  }
+
+  @FXML
   public void addCredentialButtonClick() {
     addCredentialStage = new Stage();
-    addCredentialStage.setTitle("Test");
+    addCredentialStage.setTitle("Add Credential");
     addCredentialStage.setScene(addCredentialScene);
 
     addCredentialStage.initModality(Modality.WINDOW_MODAL);

@@ -104,15 +104,13 @@ public class FacialRecognitionManager {
       throws IOException, URISyntaxException, StorageException, InvalidKeyException {
     CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageConnectionString);
     CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
-    CloudBlobContainer container = blobClient.getContainerReference("login-images");
+
+    String containerName = masterImage ? "fr-images" : "login-images";
+    CloudBlobContainer container = blobClient.getContainerReference(containerName);
 
     String imageName = UUID.randomUUID() + ".png";
-    String imageURL = "https://cs3733storage.blob.core.windows.net/";
-    if (masterImage) {
-      imageURL += "fr-images/" + imageName;
-    } else{
-      imageURL += "login-images/" + imageName;
-    }
+    String imageURL =
+        "https://cs3733storage.blob.core.windows.net/" + containerName + "/" + imageName;
 
     container.createIfNotExists(
         BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());

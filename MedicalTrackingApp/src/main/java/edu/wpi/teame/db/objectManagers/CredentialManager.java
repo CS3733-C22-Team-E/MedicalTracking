@@ -56,7 +56,7 @@ public final class CredentialManager extends ObjectManager<Credential> {
     String salt = getSalt(username);
 
     // Check credential log in
-    Credential credential = new Credential(0, salt, username, password, AccessLevel.Staff);
+    Credential credential = new Credential(0, salt, username, password, "", AccessLevel.Staff);
     List<Credential> credentialList = forceGetAll();
 
     for (Credential cred : credentialList) {

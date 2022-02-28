@@ -87,17 +87,17 @@ public class Credential implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return new StringBuilder()
-        .append("salt = ")
+        .append("salt = '")
         .append(bytesToString(salt))
-        .append("username = ")
+        .append("', username = '")
         .append(username)
-        .append("password = ")
+        .append("', password = '")
         .append(password)
-        .append("accessLevel = ")
+        .append("', accessLevel = ")
         .append(accessLevel.ordinal())
-        .append("imageURL = ")
+        .append(", imageURL = '")
         .append(imageURL)
-        .append(" WHERE id = ")
+        .append("' WHERE id = ")
         .append(id)
         .toString();
   }
@@ -229,5 +229,25 @@ public class Credential implements ISQLSerializable {
     }
 
     return imageURL;
+  }
+
+  public void setAccessLevel(AccessLevel accessLevel) {
+    this.accessLevel = accessLevel;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = hashPassword(password, this.salt);
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 }
