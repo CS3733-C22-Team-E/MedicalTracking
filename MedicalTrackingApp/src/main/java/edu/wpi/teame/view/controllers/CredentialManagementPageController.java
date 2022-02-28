@@ -7,6 +7,8 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.Credential;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,14 +20,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
+import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 
-public class CredentialManagementPageController implements Initializable {
+public class CredentialManagementPageController implements Initializable, IStyleable {
   private AddCredentialPopupPageController addCredentialController;
   public static Stage addCredentialStage = null;
+  private Background defaultBackground = null;
   public Scene addCredentialScene = null;
 
   @FXML JFXListView<ISQLSerializable> resultView;
@@ -39,25 +43,6 @@ public class CredentialManagementPageController implements Initializable {
         new FXMLLoader(App.class.getResource("view/tabs/AddCredentialPopupPage.fxml"));
     addCredentialScene = new Scene(loader.load());
     addCredentialController = loader.getController();
-
-    resultView.setCellFactory(
-        lv ->
-            new ListCell<ISQLSerializable>() {
-              @Override
-              protected void updateItem(ISQLSerializable dbObject, boolean empty) {
-                super.updateItem(dbObject, empty);
-                if (empty) {
-                  setStyle("");
-                  setText("");
-                  return;
-                }
-
-                if (dbObject.getIsDeleted()) {
-                  setStyle("-fx-background-color: #9C9C9C");
-                }
-                setText(dbObject.toString());
-              }
-            });
 
     updateListView();
   }
@@ -128,5 +113,34 @@ public class CredentialManagementPageController implements Initializable {
   public void refreshListView() throws SQLException {
     DBManager.getInstance().getManager(DataBaseObjectType.Credential).forceGetAll();
     updateListView();
+  }
+
+  @Override
+  public void updateStyle() {
+    resultView.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+    resultView.setCellFactory(
+        lv ->
+            new ListCell<ISQLSerializable>() {
+              @Override
+              protected void updateItem(ISQLSerializable dbObject, boolean empty) {
+                super.updateItem(dbObject, empty);
+                if (defaultBackground == null) {
+                  defaultBackground = getBackground();
+                }
+
+                if (empty) {
+                  setBackground(defaultBackground);
+                  setText("");
+                  return;
+                }
+
+                if (dbObject.getIsDeleted()) {
+                  setBackground(
+                      StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+                  setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+                }
+                setText(dbObject.toString());
+              }
+            });
   }
 }

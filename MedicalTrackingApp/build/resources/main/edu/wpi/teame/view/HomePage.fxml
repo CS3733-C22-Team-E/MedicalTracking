@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,22 +10,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="anchor-pane" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.HomePageController">
+<AnchorPane stylesheets="@../css/mainStyle.css"
+   xmlns="http://javafx.com/javafx/17"
+   xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.HomePageController">
    <children>
       <GridPane layoutY="7.0" prefHeight="400.0" prefWidth="600.0" styleClass="title-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+            <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="1.7976931348623157E308" percentWidth="30.0" />
             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+            <ColumnConstraints fillWidth="false" hgrow="NEVER" maxWidth="1.7976931348623157E308" percentWidth="30.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints vgrow="ALWAYS" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-            <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" percentHeight="5.0" vgrow="NEVER" />
+            <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" percentHeight="50.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="1.7976931348623157E308" percentHeight="25.0" vgrow="ALWAYS" />
+            <RowConstraints fillHeight="false" percentHeight="20.0" vgrow="NEVER" />
          </rowConstraints>
          <children>
-            <VBox fx:id="welcomeBox" alignment="TOP_CENTER" prefHeight="400.0" prefWidth="100.0" GridPane.columnIndex="1">
+            <VBox fx:id="welcomeBox" alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
                <children>
                   <Label fx:id="welcomeLabel" styleClass="text" text="Welcome, @" textAlignment="CENTER" textFill="WHITE">
                      <font>
@@ -33,23 +36,30 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="titleText" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text=" Medical Tracker " textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                  <Label fx:id="titleText" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-font-size: 72;" text=" Medical Tracker " VBox.vgrow="ALWAYS">
                      <font>
                         <Font name="System Bold" size="72.0" />
-                     </font></Label>
+                     </font>
+                  </Label>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#logout" onMouseClicked="#logout" text="Log Out" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#logout" onMouseClicked="#logout" text="Log Out" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#openAboutPopup" onMouseClicked="#openAboutPopup" text="About Us" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openAboutPopup" onMouseClicked="#openAboutPopup" text="About Us" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </Button>
          </children>
       </GridPane>
