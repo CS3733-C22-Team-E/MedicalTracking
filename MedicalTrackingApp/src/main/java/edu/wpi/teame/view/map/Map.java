@@ -45,6 +45,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.util.Pair;
+import jfxtras.scene.menu.CirclePopupMenu;
 
 public class Map {
   private final HashMap<FloorType, Image> Images = new HashMap<>();
@@ -130,7 +131,9 @@ public class Map {
   }
 
   public MenuItem createEquipmentMenuItem(EquipmentType equiptype) {
-    MenuItem retval = new MenuItem(equiptype.toString());
+    MenuItem retval = new MenuItem();
+    retval.setGraphic(new ImageView(TypeGraphics.get(equiptype)));
+
     retval.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -215,11 +218,11 @@ public class Map {
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
-    for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
-      layout.getChildren().add(icon.getButton());
-    }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getIcon());
+    }
+    for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
+      layout.getChildren().add(icon.getButton());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
       if (!layout.getChildren().contains(icon.progressIndicator)) {
@@ -414,24 +417,20 @@ public class Map {
     }
     System.out.println("Icons Graphics Load");
     // Creating OnClickPane Menu
-    PaneMenu.getStyleClass().add("combo-box");
-    for (EquipmentType currEquipment : EquipmentType.values()) {
-      PaneMenu.getItems().add(createEquipmentMenuItem(currEquipment));
-    }
     // Creating Equipment Icon Pressed
-    EquipmentClicked.getStyleClass().add("combo-box");
-    MenuItem deleteMenuItem = new MenuItem("Delete");
-    deleteMenuItem.setOnAction(
-        event -> {
-          deleteMapIcon(lastPressed);
-          updateLayoutChildren();
-        });
-    MenuItem addMenuItem = new MenuItem("Edit");
-    addMenuItem.setOnAction(
-        event -> {
-          showEditLastPressedDialog();
-        });
-    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
+    //    EquipmentClicked.getStyleClass().add("combo-box");
+    //    MenuItem deleteMenuItem = new MenuItem("Delete");
+    //    deleteMenuItem.setOnAction(
+    //        event -> {
+    //          deleteMapIcon(lastPressed);
+    //          updateLayoutChildren();
+    //        });
+    //    MenuItem addMenuItem = new MenuItem("Edit");
+    //    addMenuItem.setOnAction(
+    //        event -> {
+    //          showEditLastPressedDialog();
+    //        });
+    //    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
     updateLayoutChildren();
     layout.setScaleX(.5);
     layout.setScaleY(.5);
@@ -458,15 +457,6 @@ public class Map {
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
     scroll.setVvalue(scroll.getVmin() + (scroll.getVmax() - scroll.getVmin()) / 2);
-    //    layout.setOnMouseReleased(
-    //        event -> {
-    //          if (event.getButton() == MouseButton.SECONDARY) {
-    //            // In Pixel Coordinates
-    //            lastPressedPoint = layout.sceneToLocal(event.getSceneX(), event.getSceneY());
-    //            scroll.setContextMenu(PaneMenu);
-    //            PaneMenu.show(scroll, event.getScreenX(), event.getScreenY());
-    //          }
-    //        });
     System.out.println("Init Complete");
     Navigation = new PathFinder(layout, backgroundImage.getWidth(), backgroundImage.getHeight());
     return staticWrapper;
@@ -775,6 +765,10 @@ public class Map {
     locationsByFloor.get(location.getFloor()).add(newDot);
     Tooltip t = new Tooltip(location.getLongName() + " ID: " + location.getId());
     Tooltip.install(newDot.getIcon(), t);
+    CirclePopupMenu PaneMenu = new CirclePopupMenu(newDot.getIcon(), null);
+    for (EquipmentType currEquipment : EquipmentType.values()) {
+      PaneMenu.getItems().add(createEquipmentMenuItem(currEquipment));
+    }
     updateLayoutChildren();
     newDot
         .getIcon()
@@ -785,7 +779,7 @@ public class Map {
                 System.out.println("Node Pressed: " + location.getId());
                 if (event.getButton() == MouseButton.SECONDARY) {
                   lastPressedLocation = location;
-                  PaneMenu.show(newDot.getIcon(), event.getScreenX(), event.getScreenY());
+                  PaneMenu.show(event.getScreenX(), event.getScreenY());
                 } else if (PathFindingLocations.size() < 2) {
                   newDot.getIcon().setFill(Color.BLUE);
                   PathFindingLocations.add(newDot);
