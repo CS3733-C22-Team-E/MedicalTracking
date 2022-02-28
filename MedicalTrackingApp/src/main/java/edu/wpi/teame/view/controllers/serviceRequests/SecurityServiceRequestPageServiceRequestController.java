@@ -24,12 +24,15 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class SecurityServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
+  @FXML private GridPane gridPane;
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
@@ -38,6 +41,14 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
+  @FXML private Label title;
+  @FXML private Label locationT;
+  @FXML private Label assigneeT;
+  @FXML private Label priorityT;
+  @FXML private Label statusT;
+  @FXML private Label additionalInfoT;
+  @FXML private Label requestDateT;
+
   private boolean hasRun = false;
 
   @Override
@@ -159,12 +170,35 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
 
   @Override
   public void updateStyle() {
-    additionalInfo.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    priority.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    status.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    submitButton.setBackground(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    locationT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    assigneeT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    priorityT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    statusT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    requestDateT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    additionalInfoT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    title.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+
+    gridPane.setBackground(StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+    mainAnchorPane.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+
+    requestDate.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    locationText.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    assignee.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    additionalInfo.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    priority.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    status.setBackground(StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+
+    submitButton.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
     submitButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
     clearButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setBackground(StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+    clearButton.setBackground(
+        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
   }
 }

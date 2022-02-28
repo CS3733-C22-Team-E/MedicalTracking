@@ -49,7 +49,7 @@ public class ColorScheme {
 
   public Background getForegroundAsBackground() {
     return new Background(
-            new BackgroundFill(getForegroundColor(), new CornerRadii(10), Insets.EMPTY));
+        new BackgroundFill(getForegroundColor(), new CornerRadii(10), Insets.EMPTY));
   }
 
   public HashMap<String, Double> getColor1RGB() {
