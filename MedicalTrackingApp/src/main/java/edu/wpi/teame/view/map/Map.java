@@ -21,6 +21,10 @@ import edu.wpi.teame.view.map.Astar.MapIntegration.PathFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
 import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
+import edu.wpi.teame.view.map.RadialMenu.RadialCheckMenuItem;
+import edu.wpi.teame.view.map.RadialMenu.RadialContainerMenuItem;
+import edu.wpi.teame.view.map.RadialMenu.RadialMenu;
+import edu.wpi.teame.view.map.RadialMenu.RadialMenuItem;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -284,6 +288,79 @@ public class Map {
     return zoomInButton;
   }
 
+  public RadialMenu createMainController() {
+    Image zoomIn = new Image(getImageResource("images/Icons/ZoomIn.png"));
+    Image zoomOut = new Image(getImageResource("images/Icons/ZoomOut.png"));
+    Image refresh = new Image(getImageResource("images/Icons/RefreshIcon.png"));
+    Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
+    ImageView ZoomIN = new ImageView(zoomIn);
+    ZoomIN.setFitWidth(35);
+    ZoomIN.setFitHeight(35);
+    ImageView ZoomOUT = new ImageView(zoomOut);
+    ZoomOUT.setFitHeight(35);
+    ZoomOUT.setFitWidth(35);
+    ImageView REFRESH = new ImageView(refresh);
+    REFRESH.setFitHeight(35);
+    REFRESH.setFitWidth(35);
+    ImageView FILTER = new ImageView(FilterIcon);
+    FILTER.setFitWidth(35);
+    FILTER.setFitHeight(35);
+    ImageView Material =
+        new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
+    Material.setFitHeight(30);
+    Material.setFitWidth(30);
+    RadialMenuItem ZoomIn = new RadialMenuItem(35, ZoomIN);
+    RadialMenuItem ZoomOut = new RadialMenuItem(35, ZoomOUT);
+    RadialMenuItem Refresh = new RadialMenuItem(35, REFRESH);
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(35, FILTER);
+    //RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Material);
+    for (EquipmentType currEquipment : EquipmentType.values()) {
+      RadialCheckMenuItem tobeadded =
+          new RadialCheckMenuItem(35, new ImageView(TypeGraphics.get(currEquipment)), true);
+      tobeadded.setOnMouseClicked(
+          event -> {
+            filter(currEquipment);
+          });
+
+      FilterCheckBoxes.addMenuItem(tobeadded);
+    }
+//    for (FloorType currFloor : FloorType.values()) {
+//      ImageView floorer =
+//          new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
+//      floorer.setFitWidth(35);
+//      floorer.setFitHeight(35);
+//      RadialMenuItem floor = new RadialMenuItem(35, currFloor.toString(), floorer);
+//      floor.setOnMouseClicked(
+//          event -> {
+//            try {
+//              switchFloors(currFloor);
+//            } catch (SQLException e) {
+//              e.printStackTrace();
+//            }
+//          });
+//      FloorSwitch.addMenuItem(floor);
+//    }
+    RadialMenu MainController =
+        new RadialMenu(
+            0,
+            30,
+            90,
+            0,
+            Color.GREY,
+            Color.GREEN,
+            Color.PAPAYAWHIP,
+            Color.PAPAYAWHIP,
+            true,
+            RadialMenu.CenterVisibility.ALWAYS,
+            Material);
+    MainController.addMenuItem(ZoomIn);
+    MainController.addMenuItem(ZoomOut);
+    MainController.addMenuItem(Refresh);
+    MainController.addMenuItem(FilterCheckBoxes);
+    //MainController.addMenuItem(FloorSwitch);
+    return MainController;
+  }
+
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -450,7 +527,8 @@ public class Map {
             createZoomInButton(),
             createZoomOutButton(),
             createFloorSwitcher(),
-            createRefreshButton());
+            createRefreshButton(),
+            createMainController());
     staticWrapper.getChildren().addAll(createFilterCheckBoxes());
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
