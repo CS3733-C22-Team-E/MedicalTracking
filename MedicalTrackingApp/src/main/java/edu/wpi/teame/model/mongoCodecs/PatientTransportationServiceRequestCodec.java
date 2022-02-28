@@ -20,22 +20,22 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
-public class InternalPatientTransportationServiceRequestCodec
+public class PatientTransportationServiceRequestCodec
     implements Codec<PatientTransportationServiceRequest> {
 
   @Override
   public PatientTransportationServiceRequest decode(
       BsonReader reader, DecoderContext decoderContext) {
-    //Creates empty Object and sets fields along the way
+    // Creates empty Object and sets fields along the way
     PatientTransportationServiceRequest serviceRequest = new PatientTransportationServiceRequest();
-    serviceRequest.setDbType(DataBaseObjectType.InternalPatientTransferSR);
+    serviceRequest.setDbType(DataBaseObjectType.ExternalPatientSR);
 
-    //places cursor at the beginning of the BSON reader
+    // places cursor at the beginning of the BSON reader
     reader.readStartDocument();
     SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
-    //Reader has the name of keys(columns)
-    //Checks to see what the name is and sets the value in the object properly
+    // Reader has the name of keys(columns)
+    // Checks to see what the name is and sets the value in the object properly
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
       if (fieldName.equals("_id")) {
@@ -64,7 +64,7 @@ public class InternalPatientTransportationServiceRequestCodec
         }
       } else if (fieldName.equals("openDate")) {
         String openDate = reader.readString();
-        Date date;
+        java.util.Date date;
         try {
           date = sfd.parse(openDate);
         } catch (ParseException e) {
@@ -75,7 +75,7 @@ public class InternalPatientTransportationServiceRequestCodec
         serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("closeDate")) {
         String closeDate = reader.readString();
-        Date date;
+        java.util.Date date;
         try {
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
@@ -94,7 +94,7 @@ public class InternalPatientTransportationServiceRequestCodec
         serviceRequest.setPriority(ServiceRequestPriority.values()[reader.readInt32()]);
       } else if (fieldName.equals("requestDate")) {
         String requestDate = reader.readString();
-        Date date;
+        java.util.Date date;
         try {
           date = sfd.parse(requestDate);
         } catch (ParseException e) {
@@ -140,7 +140,7 @@ public class InternalPatientTransportationServiceRequestCodec
       }
     }
 
-    //closes reader
+    // closes reader
     reader.readEndDocument();
 
     return serviceRequest;
@@ -149,7 +149,7 @@ public class InternalPatientTransportationServiceRequestCodec
   @Override
   public void encode(
       BsonWriter writer, PatientTransportationServiceRequest value, EncoderContext encoderContext) {
-    //Creates a document on the writer and sets each key value pair we're storing
+    // Creates a document on the writer and sets each key value pair we're storing
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeInt32("locationID", value.getLocation().getId());

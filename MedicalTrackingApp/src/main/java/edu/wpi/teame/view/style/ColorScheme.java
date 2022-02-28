@@ -11,10 +11,8 @@ public class ColorScheme {
   private final Color color1, color2;
 
   public ColorScheme(String schemeName, Color color1, Color color2) {
-    this.mainCSS =
-        new File(App.class.getResource("css/schemes/" + schemeName + "Main.css").toString());
-    this.loginCSS =
-        new File(App.class.getResource("css/schemes/" + schemeName + "Login.css").toString());
+    this.mainCSS = new File(App.class.getResource("css/schemes/" + "mainBackup.css").toString());
+    this.loginCSS = new File(App.class.getResource("css/schemes/" + "loginBackup.css").toString());
     this.color1 = color1;
     this.color2 = color2;
   }

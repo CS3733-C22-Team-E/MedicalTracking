@@ -61,7 +61,9 @@ public final class PatientDischargeServiceRequest extends ServiceRequest {
 
   // in order for a Codec registry to work properly, this constructor needs to exist
   // for now, it only sets dbType
-  public PatientDischargeServiceRequest() {dbType = DataBaseObjectType.PatientDischargeSR;}
+  public PatientDischargeServiceRequest() {
+    dbType = DataBaseObjectType.PatientDischargeSR;
+  }
 
   @Override
   public String getSQLUpdateString() {

@@ -18,14 +18,14 @@ import org.bson.codecs.EncoderContext;
 public class PatientCodec implements Codec<Patient> {
   @Override
   public Patient decode(BsonReader reader, DecoderContext decoderContext) {
-    //Creates empty Object and sets fields along the way
+    // Creates empty Object and sets fields along the way
     Patient patient = new Patient();
 
-    //places cursor at the beginning of the BSON reader
+    // places cursor at the beginning of the BSON reader
     reader.readStartDocument();
 
-    //Reader has the name of keys(columns)
-    //Checks to see what the name is and sets the value in the object properly
+    // Reader has the name of keys(columns)
+    // Checks to see what the name is and sets the value in the object properly
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
       if (fieldName.equals("_id")) {
@@ -59,14 +59,14 @@ public class PatientCodec implements Codec<Patient> {
       }
     }
 
-    //closes reader
+    // closes reader
     reader.readEndDocument();
     return patient;
   }
 
   @Override
   public void encode(BsonWriter writer, Patient value, EncoderContext encoderContext) {
-    //Creates a document on the writer and sets each key value pair we're storing
+    // Creates a document on the writer and sets each key value pair we're storing
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeString("name", value.getName());

@@ -1,13 +1,30 @@
 package edu.wpi.teame.db;
 
+import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
+import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
+import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.objectManagers.*;
+import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.model.mongoCodecs.*;
+import edu.wpi.teame.model.serviceRequests.*;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.HashMap;
+import org.bson.codecs.Codec;
+import org.bson.codecs.configuration.CodecProvider;
+import org.bson.codecs.configuration.CodecRegistries;
+import org.bson.codecs.configuration.CodecRegistry;
+import org.bson.codecs.pojo.PojoCodecProvider;
 
 public final class DBManager {
   private final String AzureCloudServerConnectionString =
@@ -17,12 +34,16 @@ public final class DBManager {
   private final String EmbeddedConnectionString =
       "jdbc:derby:memory:EmbeddedE;create=true;username=admin;password=admin";
 
+  private final String MongoDBConnectionString =
+      "mongodb+srv://admin:admin@cluster0.45z0f.mongodb.net/TeamEMongos?retryWrites=true&w=majority";
+
   private HashMap<DataBaseObjectType, ObjectManager> managers;
   private final DBType startUpDB = DBType.Embedded;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
   private Statement statement;
+  private MongoDatabase mongoDatabase;
 
   public static synchronized DBManager getInstance() {
     if (instance == null) {
@@ -423,34 +444,38 @@ public final class DBManager {
   public void switchConnection(DBType type)
       throws SQLException, IOException, CsvValidationException, ParseException {
 
-    // Write to CSV
-    if (currentType != DBType.AzureCloud) {
-      DBManager.getInstance().writeDBToCSV(false);
-    }
+    if (type != DBType.MongoDB) {
+      // Write to CSV
+      if (currentType != DBType.AzureCloud) {
+        DBManager.getInstance().writeDBToCSV(false);
+      }
 
-    // Switch Edge
-    String connectionString = "";
-    switch (type) {
-      case AzureCloud:
-        connectionString = AzureCloudServerConnectionString;
-        break;
-      case ClientServer:
-        connectionString = ClientServerConnectionString;
-        break;
-      case Embedded:
-        connectionString = EmbeddedConnectionString;
-        break;
-    }
+      // Switch Edge
+      String connectionString = "";
+      switch (type) {
+        case AzureCloud:
+          connectionString = AzureCloudServerConnectionString;
+          break;
+        case ClientServer:
+          connectionString = ClientServerConnectionString;
+          break;
+        case Embedded:
+          connectionString = EmbeddedConnectionString;
+          break;
+      }
 
-    // Create Edge
-    connection = DriverManager.getConnection(connectionString);
-    statement = connection.createStatement();
-    currentType = type;
+      // Create Edge
+      connection = DriverManager.getConnection(connectionString);
+      statement = connection.createStatement();
+      currentType = type;
 
-    // Check if we should transfer data
-    if (currentType != DBType.AzureCloud) {
-      cleanDBTables();
-      DBManager.getInstance().loadDBFromCSV(false);
+      // Check if we should transfer data
+      if (currentType != DBType.AzureCloud) {
+        cleanDBTables();
+        DBManager.getInstance().loadDBFromCSV(false);
+      }
+    } else {
+      currentType = DBType.MongoDB;
     }
 
     // Load up the data from DB
@@ -514,6 +539,9 @@ public final class DBManager {
       return;
     }
 
+    // Connect to MongoDB
+    mongoDatabase = connectToMongoDatabase();
+
     // Connect to Client/Server... that DB may already have the tables
     try {
       connection = DriverManager.getConnection(ClientServerConnectionString);
@@ -536,7 +564,7 @@ public final class DBManager {
     }
 
     // Connect to default server and load up if needed
-    if (startUpDB != DBType.AzureCloud) {
+    if (startUpDB != DBType.AzureCloud || startUpDB != DBType.MongoDB) {
       loadDBFromCSV(true);
     }
     switchConnection(startUpDB);
@@ -566,5 +594,84 @@ public final class DBManager {
 
   public DBType getCurrentType() {
     return currentType;
+  }
+
+  public CodecRegistry getObjectCodecs() {
+    // Creates instances of the codecs that will translate the objects
+    // so that it can be sent to the database and stored in regular objects
+
+    CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(false).build();
+    Codec<Credential> credentialCodec = new CredentialCodec();
+    Codec<Edge> edgeCodec = new EdgeCodec();
+    Codec<Employee> employeeCodec = new EmployeeCodec();
+    Codec<Equipment> equipmentCodec = new EquipmentCodec();
+    Codec<PatientTransportationServiceRequest> patientTransportationServiceRequestCodec =
+        new PatientTransportationServiceRequestCodec();
+    Codec<FoodDeliveryServiceRequest> foodDeliveryServiceRequestCodec =
+        new FoodDeliveryServiceRequestCodec();
+    Codec<GiftAndFloralServiceRequest> giftAndFloralServiceRequestCodec =
+        new GiftAndFloralServiceRequestCodec();
+    Codec<LanguageInterpreterServiceRequest> languageInterpreterServiceRequestCodec =
+        new LanguageInterpreterServiceRequestCodec();
+    Codec<Location> locationCodec = new LocationCodec();
+    Codec<MedicalEquipmentServiceRequest> medicalEquipmentServiceRequestCodec =
+        new MedicalEquipmentServiceRequestCodec();
+    Codec<MedicineDeliveryServiceRequest> medicineDeliveryServiceRequestCodec =
+        new MedicineDeliveryServiceRequestCodec();
+    Codec<Patient> patientCodec = new PatientCodec();
+    Codec<ReligiousServiceRequest> religiousServiceRequestCodec =
+        new ReligiousServiceRequestCodec();
+    Codec<DeceasedBodyRemovalServiceRequest> deceasedBodyRemovalServiceRequestCodec =
+        new DeceasedBodyRemovalServiceRequestCodec();
+    Codec<PatientDischargeServiceRequest> patientDischargeServiceRequestCodec =
+        new PatientDischargeServiceRequestCodec();
+    Codec<MentalHealthServiceRequest> mentalHealthServiceRequestCodec =
+        new MentalHealthServiceRequestCodec();
+    Codec<ServiceRequest> serviceRequestCodec = new ServiceRequestCodec();
+
+    CodecRegistry customCodecs =
+        CodecRegistries.fromCodecs(
+            credentialCodec,
+            edgeCodec,
+            employeeCodec,
+            equipmentCodec,
+            foodDeliveryServiceRequestCodec,
+            giftAndFloralServiceRequestCodec,
+            languageInterpreterServiceRequestCodec,
+            locationCodec,
+            medicalEquipmentServiceRequestCodec,
+            medicineDeliveryServiceRequestCodec,
+            patientCodec,
+            religiousServiceRequestCodec,
+            deceasedBodyRemovalServiceRequestCodec,
+            patientDischargeServiceRequestCodec,
+            mentalHealthServiceRequestCodec,
+            patientTransportationServiceRequestCodec,
+            serviceRequestCodec);
+
+    CodecRegistry pojoCodecRegistry =
+        fromRegistries(getDefaultCodecRegistry(), fromProviders(pojoCodecProvider), customCodecs);
+
+    return pojoCodecRegistry;
+  }
+
+  public MongoDatabase connectToMongoDatabase() {
+    // Creates the options to connect to MongoDB
+    MongoClientSettings options =
+        MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(MongoDBConnectionString))
+            .build();
+
+    try (MongoClient mongoClient = MongoClients.create(options)) {
+      // Gets the database
+      MongoDatabase database =
+          mongoClient.getDatabase("TeamEMongos").withCodecRegistry(getObjectCodecs());
+
+      return database;
+    }
+  }
+
+  public MongoDatabase getMongoDatabase() {
+    return mongoDatabase;
   }
 }
