@@ -217,21 +217,20 @@ public class Map {
   // Must be called whenever an icon is added to the map
   private void updateLayoutChildren() {
     layout.getChildren().setAll(new ImageView(backgroundImage));
-    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
-      layout.getChildren().add(dot.getIcon());
-    }
     if (Navigation != null) {
       Navigation.switchFloors(currFloor);
     }
     for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
     }
+    for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      layout.getChildren().add(dot.getIcon());
+    }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
       if (!layout.getChildren().contains(icon.progressIndicator)) {
         layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
       }
     }
-
   }
 
   // Init ScrollPane that holds the StackPane containing map and all Icons
