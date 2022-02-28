@@ -22,11 +22,15 @@ import org.bson.codecs.EncoderContext;
 public class FoodDeliveryServiceRequestCodec implements Codec<FoodDeliveryServiceRequest> {
   @Override
   public FoodDeliveryServiceRequest decode(BsonReader reader, DecoderContext decoderContext) {
+    //Creates empty Object and sets fields along the way
     FoodDeliveryServiceRequest serviceRequest = new FoodDeliveryServiceRequest();
 
+    //places cursor at the beginning of the BSON reader
     reader.readStartDocument();
     SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
+    //Reader has the name of keys(columns)
+    //Checks to see what the name is and sets the value in the object properly
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
       if (fieldName.equals("_id")) {
@@ -111,6 +115,7 @@ public class FoodDeliveryServiceRequestCodec implements Codec<FoodDeliveryServic
       }
     }
 
+    //closes reader
     reader.readEndDocument();
     return serviceRequest;
   }
@@ -118,6 +123,7 @@ public class FoodDeliveryServiceRequestCodec implements Codec<FoodDeliveryServic
   @Override
   public void encode(
       BsonWriter writer, FoodDeliveryServiceRequest value, EncoderContext encoderContext) {
+    //Creates a document on the writer and sets each key value pair we're storing
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeInt32("locationID", value.getLocation().getId());

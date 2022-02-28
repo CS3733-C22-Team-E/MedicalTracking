@@ -16,9 +16,14 @@ import org.bson.codecs.EncoderContext;
 public class EquipmentCodec implements Codec<Equipment> {
   @Override
   public Equipment decode(BsonReader reader, DecoderContext decoderContext) {
+    //Creates empty Object and sets fields along the way
     Equipment equipment = new Equipment();
+
+    //places cursor at the beginning of the BSON reader
     reader.readStartDocument();
 
+    //Reader has the name of keys(columns)
+    //Checks to see what the name is and sets the value in the object properly
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
       if (fieldName.equals("_id")) {
@@ -47,12 +52,14 @@ public class EquipmentCodec implements Codec<Equipment> {
       }
     }
 
+    //closes reader
     reader.readEndDocument();
     return equipment;
   }
 
   @Override
   public void encode(BsonWriter writer, Equipment value, EncoderContext encoderContext) {
+    //Creates a document on the writer and sets each key value pair we're storing
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeInt32("locationID", value.getLocation().getId());

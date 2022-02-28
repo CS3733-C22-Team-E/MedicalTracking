@@ -13,9 +13,14 @@ import org.bson.codecs.EncoderContext;
 public class CredentialCodec implements Codec<Credential> {
   @Override
   public Credential decode(BsonReader reader, DecoderContext decoderContext) {
+    //Creates empty Object and sets fields along the way
     Credential credential = new Credential();
+
+    //places cursor at the beginning of the BSON reader
     reader.readStartDocument();
 
+    //Reader has the name of keys(columns)
+    //Checks to see what the name is and sets the value in the object properly
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
       if (fieldName.equals("_id")) {
@@ -35,6 +40,8 @@ public class CredentialCodec implements Codec<Credential> {
         credential.setDeleted(reader.readInt32() == 1);
       }
     }
+
+    //closes reader
     reader.readEndDocument();
 
     return credential;
@@ -42,6 +49,7 @@ public class CredentialCodec implements Codec<Credential> {
 
   @Override
   public void encode(BsonWriter writer, Credential value, EncoderContext encoderContext) {
+    //Creates a document on the writer and sets each key value pair we're storing
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeString("salt", value.getSalt().toString());
