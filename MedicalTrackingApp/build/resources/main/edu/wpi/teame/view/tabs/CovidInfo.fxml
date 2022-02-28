@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.CovidInfoController">
+   <children>
+      <GridPane fx:id="gridPane" prefHeight="400.0" prefWidth="691.0" styleClass="grid-pane">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="93.3962442215417" minHeight="10.0" prefHeight="80.71698396763546" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="95.35849397740108" minHeight="3.8867761429284258" prefHeight="20.943394890116735" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="237.28301967187664" minHeight="10.0" prefHeight="237.28301967187664" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19 INFORMATION" wrappingWidth="602.4786834716797" GridPane.columnSpan="2147483647">
+               <font>
+                  <Font size="41.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Symptoms" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="CDC Recommendations" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <GridPane prefHeight="166.0" prefWidth="241.0" GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Fever or Chills" wrappingWidth="118.02288818359375" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Cough" wrappingWidth="118.02288818359375" GridPane.columnIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Shortness of breath or difficulty breathing" wrappingWidth="242.098388671875" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Fatigue" wrappingWidth="118.02288818359375" GridPane.rowIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Headache" wrappingWidth="118.02288818359375" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Muscle or body aches" wrappingWidth="129.79647827148438" GridPane.rowIndex="2" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- New loss of taste or smell" wrappingWidth="147.90969848632812" GridPane.rowIndex="4" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Sore throat" wrappingWidth="118.02288818359375" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Congestion or runny nose" wrappingWidth="146.098388671875" GridPane.rowIndex="6" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Nausea or vomiting" wrappingWidth="118.02288818359375" GridPane.rowIndex="3" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="- Diarrhea" wrappingWidth="118.02288818359375" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+            <GridPane prefHeight="166.0" prefWidth="241.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Wear a mask indoors" wrappingWidth="118.02288818359375" GridPane.rowIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Get vaccinated" wrappingWidth="118.02288818359375" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Keep 6 feet away from others" wrappingWidth="179.60784149169922" GridPane.rowIndex="2" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Wash you hands often" wrappingWidth="135.23040008544922" GridPane.rowIndex="3" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Cover coughs or sneezes" wrappingWidth="175.98516082763672" GridPane.rowIndex="4" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Clean and disinfect after visitors" wrappingWidth="180.51348114013672" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Close contact" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <GridPane prefHeight="166.0" prefWidth="241.0" GridPane.columnIndex="1">
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="114.26413362583858" minHeight="10.0" prefHeight="87.09430330357296" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="150.4906045731042" minHeight="10.0" prefHeight="150.4906045731042" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="A close contact is someone who was less than 6 feet away from an infected person for a cumulative total of 15 minutes over a 24 hour period, unless they have completed 5 days of isolation." wrappingWidth="216.73987579345703" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="If you are a close contact and are not up to date with COVID-19 vaccines, you should quarantine. Quarantining requires you to stay home and away from people for at least 5 days. Wear a mask around others if you need to interact with others. Watch for symptoms for 10 days after becoming a close contact. Get tested after 5 days of quarantining." wrappingWidth="226.70215606689453" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Button fx:id="infoButton" mnemonicParsing="false" text="Click here for more information" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
