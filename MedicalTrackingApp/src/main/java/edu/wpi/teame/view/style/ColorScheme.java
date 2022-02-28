@@ -12,9 +12,17 @@ public class ColorScheme {
 
   public ColorScheme(String schemeName, Color color1, Color color2) {
     this.mainCSS =
-        new File(App.class.getResource("css/schemes/" + schemeName + "Main.css").toString());
+        new File(
+            App.class
+                .getClassLoader()
+                .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Main.css")
+                .toString());
     this.loginCSS =
-        new File(App.class.getResource("css/schemes/" + schemeName + "Login.css").toString());
+        new File(
+            App.class
+                .getClassLoader()
+                .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Login.css")
+                .toString());
     this.color1 = color1;
     this.color2 = color2;
   }
