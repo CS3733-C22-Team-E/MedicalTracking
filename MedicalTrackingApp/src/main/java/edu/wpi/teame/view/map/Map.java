@@ -310,8 +310,27 @@ public class Map {
     Material.setFitHeight(45);
     Material.setFitWidth(45);
     RadialMenuItem ZoomIn = new RadialMenuItem(45, ZoomIN);
+    ZoomIn.setOnMouseClicked(
+        event -> {
+          zoomIn(1);
+        });
     RadialMenuItem ZoomOut = new RadialMenuItem(45, ZoomOUT);
+    ZoomOut.setOnMouseClicked(
+        event -> {
+          zoomOut(1);
+        });
     RadialMenuItem Refresh = new RadialMenuItem(45, REFRESH);
+    Refresh.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            try {
+              RefreshSRfromDB();
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          }
+        });
     RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
@@ -874,6 +893,15 @@ public class Map {
                 if (event.getButton() == MouseButton.SECONDARY) {
                   lastPressedLocation = location;
                   PaneMenu.show(event.getScreenX(), event.getScreenY());
+                  Timer timer = new Timer();
+                  timer.schedule(
+                      new TimerTask() {
+                        @Override
+                        public void run() {
+                          PaneMenu.hide();
+                        }
+                      },
+                      2000);
                 } else if (PathFindingLocations.size() < 2) {
                   newDot.getIcon().setFill(Color.BLUE);
                   PathFindingLocations.add(newDot);
