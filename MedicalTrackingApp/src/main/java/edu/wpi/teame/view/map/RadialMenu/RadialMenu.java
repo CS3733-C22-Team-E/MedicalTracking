@@ -42,6 +42,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -212,6 +213,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
   public RadialMenu() {}
 
+  public StackPane stack = null;
+
   public RadialMenu(
       final double initialAngle,
       final double innerRadius,
@@ -223,7 +226,9 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
       final Paint strokeMouseOnFill,
       final boolean clockwise,
       final CenterVisibility centerVisibility,
-      final Node centerGraphic) {
+      final Node centerGraphic,
+      StackPane stacker) {
+    this.stack = stacker;
     this.itemGroup = new Group();
     this.getChildren().add(this.itemGroup);
 
@@ -291,17 +296,17 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         });
     this.centerGroup.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
-            final boolean visible = RadialMenu.this.itemGroup.isVisible();
-            if (visible) {
-              RadialMenu.this.hideRadialMenu();
-            } else {
-              RadialMenu.this.showRadialMenu();
+            if(event.getButton() == MouseButton.PRIMARY){
+              final boolean visible = RadialMenu.this.itemGroup.isVisible();
+              if (visible) {
+                RadialMenu.this.hideRadialMenu();
+              } else {
+                RadialMenu.this.showRadialMenu();
+              }
+              event.consume();
             }
-
-            event.consume();
           }
         });
 

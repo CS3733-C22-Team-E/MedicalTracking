@@ -248,6 +248,7 @@ public class Map {
   }
 
   // init ComboBox
+  @Deprecated
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
     comboBox.setValue(currFloor.toString());
@@ -272,6 +273,7 @@ public class Map {
     return Objects.requireNonNull(App.class.getResource(filePath)).toString();
   }
 
+  @Deprecated
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -288,11 +290,12 @@ public class Map {
     return zoomInButton;
   }
 
-  public RadialMenu createMainController() {
+  public RadialMenu createMainController(StackPane stack) {
     Image zoomIn = new Image(getImageResource("images/Icons/ZoomIn.png"));
     Image zoomOut = new Image(getImageResource("images/Icons/ZoomOut.png"));
     Image refresh = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
+    Image Location = new Image(getImageResource("images/Icons/Location.png"));
     ImageView ZoomIN = new ImageView(zoomIn);
     ZoomIN.setFitWidth(35);
     ZoomIN.setFitHeight(35);
@@ -363,6 +366,7 @@ public class Map {
 
       FilterCheckBoxes.addMenuItem(tobeadded);
     }
+    RadialCheckMenuItem Locations = new RadialCheckMenuItem(45,new ImageView(Location),true,Color.GREEN);
     for (FloorType currFloor : FloorType.values()) {
       ImageView floorer =
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
@@ -402,7 +406,8 @@ public class Map {
             Color.PAPAYAWHIP,
             false,
             RadialMenu.CenterVisibility.ALWAYS,
-            Material);
+            Material,
+            stack);
     MainController.addMenuItem(ZoomIn);
     MainController.addMenuItem(ZoomOut);
     MainController.addMenuItem(Refresh);
@@ -420,6 +425,7 @@ public class Map {
     }
   }
 
+  @Deprecated
   private ArrayList<JFXCheckBox> createFilterCheckBoxes() {
     ArrayList<JFXCheckBox> retval = new ArrayList<>();
 
@@ -475,6 +481,7 @@ public class Map {
     return retval;
   }
 
+  @Deprecated
   private JFXButton createZoomOutButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomOut.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -491,6 +498,7 @@ public class Map {
     return zoomOutButton;
   }
 
+  @Deprecated
   private JFXButton createRefreshButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -570,16 +578,7 @@ public class Map {
             scroll.zoomNode.fireEvent(event);
           }
         });
-    staticWrapper
-        .getChildren()
-        .setAll(
-            scroll,
-            createZoomInButton(),
-            createZoomOutButton(),
-            createFloorSwitcher(),
-            createRefreshButton(),
-            createMainController());
-    staticWrapper.getChildren().addAll(createFilterCheckBoxes());
+    staticWrapper.getChildren().setAll(scroll, createMainController(staticWrapper));
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
