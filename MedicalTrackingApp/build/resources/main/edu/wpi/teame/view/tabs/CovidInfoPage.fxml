@@ -8,13 +8,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.CovidInfoController">
+<AnchorPane prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.CovidInfoController">
    <children>
-      <GridPane fx:id="gridPane" prefHeight="400.0" prefWidth="691.0" styleClass="grid-pane">
+      <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="427.0" prefWidth="900.0" styleClass="grid-pane">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="260.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="93.3962442215417" minHeight="10.0" prefHeight="80.71698396763546" vgrow="SOMETIMES" />
@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19 INFORMATION" wrappingWidth="602.4786834716797" GridPane.columnSpan="2147483647">
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="COVID-19 INFORMATION" wrappingWidth="472.0786590576172" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="41.0" />
                </font>
