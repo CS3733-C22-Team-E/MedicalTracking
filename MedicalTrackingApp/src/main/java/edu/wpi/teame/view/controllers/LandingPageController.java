@@ -23,7 +23,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -221,13 +220,6 @@ public class LandingPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
-    Background colorBG =
-        new Background(
-            new BackgroundFill(
-                StyleManager.getInstance().getCurrentStyle().getBackground(),
-                new CornerRadii(10),
-                Insets.EMPTY));
-
-    mainTabPane.setBackground(colorBG);
+    mainTabPane.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
   }
 }

@@ -1,7 +1,10 @@
 package edu.wpi.teame.view.style;
 
-import java.io.*;
 import java.util.HashMap;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
 public class ColorScheme {
@@ -10,19 +13,38 @@ public class ColorScheme {
   private final Color foreground;
   private final Color textColor;
 
-  public ColorScheme(Color background, Color secondaryBackground, Color foreground, Color textColor) {
+  public ColorScheme(
+      Color background, Color secondaryBackground, Color foreground, Color textColor) {
     this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;
     this.textColor = textColor;
   }
 
-  public Color getBackground() {
+  public Color getTextColor() {
+    return this.textColor;
+  }
+
+  public Color getForegroundColor() {
+    return this.foreground;
+  }
+
+  public Color getBackgroundColor() {
     return this.background;
   }
 
-  public Color getForeground() {
-    return this.foreground;
+  public Color getSecondaryBackgroundColor() {
+    return this.secondaryBackground;
+  }
+
+  public Background getBackground() {
+    return new Background(
+        new BackgroundFill(getBackgroundColor(), new CornerRadii(10), Insets.EMPTY));
+  }
+
+  public Background getSecondaryBackground() {
+    return new Background(
+            new BackgroundFill(getSecondaryBackgroundColor(), new CornerRadii(10), Insets.EMPTY));
   }
 
   public HashMap<String, Double> getColor1RGB() {

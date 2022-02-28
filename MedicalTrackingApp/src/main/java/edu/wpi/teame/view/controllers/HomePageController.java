@@ -4,6 +4,8 @@ import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -19,8 +21,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class HomePageController implements Initializable {
+public class HomePageController implements Initializable, IStyleable {
   @FXML private Label welcomeLabel;
+  @FXML private VBox welcomeBox;
   @FXML private VBox welcomeBox;
 
   public void showWelcomeMessage() {
@@ -56,5 +59,14 @@ public class HomePageController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     welcomeBox.setVisible(false);
+
+    StyleManager.getInstance().subscribe(this);
+  }
+
+  @Override
+  public void updateStyle() {
+    welcomeLabel.setTextFill(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    welcomeBox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+
   }
 }

@@ -106,12 +106,7 @@ public class ServiceRequestBacklog {
     title.setFill(Color.WHITE);
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    tBox.setBackground(
-        new Background(
-            new BackgroundFill(
-                StyleManager.getInstance().getCurrentStyle().getBackground(),
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
+    tBox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
@@ -121,12 +116,7 @@ public class ServiceRequestBacklog {
   public GridPane getRequestHolder() throws SQLException {
     getSecurityRequests();
     GridPane requestHolder = new GridPane();
-    requestHolder.setBackground(
-        new Background(
-            new BackgroundFill(
-                StyleManager.getInstance().getCurrentStyle().getBackground(),
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
+    requestHolder.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();

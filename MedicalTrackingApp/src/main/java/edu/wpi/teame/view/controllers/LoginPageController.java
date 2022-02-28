@@ -25,7 +25,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Dialog;
@@ -430,18 +429,13 @@ public class LoginPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
-    Background colorBG =
-        new Background(
-            new BackgroundFill(
-                StyleManager.getInstance().getCurrentStyle().getBackground(),
-                new CornerRadii(10),
-                Insets.EMPTY));
-
-    faceIDVbox.setBackground(colorBG);
-    credentialLogInVbox.setBackground(colorBG);
-    usernameFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
-    passwordFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
-    usernameBackgroundLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
-    passwordBackgroundLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForeground());
+    faceIDVbox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+    credentialLogInVbox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+    usernameFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    passwordFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    usernameBackgroundLine.setStroke(
+        StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    passwordBackgroundLine.setStroke(
+        StyleManager.getInstance().getCurrentStyle().getForegroundColor());
   }
 }
