@@ -2,13 +2,12 @@ package edu.wpi.teame.model.mongoCodecs;
 
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
-import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import edu.wpi.teame.model.serviceRequests.DeceasedBodyRemovalServiceRequest;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,14 +19,12 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
-public class ExternalPatientTransportationServiceRequestCodec
-    implements Codec<PatientTransportationServiceRequest> {
-
+public class DeceasedBodyRemovalServiceRequestCodec
+    implements Codec<DeceasedBodyRemovalServiceRequest> {
   @Override
-  public PatientTransportationServiceRequest decode(
+  public DeceasedBodyRemovalServiceRequest decode(
       BsonReader reader, DecoderContext decoderContext) {
-    PatientTransportationServiceRequest serviceRequest = new PatientTransportationServiceRequest();
-    serviceRequest.setDbType(DataBaseObjectType.ExternalPatientSR);
+    DeceasedBodyRemovalServiceRequest serviceRequest = new DeceasedBodyRemovalServiceRequest();
     reader.readStartDocument();
     SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -99,34 +96,12 @@ public class ExternalPatientTransportationServiceRequestCodec
         serviceRequest.setRequestDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("isDeleted")) {
         serviceRequest.setDeleted(reader.readInt32() == 1);
-      } else if (fieldName.equals("destinationID")) {
-        try {
-          serviceRequest.setDestination(
-              (Location)
-                  DBManager.getInstance()
-                      .getManager(DataBaseObjectType.Location)
-                      .get(reader.readInt32()));
-        } catch (SQLException e) {
-          e.printStackTrace();
-          System.exit(2);
-        }
       } else if (fieldName.equals("patientID")) {
         try {
           serviceRequest.setPatient(
               (Patient)
                   DBManager.getInstance()
                       .getManager(DataBaseObjectType.Patient)
-                      .get(reader.readInt32()));
-        } catch (SQLException e) {
-          e.printStackTrace();
-          System.exit(2);
-        }
-      } else if (fieldName.equals("equipmentID")) {
-        try {
-          serviceRequest.setEquipment(
-              (Equipment)
-                  DBManager.getInstance()
-                      .getManager(DataBaseObjectType.Equipment)
                       .get(reader.readInt32()));
         } catch (SQLException e) {
           e.printStackTrace();
@@ -142,7 +117,7 @@ public class ExternalPatientTransportationServiceRequestCodec
 
   @Override
   public void encode(
-      BsonWriter writer, PatientTransportationServiceRequest value, EncoderContext encoderContext) {
+      BsonWriter writer, DeceasedBodyRemovalServiceRequest value, EncoderContext encoderContext) {
     writer.writeStartDocument();
     writer.writeInt32("_id", value.getId());
     writer.writeInt32("locationID", value.getLocation().getId());
@@ -154,15 +129,13 @@ public class ExternalPatientTransportationServiceRequestCodec
     writer.writeString("additionalInfo", value.getAdditionalInfo());
     writer.writeInt32("priority", value.getPriority().ordinal());
     writer.writeString("requestDate", value.getRequestDate().toString());
-    writer.writeInt32("destinationID", value.getDestination().getId());
     writer.writeInt32("patientID", value.getPatient().getId());
-    writer.writeInt32("equipmentID", value.getEquipment().getId());
     writer.writeInt32("isDeleted", value.getIsDeleted() ? 1 : 0);
     writer.writeEndDocument();
   }
 
   @Override
-  public Class<PatientTransportationServiceRequest> getEncoderClass() {
-    return PatientTransportationServiceRequest.class;
+  public Class<DeceasedBodyRemovalServiceRequest> getEncoderClass() {
+    return DeceasedBodyRemovalServiceRequest.class;
   }
 }

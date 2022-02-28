@@ -29,7 +29,7 @@ public class PatientCodec implements Codec<Patient> {
         patient.setName(reader.readString());
       } else if (fieldName.equals("dateOfBirth")) {
         String DOB = reader.readString();
-        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date date;
         try {
           date = sfd.parse(DOB);

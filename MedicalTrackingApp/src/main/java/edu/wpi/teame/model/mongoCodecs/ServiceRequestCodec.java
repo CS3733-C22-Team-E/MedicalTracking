@@ -23,7 +23,7 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
   public ServiceRequest decode(BsonReader reader, DecoderContext decoderContext) {
     ServiceRequest serviceRequest = new ServiceRequest();
     reader.readStartDocument();
-    SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
@@ -72,7 +72,7 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
           date = new Date();
         }
 
-        serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
+        serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("status")) {
         serviceRequest.setStatus(ServiceRequestStatus.values()[reader.readInt32()]);
       } else if (fieldName.equals("title")) {
@@ -111,6 +111,7 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
     writer.writeString("closeDate", value.getCloseDate().toString());
     writer.writeInt32("status", value.getStatus().ordinal());
     writer.writeString("title", value.getTitle());
+    writer.writeString("additionalInfo", value.getAdditionalInfo());
     writer.writeInt32("priority", value.getPriority().ordinal());
     writer.writeString("requestDate", value.getRequestDate().toString());
     writer.writeInt32("isDeleted", value.getIsDeleted() ? 1 : 0);

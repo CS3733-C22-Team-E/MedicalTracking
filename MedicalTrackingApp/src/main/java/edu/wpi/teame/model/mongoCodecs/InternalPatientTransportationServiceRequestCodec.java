@@ -9,6 +9,10 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.PatientTransportationServiceRequest;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonWriter;
@@ -16,150 +20,149 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+public class InternalPatientTransportationServiceRequestCodec
+    implements Codec<PatientTransportationServiceRequest> {
 
-public class InternalPatientTransportationServiceRequestCodec implements Codec<PatientTransportationServiceRequest> {
+  @Override
+  public PatientTransportationServiceRequest decode(
+      BsonReader reader, DecoderContext decoderContext) {
+    PatientTransportationServiceRequest serviceRequest = new PatientTransportationServiceRequest();
+    serviceRequest.setDbType(DataBaseObjectType.InternalPatientTransferSR);
+    reader.readStartDocument();
+    SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
-    @Override
-    public PatientTransportationServiceRequest decode(BsonReader reader, DecoderContext decoderContext) {
-        PatientTransportationServiceRequest serviceRequest = new PatientTransportationServiceRequest();
-        serviceRequest.setDbType(DataBaseObjectType.InternalPatientTransferSR);
-        reader.readStartDocument();
-        SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
-            String fieldName = reader.readName();
-            if (fieldName.equals("_id")) {
-                serviceRequest.setId(reader.readInt32());
-            } else if (fieldName.equals("locationID")) {
-                try {
-                    serviceRequest.setLocation(
-                            (Location)
-                                    DBManager.getInstance()
-                                            .getManager(DataBaseObjectType.Location)
-                                            .get(reader.readInt32()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-            } else if (fieldName.equals("assigneeID")) {
-                try {
-                    serviceRequest.setAssignee(
-                            (Employee)
-                                    DBManager.getInstance()
-                                            .getManager(DataBaseObjectType.Employee)
-                                            .get(reader.readInt32()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-            } else if (fieldName.equals("openDate")) {
-                String openDate = reader.readString();
-                Date date;
-                try {
-                    date = sfd.parse(openDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
-                }
-
-                serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
-            } else if (fieldName.equals("closeDate")) {
-                String closeDate = reader.readString();
-                Date date;
-                try {
-                    date = sfd.parse(closeDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
-                }
-
-                serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
-            } else if (fieldName.equals("status")) {
-                serviceRequest.setStatus(ServiceRequestStatus.values()[reader.readInt32()]);
-            } else if (fieldName.equals("title")) {
-                serviceRequest.setTitle(reader.readString());
-            } else if (fieldName.equals("additionalInfo")) {
-                serviceRequest.setAdditionalInfo(reader.readString());
-            } else if (fieldName.equals("priority")) {
-                serviceRequest.setPriority(ServiceRequestPriority.values()[reader.readInt32()]);
-            } else if (fieldName.equals("requestDate")) {
-                String requestDate = reader.readString();
-                Date date;
-                try {
-                    date = sfd.parse(requestDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    date = new Date();
-                }
-                serviceRequest.setRequestDate(new java.sql.Date(date.getTime()));
-            } else if (fieldName.equals("isDeleted")) {
-                serviceRequest.setDeleted(reader.readInt32() == 1);
-            } else if(fieldName.equals("destinationID")) {
-                try {
-                    serviceRequest.setDestination(
-                            (Location)
-                                    DBManager.getInstance()
-                                            .getManager(DataBaseObjectType.Location)
-                                            .get(reader.readInt32()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-            } else if(fieldName.equals("patientID")) {
-                try {
-                    serviceRequest.setPatient(
-                            (Patient)
-                                    DBManager.getInstance()
-                                            .getManager(DataBaseObjectType.Patient)
-                                            .get(reader.readInt32()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-            } else if(fieldName.equals("equipmentID")) {
-                try {
-                    serviceRequest.setEquipment(
-                            (Equipment)
-                                    DBManager.getInstance()
-                                            .getManager(DataBaseObjectType.Equipment)
-                                            .get(reader.readInt32()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.exit(2);
-                }
-            }
+    while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
+      String fieldName = reader.readName();
+      if (fieldName.equals("_id")) {
+        serviceRequest.setId(reader.readInt32());
+      } else if (fieldName.equals("locationID")) {
+        try {
+          serviceRequest.setLocation(
+              (Location)
+                  DBManager.getInstance()
+                      .getManager(DataBaseObjectType.Location)
+                      .get(reader.readInt32()));
+        } catch (SQLException e) {
+          e.printStackTrace();
+          System.exit(2);
+        }
+      } else if (fieldName.equals("assigneeID")) {
+        try {
+          serviceRequest.setAssignee(
+              (Employee)
+                  DBManager.getInstance()
+                      .getManager(DataBaseObjectType.Employee)
+                      .get(reader.readInt32()));
+        } catch (SQLException e) {
+          e.printStackTrace();
+          System.exit(2);
+        }
+      } else if (fieldName.equals("openDate")) {
+        String openDate = reader.readString();
+        Date date;
+        try {
+          date = sfd.parse(openDate);
+        } catch (ParseException e) {
+          e.printStackTrace();
+          date = new Date();
         }
 
-        reader.readEndDocument();
+        serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
+      } else if (fieldName.equals("closeDate")) {
+        String closeDate = reader.readString();
+        Date date;
+        try {
+          date = sfd.parse(closeDate);
+        } catch (ParseException e) {
+          e.printStackTrace();
+          date = new Date();
+        }
 
-        return serviceRequest;
+        serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
+      } else if (fieldName.equals("status")) {
+        serviceRequest.setStatus(ServiceRequestStatus.values()[reader.readInt32()]);
+      } else if (fieldName.equals("title")) {
+        serviceRequest.setTitle(reader.readString());
+      } else if (fieldName.equals("additionalInfo")) {
+        serviceRequest.setAdditionalInfo(reader.readString());
+      } else if (fieldName.equals("priority")) {
+        serviceRequest.setPriority(ServiceRequestPriority.values()[reader.readInt32()]);
+      } else if (fieldName.equals("requestDate")) {
+        String requestDate = reader.readString();
+        Date date;
+        try {
+          date = sfd.parse(requestDate);
+        } catch (ParseException e) {
+          e.printStackTrace();
+          date = new Date();
+        }
+        serviceRequest.setRequestDate(new java.sql.Date(date.getTime()));
+      } else if (fieldName.equals("isDeleted")) {
+        serviceRequest.setDeleted(reader.readInt32() == 1);
+      } else if (fieldName.equals("destinationID")) {
+        try {
+          serviceRequest.setDestination(
+              (Location)
+                  DBManager.getInstance()
+                      .getManager(DataBaseObjectType.Location)
+                      .get(reader.readInt32()));
+        } catch (SQLException e) {
+          e.printStackTrace();
+          System.exit(2);
+        }
+      } else if (fieldName.equals("patientID")) {
+        try {
+          serviceRequest.setPatient(
+              (Patient)
+                  DBManager.getInstance()
+                      .getManager(DataBaseObjectType.Patient)
+                      .get(reader.readInt32()));
+        } catch (SQLException e) {
+          e.printStackTrace();
+          System.exit(2);
+        }
+      } else if (fieldName.equals("equipmentID")) {
+        try {
+          serviceRequest.setEquipment(
+              (Equipment)
+                  DBManager.getInstance()
+                      .getManager(DataBaseObjectType.Equipment)
+                      .get(reader.readInt32()));
+        } catch (SQLException e) {
+          e.printStackTrace();
+          System.exit(2);
+        }
+      }
     }
 
-    @Override
-    public void encode(BsonWriter writer, PatientTransportationServiceRequest value, EncoderContext encoderContext) {
-        writer.writeStartDocument();
-        writer.writeInt32("_id", value.getId());
-        writer.writeInt32("locationID", value.getLocation().getId());
-        writer.writeInt32("assigneeID", value.getAssignee().getId());
-        writer.writeString("openDate", value.getOpenDate().toString());
-        writer.writeString("closeDate", value.getCloseDate().toString());
-        writer.writeInt32("status", value.getStatus().ordinal());
-        writer.writeString("title", value.getTitle());
-        writer.writeInt32("priority", value.getPriority().ordinal());
-        writer.writeString("requestDate", value.getRequestDate().toString());
-        writer.writeInt32("destinationID", value.getDestination().getId());
-        writer.writeInt32("patientID", value.getPatient().getId());
-        writer.writeInt32("equipmentID", value.getEquipment().getId());
-        writer.writeInt32("isDeleted", value.getIsDeleted() ? 1 : 0);
-        writer.writeEndDocument();
-    }
+    reader.readEndDocument();
 
-    @Override
-    public Class<PatientTransportationServiceRequest> getEncoderClass() {
-        return PatientTransportationServiceRequest.class;
-    }
+    return serviceRequest;
+  }
+
+  @Override
+  public void encode(
+      BsonWriter writer, PatientTransportationServiceRequest value, EncoderContext encoderContext) {
+    writer.writeStartDocument();
+    writer.writeInt32("_id", value.getId());
+    writer.writeInt32("locationID", value.getLocation().getId());
+    writer.writeInt32("assigneeID", value.getAssignee().getId());
+    writer.writeString("openDate", value.getOpenDate().toString());
+    writer.writeString("closeDate", value.getCloseDate().toString());
+    writer.writeInt32("status", value.getStatus().ordinal());
+    writer.writeString("title", value.getTitle());
+    writer.writeString("additionalInfo", value.getAdditionalInfo());
+    writer.writeInt32("priority", value.getPriority().ordinal());
+    writer.writeString("requestDate", value.getRequestDate().toString());
+    writer.writeInt32("destinationID", value.getDestination().getId());
+    writer.writeInt32("patientID", value.getPatient().getId());
+    writer.writeInt32("equipmentID", value.getEquipment().getId());
+    writer.writeInt32("isDeleted", value.getIsDeleted() ? 1 : 0);
+    writer.writeEndDocument();
+  }
+
+  @Override
+  public Class<PatientTransportationServiceRequest> getEncoderClass() {
+    return PatientTransportationServiceRequest.class;
+  }
 }

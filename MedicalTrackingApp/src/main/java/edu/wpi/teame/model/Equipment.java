@@ -56,9 +56,8 @@ public class Equipment implements ISQLSerializable {
     this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, "locationNodeID");
   }
 
-
-  //in order for a Codec registry to work properly, this constructor needs to exist
-  //for now, it won't instantiate any variables
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
   public Equipment() {}
 
   @Override

@@ -60,6 +60,10 @@ public final class DeceasedBodyRemovalServiceRequest extends ServiceRequest {
     this.patient = (Patient) lineData.getDBObject(DataBaseObjectType.Patient, "patientID");
   }
 
+  public DeceasedBodyRemovalServiceRequest() {
+    dbType = DataBaseObjectType.DeceasedBodySR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + ", " + "patientID = " + patient.getId() + "WHERE id = " + id;

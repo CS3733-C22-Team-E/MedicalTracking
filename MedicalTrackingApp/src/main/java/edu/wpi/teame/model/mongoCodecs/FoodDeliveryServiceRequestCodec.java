@@ -74,7 +74,7 @@ public class FoodDeliveryServiceRequestCodec implements Codec<FoodDeliveryServic
           date = new Date();
         }
 
-        serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
+        serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("status")) {
         serviceRequest.setStatus(ServiceRequestStatus.values()[reader.readInt32()]);
       } else if (fieldName.equals("title")) {
@@ -126,6 +126,7 @@ public class FoodDeliveryServiceRequestCodec implements Codec<FoodDeliveryServic
     writer.writeString("closeDate", value.getCloseDate().toString());
     writer.writeInt32("status", value.getStatus().ordinal());
     writer.writeString("title", value.getTitle());
+    writer.writeString("additionalInfo", value.getAdditionalInfo());
     writer.writeInt32("priority", value.getPriority().ordinal());
     writer.writeString("requestDate", value.getRequestDate().toString());
     writer.writeInt32("patientID", value.getPatient().getId());

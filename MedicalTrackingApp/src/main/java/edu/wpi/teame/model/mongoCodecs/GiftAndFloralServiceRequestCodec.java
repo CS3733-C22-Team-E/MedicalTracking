@@ -24,7 +24,7 @@ public class GiftAndFloralServiceRequestCodec implements Codec<GiftAndFloralServ
   public GiftAndFloralServiceRequest decode(BsonReader reader, DecoderContext decoderContext) {
     GiftAndFloralServiceRequest serviceRequest = new GiftAndFloralServiceRequest();
     reader.readStartDocument();
-    SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd");
 
     while (reader.readBsonType() != BsonType.END_OF_DOCUMENT) {
       String fieldName = reader.readName();
@@ -73,7 +73,7 @@ public class GiftAndFloralServiceRequestCodec implements Codec<GiftAndFloralServ
           date = new Date();
         }
 
-        serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
+        serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("status")) {
         serviceRequest.setStatus(ServiceRequestStatus.values()[reader.readInt32()]);
       } else if (fieldName.equals("title")) {
@@ -124,6 +124,7 @@ public class GiftAndFloralServiceRequestCodec implements Codec<GiftAndFloralServ
     writer.writeString("closeDate", value.getCloseDate().toString());
     writer.writeInt32("status", value.getStatus().ordinal());
     writer.writeString("title", value.getTitle());
+    writer.writeString("additionalInfo", value.getAdditionalInfo());
     writer.writeInt32("priority", value.getPriority().ordinal());
     writer.writeString("requestDate", value.getRequestDate().toString());
     writer.writeInt32("patientID", value.getPatient().getId());
