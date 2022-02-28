@@ -220,6 +220,9 @@ public class Map {
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
       layout.getChildren().add(dot.getIcon());
     }
+    if (Navigation != null) {
+      Navigation.switchFloors(currFloor);
+    }
     for (MapEquipmentIcon icon : mapIconsByFloor.get(currFloor)) {
       layout.getChildren().add(icon.getButton());
     }
@@ -228,9 +231,7 @@ public class Map {
         layout.getChildren().addAll(icon.progressIndicator, icon.Icon);
       }
     }
-    if (Navigation != null) {
-      Navigation.switchFloors(currFloor);
-    }
+
   }
 
   // Init ScrollPane that holds the StackPane containing map and all Icons
