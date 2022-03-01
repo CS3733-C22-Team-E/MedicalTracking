@@ -76,7 +76,7 @@
                     <Insets left="10.0" right="10.0" />
                 </GridPane.margin>
             </JFXComboBox>
-            <Label fx:id="title" alignment="CENTER" prefHeight="45.0" prefWidth="323.0"  text="Computer Service Request" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label fx:id="title" alignment="CENTER" text="Computer Service Request" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <font>
                     <Font size="32.0" />
                 </font>
