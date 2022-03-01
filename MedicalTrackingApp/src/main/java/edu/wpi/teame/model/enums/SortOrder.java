@@ -1,6 +1,16 @@
 package edu.wpi.teame.model.enums;
 
 public enum SortOrder {
+  ByName,
   First,
-  ByName
+  Second,
+  Third,
+  Fourth,
+  Fifth,
+  Sixth,
+  Seventh,
+  Eighth,
+  Ninth,
+  Tenth,
+  Eleventh
 }
