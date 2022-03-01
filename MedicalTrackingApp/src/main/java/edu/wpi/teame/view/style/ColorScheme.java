@@ -18,7 +18,6 @@ public class ColorScheme {
                 .getClassLoader()
                 .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Main.css")
                 .toString());
-
     this.loginCSS =
         new File(
             App.class
