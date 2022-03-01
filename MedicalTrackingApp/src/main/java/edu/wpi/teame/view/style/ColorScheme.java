@@ -116,13 +116,6 @@ public class ColorScheme {
     applyStylesheet(pane);
   }
 
-  public void setTitlePageStyle(Pane pane) {
-    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-padding: 10px; ");
-    pane.setStyle(newStyle.toString());
-    applyStylesheet(pane);
-  }
-
   public void setListViewStyle(ListView listView) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));

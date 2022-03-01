@@ -19,12 +19,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class HomePageController implements Initializable, IStyleable {
-  @FXML private AnchorPane mainAnchorPane;
   @FXML private Button aboutPageButton;
   @FXML private Button logOutButton;
   @FXML private Label welcomeLabel;
@@ -70,7 +68,6 @@ public class HomePageController implements Initializable, IStyleable {
   @Override
   public void updateStyle() {
     StyleManager.getInstance().getCurrentStyle().setPaneStyle(welcomeBox, true);
-    StyleManager.getInstance().getCurrentStyle().setTitlePageStyle(mainAnchorPane);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(aboutPageButton);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(logOutButton);
     StyleManager.getInstance().getCurrentStyle().setTitleStyle(titleText);
