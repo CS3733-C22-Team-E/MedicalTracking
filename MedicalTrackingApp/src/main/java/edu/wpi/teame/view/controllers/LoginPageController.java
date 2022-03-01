@@ -41,6 +41,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
+import lombok.SneakyThrows;
 import org.apache.hc.core5.http.ParseException;
 
 public class LoginPageController implements Initializable, IStyleable {
@@ -351,6 +352,7 @@ public class LoginPageController implements Initializable, IStyleable {
   }
 
   @Override
+  @SneakyThrows
   public void initialize(URL location, ResourceBundle resources) {
     FXMLLoader landingPageLoader = new FXMLLoader(App.class.getResource("view/LandingPage.fxml"));
     try {
@@ -366,6 +368,10 @@ public class LoginPageController implements Initializable, IStyleable {
       Dimension[] supportedSizes = webcam.getViewSizes();
       webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
       faceIDVbox.setVisible(false);
+
+      // Set up the FaceId stuff
+      ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
+          .setupDBFaces();
     } else {
       // We do not have a webcam
       switchToFaceIdButton.setVisible(false);

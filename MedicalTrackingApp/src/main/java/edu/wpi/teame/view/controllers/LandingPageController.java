@@ -223,9 +223,5 @@ public class LandingPageController implements Initializable, IStyleable {
   public void updateStyle() {
     StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setTabPaneStyle(mainTabPane);
-
-    for (Tab tab : mainTabPane.getTabs()) {
-      StyleManager.getInstance().getCurrentStyle().setTabStyle(tab);
-    }
   }
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
@@ -158,10 +157,6 @@ public class ServiceRequestDirectoryPageController implements Initializable, ISt
   public void updateStyle() {
     StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setTabPaneStyle(mainTabPane);
-
-    for (Tab tab : mainTabPane.getTabs()) {
-      StyleManager.getInstance().getCurrentStyle().setTabStyle(tab);
-    }
   }
 
   private String getPageUrl(DataBaseObjectType t) {

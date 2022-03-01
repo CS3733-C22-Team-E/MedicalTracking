@@ -1,9 +1,7 @@
 package edu.wpi.teame.view.style;
 
-import edu.wpi.teame.App;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -16,8 +14,6 @@ public class ColorScheme {
   public final int TitleFontSize = 72;
 
   private final Color secondaryBackground;
-  private final String mainCSSPath;
-  private final String styleName;
   private final Color background;
   private final Color foreground;
   private final Color textColor;
@@ -28,12 +24,9 @@ public class ColorScheme {
       Color secondaryBackground,
       Color foreground,
       Color textColor) {
-    mainCSSPath =
-        App.class.getClassLoader().getResource("edu/wpi/teame/css/mainStyle.css").toExternalForm();
     this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;
-    this.styleName = styleName;
     this.textColor = textColor;
   }
 
@@ -113,7 +106,6 @@ public class ColorScheme {
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
     newStyle.append("-fx-padding: 10px; ");
     pane.setStyle(newStyle.toString());
-    applyStylesheet(pane);
   }
 
   public void setListViewStyle(ListView listView) {
@@ -121,7 +113,6 @@ public class ColorScheme {
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
-    applyStylesheet(listView);
 
     listView.setCellFactory(
         lv ->
@@ -130,13 +121,17 @@ public class ColorScheme {
               protected void updateItem(ISQLSerializable dbObject, boolean empty) {
                 super.updateItem(dbObject, empty);
                 if (empty) {
-                  setStyle("-fx-background-color: " + getColorAsStyleString(secondaryBackground));
+                  setStyle(
+                      "-fx-background-radius: 20px; -fx-background-color: "
+                          + getColorAsStyleString(secondaryBackground));
                   setText("");
                   return;
                 }
 
                 if (dbObject.getIsDeleted()) {
-                  setStyle("-fx-background-color: " + getColorAsStyleString(foreground));
+                  setStyle(
+                      "-fx-background-radius: 20px; -fx-background-color: "
+                          + getColorAsStyleString(foreground));
                 }
                 setText(dbObject.toString());
               }
@@ -147,25 +142,23 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     scrollPane.setStyle(newStyle.toString());
-    applyStylesheet(scrollPane);
   }
 
   public void setTabPaneStyle(TabPane tabPane) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     tabPane.setStyle(newStyle.toString());
-    applyStylesheet(tabPane);
+
+    for (Tab tab : tabPane.getTabs()) {
+      setTabStyle(tab);
+    }
   }
 
   public void setTabStyle(Tab tab) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
-    newStyle.append("-fx-background-radius: 10px; ");
+    newStyle.append("-fx-background-radius: 10px; ").append("-fx-font-size: 16px; ");
     tab.setStyle(newStyle.toString());
-
-    StringBuilder contentStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
-    tab.getContent().setStyle(contentStyle.toString());
   }
 
   // </editor-fold>
@@ -175,17 +168,6 @@ public class ColorScheme {
     defaultStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
     defaultStyle.append("-fx-font-weight: bold; -fx-font-family: Roboto; ");
     return defaultStyle.toString();
-  }
-
-  private void applyStylesheet(Parent parent) {
-    String cssPath = App.class.getClassLoader().getResource(getCSSPath()).toExternalForm();
-    parent.getStylesheets().clear();
-    parent.getStylesheets().add(cssPath);
-    parent.applyCss();
-  }
-
-  private String getCSSPath() {
-    return "edu/wpi/teame/css/schemes/" + styleName + "Style.css";
   }
 
   private String getColorAsStyleString(Color color) {

@@ -11,3 +11,8 @@
   -fx-background-repeat: no-repeat;
   -fx-background-size: cover;
 }
+
+/* Basic UI Elements */
+.tab-pane *.tab-header-background {
+    -fx-background-color: #4F4F4F;
+}
