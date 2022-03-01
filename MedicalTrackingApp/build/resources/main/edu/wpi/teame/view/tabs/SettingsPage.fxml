@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
-<AnchorPane styleClass="anchor-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.SettingsPageController">
+<AnchorPane  stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.SettingsPageController">
     <children>
-        <GridPane alignment="CENTER" layoutY="7.0" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <GridPane alignment="CENTER" layoutY="7.0" prefHeight="580.0" prefWidth="800.0"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -40,8 +40,8 @@
                   <Insets left="10.0" />
                </padding>
             </ComboBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Language: " visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Color: " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0"  text="Language: " visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Color: " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <ComboBox fx:id="languageComboBox" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="496.0" promptText="Change Language..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -58,7 +58,7 @@
                   <Insets left="10.0" />
                </padding>
             </ComboBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Accessibility:" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0"  text="Accessibility:" visible="false" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>

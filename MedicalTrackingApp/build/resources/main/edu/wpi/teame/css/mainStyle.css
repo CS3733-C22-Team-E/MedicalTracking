@@ -15,3 +15,6 @@
 }
 
 /* Basic UI Elements */
+.button {
+    -fx-background-radius: 10px;
+}

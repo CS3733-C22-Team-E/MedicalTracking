@@ -9,6 +9,10 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
 public class ColorScheme {
+  public final int DefaultFontSize = 14;
+  public final int HeaderFontSize = 28;
+  public final int TitleFontSize = 72;
+
   private final Color secondaryBackground;
   private final Color background;
   private final Color foreground;
@@ -28,9 +32,12 @@ public class ColorScheme {
 
   public void setButtonStyle(Button button) {
     StringBuilder newStyle = new StringBuilder();
+    newStyle
+        .append("-fx-font-weight: bold; -fx-font-size: ")
+        .append(DefaultFontSize)
+        .append("px; ");
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
     button.setStyle(newStyle.toString());
   }
 
@@ -59,14 +66,14 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 72px; ");
+    newStyle.append("-fx-font-weight: bold; -fx-font-size: ").append(TitleFontSize).append("px; ");
     titleLabel.setStyle(newStyle.toString());
   }
 
   public void setHeaderStyle(Label headerLabel) {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 28px; ");
+    newStyle.append("-fx-font-weight: bold; -fx-font-size: ").append(HeaderFontSize).append("px; ");
     newStyle.append("-fx-padding-bottom: 20px; ");
     headerLabel.setStyle(newStyle.toString());
   }
@@ -74,7 +81,10 @@ public class ColorScheme {
   public void setLabelStyle(Label label) {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
+    newStyle
+        .append("-fx-font-weight: bold; -fx-font-size: ")
+        .append(DefaultFontSize)
+        .append("px; ");
     label.setStyle(newStyle.toString());
   }
 
@@ -86,7 +96,10 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
+    newStyle
+        .append("-fx-font-weight: bold; -fx-font-size: ")
+        .append(DefaultFontSize)
+        .append("px; ");
     textField.setStyle(newStyle.toString());
   }
 
@@ -94,7 +107,10 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
+    newStyle
+        .append("-fx-font-weight: bold; -fx-font-size: ")
+        .append(DefaultFontSize)
+        .append("px; ");
     textArea.setStyle(newStyle.toString());
   }
 

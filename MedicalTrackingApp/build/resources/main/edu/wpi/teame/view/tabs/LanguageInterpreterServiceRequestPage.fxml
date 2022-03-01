@@ -14,7 +14,7 @@
 
 <?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
 
-<AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updateFromDB" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.LanguageInterpreterServiceRequestPageServiceRequestController">   <children>
+<AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updateFromDB" prefHeight="580.0" prefWidth="800.0"  stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.LanguageInterpreterServiceRequestPageServiceRequestController">   <children>
    <GridPane fx:id="gridPane" layoutX="6.0" layoutY="6.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -45,7 +45,7 @@
                <Font size="16.0" />
             </font>
          </Button>
-         <TextArea fx:id="additionalInfo" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="247.0" promptText="Add any additional info..." styleClass="text-area" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <TextArea fx:id="additionalInfo" maxWidth="1.7976931348623157E308" prefHeight="105.0" prefWidth="247.0" promptText="Add any additional info..."  wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="8">
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </GridPane.margin>
@@ -63,7 +63,7 @@
                <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
             </GridPane.margin>
          </AutoCompleteTextField>
-         <AutoCompleteTextField fx:id="assignee" promptText="Enter an assignee..." styleClass="jfx-combo-box" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <AutoCompleteTextField fx:id="assignee" promptText="Enter an assignee..."  GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />
             </GridPane.margin>
