@@ -20,6 +20,7 @@
  */
 package edu.wpi.teame.view.map.RadialMenu;
 
+import edu.wpi.teame.App;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Animation;
@@ -318,10 +319,32 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         event -> {
           Point2D updatedLocation =
               stacker.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+          //          System.out.println(
+          //              "Comparing: " + App.getAppPrimaryStage().getWidth() + " to " +
+          // event.getSceneX());
+          //          if ((((App.getAppPrimaryStage().getScene().getHeight() - 30) >=
+          // event.getSceneY())
+          //                  & (event.getSceneY() > 30))
+          //              && (((App.getAppPrimaryStage().getScene().getWidth() - 30) >=
+          // event.getSceneX())
+          //                  & (event.getSceneX() > 110))) {
+          //            this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
+          //            this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
+          //          }
 
-          this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
+          this.setTranslateX(
+              constrain(
+                      updatedLocation.getX(),
+                      30,
+                      App.getAppPrimaryStage().getScene().getWidth() - 110)
+                  - stacker.getWidth() / 2);
+          this.setTranslateY(
+              constrain(
+                      updatedLocation.getY(),
+                      30,
+                      App.getAppPrimaryStage().getScene().getHeight() - 30)
+                  - stacker.getHeight() / 2);
 
-          this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
           Dragged = true;
         });
 
@@ -343,6 +366,16 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     for (final RadialMenuItem item : this.items) {
       item.setOnMouseClicked(paramEventHandler);
     }
+  }
+
+  public double constrain(double value, double lowerBound, double upperBound) {
+    double retval = value;
+    if (retval <= lowerBound) {
+      retval = lowerBound;
+    } else if (retval >= upperBound) {
+      retval = upperBound;
+    }
+    return retval;
   }
 
   public void setInitialAngle(final double angle) {
