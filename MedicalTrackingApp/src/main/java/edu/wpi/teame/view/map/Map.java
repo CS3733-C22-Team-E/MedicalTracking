@@ -297,21 +297,21 @@ public class Map {
     Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
     Image Location = new Image(getImageResource("images/Icons/Location.png"));
     ImageView ZoomIN = new ImageView(zoomIn);
-    ZoomIN.setFitWidth(35);
-    ZoomIN.setFitHeight(35);
+    ZoomIN.setFitWidth(30);
+    ZoomIN.setFitHeight(30);
     ImageView ZoomOUT = new ImageView(zoomOut);
-    ZoomOUT.setFitHeight(35);
-    ZoomOUT.setFitWidth(35);
+    ZoomOUT.setFitHeight(30);
+    ZoomOUT.setFitWidth(30);
     ImageView REFRESH = new ImageView(refresh);
-    REFRESH.setFitHeight(35);
-    REFRESH.setFitWidth(35);
+    REFRESH.setFitHeight(27);
+    REFRESH.setFitWidth(27);
     ImageView FILTER = new ImageView(FilterIcon);
-    FILTER.setFitWidth(35);
-    FILTER.setFitHeight(35);
+    FILTER.setFitWidth(30);
+    FILTER.setFitHeight(30);
     ImageView Material =
         new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
-    Material.setFitHeight(45);
-    Material.setFitWidth(45);
+    Material.setFitHeight(30);
+    Material.setFitWidth(30);
     RadialMenuItem ZoomIn =
         new RadialMenuItem(
             45,
@@ -356,10 +356,11 @@ public class Map {
     RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
       ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
-      CurrImageView.setFitWidth(35);
-      CurrImageView.setFitHeight(35);
+      CurrImageView.setFitWidth(25);
+      CurrImageView.setFitHeight(25);
       RadialCheckMenuItem tobeadded =
-          new RadialCheckMenuItem(45, CurrImageView, true, Color.LIGHTGREEN);
+          new RadialCheckMenuItem(
+              45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -372,7 +373,8 @@ public class Map {
     LocationImageView.setFitHeight(35);
     LocationImageView.setFitWidth(35);
     RadialCheckMenuItem Locations =
-        new RadialCheckMenuItem(45, LocationImageView, true, Color.LIGHTGREEN);
+        new RadialCheckMenuItem(
+            45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
     Locations.setOnMouseClicked(
         event -> {
           Locations.setSelected(!Locations.isSelected());
@@ -388,7 +390,8 @@ public class Map {
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
       floorer.setFitWidth(35);
       floorer.setFitHeight(35);
-      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false, Color.GREEN);
+      RadialCheckMenuItem floor =
+          new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
       } else {
@@ -414,13 +417,13 @@ public class Map {
         new RadialMenu(
             0,
             30,
-            85,
+            80,
             3,
-            Color.GREY,
-            Color.LIGHTGREEN,
-            Color.WHITESMOKE,
+            Color.color(0.09803921568, 0.07843137254, 0.07843137254, .75),
+            Color.color(.117, .844, .38, .85),
             Color.PAPAYAWHIP,
-            false,
+            Color.PAPAYAWHIP,
+            true,
             RadialMenu.CenterVisibility.ALWAYS,
             Material,
             stack);

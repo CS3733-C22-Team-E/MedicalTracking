@@ -41,6 +41,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -77,6 +78,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
   private boolean mouseOn = false;
   private double lastInitialAngleValue;
   private double lastOffsetValue;
+  private boolean Dragged = true;
 
   public Paint getBackgroundFill() {
     return this.backgroundFill.get();
@@ -296,14 +298,18 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         new EventHandler<MouseEvent>() {
           @Override
           public void handle(final MouseEvent event) {
-            if (event.getButton() == MouseButton.PRIMARY) {
-              final boolean visible = RadialMenu.this.itemGroup.isVisible();
-              if (visible) {
-                RadialMenu.this.hideRadialMenu();
-              } else {
-                RadialMenu.this.showRadialMenu();
+            if (!Dragged) {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                final boolean visible = RadialMenu.this.itemGroup.isVisible();
+                if (visible) {
+                  RadialMenu.this.hideRadialMenu();
+                } else {
+                  RadialMenu.this.showRadialMenu();
+                }
+                event.consume();
               }
-              event.consume();
+            } else {
+              Dragged = false;
             }
           }
         });
@@ -312,24 +318,27 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         event -> {
           Point2D updatedLocation =
               stacker.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
-          // System.out.println(updatedLocation.getX() + " " + updatedLocation.getY());
-          this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
-          this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
 
+          this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
+
+          this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
+          Dragged = true;
         });
 
     this.getChildren().add(this.centerGroup);
     this.centerGraphic = new SimpleObjectProperty<Node>(centerGraphic);
+    ImageView center = (ImageView) centerGraphic;
     centerGraphic
         .translateXProperty()
-        .bind(this.centerStrokeShape.translateXProperty().subtract(45 / 2));
+        .bind(this.centerStrokeShape.translateXProperty().subtract(center.getFitWidth() / 2));
     centerGraphic
         .translateYProperty()
-        .bind(this.centerStrokeShape.translateYProperty().subtract(45 / 2));
+        .bind(this.centerStrokeShape.translateYProperty().subtract(center.getFitHeight() / 2));
     this.setCenterGraphic(centerGraphic);
     this.saveStateBeforeAnimation();
     RadialMenu.this.hideRadialMenu();
   }
+
   public void setOnMenuItemMouseClicked(final EventHandler<? super MouseEvent> paramEventHandler) {
     for (final RadialMenuItem item : this.items) {
       item.setOnMouseClicked(paramEventHandler);
