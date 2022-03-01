@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -7,6 +8,9 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
@@ -55,6 +59,10 @@ public class Equipment implements ISQLSerializable {
     this.type = EquipmentType.values()[(lineData.getColumnInt("nodeType"))];
     this.location = (Location) lineData.getDBObject(DataBaseObjectType.Location, "locationNodeID");
   }
+
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public Equipment() {}
 
   @Override
   public String toString() {
@@ -106,6 +114,22 @@ public class Equipment implements ISQLSerializable {
         + isCleanInt
         + ", "
         + hasPatientInt;
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
+
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("locationID", location.getId()));
+    updates.add(Updates.set("name", name));
+    updates.add(Updates.set("type", type.ordinal()));
+    updates.add(Updates.set("isClean", isCleanInt));
+    updates.add(Updates.set("hasPatient", hasPatientInt));
+
+    return updates;
   }
 
   @Override
@@ -186,5 +210,13 @@ public class Equipment implements ISQLSerializable {
 
   public void setClean(boolean clean) {
     isClean = clean;
+  }
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }

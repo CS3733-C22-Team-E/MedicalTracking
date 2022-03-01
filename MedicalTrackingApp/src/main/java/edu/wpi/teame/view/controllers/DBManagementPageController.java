@@ -1,49 +1,42 @@
 package edu.wpi.teame.view.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class DBManagementPageController implements Initializable {
+public class DBManagementPageController implements Initializable, IStyleable {
   @FXML JFXListView<ISQLSerializable> resultView;
   @FXML JFXComboBox tableComboBox;
   @FXML TextField searchTextBox;
+  @FXML JFXButton restoreButton;
+  @FXML JFXButton deleteButton;
+  @FXML Button searchButton;
+  @FXML Label headerLabel;
 
   private DataBaseObjectType currentType = null;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     DataBaseObjectType[] dbTables = DataBaseObjectType.values();
-    tableComboBox.setItems(FXCollections.observableArrayList(dbTables));
+    ArrayList<DataBaseObjectType> dbTablesList = new ArrayList<>(List.of(dbTables));
+    dbTablesList.remove(DataBaseObjectType.Credential); // Remove the credentials from this page
 
-    resultView.setCellFactory(
-        lv ->
-            new ListCell<ISQLSerializable>() {
-              @Override
-              protected void updateItem(ISQLSerializable dbObject, boolean empty) {
-                super.updateItem(dbObject, empty);
-                if (empty) {
-                  setStyle("");
-                  setText("");
-                  return;
-                }
-
-                if (dbObject.getIsDeleted()) {
-                  setStyle("-fx-background-color: #9C9C9C");
-                }
-                setText(dbObject.toString());
-              }
-            });
+    tableComboBox.setItems(FXCollections.observableArrayList(dbTablesList));
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -105,5 +98,16 @@ public class DBManagementPageController implements Initializable {
   @FXML
   public void searchButtonClick() throws SQLException {
     updateListView();
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(searchTextBox);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(tableComboBox);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(restoreButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(deleteButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(searchButton);
+    StyleManager.getInstance().getCurrentStyle().setListViewStyle(resultView);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
   }
 }

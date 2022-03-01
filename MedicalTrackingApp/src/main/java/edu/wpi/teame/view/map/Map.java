@@ -25,6 +25,8 @@ import edu.wpi.teame.view.map.RadialMenu.RadialCheckMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialContainerMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenu;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenuItem;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -51,7 +53,7 @@ import javafx.stage.Screen;
 import javafx.util.Pair;
 import jfxtras.scene.menu.CirclePopupMenu;
 
-public class Map {
+public class Map implements IStyleable {
   private final HashMap<FloorType, Image> Images = new HashMap<>();
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -77,6 +79,8 @@ public class Map {
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation = null;
   private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
+  RadialMenu controller = null;
+  ArrayList<RadialCheckMenuItem> menuItemsToBeStyled = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -248,6 +252,7 @@ public class Map {
   }
 
   // init ComboBox
+  @Deprecated
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
     comboBox.setValue(currFloor.toString());
@@ -272,6 +277,7 @@ public class Map {
     return Objects.requireNonNull(App.class.getResource(filePath)).toString();
   }
 
+  @Deprecated
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -288,30 +294,31 @@ public class Map {
     return zoomInButton;
   }
 
-  public RadialMenu createMainController() {
+  public RadialMenu createMainController(StackPane stack) {
     Image zoomIn = new Image(getImageResource("images/Icons/ZoomIn.png"));
     Image zoomOut = new Image(getImageResource("images/Icons/ZoomOut.png"));
     Image refresh = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
+    Image Location = new Image(getImageResource("images/Icons/Location.png"));
     ImageView ZoomIN = new ImageView(zoomIn);
-    ZoomIN.setFitWidth(35);
-    ZoomIN.setFitHeight(35);
+    ZoomIN.setFitWidth(30);
+    ZoomIN.setFitHeight(30);
     ImageView ZoomOUT = new ImageView(zoomOut);
-    ZoomOUT.setFitHeight(35);
-    ZoomOUT.setFitWidth(35);
+    ZoomOUT.setFitHeight(30);
+    ZoomOUT.setFitWidth(30);
     ImageView REFRESH = new ImageView(refresh);
-    REFRESH.setFitHeight(35);
-    REFRESH.setFitWidth(35);
+    REFRESH.setFitHeight(27);
+    REFRESH.setFitWidth(27);
     ImageView FILTER = new ImageView(FilterIcon);
-    FILTER.setFitWidth(35);
-    FILTER.setFitHeight(35);
+    FILTER.setFitWidth(30);
+    FILTER.setFitHeight(30);
     ImageView Material =
         new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
-    Material.setFitHeight(45);
-    Material.setFitWidth(45);
+    Material.setFitHeight(30);
+    Material.setFitWidth(30);
     RadialMenuItem ZoomIn =
         new RadialMenuItem(
-            45,
+            72,
             ZoomIN,
             new EventHandler<ActionEvent>() {
               @Override
@@ -322,7 +329,7 @@ public class Map {
     ZoomIn.ZoomButton = true;
     RadialMenuItem ZoomOut =
         new RadialMenuItem(
-            45,
+            72,
             ZoomOUT,
             new EventHandler<ActionEvent>() {
               @Override
@@ -333,7 +340,7 @@ public class Map {
     ZoomOut.ZoomButton = true;
     RadialMenuItem Refresh =
         new RadialMenuItem(
-            45,
+            72,
             REFRESH,
             new EventHandler<ActionEvent>() {
               @Override
@@ -345,16 +352,21 @@ public class Map {
                 }
               }
             });
-    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(72, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
     Floor.setFitHeight(30);
     Floor.setFitWidth(30);
-    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
+    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(72, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
+      ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
+      CurrImageView.setFitWidth(25);
+      CurrImageView.setFitHeight(25);
       RadialCheckMenuItem tobeadded =
           new RadialCheckMenuItem(
-              45, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
+              45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+      menuItemsToBeStyled.add(tobeadded);
+
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -363,12 +375,32 @@ public class Map {
 
       FilterCheckBoxes.addMenuItem(tobeadded);
     }
+    ImageView LocationImageView = new ImageView(Location);
+    LocationImageView.setFitHeight(35);
+    LocationImageView.setFitWidth(35);
+    RadialCheckMenuItem Locations =
+        new RadialCheckMenuItem(
+            45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+    menuItemsToBeStyled.add(Locations);
+    Locations.setOnMouseClicked(
+        event -> {
+          Locations.setSelected(!Locations.isSelected());
+          for (FloorType currFloor : FloorType.values()) {
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getIcon().setVisible(!dot.getIcon().isVisible());
+            }
+          }
+        });
+    FilterCheckBoxes.addMenuItem(Locations);
     for (FloorType currFloor : FloorType.values()) {
       ImageView floorer =
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
       floorer.setFitWidth(35);
       floorer.setFitHeight(35);
-      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false, Color.GREEN);
+      RadialCheckMenuItem floor =
+          new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      menuItemsToBeStyled.add(floor);
+      floor.setText(currFloor.toString());
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
       } else {
@@ -394,23 +426,24 @@ public class Map {
         new RadialMenu(
             0,
             30,
-            85,
+            80,
             3,
-            Color.GREY,
-            Color.GREEN,
-            Color.WHITESMOKE,
+            Color.color(0.09803921568, 0.07843137254, 0.07843137254, .75),
+            Color.color(.117, .844, .38, .85),
             Color.PAPAYAWHIP,
-            false,
+            Color.PAPAYAWHIP,
+            true,
             RadialMenu.CenterVisibility.ALWAYS,
-            Material);
+            Material,
+            stack);
     MainController.addMenuItem(ZoomIn);
     MainController.addMenuItem(ZoomOut);
     MainController.addMenuItem(Refresh);
     MainController.addMenuItem(FilterCheckBoxes);
     MainController.addMenuItem(FloorSwitch);
+    controller = MainController;
     return MainController;
   }
-
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -420,6 +453,7 @@ public class Map {
     }
   }
 
+  @Deprecated
   private ArrayList<JFXCheckBox> createFilterCheckBoxes() {
     ArrayList<JFXCheckBox> retval = new ArrayList<>();
 
@@ -475,6 +509,7 @@ public class Map {
     return retval;
   }
 
+  @Deprecated
   private JFXButton createZoomOutButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomOut.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -491,6 +526,7 @@ public class Map {
     return zoomOutButton;
   }
 
+  @Deprecated
   private JFXButton createRefreshButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -529,6 +565,8 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) throws SQLException {
+    StyleManager.getInstance().subscribe(this);
+
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -570,16 +608,7 @@ public class Map {
             scroll.zoomNode.fireEvent(event);
           }
         });
-    staticWrapper
-        .getChildren()
-        .setAll(
-            scroll,
-            createZoomInButton(),
-            createZoomOutButton(),
-            createFloorSwitcher(),
-            createRefreshButton(),
-            createMainController());
-    staticWrapper.getChildren().addAll(createFilterCheckBoxes());
+    staticWrapper.getChildren().setAll(scroll, createMainController(staticWrapper));
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
@@ -612,7 +641,8 @@ public class Map {
             Icon.getContextMenu().show(Icon, event.getScreenX(), event.getScreenY());
           }
         });
-    Tooltip tooltip = new Tooltip(equipment.getName());
+    Tooltip tooltip =
+        new Tooltip(equipment.getName() + " Status: " + (equipment.isClean() ? "Clean" : "Dirty"));
     Tooltip.install(Icon, tooltip);
     MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
 
@@ -637,7 +667,6 @@ public class Map {
         event -> {
           node.setCursor(Cursor.DEFAULT);
         });
-
     // Prompt the user that the node can be dragged
     node.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
@@ -1106,6 +1135,21 @@ public class Map {
           .setTranslateY(
               icon.getEquipment().getLocation().getY() - backgroundImage.getHeight() / 2);
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    if (controller != null) {
+      controller.setBackgroundMouseOnFill(
+          StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    }
+    menuItemsToBeStyled.forEach(
+        menu -> {
+          menu.selectedMouseOnColor =
+              StyleManager.getInstance().getCurrentStyle().getForegroundColor();
+          menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getForegroundColor();
+          menu.redraw();
+        });
   }
 
   private static class Position {
