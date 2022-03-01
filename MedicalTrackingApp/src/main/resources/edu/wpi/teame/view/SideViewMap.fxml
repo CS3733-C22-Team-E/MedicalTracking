@@ -25,16 +25,16 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="thirdFloor" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="Third Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="secondFloor" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="Second Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button fx:id="firstFloor" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="First Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Button fx:id="lowerLevel1" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="Lower Level 1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <Button fx:id="lowerLevel2" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="Lower Level 2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <PieChart fx:id="thirdFloorPie" title="Third Floor Inventory" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <PieChart fx:id="secondFloorPie" title="Second Floor Inventory" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <PieChart fx:id="firstFloorPie" title="First Floor Inventory" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <PieChart fx:id="lowerLevel1Pie" title="Lower Level 1 Inventory" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <PieChart fx:id="lowerLevel2Pie" title="Lower Level 2 Inventory" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Button fx:id="thirdFloor" mnemonicParsing="false" onMouseDragOver="#makeThirdFloorPieVisible" prefHeight="75.0" prefWidth="240.0" text="Third Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="secondFloor" mnemonicParsing="false" onMouseDragOver="#makeSecondFloorPieVisible" prefHeight="75.0" prefWidth="240.0" text="Second Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button fx:id="firstFloor" mnemonicParsing="false" onMouseDragOver="#makeFirstFloorPieVisible" prefHeight="75.0" prefWidth="240.0" text="First Floor" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Button fx:id="lowerLevel1" mnemonicParsing="false" onMouseDragOver="#makeLowerLevel1Visible" prefHeight="75.0" prefWidth="240.0" text="Lower Level 1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button fx:id="lowerLevel2" mnemonicParsing="false" onMouseDragOver="#makeLowerLevel2Visible" prefHeight="75.0" prefWidth="240.0" text="Lower Level 2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <PieChart fx:id="thirdFloorPie" title="Third Floor Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <PieChart fx:id="secondFloorPie" title="Second Floor Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <PieChart fx:id="firstFloorPie" title="First Floor Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <PieChart fx:id="lowerLevel1Pie" title="Lower Level 1 Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <PieChart fx:id="lowerLevel2Pie" title="Lower Level 2 Inventory" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          </children>
     </GridPane>
 </children>

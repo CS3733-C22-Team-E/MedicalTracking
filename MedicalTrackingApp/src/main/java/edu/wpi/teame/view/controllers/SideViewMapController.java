@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 
 public class SideViewMapController implements Initializable {
@@ -18,35 +19,42 @@ public class SideViewMapController implements Initializable {
   @FXML public Button lowerLevel1;
   @FXML public Button lowerLevel2;
 
+  @FXML public PieChart thirdFloorPie;
+  @FXML public PieChart secondFloorPie;
+  @FXML public PieChart firstFloorPie;
+  @FXML public PieChart lowerLevel1Pie;
+  @FXML public PieChart lowerLevel2Pie;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
   }
 
   @FXML
   private void makeThirdFloorPieVisible() {
-    thirdFloor.setVisible(true);
+    thirdFloorPie.setVisible(true);
   }
 
   @FXML
   private void makeSecondFloorPieVisible() {
-    secondFloor.setVisible(true);
+    secondFloorPie.setVisible(true);
   }
 
   @FXML
   private void makeFirstFloorPieVisible() {
-    firstFloor.setVisible(true);
+    firstFloorPie.setVisible(true);
   }
 
   @FXML
   private void makeLowerLevel1PieVisible() {
-    lowerLevel1.setVisible(true);
+    lowerLevel1Pie.setVisible(true);
   }
 
   @FXML
   private void makeLowerLevel2PieVisible() {
-    lowerLevel2.setVisible(true);
+    lowerLevel2Pie.setVisible(true);
   }
 
-} 
+}
+
+
