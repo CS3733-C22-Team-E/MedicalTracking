@@ -553,8 +553,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     final ParallelTransition transition = new ParallelTransition(anim.toArray(new Animation[] {}));
 
     transition.play();
-   ImageView center =  (ImageView)this.centerGraphic.get();
-   center.setVisible(true);
+    ImageView center = (ImageView) this.centerGraphic.get();
+    center.setVisible(true);
   }
 
   public void showRadialMenu() {
@@ -602,7 +602,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
     this.itemGroup.setVisible(true);
     transition.play();
-    ImageView center =  (ImageView)this.centerGraphic.get();
+    ImageView center = (ImageView) this.centerGraphic.get();
     center.setVisible(false);
   }
 
