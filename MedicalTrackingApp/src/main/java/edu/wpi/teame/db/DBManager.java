@@ -9,7 +9,6 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClientFactory;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.opencsv.exceptions.CsvValidationException;
@@ -46,6 +45,7 @@ public final class DBManager {
   private static DBManager instance;
   private Connection connection;
   private Statement statement;
+  private MongoClient mongoClient;
   private MongoDatabase mongoDatabase;
 
   public static synchronized DBManager getInstance() {
@@ -449,7 +449,7 @@ public final class DBManager {
 
     if (type != DBType.MongoDB) {
       // Write to CSV
-      if (currentType != DBType.AzureCloud) {
+      if (currentType == DBType.Embedded || currentType == DBType.ClientServer) {
         DBManager.getInstance().writeDBToCSV(false);
       }
 
@@ -473,14 +473,13 @@ public final class DBManager {
       currentType = type;
 
       // Check if we should transfer data
-      if (currentType != DBType.AzureCloud) {
+      if (currentType == DBType.Embedded || currentType == DBType.ClientServer) {
         cleanDBTables();
         DBManager.getInstance().loadDBFromCSV(false);
       }
     } else {
       currentType = DBType.MongoDB;
     }
-
     // Load up the data from DB
     loadDB();
   }
@@ -666,11 +665,13 @@ public final class DBManager {
             .serverApi(ServerApi.builder().version(ServerApiVersion.V1).build())
             .build();
 
-    try (MongoClient mongoClient = MongoClients.create(settings)) {
-      // Gets the database
+    // Gets the database
+    mongoClient = MongoClients.create(settings);
+    return mongoClient.getDatabase("TeamEMongos");
+  }
 
-      return mongoClient.getDatabase("TeamEMongos");
-    }
+  public MongoClient getMongoClient() {
+    return mongoClient;
   }
 
   public MongoDatabase getMongoDatabase() {

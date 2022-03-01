@@ -48,11 +48,13 @@ public class PatientDischargeServiceRequestCodec implements Codec<PatientDischar
         }
       } else if (fieldName.equals("assigneeID")) {
         try {
-          serviceRequest.setAssignee(
+          Employee employee =
               (Employee)
                   DBManager.getInstance()
                       .getManager(DataBaseObjectType.Employee)
-                      .get(reader.readInt32()));
+                      .get(reader.readInt32());
+          System.out.println(employee);
+          serviceRequest.setAssignee(employee);
         } catch (SQLException e) {
           e.printStackTrace();
           System.exit(2);

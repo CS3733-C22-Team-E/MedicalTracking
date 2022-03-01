@@ -3,12 +3,16 @@ package edu.wpi.teame;
 import com.mongodb.client.*;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.db.objectManagers.ObjectManager;
 import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.model.mongoCodecs.*;
 import edu.wpi.teame.model.serviceRequests.*;
+import org.sqlite.core.DB;
+
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -20,6 +24,88 @@ public class Main {
     // Setup the DB
     DBManager.getInstance().setupDB();
     DBManager.getInstance().loadDB();
+
+    ResultSet rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From LOCATION");
+    while(rset.next()) {
+      Location location = new Location(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Location", Location.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(location);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From Equipment");
+    while(rset.next()) {
+      Equipment equipment = new Equipment(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Equipment", Equipment.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(equipment);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From Edge");
+    while(rset.next()) {
+      Edge edge = new Edge(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Edge", Edge.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(edge);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From Credential");
+    while(rset.next()) {
+      Credential credential = new Credential(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Credential", Credential.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(credential);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From Employee");
+    while(rset.next()) {
+      Employee employee =new Employee(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Employee", Employee.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(employee);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From Patient");
+    while(rset.next()) {
+      Patient patient =new Patient(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("Patient", Patient.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(patient);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From MentalHealthSR");
+    while(rset.next()) {
+      MentalHealthServiceRequest mentalHealthServiceRequest = new MentalHealthServiceRequest(rset);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("MentalHealthSR", MentalHealthServiceRequest.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(mentalHealthServiceRequest);
+    }
+
+    rset = DBManager.getInstance().getConnection().createStatement().executeQuery("Select * From FacilitiesMaintenanceSR");
+    while(rset.next()) {
+      ServiceRequest serviceRequest = new ServiceRequest(rset, DataBaseObjectType.FacilitiesMaintenanceSR);
+      DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection("FacilitiesMaintenanceSR", ServiceRequest.class)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .insertOne(serviceRequest);
+    }
+
+
 
     /*
     CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(false).build();
@@ -1109,6 +1195,6 @@ public class Main {
 
      */
     // Launch App
-    App.launch(App.class, args);
+    //App.launch(App.class, args);
   }
 }

@@ -43,6 +43,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getAll() throws SQLException {
+    // System.out.println(DBManager.getInstance().getCurrentType());
     if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
       loadedObjects = getAll(getClassFromDBType());
       return loadedObjects;
@@ -64,9 +65,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
               .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
               .find(eq("isDeleted", 0))
               .iterator();
-
-      System.out.println(objectType.toTableName());
-      System.out.println(cls);
 
       loadedObjects = new ArrayList<>();
       while (cursor.hasNext()) {
@@ -296,8 +294,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
       case SecuritySR:
       case MentalHealthSR:
+        return (T) new MentalHealthServiceRequest(lineData);
       case PatientDischargeSR:
-        return (T) new ServiceRequest(lineData, objectType);
+        return (T) new PatientDischargeServiceRequest(lineData);
       case ExternalPatientSR:
         return (T) new PatientTransportationServiceRequest(lineData, false);
       case FoodDeliverySR:
@@ -330,7 +329,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     return null;
   }
 
-  private T getCastedType(ResultSet resultSet) throws SQLException {
+  public T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
       case ComputerSR:
@@ -340,6 +339,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
       case SecuritySR:
       case MentalHealthSR:
+        return (T) new MentalHealthServiceRequest(resultSet);
       case PatientDischargeSR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
@@ -383,7 +383,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
       case SecuritySR:
       case PatientDischargeSR:
-        return (Class<T>) ServiceRequest.class;
+        return (Class<T>) PatientDischargeServiceRequest.class;
       case DeceasedBodySR:
         return (Class<T>) DeceasedBodyRemovalServiceRequest.class;
       case MentalHealthSR:
