@@ -40,7 +40,7 @@ public final class DBManager {
       "mongodb+srv://admin:admin@cluster0.45z0f.mongodb.net/TeamEMongos?retryWrites=true&w=majority";
 
   private HashMap<DataBaseObjectType, ObjectManager> managers;
-  private final DBType startUpDB = DBType.AzureCloud;
+  private final DBType startUpDB = DBType.Embedded;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
