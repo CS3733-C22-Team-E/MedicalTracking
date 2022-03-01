@@ -12,8 +12,9 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ReligiousServiceRequest;
-import edu.wpi.teame.view.animations.SRSentAnimation;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import edu.wpi.teame.view.style.SRSentAnimation;
+import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -23,15 +24,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class ReligiousServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
+  @FXML private GridPane gridPane;
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
   @FXML private AutoCompleteTextField assignee;
@@ -42,6 +42,15 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
+  @FXML private Label title;
+  @FXML private Label locationT;
+  @FXML private Label assigneeT;
+  @FXML private Label priorityT;
+  @FXML private Label statusT;
+  @FXML private Label religionT;
+  @FXML private Label patientNameT;
+  @FXML private Label additionalInfoT;
+  @FXML private Label requestDateT;
   private boolean hasRun = false;
 
   @Override
@@ -80,6 +89,8 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             listener -> {
               validateSubmitButton();
             });
+
+    StyleManager.getInstance().subscribe(this);
 
     patientName
         .onActionProperty()
@@ -189,5 +200,32 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
     status.valueProperty().setValue(null);
     patientName.setText("");
     religion.setText("");
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(gridPane, true);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(additionalInfoT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(requestDateT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(patientNameT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(religionT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(locationT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(assigneeT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(priorityT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(statusT);
+
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(locationText);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(patientName);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(assignee);
+    StyleManager.getInstance().getCurrentStyle().setDatePickerStyle(requestDate);
+
+    StyleManager.getInstance().getCurrentStyle().setTextAreaStyle(additionalInfo);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(submitButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(clearButton);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(religion);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
   }
 }

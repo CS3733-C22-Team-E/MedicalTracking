@@ -9,6 +9,7 @@ import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.view.style.StyleManager;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.*;
@@ -19,10 +20,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -30,7 +27,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class ServiceRequestBacklog {
-
   ScrollPane scrollWrapper = new ScrollPane();
   private double SCENEWIDTH;
   private double SCENEHEIGHT;
@@ -47,7 +43,8 @@ public class ServiceRequestBacklog {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
-    CARDWIDTH = SCENEWIDTH;
+    CARDWIDTH = SCENEWIDTH - 20;
+    StyleManager.getInstance().getCurrentStyle().setScrollPaneStyle(scrollWrapper);
   }
 
   public static void main(String[] args) {
@@ -102,36 +99,26 @@ public class ServiceRequestBacklog {
   }
 
   public HBox getTitle() throws SQLException {
-
     HBox tBox = new HBox();
     Text title = new Text("Service Request Backlog");
     title.setFont(Font.font("Arial", FontWeight.BOLD, 56));
-    title.setFill(Color.WHITE);
+    title.setFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
-    Stop[] stops =
-        new Stop[] {
-          new Stop(0, Color.color(0.458823529, 0.474509804, 1)),
-          new Stop(1, Color.color(0.698039216, 0.141176471, 0.937254902))
-        };
-    LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-    tBox.setBackground(new Background(new BackgroundFill(lg1, CornerRadii.EMPTY, Insets.EMPTY)));
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(tBox, true);
     tBox.setPadding(new Insets(10, 0, 10, 0));
     tBox.getChildren().add(title);
     tBox.setAlignment(Pos.CENTER);
-
     return tBox;
   }
 
   public GridPane getRequestHolder() throws SQLException {
-    System.out.println("g");
     getSecurityRequests();
     GridPane requestHolder = new GridPane();
     requestHolder.setVgap(VGAP);
     cardsDisplayed.clear();
     deadServiceRequests.clear();
     serviceRequestsFromDB = sortServiceRequestsFromDB(serviceRequestsFromDB);
-    System.out.println(serviceRequestsFromDB.size());
     for (ServiceRequest sr : serviceRequestsFromDB) {
       if (sr.getStatus().equals(ServiceRequestStatus.CLOSED)
           || sr.getStatus().equals(ServiceRequestStatus.CANCELLED)) {
@@ -148,8 +135,7 @@ public class ServiceRequestBacklog {
     requestHolder.add(getTitle(), 0, 0);
     requestHolder.add(getRefreshBar(), 0, 1);
     requestHolder.add(getFilterBar(), 0, 2);
-    //    GridPane titleGridPane = new GridPane();
-    //    titleGridPane.set
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(requestHolder, true);
     return requestHolder;
   }
 
@@ -174,24 +160,21 @@ public class ServiceRequestBacklog {
 
   public HBox getRefreshBar() {
     HBox refreshBar = new HBox();
-    refreshBar.setPrefSize(CARDWIDTH, 50);
+    refreshBar.setPrefSize(CARDWIDTH / 2, 50);
     Text refreshText = new Text("Click to refresh.");
     refreshText.setFont(Font.font(24));
+    refreshText.setFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
     refreshBar.getChildren().add(refreshText);
     refreshBar.setAlignment(Pos.CENTER);
-    Background noHoverBG =
-        new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY));
-    refreshBar.setBackground(noHoverBG);
-    Background hoverBG =
-        new Background(new BackgroundFill(Color.DARKGRAY, CornerRadii.EMPTY, Insets.EMPTY));
-    refreshBar.setOnMouseExited(
-        e -> {
-          refreshBar.setBackground(noHoverBG);
-        });
-    refreshBar.setOnMouseEntered(
-        e -> {
-          refreshBar.setBackground(hoverBG);
-        });
+
+    Background background =
+        new Background(
+            new BackgroundFill(
+                StyleManager.getInstance().getCurrentStyle().getForegroundColor(),
+                CornerRadii.EMPTY,
+                Insets.EMPTY));
+    refreshBar.setBackground(background);
+
     refreshBar.setOnMouseClicked(
         e -> {
           ((Text) refreshBar.getChildren().get(0)).setText("Refreshing...");
@@ -292,6 +275,8 @@ public class ServiceRequestBacklog {
     }
     LinkedList<ServiceRequest> filteredList = new LinkedList<ServiceRequest>();
     for (ServiceRequest sr : preFilterList) {
+      System.out.println(sr.getDBType() + " " + sr.getId());
+      System.out.println(filterMap.get(sr.getAssignee().getName()));
       if (filterMap.get(sr.getAssignee().getName())) {
         filteredList.add(sr);
       }
@@ -304,6 +289,8 @@ public class ServiceRequestBacklog {
     filterBar.setPrefSize(CARDWIDTH, 50);
     filterBar.setAlignment(Pos.CENTER);
     filterBar.setSpacing(10);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(filterBar, true);
+
     List<Object> DBEmployeeList =
         Objects.requireNonNull(DBManager.getInstance().getManager(DataBaseObjectType.Employee))
             .getAll();
@@ -315,6 +302,8 @@ public class ServiceRequestBacklog {
     for (Object DBObject : DBEmployeeList) {
       Employee e = (Employee) DBObject;
       JFXCheckBox eBox = new JFXCheckBox();
+      StyleManager.getInstance().getCurrentStyle().setCheckBoxStyle(eBox);
+
       String eBoxText = e.getName();
       if (eBoxText.length() > 18) {
         eBoxText = eBoxText.substring(0, 10) + "...";

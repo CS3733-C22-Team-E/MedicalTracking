@@ -2,8 +2,10 @@ package edu.wpi.teame.view.controllers;
 
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.StyledTab;
-import edu.wpi.teame.view.animations.TabHoverAnimation;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
+import edu.wpi.teame.view.style.StyledTab;
+import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
-public class ServiceRequestDirectoryPageController implements Initializable {
+public class ServiceRequestDirectoryPageController implements Initializable, IStyleable {
   public static StyledTab medicalEquipmentSRTab;
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
@@ -147,6 +149,14 @@ public class ServiceRequestDirectoryPageController implements Initializable {
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
+
+    StyleManager.getInstance().subscribe(this);
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setTabPaneStyle(mainTabPane);
   }
 
   private String getPageUrl(DataBaseObjectType t) {

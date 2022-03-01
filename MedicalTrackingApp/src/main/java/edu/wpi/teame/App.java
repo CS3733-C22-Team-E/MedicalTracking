@@ -1,5 +1,8 @@
 package edu.wpi.teame;
 
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.view.style.StyleManager;
+import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -20,10 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
   private static Stage appPrimaryStage;
 
-  public static Stage getAppPrimaryStage() {
-    return appPrimaryStage;
-  }
-
   @Override
   public void init() {
     log.info("Starting Up");
@@ -31,6 +30,8 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
+    StyleManager.getInstance().loadStyles();
+
     appPrimaryStage = primaryStage;
     appPrimaryStage.setTitle("Hospital App");
     appPrimaryStage.setFullScreen(true);
@@ -50,6 +51,9 @@ public class App extends Application {
             handleExit(event);
           }
         });
+
+    // Update the colors for the entire app
+    StyleManager.getInstance().updateStyle();
     appPrimaryStage.show();
   }
 
@@ -71,6 +75,7 @@ public class App extends Application {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == OK) {
+            DBManager.getInstance().getMongoClient().close();
             appPrimaryStage.close();
           } else {
             event.consume();
@@ -85,5 +90,9 @@ public class App extends Application {
     MediaPlayer player = new MediaPlayer(m);
     player.setVolume(1);
     player.play();
+  }
+
+  public static Stage getAppPrimaryStage() {
+    return appPrimaryStage;
   }
 }

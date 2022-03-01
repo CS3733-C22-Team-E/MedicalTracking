@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.AboutPageController">
+<AnchorPane fx:id="anchorPane" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.AboutPageController">
    <children>
-       <GridPane fx:id="gridPane" alignment="CENTER" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="580.0" prefWidth="800.0" styleClass="grid-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+       <GridPane fx:id="gridPane" alignment="CENTER" layoutY="7.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="580.0" prefWidth="800.0"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
           <ColumnConstraints hgrow="ALWAYS" percentWidth="20.0" />
@@ -67,22 +67,22 @@
                <font>
                   <Font size="22.0" />
                </font></Label>
-            <Circle fx:id="jeremyCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Circle fx:id="samayCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Circle fx:id="maanavCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Circle fx:id="amitaiCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Circle fx:id="joseCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Circle fx:id="joeCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Circle fx:id="haohaoCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Circle fx:id="brindaCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Circle fx:id="camiloCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Label ellipsisString="" prefHeight="124.0" prefWidth="241.0" text="Special thanks to Brigham and Women's Hospital and Andrew Shinn for your time and input." textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Circle fx:id="jeremyCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Circle fx:id="samayCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="maanavCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Circle fx:id="amitaiCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="joseCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Circle fx:id="joeCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Circle fx:id="haohaoCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Circle fx:id="brindaCircle" fill="DODGERBLUE" radius="45.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Circle fx:id="camiloCircle" fill="DODGERBLUE" radius="44.0" scaleX="2.0" scaleY="2.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" styleClass="circle" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Label ellipsisString="" prefHeight="124.0" prefWidth="241.0" text="Special thanks to Brigham and Women's Hospital and Andrew Shinn for your time and input." textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                <font>
                   <Font size="22.0" />
                </font></Label>
-            <Label ellipsisString="" prefHeight="69.0" prefWidth="207.0" text="Team Coach: William McDonald" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Label ellipsisString="" prefHeight="40.0" prefWidth="285.0" text="Team Coach: William McDonald" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <font>
-                  <Font size="27.0" />
+                  <Font size="20.0" />
                </font>
             </Label>
             <Label text="Professor Wilson Wong" textAlignment="CENTER" textFill="WHITE" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -95,7 +95,7 @@
                   <Font size="41.0" />
                </font>
             </Text>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#exitAbout" prefHeight="38.0" prefWidth="82.0" text="Back" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#exitAbout" prefHeight="38.0" prefWidth="82.0" text="Back" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
