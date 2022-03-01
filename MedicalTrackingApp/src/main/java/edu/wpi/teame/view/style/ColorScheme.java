@@ -19,11 +19,7 @@ public class ColorScheme {
   private final Color textColor;
 
   public ColorScheme(
-      String styleName,
-      Color background,
-      Color secondaryBackground,
-      Color foreground,
-      Color textColor) {
+      Color background, Color secondaryBackground, Color foreground, Color textColor) {
     this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;

@@ -318,7 +318,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
                             updatedLocation.getX(),
                             size,
                             App.getAppPrimaryStage().getScene().getWidth()
-                                - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
+                                - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 62))
                         - stacker.getWidth() / 2);
                 RadialMenu.this.setTranslateY(
                     constrain(
@@ -358,7 +358,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
                       updatedLocation.getX(),
                       size,
                       App.getAppPrimaryStage().getScene().getWidth()
-                          - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
+                          - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 62))
                   - stacker.getWidth() / 2);
           this.setTranslateY(
               constrain(

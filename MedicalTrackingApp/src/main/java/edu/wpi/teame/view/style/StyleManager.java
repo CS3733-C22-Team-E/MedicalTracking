@@ -27,15 +27,21 @@ public class StyleManager {
     Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
     Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.376470588);
     Color spotifyGray = Color.color(0.30980392156, 0.30980392156, 0.30980392156);
-    Color spotifyText = Color.color(1, 1, 1);
+    Color whiteText = Color.color(1, 1, 1);
     colorSchemes.put(
-        "spotify",
-        new ColorScheme("spotify", spotifyBlack, spotifyGray, spotifyGreen, spotifyText));
+        "Spotify", new ColorScheme(spotifyBlack, spotifyGray, spotifyGreen, whiteText));
 
+    Color blueBackground = Color.color(0.17254902, 0.2, 0.2);
+    Color blueForeground = Color.color(0.14901960, 0.4, 0.81176470);
     colorSchemes.put(
-        "black", new ColorScheme("black", spotifyBlack, spotifyBlack, spotifyBlack, spotifyBlack));
+        "Blue", new ColorScheme(blueBackground, spotifyGray, blueForeground, whiteText));
 
-    currentStyle = "spotify";
+    Color purpleBackground = Color.color(0.54117647, 0.22352941, 0.88235294);
+    Color purpleForeground = Color.color(0.71372549, 0.40392156, 0.94509803);
+    colorSchemes.put(
+        "Purple", new ColorScheme(purpleBackground, spotifyGray, purpleForeground, whiteText));
+
+    currentStyle = "Spotify";
   }
 
   public void selectTheme(String colorSchemeName) {
