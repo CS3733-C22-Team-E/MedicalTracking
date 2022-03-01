@@ -21,6 +21,15 @@ public class Main {
     DBManager.getInstance().setupDB();
     DBManager.getInstance().loadDB();
 
+    //    ResultSet test =
+    //        DBManager.getInstance()
+    //            .getConnection()
+    //            .createStatement()
+    //            .executeQuery("Select * from location where id = 196");
+    //    while (test.next()) {
+    //      System.out.println(test.getString("longName"));
+    //    }
+
     // Launch App
     App.launch(App.class, args);
   }

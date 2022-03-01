@@ -67,7 +67,13 @@ public class LanguageInterpreterServiceRequestCodec
           date = sfd.parse(openDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          date = new Date();
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          try {
+            date = sfdNew.parse(openDate);
+          } catch (ParseException ex) {
+            ex.printStackTrace();
+            date = new Date();
+          }
         }
 
         serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
@@ -78,7 +84,13 @@ public class LanguageInterpreterServiceRequestCodec
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          date = new Date();
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          try {
+            date = sfdNew.parse(closeDate);
+          } catch (ParseException ex) {
+            ex.printStackTrace();
+            date = new Date();
+          }
         }
 
         serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
@@ -97,7 +109,13 @@ public class LanguageInterpreterServiceRequestCodec
           date = sfd.parse(requestDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          date = new Date();
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          try {
+            date = sfdNew.parse(requestDate);
+          } catch (ParseException ex) {
+            ex.printStackTrace();
+            date = new Date();
+          }
         }
         serviceRequest.setRequestDate(new java.sql.Date(date.getTime()));
       } else if (fieldName.equals("isDeleted")) {

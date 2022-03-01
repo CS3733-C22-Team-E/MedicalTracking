@@ -3,7 +3,6 @@ package edu.wpi.teame.db.objectManagers;
 import static com.mongodb.client.model.Filters.eq;
 
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Updates;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -58,17 +57,20 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   public List<T> getAll(Class<T> cls) throws SQLException {
     System.out.println("MogoGetall");
     if (shouldReload()) {
-      MongoCursor<T> cursor =
+      FindIterable<T> all =
           DBManager.getInstance()
               .getMongoDatabase()
               .getCollection(objectType.toTableName(), cls)
               .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
-              .find(eq("isDeleted", 0))
-              .iterator();
+              .find(eq("isDeleted", 0));
 
       loadedObjects = new ArrayList<>();
-      while (cursor.hasNext()) {
-        loadedObjects.add(cursor.next());
+
+      for (T one : all) {
+        if (cls.cast(one) instanceof ServiceRequest) {
+          ((ServiceRequest) cls.cast(one)).setDbType(objectType);
+          loadedObjects.add(one);
+        } else loadedObjects.add(one);
       }
     }
     return loadedObjects;
@@ -201,11 +203,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(markIsDeleted.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
-<<<<<<< Updated upstream
+
       System.out.println("Mogo remove");
-=======
       Bson updates = Updates.combine(Updates.set("isDeleted", 1));
->>>>>>> Stashed changes
 
       DBManager.getInstance()
           .getMongoDatabase()

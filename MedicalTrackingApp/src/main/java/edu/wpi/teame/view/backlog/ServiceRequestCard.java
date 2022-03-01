@@ -41,6 +41,7 @@ public class ServiceRequestCard {
   private boolean isDead = false;
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
+    System.out.println(serviceRequest);
     sr = serviceRequest;
     backlog = b;
     color = getServiceRequestColor();
