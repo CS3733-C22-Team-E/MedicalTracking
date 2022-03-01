@@ -25,6 +25,8 @@ import edu.wpi.teame.view.map.RadialMenu.RadialCheckMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialContainerMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenu;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenuItem;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -51,7 +53,7 @@ import javafx.stage.Screen;
 import javafx.util.Pair;
 import jfxtras.scene.menu.CirclePopupMenu;
 
-public class Map {
+public class Map implements IStyleable {
   private final HashMap<FloorType, Image> Images = new HashMap<>();
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -77,6 +79,8 @@ public class Map {
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation = null;
   private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
+  RadialMenu controller = null;
+  ArrayList<RadialCheckMenuItem> menuItemsToBeStyled = new ArrayList<>();
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -361,6 +365,8 @@ public class Map {
       RadialCheckMenuItem tobeadded =
           new RadialCheckMenuItem(
               45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+      menuItemsToBeStyled.add(tobeadded);
+
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -375,6 +381,7 @@ public class Map {
     RadialCheckMenuItem Locations =
         new RadialCheckMenuItem(
             45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+    menuItemsToBeStyled.add(Locations);
     Locations.setOnMouseClicked(
         event -> {
           Locations.setSelected(!Locations.isSelected());
@@ -392,6 +399,7 @@ public class Map {
       floorer.setFitHeight(35);
       RadialCheckMenuItem floor =
           new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      menuItemsToBeStyled.add(floor);
       floor.setText(currFloor.toString());
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
@@ -433,9 +441,9 @@ public class Map {
     MainController.addMenuItem(Refresh);
     MainController.addMenuItem(FilterCheckBoxes);
     MainController.addMenuItem(FloorSwitch);
+    controller = MainController;
     return MainController;
   }
-
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -557,6 +565,8 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) throws SQLException {
+    StyleManager.getInstance().subscribe(this);
+
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -631,7 +641,8 @@ public class Map {
             Icon.getContextMenu().show(Icon, event.getScreenX(), event.getScreenY());
           }
         });
-    Tooltip tooltip = new Tooltip(equipment.getName());
+    Tooltip tooltip =
+        new Tooltip(equipment.getName() + " Status: " + (equipment.isClean() ? "Clean" : "Dirty"));
     Tooltip.install(Icon, tooltip);
     MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
 
@@ -1124,6 +1135,21 @@ public class Map {
           .setTranslateY(
               icon.getEquipment().getLocation().getY() - backgroundImage.getHeight() / 2);
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    if (controller != null) {
+      controller.setBackgroundMouseOnFill(
+          StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    }
+    menuItemsToBeStyled.forEach(
+        menu -> {
+          menu.selectedMouseOnColor =
+              StyleManager.getInstance().getCurrentStyle().getForegroundColor();
+          menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getForegroundColor();
+          menu.redraw();
+        });
   }
 
   private static class Position {

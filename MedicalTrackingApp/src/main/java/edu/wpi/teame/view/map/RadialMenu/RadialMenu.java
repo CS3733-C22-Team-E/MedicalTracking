@@ -20,7 +20,6 @@
  */
 package edu.wpi.teame.view.map.RadialMenu;
 
-import edu.wpi.teame.App;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Animation;
@@ -314,17 +313,10 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
                   size = 80;
                 }
                 RadialMenu.this.setTranslateX(
-                    constrain(
-                            updatedLocation.getX(),
-                            size,
-                            App.getAppPrimaryStage().getScene().getWidth()
-                                - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
+                    constrain(updatedLocation.getX(), size, stacker.getWidth() - size)
                         - stacker.getWidth() / 2);
                 RadialMenu.this.setTranslateY(
-                    constrain(
-                            updatedLocation.getY(),
-                            size,
-                            App.getAppPrimaryStage().getScene().getHeight() - size)
+                    constrain(updatedLocation.getY(), size, stacker.getHeight() - size)
                         - stacker.getHeight() / 2);
               }
             } else {
@@ -354,17 +346,10 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
             size = 80;
           }
           this.setTranslateX(
-              constrain(
-                      updatedLocation.getX(),
-                      size,
-                      App.getAppPrimaryStage().getScene().getWidth()
-                          - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
+              constrain(updatedLocation.getX(), size, stacker.getWidth() - size)
                   - stacker.getWidth() / 2);
           this.setTranslateY(
-              constrain(
-                      updatedLocation.getY(),
-                      size,
-                      App.getAppPrimaryStage().getScene().getHeight() - size)
+              constrain(updatedLocation.getY(), size, stacker.getHeight() - size)
                   - stacker.getHeight() / 2);
 
           Dragged = true;
@@ -553,6 +538,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     final ParallelTransition transition = new ParallelTransition(anim.toArray(new Animation[] {}));
 
     transition.play();
+    ImageView center = (ImageView) this.centerGraphic.get();
+    center.setVisible(true);
   }
 
   public void showRadialMenu() {
@@ -600,6 +587,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
     this.itemGroup.setVisible(true);
     transition.play();
+    ImageView center = (ImageView) this.centerGraphic.get();
+    center.setVisible(false);
   }
 
   private void saveStateBeforeAnimation() {

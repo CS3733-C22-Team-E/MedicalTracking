@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.AccessLevel;
@@ -9,11 +10,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Credential implements ISQLSerializable {
   private MessageDigest messageDigest;
   private boolean isDeleted = false;
   private AccessLevel accessLevel;
+
   private String username;
   private String password;
   private String imageURL;
@@ -21,22 +26,28 @@ public class Credential implements ISQLSerializable {
   private int id;
 
   public Credential(
-      int id, String salt, String username, String password, AccessLevel accessLevel) {
+      int id,
+      String salt,
+      String username,
+      String password,
+      String imageURL,
+      AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.username = username;
     this.salt = stringToBytes(salt);
     this.accessLevel = accessLevel;
     this.password = hashPassword(password, this.salt);
   }
 
-  public Credential(int id, String username, String password, AccessLevel accessLevel) {
+  public Credential(
+      int id, String username, String password, String imageURL, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.salt = createSalt();
     this.username = username;
     this.accessLevel = accessLevel;
@@ -65,6 +76,10 @@ public class Credential implements ISQLSerializable {
     this.accessLevel = AccessLevel.values()[resultSet.getInt("accessLevel")];
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public Credential() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -80,17 +95,17 @@ public class Credential implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return new StringBuilder()
-        .append("salt = ")
+        .append("salt = '")
         .append(bytesToString(salt))
-        .append("username = ")
+        .append("', username = '")
         .append(username)
-        .append("password = ")
+        .append("', password = '")
         .append(password)
-        .append("accessLevel = ")
+        .append("', accessLevel = ")
         .append(accessLevel.ordinal())
-        .append("imageURL = ")
+        .append(", imageURL = '")
         .append(imageURL)
-        .append(" WHERE id = ")
+        .append("' WHERE id = ")
         .append(id)
         .toString();
   }
@@ -110,6 +125,18 @@ public class Credential implements ISQLSerializable {
         .append(imageURL)
         .append("'")
         .toString();
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("salt", bytesToString(salt)));
+    updates.add(Updates.set("username", username));
+    updates.add(Updates.set("password", password));
+    updates.add(Updates.set("accessLevel", accessLevel.ordinal()));
+    updates.add(Updates.set("imageURL", imageURL));
+
+    return updates;
   }
 
   @Override
@@ -208,11 +235,55 @@ public class Credential implements ISQLSerializable {
     return id;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public AccessLevel getAccessLevel() {
     return accessLevel;
   }
 
+  public void setAccessLevel(AccessLevel accessLevel) {
+    this.accessLevel = accessLevel;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = hashPassword(password, this.salt);
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public byte[] getSalt() {
+    return salt;
+  }
+
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
+  }
+
   public String getImageURL() {
+    if (imageURL == null) {
+      return "";
+    }
+
     return imageURL;
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 }
