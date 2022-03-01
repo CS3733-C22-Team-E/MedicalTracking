@@ -32,7 +32,7 @@ import org.bson.conversions.Bson;
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   protected DataBaseObjectType objectType;
   private Date lastLoaded = new Date(0);
-  private List<T> loadedObjects;
+  protected List<T> loadedObjects;
   private long refreshInterval;
 
   public ObjectManager(DataBaseObjectType objectType, long refreshInterval) {
@@ -43,7 +43,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getAll() throws SQLException {
-    // System.out.println(DBManager.getInstance().getCurrentType());
     if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
       loadedObjects = getAll(getClassFromDBType());
       return loadedObjects;
@@ -56,7 +55,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   public List<T> getAll(Class<T> cls) throws SQLException {
-    System.out.println("MogoGetall");
     if (shouldReload()) {
       MongoCursor<T> cursor =
           DBManager.getInstance()
@@ -92,8 +90,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   public List<T> getDeleted(Class<T> cls) throws SQLException {
-    System.out.println("Mogo getdeleted");
-
     List<T> result = new LinkedList<>();
     FindIterable<T> objects =
         DBManager.getInstance()
@@ -138,7 +134,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());
       insertQuery.append(" VALUES(");
       insertQuery.append(newObject.getSQLInsertString()).append(")");
-      System.out.println(insertQuery);
       PreparedStatement insertStatement =
           DBManager.getInstance()
               .getConnection()
@@ -150,8 +145,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       id = resultSet.getLong(1);
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
-      System.out.println("Mogo insert");
-
       DBManager.getInstance()
           .getMongoDatabase()
           .getCollection(objectType.toTableName(), getClassFromDBType())
@@ -176,7 +169,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(updateQuery.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
-      System.out.println("Mogo update");
       Bson updates = Updates.combine(updatedObject.getMongoUpdates());
 
       DBManager.getInstance()
@@ -201,8 +193,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(markIsDeleted.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
-      System.out.println("Mogo remove");
-
       DBManager.getInstance()
           .getMongoDatabase()
           .getCollection(objectType.toTableName(), getClassFromDBType())
@@ -225,8 +215,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(restoreQuery.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
-      System.out.println("Mogo restore");
-
       Bson updates = Updates.combine(Updates.set("isDeleted", 0));
 
       DBManager.getInstance()

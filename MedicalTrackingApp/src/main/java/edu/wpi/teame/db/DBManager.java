@@ -40,7 +40,7 @@ public final class DBManager {
       "mongodb+srv://admin:admin@cluster0.45z0f.mongodb.net/TeamEMongos?retryWrites=true&w=majority";
 
   private HashMap<DataBaseObjectType, ObjectManager> managers;
-  private final DBType startUpDB = DBType.Embedded;
+  private final DBType startUpDB = DBType.AzureCloud;
   private DBType currentType = DBType.Embedded;
   private static DBManager instance;
   private Connection connection;
@@ -445,7 +445,8 @@ public final class DBManager {
   }
 
   public void switchConnection(DBType type)
-      throws SQLException, IOException, CsvValidationException, ParseException {
+      throws SQLException, IOException, CsvValidationException, ParseException,
+          org.apache.hc.core5.http.ParseException {
 
     if (type != DBType.MongoDB) {
       // Write to CSV
@@ -530,7 +531,9 @@ public final class DBManager {
     return managers.get(dbType);
   }
 
-  public void setupDB() throws SQLException, CsvValidationException, IOException, ParseException {
+  public void setupDB()
+      throws SQLException, CsvValidationException, IOException, ParseException,
+          org.apache.hc.core5.http.ParseException {
     // Add server drivers
     try {
       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -584,10 +587,12 @@ public final class DBManager {
     }
   }
 
-  public void loadDB() throws SQLException {
+  public void loadDB() throws SQLException, IOException, org.apache.hc.core5.http.ParseException {
     for (DataBaseObjectType dbType : DataBaseObjectType.values()) {
       managers.get(dbType).forceGetAll();
     }
+
+    ((CredentialManager) managers.get(DataBaseObjectType.Credential)).setupDBFaces();
   }
 
   public Connection getConnection() {

@@ -1,7 +1,7 @@
 package edu.wpi.teame;
 
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.view.style.ColorScheme;
+import edu.wpi.teame.view.style.StyleManager;
 import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;
@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class App extends Application {
   private static Stage appPrimaryStage;
 
-  private static ColorScheme colorScheme;
-
-  public static Stage getAppPrimaryStage() {
-    return appPrimaryStage;
-  }
-
   @Override
   public void init() {
     log.info("Starting Up");
@@ -37,12 +30,7 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-
-    // Set default color scheme
-    Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
-    Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.37647058823);
-    setColorScheme(new ColorScheme("spotify", spotifyBlack, spotifyGreen));
-    colorScheme.replaceCSS();
+    StyleManager.getInstance().loadStyles();
 
     appPrimaryStage = primaryStage;
     appPrimaryStage.setTitle("Hospital App");
@@ -63,6 +51,9 @@ public class App extends Application {
             handleExit(event);
           }
         });
+
+    // Update the colors for the entire app
+    StyleManager.getInstance().updateStyle();
     appPrimaryStage.show();
   }
 
@@ -101,11 +92,7 @@ public class App extends Application {
     player.play();
   }
 
-  public void setColorScheme(ColorScheme cs) {
-    colorScheme = cs;
-  }
-
-  public static ColorScheme getColorScheme() {
-    return colorScheme;
+  public static Stage getAppPrimaryStage() {
+    return appPrimaryStage;
   }
 }
