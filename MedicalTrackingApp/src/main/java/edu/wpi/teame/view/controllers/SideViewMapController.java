@@ -25,27 +25,27 @@ public class SideViewMapController implements Initializable {
   }
 
   @FXML
-  private void makeChart1Visible() {
+  private void makeThirdFloorVisible() {
     thirdFloor.setVisible(true);
   }
 
   @FXML
-  private void makeChart2Visible() {
+  private void makeSecondFloorVisible() {
     secondFloor.setVisible(true);
   }
 
   @FXML
-  private void makeChart3Visible() {
+  private void makeFirstFloorVisible() {
     firstFloor.setVisible(true);
   }
 
   @FXML
-  private void makeChart4Visible() {
+  private void makeLowerLevel1Visible() {
     lowerLevel1.setVisible(true);
   }
 
   @FXML
-  private void makeChart5Visible() {
+  private void makeLowerLevel2Visible() {
     lowerLevel2.setVisible(true);
   }
 
