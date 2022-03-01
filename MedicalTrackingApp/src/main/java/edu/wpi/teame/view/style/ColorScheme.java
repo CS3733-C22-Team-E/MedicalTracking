@@ -17,13 +17,19 @@ public class ColorScheme {
   private final Color background;
   private final Color foreground;
   private final Color textColor;
+  private final Color buttonTextColor;
 
   public ColorScheme(
-      Color background, Color secondaryBackground, Color foreground, Color textColor) {
+      Color background,
+      Color secondaryBackground,
+      Color foreground,
+      Color textColor,
+      Color buttonTextColor) {
     this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;
     this.textColor = textColor;
+    this.buttonTextColor = buttonTextColor;
   }
 
   public void setAutoCompleteTextBoxStyle(AutoCompleteTextField autoCompleteTextBox) {
@@ -34,6 +40,7 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
     newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(buttonTextColor));
     button.setStyle(newStyle.toString());
   }
 

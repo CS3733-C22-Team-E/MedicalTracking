@@ -30,17 +30,25 @@ public class StyleManager {
     Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
     Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.376470588);
     colorSchemes.put(
-        "Not Spotify", new ColorScheme(spotifyBlack, grayAccents, spotifyGreen, whiteText));
+        "Not Spotify",
+        new ColorScheme(spotifyBlack, grayAccents, spotifyGreen, whiteText, whiteText));
 
-    Color blueBackground = Color.color(0.17254902, 0.2, 0.2);
-    Color blueForeground = Color.color(0.14901960, 0.4, 0.81176470);
+    Color eclipseAccents = Color.color(0.6549019607843137, 0.6627450980392157, 0.7450980392156863);
+    Color eclipseBackground = Color.color(0, 0, 0);
+    Color eclipseForeground = Color.color(1, 0.5372549019607843, 0.02352941176);
     colorSchemes.put(
-        "Blue", new ColorScheme(blueBackground, grayAccents, blueForeground, whiteText));
+        "Eclipse",
+        new ColorScheme(
+            eclipseBackground, eclipseAccents, eclipseForeground, whiteText, whiteText));
 
-    Color purpleBackground = Color.color(0.17254902, 0.2, 0.2);
-    Color purpleForeground = Color.color(0.71372549, 0.40392156, 0.94509803);
+    Color neutronBackground = Color.color(1, 1, 0.99607843137);
+    Color neutronForeground = Color.color(0.38431372549, 0.27450980392, 0.91764705882);
+    Color neutronText = Color.color(0.16862745098, 0.1725490196, 0.20392156862);
+    Color neutronAccents = Color.color(0.81960784313, 0.81960784313, 0.91372549019);
     colorSchemes.put(
-        "Purple", new ColorScheme(purpleBackground, grayAccents, purpleForeground, whiteText));
+        "Neutron Star",
+        new ColorScheme(
+            neutronBackground, neutronAccents, neutronForeground, neutronText, whiteText));
 
     currentStyle = "Not Spotify";
   }
