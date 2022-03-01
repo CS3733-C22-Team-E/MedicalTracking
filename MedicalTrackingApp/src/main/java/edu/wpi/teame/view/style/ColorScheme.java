@@ -13,23 +13,38 @@ public class ColorScheme {
   public final int HeaderFontSize = 28;
   public final int TitleFontSize = 72;
 
-  private final Color secondaryBackground;
   private final Color background;
-  private final Color foreground;
-  private final Color textColor;
-  private final Color buttonTextColor;
+  private final Color headline;
+  private final Color paragraph;
+  private final Color buttonFill;
+  private final Color buttonText;
+  private final Color stroke;
+  private final Color main;
+  private final Color highlight;
+  private final Color secondary;
+  private final Color tertiary;
 
   public ColorScheme(
       Color background,
-      Color secondaryBackground,
-      Color foreground,
-      Color textColor,
-      Color buttonTextColor) {
-    this.secondaryBackground = secondaryBackground;
+      Color headline,
+      Color paragraph,
+      Color buttonFill,
+      Color buttonText,
+      Color stroke,
+      Color main,
+      Color highlight,
+      Color secondary,
+      Color tertiary) {
     this.background = background;
-    this.foreground = foreground;
-    this.textColor = textColor;
-    this.buttonTextColor = buttonTextColor;
+    this.headline = headline;
+    this.paragraph = paragraph;
+    this.buttonFill = buttonFill;
+    this.buttonText = buttonText;
+    this.stroke = stroke;
+    this.main = main;
+    this.highlight = highlight;
+    this.secondary = secondary;
+    this.tertiary = tertiary;
   }
 
   public void setAutoCompleteTextBoxStyle(AutoCompleteTextField autoCompleteTextBox) {
@@ -38,29 +53,29 @@ public class ColorScheme {
 
   public void setButtonStyle(Button button) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(buttonFill));
     newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(buttonTextColor));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(buttonText));
     button.setStyle(newStyle.toString());
   }
 
   public void setCheckBoxStyle(CheckBox checkBox) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(paragraph));
     newStyle.append("-fx-font-size: 12px; ");
     checkBox.setStyle(newStyle.toString());
   }
 
   public void setComboBoxStyle(ComboBox comboBox) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     newStyle.append("-fx-background-radius: 20px; ");
     comboBox.setStyle(newStyle.toString());
   }
 
   public void setDatePickerStyle(DatePicker datePicker) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     datePicker.setStyle(newStyle.toString());
   }
 
@@ -68,11 +83,13 @@ public class ColorScheme {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-font-size: ").append(TitleFontSize).append("px; ");
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(headline));
     titleLabel.setStyle(newStyle.toString());
   }
 
   public void setHeaderStyle(Label headerLabel) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(headline));
     newStyle.append("-fx-font-size: ").append(HeaderFontSize).append("px; ");
     newStyle.append("-fx-margin-bottom: 20px; ");
     headerLabel.setStyle(newStyle.toString());
@@ -80,24 +97,25 @@ public class ColorScheme {
 
   public void setLabelStyle(Label label) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(paragraph));
     newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
     label.setStyle(newStyle.toString());
   }
 
   public void setLineStyle(Line line) {
-    line.setStroke(foreground);
+    line.setStroke(highlight);
   }
 
   public void setTextFieldStyle(TextField textField) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
     textField.setStyle(newStyle.toString());
   }
 
   public void setTextAreaStyle(TextArea textArea) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     textArea.setStyle(newStyle.toString());
   }
 
@@ -105,7 +123,7 @@ public class ColorScheme {
 
   public void setPaneStyle(Pane pane, boolean useStandardBackground) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    Color backgroundColor = useStandardBackground ? background : secondaryBackground;
+    Color backgroundColor = useStandardBackground ? background : secondary;
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
     newStyle.append("-fx-padding: 10px; ");
     pane.setStyle(newStyle.toString());
@@ -113,7 +131,7 @@ public class ColorScheme {
 
   public void setListViewStyle(ListView listView) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
 
@@ -126,7 +144,7 @@ public class ColorScheme {
                 if (empty) {
                   setStyle(
                       "-fx-background-radius: 20px; -fx-background-color: "
-                          + getColorAsStyleString(secondaryBackground));
+                          + getColorAsStyleString(main));
                   setText("");
                   return;
                 }
@@ -134,7 +152,7 @@ public class ColorScheme {
                 if (dbObject.getIsDeleted()) {
                   setStyle(
                       "-fx-background-radius: 20px; -fx-background-color: "
-                          + getColorAsStyleString(foreground));
+                          + getColorAsStyleString(tertiary));
                 }
                 setText(dbObject.toString());
               }
@@ -159,7 +177,7 @@ public class ColorScheme {
 
   public void setTabStyle(Tab tab) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(highlight));
     newStyle.append("-fx-background-radius: 10px; ").append("-fx-font-size: 16px; ");
     tab.setStyle(newStyle.toString());
   }
@@ -168,7 +186,6 @@ public class ColorScheme {
 
   private String getDefaultStyleParams() {
     StringBuilder defaultStyle = new StringBuilder();
-    defaultStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
     defaultStyle.append("-fx-font-weight: bold; -fx-font-family: Roboto; ");
     return defaultStyle.toString();
   }
@@ -183,11 +200,11 @@ public class ColorScheme {
         + "); ";
   }
 
-  public Paint getForegroundColor() {
-    return foreground;
+  public Paint getHighlightColor() {
+    return highlight;
   }
 
-  public Paint getTextColor() {
-    return textColor;
+  public Paint getParagraphColor() {
+    return paragraph;
   }
 }

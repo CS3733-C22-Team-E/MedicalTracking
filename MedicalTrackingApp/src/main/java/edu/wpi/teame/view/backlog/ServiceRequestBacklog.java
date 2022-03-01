@@ -102,7 +102,7 @@ public class ServiceRequestBacklog {
     HBox tBox = new HBox();
     Text title = new Text("Service Request Backlog");
     title.setFont(Font.font("Arial", FontWeight.BOLD, 56));
-    title.setFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    title.setFill(StyleManager.getInstance().getCurrentStyle().getParagraphColor());
     title.setTextAlignment(TextAlignment.CENTER);
     title.setWrappingWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2);
     StyleManager.getInstance().getCurrentStyle().setPaneStyle(tBox, true);
@@ -163,14 +163,14 @@ public class ServiceRequestBacklog {
     refreshBar.setPrefSize(CARDWIDTH / 2, 50);
     Text refreshText = new Text("Click to refresh.");
     refreshText.setFont(Font.font(24));
-    refreshText.setFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    refreshText.setFill(StyleManager.getInstance().getCurrentStyle().getParagraphColor());
     refreshBar.getChildren().add(refreshText);
     refreshBar.setAlignment(Pos.CENTER);
 
     Background background =
         new Background(
             new BackgroundFill(
-                StyleManager.getInstance().getCurrentStyle().getForegroundColor(),
+                StyleManager.getInstance().getCurrentStyle().getHighlightColor(),
                 CornerRadii.EMPTY,
                 Insets.EMPTY));
     refreshBar.setBackground(background);
