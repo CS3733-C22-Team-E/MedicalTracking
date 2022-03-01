@@ -168,6 +168,15 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(settingsTab);
     tabs.add(credentialManagementPage);
 
+    StyledTab sideViewMap =
+        new StyledTab(
+            "Side View Map",
+            SortOrder.ByName,
+            "view/SideViewMap.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
+    TabHoverAnimation.install(sideViewMap);
+    tabs.add(sideViewMap);
+
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);
 
