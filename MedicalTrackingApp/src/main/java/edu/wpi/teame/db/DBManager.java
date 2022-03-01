@@ -6,7 +6,10 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClientFactory;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.opencsv.exceptions.CsvValidationException;
@@ -657,17 +660,16 @@ public final class DBManager {
 
   public MongoDatabase connectToMongoDatabase() {
     // Creates the options to connect to MongoDB
-    MongoClientSettings options =
+    MongoClientSettings settings =
         MongoClientSettings.builder()
             .applyConnectionString(new ConnectionString(MongoDBConnectionString))
+            .serverApi(ServerApi.builder().version(ServerApiVersion.V1).build())
             .build();
 
-    try (MongoClient mongoClient = MongoClients.create(options)) {
+    try (MongoClient mongoClient = MongoClients.create(settings)) {
       // Gets the database
-      MongoDatabase database =
-          mongoClient.getDatabase("TeamEMongos").withCodecRegistry(getObjectCodecs());
 
-      return database;
+      return mongoClient.getDatabase("TeamEMongos");
     }
   }
 

@@ -1,11 +1,15 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.*;
 import edu.wpi.teame.view.map.Astar.GraphNode;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Location implements ISQLSerializable, GraphNode {
   private LocationType type;
@@ -123,6 +127,20 @@ public class Location implements ISQLSerializable, GraphNode {
         + x
         + ", "
         + y;
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("locationType", type.ordinal()));
+    updates.add(Updates.set("shortName", shortName));
+    updates.add(Updates.set("longName", longName));
+    updates.add(Updates.set("building", building.ordinal()));
+    updates.add(Updates.set("floor", floor.ordinal()));
+    updates.add(Updates.set("x", x));
+    updates.add(Updates.set("y", y));
+
+    return updates;
   }
 
   @Override

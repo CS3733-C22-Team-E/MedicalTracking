@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -7,6 +8,9 @@ import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Equipment implements ISQLSerializable {
   private boolean hasPatient;
@@ -110,6 +114,22 @@ public class Equipment implements ISQLSerializable {
         + isCleanInt
         + ", "
         + hasPatientInt;
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+
+    int isCleanInt = isClean ? 1 : 0;
+    int hasPatientInt = hasPatient ? 1 : 0;
+
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("locationID", location.getId()));
+    updates.add(Updates.set("name", name));
+    updates.add(Updates.set("type", type.ordinal()));
+    updates.add(Updates.set("isClean", isCleanInt));
+    updates.add(Updates.set("hasPatient", hasPatientInt));
+
+    return updates;
   }
 
   @Override

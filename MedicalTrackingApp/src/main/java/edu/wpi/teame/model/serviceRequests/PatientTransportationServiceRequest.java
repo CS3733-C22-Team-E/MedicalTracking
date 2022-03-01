@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public final class PatientTransportationServiceRequest extends ServiceRequest {
   private Location destination;
@@ -121,6 +123,14 @@ public final class PatientTransportationServiceRequest extends ServiceRequest {
         + equipment.getId()
         + ", "
         + patient.getId();
+  }
+
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = super.getMongoUpdates();
+    updates.add(Updates.set("destinationID", destination.getId()));
+    updates.add(Updates.set("equipmentID", equipment.getId()));
+    updates.add(Updates.set("patientID", patient.getId()));
+    return updates;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -8,6 +9,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Patient implements ISQLSerializable {
   private Location currentLocation;
@@ -130,6 +134,16 @@ public class Patient implements ISQLSerializable {
 
   public int getId() {
     return id;
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("name", name));
+    updates.add(Updates.set("dateOfBirth", dateOfBirth.toString()));
+    updates.add(Updates.set("currentLocationID", currentLocation.getId()));
+    updates.add(Updates.set("name", name));
+    return updates;
   }
 
   public void setId(int id) {

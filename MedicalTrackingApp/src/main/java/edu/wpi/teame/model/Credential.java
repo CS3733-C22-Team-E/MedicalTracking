@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.AccessLevel;
@@ -9,6 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Credential implements ISQLSerializable {
   private MessageDigest messageDigest;
@@ -114,6 +118,18 @@ public class Credential implements ISQLSerializable {
         .append(imageURL)
         .append("'")
         .toString();
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("salt", bytesToString(salt)));
+    updates.add(Updates.set("username", username));
+    updates.add(Updates.set("password", password));
+    updates.add(Updates.set("accessLevel", accessLevel.ordinal()));
+    updates.add(Updates.set("imageURL", imageURL));
+
+    return updates;
   }
 
   @Override

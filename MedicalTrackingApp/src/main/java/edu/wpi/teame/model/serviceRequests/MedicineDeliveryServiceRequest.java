@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public final class MedicineDeliveryServiceRequest extends ServiceRequest {
   private String medicineQuantity;
@@ -104,6 +106,15 @@ public final class MedicineDeliveryServiceRequest extends ServiceRequest {
         + ", '"
         + medicineQuantity
         + "'";
+  }
+
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = super.getMongoUpdates();
+    updates.add(Updates.set("medicineName", medicineName));
+    updates.add(Updates.set("patientID", patient.getId()));
+    updates.add(Updates.set("medicineQuantity", medicineQuantity));
+
+    return updates;
   }
 
   @Override
