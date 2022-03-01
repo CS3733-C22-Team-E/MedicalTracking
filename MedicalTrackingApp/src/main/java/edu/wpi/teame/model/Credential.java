@@ -272,8 +272,17 @@ public class Credential implements ISQLSerializable {
     this.password = password;
   }
 
+<<<<<<< Updated upstream
   public void setImageURL(String imageURL) {
     this.imageURL = imageURL;
+=======
+  public void setPasswordHashed(String password) {
+    this.password = password;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
+>>>>>>> Stashed changes
   }
 
   public byte[] getSalt() {

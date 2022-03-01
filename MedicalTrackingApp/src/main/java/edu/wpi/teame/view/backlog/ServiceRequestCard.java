@@ -48,6 +48,7 @@ public class ServiceRequestCard {
   }
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b, boolean dead) {
+    System.out.println(serviceRequest);
     sr = serviceRequest;
     backlog = b;
     color = getServiceRequestColor();

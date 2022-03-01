@@ -201,12 +201,16 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(markIsDeleted.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
+<<<<<<< Updated upstream
       System.out.println("Mogo remove");
+=======
+      Bson updates = Updates.combine(Updates.set("isDeleted", 1));
+>>>>>>> Stashed changes
 
       DBManager.getInstance()
           .getMongoDatabase()
           .getCollection(objectType.toTableName(), getClassFromDBType())
-          .deleteOne(eq("_id", id));
+          .updateOne(eq("_id", id), updates);
     }
   }
 
@@ -377,11 +381,17 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private Class<T> getClassFromDBType() {
     switch (objectType) {
       case AudioVisualSR:
+        return (Class<T>) ServiceRequest.class;
       case ComputerSR:
+        return (Class<T>) ServiceRequest.class;
       case FacilitiesMaintenanceSR:
+        return (Class<T>) ServiceRequest.class;
       case LaundrySR:
+        return (Class<T>) ServiceRequest.class;
       case SanitationSR:
+        return (Class<T>) ServiceRequest.class;
       case SecuritySR:
+        return (Class<T>) ServiceRequest.class;
       case PatientDischargeSR:
         return (Class<T>) PatientDischargeServiceRequest.class;
       case DeceasedBodySR:
