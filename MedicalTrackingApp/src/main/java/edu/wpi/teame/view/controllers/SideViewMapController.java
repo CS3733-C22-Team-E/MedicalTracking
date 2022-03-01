@@ -25,27 +25,27 @@ public class SideViewMapController implements Initializable {
   }
 
   @FXML
-  private void makeThirdFloorVisible() {
+  private void makeThirdFloorPieVisible() {
     thirdFloor.setVisible(true);
   }
 
   @FXML
-  private void makeSecondFloorVisible() {
+  private void makeSecondFloorPieVisible() {
     secondFloor.setVisible(true);
   }
 
   @FXML
-  private void makeFirstFloorVisible() {
+  private void makeFirstFloorPieVisible() {
     firstFloor.setVisible(true);
   }
 
   @FXML
-  private void makeLowerLevel1Visible() {
+  private void makeLowerLevel1PieVisible() {
     lowerLevel1.setVisible(true);
   }
 
   @FXML
-  private void makeLowerLevel2Visible() {
+  private void makeLowerLevel2PieVisible() {
     lowerLevel2.setVisible(true);
   }
 
