@@ -248,6 +248,7 @@ public class Map {
   }
 
   // init ComboBox
+  @Deprecated
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
     comboBox.setValue(currFloor.toString());
@@ -272,6 +273,7 @@ public class Map {
     return Objects.requireNonNull(App.class.getResource(filePath)).toString();
   }
 
+  @Deprecated
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -288,27 +290,28 @@ public class Map {
     return zoomInButton;
   }
 
-  public RadialMenu createMainController() {
+  public RadialMenu createMainController(StackPane stack) {
     Image zoomIn = new Image(getImageResource("images/Icons/ZoomIn.png"));
     Image zoomOut = new Image(getImageResource("images/Icons/ZoomOut.png"));
     Image refresh = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
+    Image Location = new Image(getImageResource("images/Icons/Location.png"));
     ImageView ZoomIN = new ImageView(zoomIn);
-    ZoomIN.setFitWidth(35);
-    ZoomIN.setFitHeight(35);
+    ZoomIN.setFitWidth(30);
+    ZoomIN.setFitHeight(30);
     ImageView ZoomOUT = new ImageView(zoomOut);
-    ZoomOUT.setFitHeight(35);
-    ZoomOUT.setFitWidth(35);
+    ZoomOUT.setFitHeight(30);
+    ZoomOUT.setFitWidth(30);
     ImageView REFRESH = new ImageView(refresh);
-    REFRESH.setFitHeight(35);
-    REFRESH.setFitWidth(35);
+    REFRESH.setFitHeight(27);
+    REFRESH.setFitWidth(27);
     ImageView FILTER = new ImageView(FilterIcon);
-    FILTER.setFitWidth(35);
-    FILTER.setFitHeight(35);
+    FILTER.setFitWidth(30);
+    FILTER.setFitHeight(30);
     ImageView Material =
         new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
-    Material.setFitHeight(45);
-    Material.setFitWidth(45);
+    Material.setFitHeight(30);
+    Material.setFitWidth(30);
     RadialMenuItem ZoomIn =
         new RadialMenuItem(
             45,
@@ -352,9 +355,12 @@ public class Map {
     Floor.setFitWidth(30);
     RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
+      ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
+      CurrImageView.setFitWidth(25);
+      CurrImageView.setFitHeight(25);
       RadialCheckMenuItem tobeadded =
           new RadialCheckMenuItem(
-              45, new ImageView(TypeGraphics.get(currEquipment)), true, Color.GREEN);
+              45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -363,12 +369,29 @@ public class Map {
 
       FilterCheckBoxes.addMenuItem(tobeadded);
     }
+    ImageView LocationImageView = new ImageView(Location);
+    LocationImageView.setFitHeight(35);
+    LocationImageView.setFitWidth(35);
+    RadialCheckMenuItem Locations =
+        new RadialCheckMenuItem(
+            45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+    Locations.setOnMouseClicked(
+        event -> {
+          Locations.setSelected(!Locations.isSelected());
+          for (FloorType currFloor : FloorType.values()) {
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getIcon().setVisible(!dot.getIcon().isVisible());
+            }
+          }
+        });
+    FilterCheckBoxes.addMenuItem(Locations);
     for (FloorType currFloor : FloorType.values()) {
       ImageView floorer =
           new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
       floorer.setFitWidth(35);
       floorer.setFitHeight(35);
-      RadialCheckMenuItem floor = new RadialCheckMenuItem(35, floorer, false, Color.GREEN);
+      RadialCheckMenuItem floor =
+          new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
       } else {
@@ -394,15 +417,16 @@ public class Map {
         new RadialMenu(
             0,
             30,
-            85,
+            80,
             3,
-            Color.GREY,
-            Color.GREEN,
-            Color.WHITESMOKE,
+            Color.color(0.09803921568, 0.07843137254, 0.07843137254, .75),
+            Color.color(.117, .844, .38, .85),
             Color.PAPAYAWHIP,
-            false,
+            Color.PAPAYAWHIP,
+            true,
             RadialMenu.CenterVisibility.ALWAYS,
-            Material);
+            Material,
+            stack);
     MainController.addMenuItem(ZoomIn);
     MainController.addMenuItem(ZoomOut);
     MainController.addMenuItem(Refresh);
@@ -420,6 +444,7 @@ public class Map {
     }
   }
 
+  @Deprecated
   private ArrayList<JFXCheckBox> createFilterCheckBoxes() {
     ArrayList<JFXCheckBox> retval = new ArrayList<>();
 
@@ -475,6 +500,7 @@ public class Map {
     return retval;
   }
 
+  @Deprecated
   private JFXButton createZoomOutButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomOut.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -491,6 +517,7 @@ public class Map {
     return zoomOutButton;
   }
 
+  @Deprecated
   private JFXButton createRefreshButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -570,16 +597,7 @@ public class Map {
             scroll.zoomNode.fireEvent(event);
           }
         });
-    staticWrapper
-        .getChildren()
-        .setAll(
-            scroll,
-            createZoomInButton(),
-            createZoomOutButton(),
-            createFloorSwitcher(),
-            createRefreshButton(),
-            createMainController());
-    staticWrapper.getChildren().addAll(createFilterCheckBoxes());
+    staticWrapper.getChildren().setAll(scroll, createMainController(staticWrapper));
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
@@ -637,7 +655,6 @@ public class Map {
         event -> {
           node.setCursor(Cursor.DEFAULT);
         });
-
     // Prompt the user that the node can be dragged
     node.addEventHandler(
         MouseEvent.MOUSE_PRESSED,

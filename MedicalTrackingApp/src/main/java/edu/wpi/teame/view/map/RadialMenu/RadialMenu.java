@@ -38,10 +38,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -75,6 +78,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
   private boolean mouseOn = false;
   private double lastInitialAngleValue;
   private double lastOffsetValue;
+  private boolean Dragged = true;
 
   public Paint getBackgroundFill() {
     return this.backgroundFill.get();
@@ -212,6 +216,8 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
 
   public RadialMenu() {}
 
+  public StackPane stack = null;
+
   public RadialMenu(
       final double initialAngle,
       final double innerRadius,
@@ -223,7 +229,9 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
       final Paint strokeMouseOnFill,
       final boolean clockwise,
       final CenterVisibility centerVisibility,
-      final Node centerGraphic) {
+      final Node centerGraphic,
+      StackPane stacker) {
+    this.stack = stacker;
     this.itemGroup = new Group();
     this.getChildren().add(this.itemGroup);
 
@@ -268,12 +276,10 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.backgroundVisible.addListener(this);
 
     this.centerGroup = new Group();
-
-    // this.centerGroup.getChildren().add(this.centerStrokeShape);
     this.centerGroup.getChildren().addAll(this.centerStrokeShape);
+
     this.centerGroup.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
             RadialMenu.this.mouseOn = true;
@@ -282,7 +288,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         });
     this.centerGroup.setOnMouseExited(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
             RadialMenu.this.mouseOn = false;
@@ -291,26 +296,45 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         });
     this.centerGroup.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
-            final boolean visible = RadialMenu.this.itemGroup.isVisible();
-            if (visible) {
-              RadialMenu.this.hideRadialMenu();
+            if (!Dragged) {
+              if (event.getButton() == MouseButton.PRIMARY) {
+                final boolean visible = RadialMenu.this.itemGroup.isVisible();
+                if (visible) {
+                  RadialMenu.this.hideRadialMenu();
+                } else {
+                  RadialMenu.this.showRadialMenu();
+                }
+                event.consume();
+              }
             } else {
-              RadialMenu.this.showRadialMenu();
+              Dragged = false;
             }
-
-            event.consume();
           }
+        });
+    this.centerGroup.addEventHandler(
+        MouseEvent.MOUSE_DRAGGED,
+        event -> {
+          Point2D updatedLocation =
+              stacker.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+
+          this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
+
+          this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
+          Dragged = true;
         });
 
     this.getChildren().add(this.centerGroup);
     this.centerGraphic = new SimpleObjectProperty<Node>(centerGraphic);
-    centerGraphic.setTranslateX(this.centerStrokeShape.getTranslateX() - 45 / 2);
-    centerGraphic.setTranslateY(this.centerStrokeShape.getTranslateY() - 45 / 2);
+    ImageView center = (ImageView) centerGraphic;
+    centerGraphic
+        .translateXProperty()
+        .bind(this.centerStrokeShape.translateXProperty().subtract(center.getFitWidth() / 2));
+    centerGraphic
+        .translateYProperty()
+        .bind(this.centerStrokeShape.translateYProperty().subtract(center.getFitHeight() / 2));
     this.setCenterGraphic(centerGraphic);
-
     this.saveStateBeforeAnimation();
     RadialMenu.this.hideRadialMenu();
   }
