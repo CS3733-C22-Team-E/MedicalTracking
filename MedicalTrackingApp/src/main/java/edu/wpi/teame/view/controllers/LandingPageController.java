@@ -10,7 +10,6 @@ import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.StyledTab;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
-import edu.wpi.teame.view.map.MapSideView;
 import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -104,15 +103,14 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(mapTabPage);
     tabs.add(mapTabPage);
 
-    MapSideView mapSideView = new MapSideView(this, mapView);
-    StyledTab mapSideViewTab =
+    StyledTab sideViewMap =
         new StyledTab(
-            "Hospital Map Side-View",
+            "Side View Map",
             SortOrder.ByName,
-            mapSideView.getMapScene(),
+            "view/SideViewMap.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
-    TabHoverAnimation.install(mapSideViewTab);
-    tabs.add(mapSideViewTab);
+    TabHoverAnimation.install(sideViewMap);
+    tabs.add(sideViewMap);
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
@@ -167,15 +165,6 @@ public class LandingPageController implements Initializable {
                     .toString()));
     TabHoverAnimation.install(settingsTab);
     tabs.add(credentialManagementPage);
-
-    StyledTab sideViewMap =
-        new StyledTab(
-            "Side View Map",
-            SortOrder.ByName,
-            "view/SideViewMap.fxml",
-            new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
-    TabHoverAnimation.install(sideViewMap);
-    tabs.add(sideViewMap);
 
     tabs.sort(StyledTab::compareTo);
     mainTabPane.getTabs().setAll(tabs);

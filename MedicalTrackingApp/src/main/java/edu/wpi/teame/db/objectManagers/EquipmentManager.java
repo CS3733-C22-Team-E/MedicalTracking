@@ -18,4 +18,8 @@ public final class EquipmentManager extends ObjectManager<Equipment> {
   public Equipment getByName(String name) throws SQLException {
     return super.getBy("WHERE name = '" + name + "'").get(0);
   }
+
+  public List<Equipment> getEquipmentByType(EquipmentType equipmentType) throws SQLException {
+    return super.getBy("WHERE type = " + equipmentType.ordinal());
+  }
 }
