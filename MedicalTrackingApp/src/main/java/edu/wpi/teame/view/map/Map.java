@@ -641,7 +641,7 @@ public class Map implements IStyleable {
             Icon.getContextMenu().show(Icon, event.getScreenX(), event.getScreenY());
           }
         });
-    Tooltip tooltip = new Tooltip(equipment.getName());
+    Tooltip tooltip = new Tooltip(equipment.getName() +" Status: "+ (equipment.isClean()?"Clean":"Dirty"));
     Tooltip.install(Icon, tooltip);
     MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
 
