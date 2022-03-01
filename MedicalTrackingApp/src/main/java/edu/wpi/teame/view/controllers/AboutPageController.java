@@ -1,5 +1,8 @@
 package edu.wpi.teame.view.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import edu.wpi.teame.App;
 import java.io.IOException;
 import java.net.URL;
@@ -7,19 +10,27 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 public class AboutPageController implements Initializable {
   @FXML private AnchorPane anchorPane;
   @FXML private GridPane gridPane;
   @FXML private Button backButton;
+  @FXML private StackPane stackPane;
+  @FXML private JFXDialog dialog;
 
   @FXML private Circle samayCircle;
   @FXML private Label samay;
@@ -49,6 +60,8 @@ public class AboutPageController implements Initializable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    stackPane.setAlignment(dialog, Pos.CENTER);
 
     Image samImage = new Image("edu/wpi/teame/images/About/samay.png");
     ImagePattern samPattern = new ImagePattern(samImage);
@@ -85,6 +98,167 @@ public class AboutPageController implements Initializable {
     Image camImage = new Image("edu/wpi/teame/images/About/camilo.png");
     ImagePattern camPattern = new ImagePattern(camImage);
     camiloCircle.setFill(camPattern);
+  }
+
+  @FXML
+  public void samayPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Samay"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void amitaiPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Amitai"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void joePopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Joe"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void maanavPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Maanav"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void josePopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Jose"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void haohaoPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Haohao"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void jeremyPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Jeremy"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void brindaPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Brinda"));
+    Text text =
+        new Text(
+            "Brinda is a junior double majoring in "
+                + "\n"
+                + "Actuarial Mathematics and Computer Science."
+                + "\n"
+                + "She loves her two kittens and playing"
+                + "\n"
+                + "the violin.");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
+  }
+
+  @FXML
+  public void camiloPopup(MouseEvent Event) {
+    JFXDialogLayout info = new JFXDialogLayout();
+
+    info.setHeading(new Text("About Camilo"));
+    Text text = new Text("");
+    text.setFont(Font.font("System", FontWeight.BOLD, 25));
+    info.setBody(text);
+
+    dialog = new JFXDialog(stackPane, info, JFXDialog.DialogTransition.CENTER);
+
+    JFXButton backButton = new JFXButton("Back");
+    backButton.setOnAction(event -> dialog.close());
+    info.setActions(backButton);
+    dialog.show();
   }
 
   @FXML
