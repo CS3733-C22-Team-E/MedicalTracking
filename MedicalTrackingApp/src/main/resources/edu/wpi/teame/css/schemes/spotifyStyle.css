@@ -1,0 +1,4 @@
+/* Basic UI Elements */
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: #191414;
+}

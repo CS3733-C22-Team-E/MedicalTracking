@@ -59,6 +59,7 @@ public class LoginPageController implements Initializable, IStyleable {
   @FXML private Line passwordBackgroundLine;
   @FXML private ImageView usernameImage;
   @FXML private ImageView passwordImage;
+  @FXML private AnchorPane mainAnchorPane;
   @FXML private ImageView icon;
   @FXML private ImageView icon1;
   @FXML private ImageView iconHole;
@@ -436,6 +437,7 @@ public class LoginPageController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setLineStyle(passwordBackgroundLine);
     StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(usernameTextInput);
     StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(passwordTextInput);
+    StyleManager.getInstance().getCurrentStyle().setTitlePageStyle(mainAnchorPane);
     StyleManager.getInstance().getCurrentStyle().setLineStyle(usernameFillLine);
     StyleManager.getInstance().getCurrentStyle().setLineStyle(passwordFillLine);
 

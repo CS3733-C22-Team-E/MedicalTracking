@@ -124,7 +124,7 @@
                     <Insets right="10.0" />
                 </GridPane.margin>
             </Label>
-            <Label fx:id="title" alignment="CENTER" prefHeight="37.0" prefWidth="499.0" style="-fx-font-size: 24;" text="Internal Patient Transportation Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
+            <Label fx:id="title" alignment="CENTER" prefHeight="37.0" prefWidth="499.0" text="Internal Patient Transportation Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
             <AutoCompleteTextField fx:id="equipment" promptText="Enter optional equipment..." GridPane.columnIndex="1" GridPane.rowIndex="6">
                 <GridPane.margin>
                     <Insets bottom="10.0" left="10.0" right="10.0" top="14.0" />

@@ -132,7 +132,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="title" style="-fx-font-size: 30;" text="Religion Preferences Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
+            <Label fx:id="title" text="Religion Preferences Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" />
         </children>
     </GridPane>
 </children>

@@ -15,6 +15,7 @@
 <?import edu.wpi.teame.view.controllers.AutoCompleteTextField?>
 
 <AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updateFromDB" prefHeight="580.0" prefWidth="800.0"  stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.PatientDischargeServiceRequestPageServiceRequestController">   <children>
+<AnchorPane fx:id="mainAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updateFromDB" prefHeight="580.0" prefWidth="800.0"   xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.serviceRequests.PatientDischargeServiceRequestPageServiceRequestController">   <children>
     <GridPane fx:id="gridPane" layoutX="6.0" layoutY="6.0" prefHeight="580.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -112,7 +113,7 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Label>
-            <Label fx:id="title" style="-fx-font-size: 30;" text="Patient Discharge Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+            <Label fx:id="title" text="Patient Discharge Service Request" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
                <font>
                   <Font size="25.0" />
                </font>

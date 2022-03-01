@@ -11,6 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.HomePageController">
+<AnchorPane fx:id="mainAnchorPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.HomePageController">
    <children>
       <GridPane layoutY="7.0" prefHeight="400.0" prefWidth="600.0" styleClass="title-background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>

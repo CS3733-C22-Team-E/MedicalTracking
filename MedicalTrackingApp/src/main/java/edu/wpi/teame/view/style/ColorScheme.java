@@ -1,7 +1,9 @@
 package edu.wpi.teame.view.style;
 
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -9,20 +11,29 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
 public class ColorScheme {
-  public final int DefaultFontSize = 14;
+  public final int DefaultFontSize = 16;
   public final int HeaderFontSize = 28;
   public final int TitleFontSize = 72;
 
   private final Color secondaryBackground;
+  private final String mainCSSPath;
+  private final String styleName;
   private final Color background;
   private final Color foreground;
   private final Color textColor;
 
   public ColorScheme(
-      Color background, Color secondaryBackground, Color foreground, Color textColor) {
+      String styleName,
+      Color background,
+      Color secondaryBackground,
+      Color foreground,
+      Color textColor) {
+    mainCSSPath =
+        App.class.getClassLoader().getResource("edu/wpi/teame/css/mainStyle.css").toExternalForm();
     this.secondaryBackground = secondaryBackground;
     this.background = background;
     this.foreground = foreground;
+    this.styleName = styleName;
     this.textColor = textColor;
   }
 
@@ -31,60 +42,49 @@ public class ColorScheme {
   }
 
   public void setButtonStyle(Button button) {
-    StringBuilder newStyle = new StringBuilder();
-    newStyle
-        .append("-fx-font-weight: bold; -fx-font-size: ")
-        .append(DefaultFontSize)
-        .append("px; ");
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
     button.setStyle(newStyle.toString());
   }
 
   public void setCheckBoxStyle(CheckBox checkBox) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 12px; ");
+    newStyle.append("-fx-font-size: 12px; ");
     checkBox.setStyle(newStyle.toString());
   }
 
   public void setComboBoxStyle(ComboBox comboBox) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    newStyle.append("-fx-background-radius: 20px; ");
     comboBox.setStyle(newStyle.toString());
   }
 
   public void setDatePickerStyle(DatePicker datePicker) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
     datePicker.setStyle(newStyle.toString());
   }
 
   public void setTitleStyle(Label titleLabel) {
-    StringBuilder newStyle = new StringBuilder();
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-font-size: ").append(TitleFontSize).append("px; ");
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: ").append(TitleFontSize).append("px; ");
     titleLabel.setStyle(newStyle.toString());
   }
 
   public void setHeaderStyle(Label headerLabel) {
-    StringBuilder newStyle = new StringBuilder();
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: ").append(HeaderFontSize).append("px; ");
-    newStyle.append("-fx-padding-bottom: 20px; ");
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-font-size: ").append(HeaderFontSize).append("px; ");
+    newStyle.append("-fx-margin-bottom: 20px; ");
     headerLabel.setStyle(newStyle.toString());
   }
 
   public void setLabelStyle(Label label) {
-    StringBuilder newStyle = new StringBuilder();
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle
-        .append("-fx-font-weight: bold; -fx-font-size: ")
-        .append(DefaultFontSize)
-        .append("px; ");
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
     label.setStyle(newStyle.toString());
   }
 
@@ -93,45 +93,42 @@ public class ColorScheme {
   }
 
   public void setTextFieldStyle(TextField textField) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle
-        .append("-fx-font-weight: bold; -fx-font-size: ")
-        .append(DefaultFontSize)
-        .append("px; ");
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
     textField.setStyle(newStyle.toString());
   }
 
   public void setTextAreaStyle(TextArea textArea) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
-    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle
-        .append("-fx-font-weight: bold; -fx-font-size: ")
-        .append(DefaultFontSize)
-        .append("px; ");
     textArea.setStyle(newStyle.toString());
   }
 
   // <editor-fold desc="JavaFX Panes">
 
   public void setPaneStyle(Pane pane, boolean useStandardBackground) {
-    StringBuilder newStyle = new StringBuilder();
-    newStyle.append("-fx-background-color: ");
-
-    if (useStandardBackground) {
-      newStyle.append(getColorAsStyleString(background));
-    } else {
-      newStyle.append(getColorAsStyleString(secondaryBackground));
-    }
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    Color backgroundColor = useStandardBackground ? background : secondaryBackground;
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
+    newStyle.append("-fx-padding: 10px; ");
     pane.setStyle(newStyle.toString());
+    applyStylesheet(pane);
+  }
+
+  public void setTitlePageStyle(Pane pane) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-padding: 10px; ");
+    pane.setStyle(newStyle.toString());
+    applyStylesheet(pane);
   }
 
   public void setListViewStyle(ListView listView) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
+    newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
+    applyStylesheet(listView);
 
     listView.setCellFactory(
         lv ->
@@ -154,35 +151,48 @@ public class ColorScheme {
   }
 
   public void setScrollPaneStyle(ScrollPane scrollPane) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     scrollPane.setStyle(newStyle.toString());
+    applyStylesheet(scrollPane);
   }
 
   public void setTabPaneStyle(TabPane tabPane) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     tabPane.setStyle(newStyle.toString());
+    applyStylesheet(tabPane);
   }
 
   public void setTabStyle(Tab tab) {
-    StringBuilder newStyle = new StringBuilder();
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-background-radius: 10px; ");
     tab.setStyle(newStyle.toString());
 
-    StringBuilder contentStyle = new StringBuilder();
+    StringBuilder contentStyle = new StringBuilder(getDefaultStyleParams());
     newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     tab.getContent().setStyle(contentStyle.toString());
   }
 
   // </editor-fold>
 
-  public Paint getForegroundColor() {
-    return foreground;
+  private String getDefaultStyleParams() {
+    StringBuilder defaultStyle = new StringBuilder();
+    defaultStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    defaultStyle.append("-fx-font-weight: bold; -fx-font-family: Roboto; ");
+    return defaultStyle.toString();
   }
 
-  public Paint getTextColor() {
-    return textColor;
+  private void applyStylesheet(Parent parent) {
+    String cssPath = App.class.getClassLoader().getResource(getCSSPath()).toExternalForm();
+    parent.getStylesheets().clear();
+    parent.getStylesheets().add(cssPath);
+    parent.applyCss();
+  }
+
+  private String getCSSPath() {
+    return "edu/wpi/teame/css/schemes/" + styleName + "Style.css";
   }
 
   private String getColorAsStyleString(Color color) {
@@ -193,5 +203,13 @@ public class ColorScheme {
         + ", "
         + color.getBlue() * 255
         + "); ";
+  }
+
+  public Paint getForegroundColor() {
+    return foreground;
+  }
+
+  public Paint getTextColor() {
+    return textColor;
   }
 }

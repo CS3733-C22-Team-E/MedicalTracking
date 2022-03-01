@@ -15,6 +15,7 @@
 
 <?import javafx.scene.control.Label?>
 <AnchorPane  stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.DBManagementPageController">
+<AnchorPane   xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.DBManagementPageController">
    <children>
       <GridPane alignment="CENTER" layoutY="7.0" prefHeight="580.0" prefWidth="800.0"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -47,7 +48,7 @@
                   <Insets left="10.0" />
                </padding>
             </TextField>
-            <JFXListView fx:id="resultView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../css/mainStyle.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+            <JFXListView fx:id="resultView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"  GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.rowSpan="2147483647" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets bottom="30.0" left="20.0" right="10.0" />
                </GridPane.margin></JFXListView>
