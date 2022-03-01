@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.AccessLevel;
@@ -9,6 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Credential implements ISQLSerializable {
   private MessageDigest messageDigest;
@@ -72,6 +76,10 @@ public class Credential implements ISQLSerializable {
     this.accessLevel = AccessLevel.values()[resultSet.getInt("accessLevel")];
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public Credential() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -117,6 +125,18 @@ public class Credential implements ISQLSerializable {
         .append(imageURL)
         .append("'")
         .toString();
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("salt", bytesToString(salt)));
+    updates.add(Updates.set("username", username));
+    updates.add(Updates.set("password", password));
+    updates.add(Updates.set("accessLevel", accessLevel.ordinal()));
+    updates.add(Updates.set("imageURL", imageURL));
+
+    return updates;
   }
 
   @Override
@@ -219,20 +239,12 @@ public class Credential implements ISQLSerializable {
     return accessLevel;
   }
 
-  public String getUsername() {
-    return username;
-  }
-
-  public String getImageURL() {
-    if (imageURL == null) {
-      return "";
-    }
-
-    return imageURL;
-  }
-
   public void setAccessLevel(AccessLevel accessLevel) {
     this.accessLevel = accessLevel;
+  }
+
+  public String getUsername() {
+    return username;
   }
 
   public void setUsername(String username) {
@@ -245,6 +257,18 @@ public class Credential implements ISQLSerializable {
 
   public void setPassword(String password) {
     this.password = hashPassword(password, this.salt);
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public String getImageURL() {
+    if (imageURL == null) {
+      return "";
+    }
+
+    return imageURL;
   }
 
   public void setImageURL(String imageURL) {

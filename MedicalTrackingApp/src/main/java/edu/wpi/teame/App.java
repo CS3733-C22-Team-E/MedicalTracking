@@ -1,6 +1,8 @@
 package edu.wpi.teame;
 
 import edu.wpi.teame.view.style.StyleManager;
+import edu.wpi.teame.db.DBManager;
+import edu.wpi.teame.view.style.ColorScheme;
 import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;
@@ -74,6 +76,7 @@ public class App extends Application {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == OK) {
+            DBManager.getInstance().getMongoClient().close();
             appPrimaryStage.close();
           } else {
             event.consume();

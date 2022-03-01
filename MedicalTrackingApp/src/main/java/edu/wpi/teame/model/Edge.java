@@ -1,11 +1,15 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Edge implements ISQLSerializable {
   private boolean isDeleted;
@@ -41,6 +45,10 @@ public class Edge implements ISQLSerializable {
     this.isDeleted = false;
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public Edge() {}
+
   @Override
   public String toString() {
     return new StringBuilder()
@@ -68,6 +76,14 @@ public class Edge implements ISQLSerializable {
   @Override
   public String getSQLInsertString() {
     return new StringBuilder().append(start.getId()).append(", ").append(end.getId()).toString();
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("startID", start.getId()));
+    updates.add(Updates.set("endID", end.getId()));
+    return updates;
   }
 
   @Override
@@ -119,5 +135,9 @@ public class Edge implements ISQLSerializable {
 
   public void setEnd(Location end) {
     this.end = end;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }
