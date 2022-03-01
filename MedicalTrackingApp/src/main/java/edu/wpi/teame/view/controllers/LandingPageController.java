@@ -7,12 +7,14 @@ import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
-import edu.wpi.teame.view.StyledTab;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
+import edu.wpi.teame.view.map.MapSideView;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
+import edu.wpi.teame.view.style.StyledTab;
 import edu.wpi.teame.view.style.TabHoverAnimation;
 import java.net.URL;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +30,16 @@ import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import lombok.SneakyThrows;
 
-public class LandingPageController implements Initializable {
+public class LandingPageController implements Initializable, IStyleable {
   @FXML public AnchorPane mainAnchorPane;
   @FXML public TabPane mainTabPane;
 
   private StyledTab credentialManagementPage = null;
   private boolean shouldEnlarge = true;
   private StyledTab adminDBPage = null;
+  public StyledTab homeTabPage = null;
   public StyledTab mapTabPage = null;
+  public StyledTab backlogTab = null;
 
   @Override
   @SneakyThrows
@@ -56,14 +60,14 @@ public class LandingPageController implements Initializable {
     mainTabPane.setRotateGraphic(true);
 
     List<StyledTab> tabs = new ArrayList<>();
-    StyledTab homeTab =
+    homeTabPage =
         new StyledTab(
             "Home",
             SortOrder.First,
             "view/HomePage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/Home.png").toString()));
-    TabHoverAnimation.install(homeTab);
-    tabs.add(homeTab);
+    TabHoverAnimation.install(homeTabPage);
+    tabs.add(homeTabPage);
 
     StyledTab directoryTab =
         new StyledTab(
@@ -116,7 +120,7 @@ public class LandingPageController implements Initializable {
         new ServiceRequestBacklog(
             Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,
             Screen.getPrimary().getBounds().getHeight());
-    StyledTab backlogTab =
+    backlogTab =
         new StyledTab(
             "Service Request Backlog",
             SortOrder.ByName,
@@ -145,6 +149,15 @@ public class LandingPageController implements Initializable {
     TabHoverAnimation.install(adminDBPage);
     tabs.add(adminDBPage);
 
+    StyledTab covidTab =
+        new StyledTab(
+            "Covid-19 Info",
+            SortOrder.ByName,
+            "view/tabs/CovidInfoPage.fxml",
+            new Image(App.class.getResource("images/Icons/pageIcons/CovidInfo.png").toString()));
+    TabHoverAnimation.install(covidTab);
+    tabs.add(covidTab);
+
     StyledTab settingsTab =
         new StyledTab(
             "Settings",
@@ -171,10 +184,13 @@ public class LandingPageController implements Initializable {
 
     shouldEnlarge = false;
     updateTabSize();
+
+    // Set style
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
-  public void toggleAdminDBPage() throws SQLException, NoSuchAlgorithmException {
+  public void toggleAdminDBPage() throws SQLException {
     AccessLevel currentAccess =
         ((CredentialManager) DBManager.getInstance().getManager(DataBaseObjectType.Credential))
             .getCurrentUser()
@@ -209,5 +225,11 @@ public class LandingPageController implements Initializable {
     for (Tab tab : mainTabPane.getTabs()) {
       ((StyledTab) tab).toggleTabSize(!shouldEnlarge);
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setTabPaneStyle(mainTabPane);
   }
 }

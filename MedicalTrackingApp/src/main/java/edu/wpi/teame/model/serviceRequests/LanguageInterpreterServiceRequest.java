@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   private LanguageType language;
@@ -66,6 +68,12 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
     this.language = LanguageType.values()[lineData.getColumnInt("language")];
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
+  public LanguageInterpreterServiceRequest() {
+    dbType = DataBaseObjectType.LanguageInterpreterSR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
@@ -82,6 +90,14 @@ public final class LanguageInterpreterServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + language.ordinal() + ", " + patient.getId();
+  }
+
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = super.getMongoUpdates();
+    updates.add(Updates.set("language", language.ordinal()));
+    updates.add(Updates.set("patientID", patient.getId()));
+
+    return updates;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.Employee;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public final class FoodDeliveryServiceRequest extends ServiceRequest {
   private Patient patient;
@@ -64,6 +66,12 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
     this.food = lineData.getColumnString("food");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
+  public FoodDeliveryServiceRequest() {
+    dbType = DataBaseObjectType.FoodDeliverySR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString()
@@ -80,6 +88,14 @@ public final class FoodDeliveryServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + patient.getId() + ", '" + food + "'";
+  }
+
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = super.getMongoUpdates();
+    updates.add(Updates.set("patientID", patient.getId()));
+    updates.add(Updates.set("food", food));
+
+    return updates;
   }
 
   @Override
