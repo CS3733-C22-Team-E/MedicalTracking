@@ -314,7 +314,7 @@ public class Map {
     Material.setFitWidth(30);
     RadialMenuItem ZoomIn =
         new RadialMenuItem(
-            45,
+            72,
             ZoomIN,
             new EventHandler<ActionEvent>() {
               @Override
@@ -325,7 +325,7 @@ public class Map {
     ZoomIn.ZoomButton = true;
     RadialMenuItem ZoomOut =
         new RadialMenuItem(
-            45,
+            72,
             ZoomOUT,
             new EventHandler<ActionEvent>() {
               @Override
@@ -336,7 +336,7 @@ public class Map {
     ZoomOut.ZoomButton = true;
     RadialMenuItem Refresh =
         new RadialMenuItem(
-            45,
+            72,
             REFRESH,
             new EventHandler<ActionEvent>() {
               @Override
@@ -348,12 +348,12 @@ public class Map {
                 }
               }
             });
-    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(72, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
     Floor.setFitHeight(30);
     Floor.setFitWidth(30);
-    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
+    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(72, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
       ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
       CurrImageView.setFitWidth(25);
@@ -392,6 +392,7 @@ public class Map {
       floorer.setFitHeight(35);
       RadialCheckMenuItem floor =
           new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      floor.setText(currFloor.toString());
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
       } else {
