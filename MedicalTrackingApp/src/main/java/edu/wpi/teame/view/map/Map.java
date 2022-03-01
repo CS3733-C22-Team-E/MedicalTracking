@@ -165,7 +165,7 @@ public class Map implements IStyleable {
   public void showEditLastPressedDialog() throws SQLException {
     Dialog<Pair<Double, Double>> dialog = new Dialog<>();
     dialog.setTitle("Move Equipment");
-    dialog.setHeaderText("Choose the X and Y Position");
+    dialog.setHeaderText("Type New Location's Long Name");
     // Set the button types.
     ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
     dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
@@ -181,7 +181,7 @@ public class Map implements IStyleable {
     //    TextField YPosition = new TextField();
     //    YPosition.setPromptText("Y Position");
     AutoCompleteTextField Location = new AutoCompleteTextField();
-    Location.setPromptText("Location");
+    Location.setPromptText("New Location");
     List<Location> entries =
         DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
     Location.getEntries()
