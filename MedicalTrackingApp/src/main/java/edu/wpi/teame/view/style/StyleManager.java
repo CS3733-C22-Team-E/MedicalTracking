@@ -50,6 +50,12 @@ public class StyleManager {
         new ColorScheme(
             neutronBackground, neutronAccents, neutronForeground, neutronText, whiteText));
 
+    Color pigBackground = Color.color(0.33333333333, 0.25882352941, 0.23921568627);
+    Color pigForeground = Color.color(1, 0.75294117647, 0.67843137254);
+    Color pigAccents = Color.color(0.90588235294, 0.56078431372, 0.70196078431);
+    colorSchemes.put(
+        "Pig Pen", new ColorScheme(pigBackground, pigAccents, pigForeground, whiteText, whiteText));
+
     currentStyle = "Not Spotify";
   }
 
