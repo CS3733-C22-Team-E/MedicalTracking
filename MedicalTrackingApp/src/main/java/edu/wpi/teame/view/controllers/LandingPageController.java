@@ -39,6 +39,7 @@ public class LandingPageController implements Initializable, IStyleable {
   private StyledTab adminDBPage = null;
   public StyledTab homeTabPage = null;
   public StyledTab mapTabPage = null;
+  public StyledTab backlogTab = null;
 
   @Override
   @SneakyThrows
@@ -46,9 +47,6 @@ public class LandingPageController implements Initializable, IStyleable {
     mainAnchorPane.setPrefHeight(Screen.getPrimary().getBounds().getHeight());
     mainAnchorPane.setPrefWidth(Screen.getPrimary().getBounds().getWidth());
     mainAnchorPane.autosize();
-
-    // Set style
-    StyleManager.getInstance().subscribe(this);
 
     // Get the tab content size using our init tab
     double tabContentHeight =
@@ -123,7 +121,7 @@ public class LandingPageController implements Initializable, IStyleable {
         new ServiceRequestBacklog(
             Screen.getPrimary().getBounds().getWidth() - StyledTab.Width - 20,
             Screen.getPrimary().getBounds().getHeight());
-    StyledTab backlogTab =
+    backlogTab =
         new StyledTab(
             "Service Request Backlog",
             SortOrder.ByName,
@@ -178,6 +176,9 @@ public class LandingPageController implements Initializable, IStyleable {
 
     shouldEnlarge = false;
     updateTabSize();
+
+    // Set style
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -220,6 +221,11 @@ public class LandingPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
-    mainTabPane.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setTabPaneStyle(mainTabPane);
+
+    for (Tab tab : mainTabPane.getTabs()) {
+      StyleManager.getInstance().getCurrentStyle().setTabStyle(tab);
+    }
   }
 }

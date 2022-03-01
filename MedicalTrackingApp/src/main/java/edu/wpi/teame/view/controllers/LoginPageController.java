@@ -45,6 +45,7 @@ import org.apache.hc.core5.http.ParseException;
 
 public class LoginPageController implements Initializable, IStyleable {
   @FXML private JFXButton loginButton;
+  @FXML public JFXButton loginButton2;
   @FXML private TextField usernameTextInput;
   @FXML private TextField passwordTextInput;
   @FXML private Label switchToFaceIdButton;
@@ -359,10 +360,8 @@ public class LoginPageController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
-    StyleManager.getInstance().subscribe(this);
-
     // Set up face id
-    // webcam = Webcam.getDefault();
+    webcam = Webcam.getDefault();
     if (webcam != null) {
       Dimension[] supportedSizes = webcam.getViewSizes();
       webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
@@ -386,6 +385,8 @@ public class LoginPageController implements Initializable, IStyleable {
     // Set default to credentials
     useFaceID = true;
     switchToFaceID();
+
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -429,13 +430,17 @@ public class LoginPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
-    faceIDVbox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    credentialLogInVbox.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    usernameFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
-    passwordFillLine.setStroke(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
-    usernameBackgroundLine.setStroke(
-        StyleManager.getInstance().getCurrentStyle().getForegroundColor());
-    passwordBackgroundLine.setStroke(
-        StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(credentialLogInVbox, true);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(faceIDVbox, true);
+    StyleManager.getInstance().getCurrentStyle().setLineStyle(usernameBackgroundLine);
+    StyleManager.getInstance().getCurrentStyle().setLineStyle(passwordBackgroundLine);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(usernameTextInput);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(passwordTextInput);
+    StyleManager.getInstance().getCurrentStyle().setLineStyle(usernameFillLine);
+    StyleManager.getInstance().getCurrentStyle().setLineStyle(passwordFillLine);
+
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(switchToFaceIdButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(loginButton2);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(loginButton);
   }
 }

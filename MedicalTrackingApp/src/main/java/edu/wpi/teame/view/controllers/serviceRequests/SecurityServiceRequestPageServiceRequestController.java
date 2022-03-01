@@ -12,7 +12,6 @@ import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.style.SRSentAnimation;
-import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -158,13 +157,5 @@ public class SecurityServiceRequestPageServiceRequestController extends ServiceR
   }
 
   @Override
-  public void updateStyle() {
-    additionalInfo.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    priority.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    status.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    submitButton.setBackground(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
-    submitButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setBackground(StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
-  }
+  public void updateStyle() {}
 }

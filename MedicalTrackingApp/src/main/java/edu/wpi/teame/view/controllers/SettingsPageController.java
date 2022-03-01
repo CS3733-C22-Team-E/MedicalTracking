@@ -1,5 +1,6 @@
 package edu.wpi.teame.view.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.opencsv.exceptions.CsvValidationException;
 import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
@@ -7,6 +8,7 @@ import edu.wpi.teame.db.objectManagers.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.LanguageType;
 import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.io.*;
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,14 +25,17 @@ import lombok.SneakyThrows;
 
 public class SettingsPageController implements Initializable, IStyleable {
   @FXML public ComboBox accessibilityComboBox;
-  @FXML private ComboBox dbSwitchComboBox;
+  @FXML public JFXButton loadFromCSVButton;
+  @FXML public JFXButton writeToCSVButton;
+  @FXML public ComboBox dbSwitchComboBox;
   @FXML public ComboBox languageComboBox;
   @FXML public ComboBox colorComboBox;
+  @FXML public Label headerLabel;
+  @FXML public Label label1;
 
+  private InputStream settingsPath = App.class.getResourceAsStream("settings.properties");
   private boolean dialogConfirmed = false;
   private Properties properties;
-  private InputStream settingsPath = App.class.getResourceAsStream("settings.properties");;
-  // System.getProperty("user.dir") + "/src/main/resources/edu/wpi/teame//settings.properties";
 
   @Override
   @SneakyThrows
@@ -44,89 +49,14 @@ public class SettingsPageController implements Initializable, IStyleable {
 
     languageComboBox.setItems(FXCollections.observableArrayList(LanguageType.values()));
 
-    colorComboBox.setItems(FXCollections.observableArrayList(new String[] {"Default", "Blue"}));
+    colorComboBox.setItems(
+        FXCollections.observableArrayList(StyleManager.getInstance().getStyleNames()));
+    colorComboBox.setValue(StyleManager.getInstance().getStyleName());
 
     accessibilityComboBox.setItems(
         FXCollections.observableArrayList(new String[] {"None", "Color Blind Mode"}));
 
-    // dbSwitchComboBox.setValue(properties.getProperty("dbConnection"));
-    accessibilityComboBox.setValue(properties.getProperty("accessibility"));
-    languageComboBox.setValue(properties.getProperty("language"));
-    colorComboBox.setValue(properties.getProperty("color"));
-
-    dbSwitchComboBox
-        .valueProperty()
-        .addListener(
-            listen -> {
-              //              try {
-              //                properties.setProperty("dbConnection",
-              // dbSwitchComboBox.getValue().toString());
-              //                FileWriter writer = new FileWriter(settingsPath);
-              //                properties.store(writer, "App Settings");
-              //                changeDBConnection();
-              //                writer.close();
-              //              } catch (IOException e) {
-              //                e.printStackTrace();
-              //                System.out.println("Could not write to settings.properties");
-              //              } catch (CsvValidationException e) {
-              //                e.printStackTrace();
-              //              } catch (SQLException e) {
-              //                e.printStackTrace();
-              //              } catch (ParseException e) {
-              //                e.printStackTrace();
-              //              }
-            });
-
-    languageComboBox
-        .valueProperty()
-        .addListener(
-            listen -> {
-              //              try {
-              //                properties.setProperty("language",
-              // languageComboBox.getValue().toString());
-              //                FileWriter writer = new FileWriter(settingsPath);
-              //                properties.store(writer, "App Settings");
-              //                changeLanguage();
-              //                writer.close();
-              //              } catch (IOException e) {
-              //                e.printStackTrace();
-              //                System.out.println("Could not write to settings.properties");
-              //              }
-            });
-
-    colorComboBox
-        .valueProperty()
-        .addListener(
-            listen -> {
-              //              try {
-              //                properties.setProperty("color",
-              // colorComboBox.getValue().toString());
-              //                FileWriter writer = new FileWriter(settingsPath);
-              //                properties.store(writer, "App Settings");
-              //                changeColor();
-              //                writer.close();
-              //              } catch (IOException e) {
-              //                e.printStackTrace();
-              //                System.out.println("Could not write to settings.properties");
-              //              }
-            });
-
-    accessibilityComboBox
-        .valueProperty()
-        .addListener(
-            listen -> {
-              //              try {
-              //                properties.setProperty(
-              //                    "accessibility", accessibilityComboBox.getValue().toString());
-              //                FileWriter writer = new FileWriter(settingsPath);
-              //                properties.store(writer, "App Settings");
-              //                changeAccessibility();
-              //                writer.close();
-              //              } catch (IOException e) {
-              //                e.printStackTrace();
-              //                System.out.println("Could not write to settings.properties");
-              //              }
-            });
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -144,7 +74,9 @@ public class SettingsPageController implements Initializable, IStyleable {
 
   @FXML
   private void changeColor() {
-    System.out.println("Technically changed color");
+    String selectedTheme = colorComboBox.getSelectionModel().getSelectedItem().toString();
+    StyleManager.getInstance().selectTheme(selectedTheme);
+    StyleManager.getInstance().updateStyle();
   }
 
   @FXML
@@ -188,5 +120,12 @@ public class SettingsPageController implements Initializable, IStyleable {
   }
 
   @Override
-  public void updateStyle() {}
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(dbSwitchComboBox);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(loadFromCSVButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(writeToCSVButton);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(colorComboBox);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label1);
+  }
 }

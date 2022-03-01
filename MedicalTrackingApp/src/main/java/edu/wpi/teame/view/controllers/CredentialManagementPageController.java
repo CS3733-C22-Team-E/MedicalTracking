@@ -19,7 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,8 +33,12 @@ public class CredentialManagementPageController implements Initializable, IStyle
   public Scene addCredentialScene = null;
 
   @FXML JFXListView<ISQLSerializable> resultView;
+  @FXML JFXButton restoreCredential;
   @FXML JFXButton removeCredential;
+  @FXML JFXButton editCredential;
   @FXML JFXButton addCredential;
+  @FXML JFXButton refreshBTN;
+  @FXML Label headerLabel;
 
   @Override
   @SneakyThrows
@@ -44,6 +48,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
     addCredentialScene = new Scene(loader.load());
     addCredentialController = loader.getController();
 
+    StyleManager.getInstance().subscribe(this);
     updateListView();
   }
 
@@ -117,30 +122,12 @@ public class CredentialManagementPageController implements Initializable, IStyle
 
   @Override
   public void updateStyle() {
-    resultView.setBackground(StyleManager.getInstance().getCurrentStyle().getBackground());
-    resultView.setCellFactory(
-        lv ->
-            new ListCell<ISQLSerializable>() {
-              @Override
-              protected void updateItem(ISQLSerializable dbObject, boolean empty) {
-                super.updateItem(dbObject, empty);
-                if (defaultBackground == null) {
-                  defaultBackground = getBackground();
-                }
-
-                if (empty) {
-                  setBackground(defaultBackground);
-                  setText("");
-                  return;
-                }
-
-                if (dbObject.getIsDeleted()) {
-                  setBackground(
-                      StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
-                  setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-                }
-                setText(dbObject.toString());
-              }
-            });
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(restoreCredential);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(removeCredential);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(editCredential);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(addCredential);
+    StyleManager.getInstance().getCurrentStyle().setListViewStyle(resultView);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(refreshBTN);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
   }
 }

@@ -6,6 +6,8 @@ import edu.wpi.teame.db.objectManagers.CredentialManager;
 import edu.wpi.teame.model.Credential;
 import edu.wpi.teame.model.enums.AccessLevel;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,22 +18,37 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
-public class AddCredentialPopupPageController implements Initializable {
+public class AddCredentialPopupPageController implements Initializable, IStyleable {
   @FXML private TextField accessLevelTextBox;
   @FXML private Button addCredentialButton;
   @FXML private TextField passwordTextBox2;
   @FXML private TextField usernameTextBox;
   @FXML private TextField passwordTextBox;
+  @FXML private Button selectFileButton;
   @FXML private TextField imageTextBox;
+  @FXML private AnchorPane anchorPane;
+  @FXML private Button backButton;
+
+  @FXML private Label headerLabel;
+  @FXML private Label label1;
+  @FXML private Label label2;
+  @FXML private Label label3;
+  @FXML private Label label4;
+  @FXML private Label label5;
+  @FXML private Label label6;
 
   private Credential editingCredential = null;
   private boolean isEditing = false;
 
   @Override
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    StyleManager.getInstance().subscribe(this);
+  }
 
   @FXML
   public void addCredential()
@@ -117,5 +134,26 @@ public class AddCredentialPopupPageController implements Initializable {
     if (credential.getImageURL() != null && credential.getImageURL().startsWith("https://")) {
       imageTextBox.setText(credential.getImageURL());
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(anchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(accessLevelTextBox);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(addCredentialButton);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(passwordTextBox2);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(usernameTextBox);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(passwordTextBox);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(selectFileButton);
+    StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(imageTextBox);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(backButton);
+
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label1);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label2);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label3);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label4);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label5);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label6);
   }
 }

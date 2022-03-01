@@ -7,9 +7,9 @@ import javafx.scene.paint.Color;
 
 public class StyleManager {
   private HashMap<String, ColorScheme> colorSchemes;
-  private ColorScheme currentStyle = null;
-  private static StyleManager instance;
   private List<IStyleable> styleableObjects;
+  private static StyleManager instance;
+  private String currentStyle = null;
 
   public static synchronized StyleManager getInstance() {
     if (instance == null) {
@@ -26,11 +26,19 @@ public class StyleManager {
   public void loadStyles() {
     Color spotifyBlack = Color.color(0.09803921568, 0.07843137254, 0.07843137254);
     Color spotifyGreen = Color.color(0.11764705882, 0.8431372549, 0.37647058823);
-    Color spotifyGray = Color.color(0.509803922, 0.509803922, 0.509803922);
-    Color spotifyText = Color.color(1, 1, 1);
+    Color spotifyGray = Color.color(0.759803922, 0.769803922, 0.759803922);
+    Color spotifyText = Color.color(1, 0, 1);
     colorSchemes.put(
         "spotify", new ColorScheme(spotifyBlack, spotifyGray, spotifyGreen, spotifyText));
-    currentStyle = colorSchemes.get("spotify");
+
+    colorSchemes.put(
+        "black", new ColorScheme(spotifyBlack, spotifyBlack, spotifyBlack, spotifyBlack));
+
+    currentStyle = "spotify";
+  }
+
+  public void selectTheme(String colorSchemeName) {
+    currentStyle = colorSchemeName;
   }
 
   public void updateStyle() {
@@ -44,7 +52,19 @@ public class StyleManager {
     styleableObject.updateStyle();
   }
 
+  public List<String> getStyleNames() {
+    List<String> styleNames = new ArrayList<>();
+    for (String styleKey : colorSchemes.keySet()) {
+      styleNames.add(styleKey);
+    }
+    return styleNames;
+  }
+
   public ColorScheme getCurrentStyle() {
+    return colorSchemes.get(currentStyle);
+  }
+
+  public String getStyleName() {
     return currentStyle;
   }
 }
