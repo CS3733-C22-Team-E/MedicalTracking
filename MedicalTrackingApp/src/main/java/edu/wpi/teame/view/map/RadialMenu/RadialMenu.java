@@ -307,7 +307,25 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
                 } else {
                   RadialMenu.this.showRadialMenu();
                 }
-                event.consume();
+                Point2D updatedLocation =
+                    stacker.sceneToLocal(new Point2D(event.getSceneX(), event.getSceneY()));
+                double size = 30;
+                if (RadialMenu.this.itemGroup.isVisible()) {
+                  size = 80;
+                }
+                RadialMenu.this.setTranslateX(
+                    constrain(
+                            updatedLocation.getX(),
+                            size,
+                            App.getAppPrimaryStage().getScene().getWidth()
+                                - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
+                        - stacker.getWidth() / 2);
+                RadialMenu.this.setTranslateY(
+                    constrain(
+                            updatedLocation.getY(),
+                            size,
+                            App.getAppPrimaryStage().getScene().getHeight() - size)
+                        - stacker.getHeight() / 2);
               }
             } else {
               Dragged = false;
@@ -331,18 +349,22 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
           //            this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
           //            this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
           //          }
-
+          double size = 30;
+          if (this.itemGroup.isVisible()) {
+            size = 80;
+          }
           this.setTranslateX(
               constrain(
                       updatedLocation.getX(),
-                      30,
-                      App.getAppPrimaryStage().getScene().getWidth() - 110)
+                      size,
+                      App.getAppPrimaryStage().getScene().getWidth()
+                          - (110 + (RadialMenu.this.itemGroup.isVisible() ? 1 : 0) * 57))
                   - stacker.getWidth() / 2);
           this.setTranslateY(
               constrain(
                       updatedLocation.getY(),
-                      30,
-                      App.getAppPrimaryStage().getScene().getHeight() - 30)
+                      size,
+                      App.getAppPrimaryStage().getScene().getHeight() - size)
                   - stacker.getHeight() / 2);
 
           Dragged = true;
@@ -442,6 +464,10 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     item.strokeVisibleProperty().bind(this.strokeVisible);
     this.items.add(item);
     this.itemGroup.getChildren().add(this.itemGroup.getChildren().size(), item);
+    this.items.forEach(
+        menuitem -> {
+          menuitem.menuSize = 360 / this.items.size();
+        });
     double angleOffset = this.initialAngle.get();
     for (final RadialMenuItem it : this.items) {
       it.setStartAngle(angleOffset);

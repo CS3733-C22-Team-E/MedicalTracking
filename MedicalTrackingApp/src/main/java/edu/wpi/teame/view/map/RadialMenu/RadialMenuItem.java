@@ -45,7 +45,7 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
   protected DoubleProperty startAngle = new SimpleDoubleProperty();
 
-  protected double menuSize;
+  public double menuSize;
 
   protected DoubleProperty innerRadius = new SimpleDoubleProperty();
 
