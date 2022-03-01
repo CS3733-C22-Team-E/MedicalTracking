@@ -652,7 +652,6 @@ public class Map {
         event -> {
           node.setCursor(Cursor.DEFAULT);
         });
-
     // Prompt the user that the node can be dragged
     node.addEventHandler(
         MouseEvent.MOUSE_PRESSED,

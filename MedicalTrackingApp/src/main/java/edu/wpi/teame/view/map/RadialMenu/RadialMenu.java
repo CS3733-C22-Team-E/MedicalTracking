@@ -212,7 +212,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.centerVisibility.set(visibility);
   }
 
-
   public RadialMenu() {}
 
   public StackPane stack = null;
@@ -287,7 +286,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
         });
     this.centerGroup.setOnMouseExited(
         new EventHandler<MouseEvent>() {
-
           @Override
           public void handle(final MouseEvent event) {
             RadialMenu.this.mouseOn = false;
@@ -317,6 +315,7 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
           // System.out.println(updatedLocation.getX() + " " + updatedLocation.getY());
           this.setTranslateX(updatedLocation.getX() - stacker.getWidth() / 2);
           this.setTranslateY(updatedLocation.getY() - stacker.getHeight() / 2);
+
         });
 
     this.getChildren().add(this.centerGroup);
@@ -331,7 +330,6 @@ public class RadialMenu extends Group implements EventHandler<MouseEvent>, Chang
     this.saveStateBeforeAnimation();
     RadialMenu.this.hideRadialMenu();
   }
-
   public void setOnMenuItemMouseClicked(final EventHandler<? super MouseEvent> paramEventHandler) {
     for (final RadialMenuItem item : this.items) {
       item.setOnMouseClicked(paramEventHandler);
