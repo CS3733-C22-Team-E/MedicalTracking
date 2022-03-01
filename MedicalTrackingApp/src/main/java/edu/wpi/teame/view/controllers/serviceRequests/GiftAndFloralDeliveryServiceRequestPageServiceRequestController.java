@@ -49,6 +49,7 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
   @FXML private Label locationT;
   @FXML private Label assigneeT;
   @FXML private Label priorityT;
+  @FXML private Label patientNameT;
   @FXML private Label statusT;
   @FXML private Label additionalInfoT;
   @FXML private Label requestDateT;
@@ -98,6 +99,10 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             listener -> {
               validateSubmitButton();
             });
+
+    StyleManager.getInstance().subscribe(this);
+
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -194,36 +199,26 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
 
   @Override
   public void updateStyle() {
-    locationT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    assigneeT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    priorityT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    statusT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    requestDateT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    additionalInfoT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    title.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(gridPane, true);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(additionalInfoT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(requestDateT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(patientNameT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(locationT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(assigneeT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(priorityT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(statusT);
 
-    gridPane.setBackground(StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
-    mainAnchorPane.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(locationText);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(patientName);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(assignee);
+    StyleManager.getInstance().getCurrentStyle().setDatePickerStyle(requestDate);
 
-    requestDate.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    locationText.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    assignee.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-
-    additionalInfo.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    priority.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    status.setBackground(StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-
-    submitButton.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    submitButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    StyleManager.getInstance().getCurrentStyle().setTextAreaStyle(additionalInfo);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(submitButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(clearButton);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
   }
 }

@@ -1,6 +1,7 @@
 package edu.wpi.teame.view.style;
 
 import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -19,6 +20,10 @@ public class ColorScheme {
     this.background = background;
     this.foreground = foreground;
     this.textColor = textColor;
+  }
+
+  public void setAutoCompleteTextBoxStyle(AutoCompleteTextField autoCompleteTextBox) {
+    setTextFieldStyle(autoCompleteTextBox);
   }
 
   public void setButtonStyle(Button button) {
@@ -43,6 +48,13 @@ public class ColorScheme {
     comboBox.setStyle(newStyle.toString());
   }
 
+  public void setDatePickerStyle(DatePicker datePicker) {
+    StringBuilder newStyle = new StringBuilder();
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(foreground));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    datePicker.setStyle(newStyle.toString());
+  }
+
   public void setTitleStyle(Label titleLabel) {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
@@ -54,7 +66,8 @@ public class ColorScheme {
   public void setHeaderStyle(Label headerLabel) {
     StringBuilder newStyle = new StringBuilder();
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
-    newStyle.append("-fx-font-weight: bold; -fx-font-size: 48px; ");
+    newStyle.append("-fx-font-weight: bold; -fx-font-size: 28px; ");
+    newStyle.append("-fx-padding-bottom: 20px; ");
     headerLabel.setStyle(newStyle.toString());
   }
 
@@ -75,6 +88,14 @@ public class ColorScheme {
     newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
     newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
     textField.setStyle(newStyle.toString());
+  }
+
+  public void setTextAreaStyle(TextArea textArea) {
+    StringBuilder newStyle = new StringBuilder();
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondaryBackground));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(textColor));
+    newStyle.append("-fx-font-weight: bold; -fx-font-size: 18px; ");
+    textArea.setStyle(newStyle.toString());
   }
 
   // <editor-fold desc="JavaFX Panes">

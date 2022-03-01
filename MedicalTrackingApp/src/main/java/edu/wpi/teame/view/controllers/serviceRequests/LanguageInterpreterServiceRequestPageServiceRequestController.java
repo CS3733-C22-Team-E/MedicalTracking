@@ -97,6 +97,8 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
               validateSubmitButton();
             });
 
+    StyleManager.getInstance().subscribe(this);
+
     patientName
         .onActionProperty()
         .addListener(
@@ -110,6 +112,8 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
             listener -> {
               validateSubmitButton();
             });
+
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -211,41 +215,28 @@ public class LanguageInterpreterServiceRequestPageServiceRequestController
 
   @Override
   public void updateStyle() {
-    locationT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    languageT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    patientNameT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    assigneeT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    priorityT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    statusT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    requestDateT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    additionalInfoT.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    title.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(gridPane, true);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(additionalInfoT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(requestDateT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(patientNameT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(locationT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(assigneeT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(priorityT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(languageT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(statusT);
 
-    gridPane.setBackground(StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
-    mainAnchorPane.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getSecondaryBackground());
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(locationText);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(patientName);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(assignee);
+    StyleManager.getInstance().getCurrentStyle().setDatePickerStyle(requestDate);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(language);
 
-    requestDate.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    locationText.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    assignee.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    additionalInfo.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    priority.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    status.setBackground(StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    language.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    patientName.setBackground(
-            StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-
-    submitButton.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
-    submitButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setTextFill(StyleManager.getInstance().getCurrentStyle().getTextColor());
-    clearButton.setBackground(
-        StyleManager.getInstance().getCurrentStyle().getForegroundAsBackground());
+    StyleManager.getInstance().getCurrentStyle().setTextAreaStyle(additionalInfo);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(submitButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(clearButton);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
   }
 }
