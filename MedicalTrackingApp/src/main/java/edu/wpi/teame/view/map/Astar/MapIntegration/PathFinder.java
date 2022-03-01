@@ -61,7 +61,6 @@ public class PathFinder {
 
     for (Edge edge : edgeList) {
       connections.get(edge.getStart().getId()).add(edge.getEnd().getId());
-      System.out.println("Edge: " + edge.getStart().getId() + " " + edge.getEnd().getId());
     }
   }
 

@@ -21,6 +21,10 @@ import edu.wpi.teame.view.map.Astar.MapIntegration.PathFinder;
 import edu.wpi.teame.view.map.Icons.MapEquipmentIcon;
 import edu.wpi.teame.view.map.Icons.MapLocationDot;
 import edu.wpi.teame.view.map.Icons.MapServiceRequestIcon;
+import edu.wpi.teame.view.map.RadialMenu.RadialCheckMenuItem;
+import edu.wpi.teame.view.map.RadialMenu.RadialContainerMenuItem;
+import edu.wpi.teame.view.map.RadialMenu.RadialMenu;
+import edu.wpi.teame.view.map.RadialMenu.RadialMenuItem;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
@@ -244,6 +248,7 @@ public class Map {
   }
 
   // init ComboBox
+  @Deprecated
   private JFXComboBox<String> createFloorSwitcher() {
     final JFXComboBox<String> comboBox = new JFXComboBox<>();
     comboBox.setValue(currFloor.toString());
@@ -268,6 +273,7 @@ public class Map {
     return Objects.requireNonNull(App.class.getResource(filePath)).toString();
   }
 
+  @Deprecated
   private JFXButton createZoomInButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomIn.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -284,6 +290,151 @@ public class Map {
     return zoomInButton;
   }
 
+  public RadialMenu createMainController(StackPane stack) {
+    Image zoomIn = new Image(getImageResource("images/Icons/ZoomIn.png"));
+    Image zoomOut = new Image(getImageResource("images/Icons/ZoomOut.png"));
+    Image refresh = new Image(getImageResource("images/Icons/RefreshIcon.png"));
+    Image FilterIcon = new Image(getImageResource("images/Icons/FilterIcon.png"));
+    Image Location = new Image(getImageResource("images/Icons/Location.png"));
+    ImageView ZoomIN = new ImageView(zoomIn);
+    ZoomIN.setFitWidth(30);
+    ZoomIN.setFitHeight(30);
+    ImageView ZoomOUT = new ImageView(zoomOut);
+    ZoomOUT.setFitHeight(30);
+    ZoomOUT.setFitWidth(30);
+    ImageView REFRESH = new ImageView(refresh);
+    REFRESH.setFitHeight(27);
+    REFRESH.setFitWidth(27);
+    ImageView FILTER = new ImageView(FilterIcon);
+    FILTER.setFitWidth(30);
+    FILTER.setFitHeight(30);
+    ImageView Material =
+        new ImageView(new Image(App.class.getResource("images/Icons/RadialIcon.png").toString()));
+    Material.setFitHeight(30);
+    Material.setFitWidth(30);
+    RadialMenuItem ZoomIn =
+        new RadialMenuItem(
+            45,
+            ZoomIN,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                zoomIn(1);
+              }
+            });
+    ZoomIn.ZoomButton = true;
+    RadialMenuItem ZoomOut =
+        new RadialMenuItem(
+            45,
+            ZoomOUT,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                zoomOut(1);
+              }
+            });
+    ZoomOut.ZoomButton = true;
+    RadialMenuItem Refresh =
+        new RadialMenuItem(
+            45,
+            REFRESH,
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
+                try {
+                  RefreshSRfromDB();
+                } catch (SQLException e) {
+                  e.printStackTrace();
+                }
+              }
+            });
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
+    ImageView Floor =
+        new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
+    Floor.setFitHeight(30);
+    Floor.setFitWidth(30);
+    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
+    for (EquipmentType currEquipment : EquipmentType.values()) {
+      ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
+      CurrImageView.setFitWidth(25);
+      CurrImageView.setFitHeight(25);
+      RadialCheckMenuItem tobeadded =
+          new RadialCheckMenuItem(
+              45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+      tobeadded.setOnMouseClicked(
+          event -> {
+            filter(currEquipment);
+            tobeadded.setSelected(!tobeadded.isSelected());
+          });
+
+      FilterCheckBoxes.addMenuItem(tobeadded);
+    }
+    ImageView LocationImageView = new ImageView(Location);
+    LocationImageView.setFitHeight(35);
+    LocationImageView.setFitWidth(35);
+    RadialCheckMenuItem Locations =
+        new RadialCheckMenuItem(
+            45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+    Locations.setOnMouseClicked(
+        event -> {
+          Locations.setSelected(!Locations.isSelected());
+          for (FloorType currFloor : FloorType.values()) {
+            for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+              dot.getIcon().setVisible(!dot.getIcon().isVisible());
+            }
+          }
+        });
+    FilterCheckBoxes.addMenuItem(Locations);
+    for (FloorType currFloor : FloorType.values()) {
+      ImageView floorer =
+          new ImageView(App.class.getResource("images/Icons/RadialIcon.png").toString());
+      floorer.setFitWidth(35);
+      floorer.setFitHeight(35);
+      RadialCheckMenuItem floor =
+          new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      if (currFloor == FloorType.ThirdFloor) {
+        floor.setSelected(true);
+      } else {
+        floor.setSelected(false);
+      }
+      floor.setOnMouseClicked(
+          event -> {
+            FloorSwitch.items.forEach(
+                item -> {
+                  RadialCheckMenuItem i = (RadialCheckMenuItem) item;
+                  i.setSelected(false);
+                });
+            floor.setSelected(true);
+            try {
+              switchFloors(currFloor);
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
+          });
+      FloorSwitch.addMenuItem(floor);
+    }
+    RadialMenu MainController =
+        new RadialMenu(
+            0,
+            30,
+            80,
+            3,
+            Color.color(0.09803921568, 0.07843137254, 0.07843137254, .75),
+            Color.color(.117, .844, .38, .85),
+            Color.PAPAYAWHIP,
+            Color.PAPAYAWHIP,
+            true,
+            RadialMenu.CenterVisibility.ALWAYS,
+            Material,
+            stack);
+    MainController.addMenuItem(ZoomIn);
+    MainController.addMenuItem(ZoomOut);
+    MainController.addMenuItem(Refresh);
+    MainController.addMenuItem(FilterCheckBoxes);
+    MainController.addMenuItem(FloorSwitch);
+    return MainController;
+  }
+
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -293,6 +444,7 @@ public class Map {
     }
   }
 
+  @Deprecated
   private ArrayList<JFXCheckBox> createFilterCheckBoxes() {
     ArrayList<JFXCheckBox> retval = new ArrayList<>();
 
@@ -348,6 +500,7 @@ public class Map {
     return retval;
   }
 
+  @Deprecated
   private JFXButton createZoomOutButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/ZoomOut.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -364,6 +517,7 @@ public class Map {
     return zoomOutButton;
   }
 
+  @Deprecated
   private JFXButton createRefreshButton() {
     Image zoomIcon = new Image(getImageResource("images/Icons/RefreshIcon.png"));
     ImageView icon = new ImageView(zoomIcon);
@@ -443,15 +597,7 @@ public class Map {
             scroll.zoomNode.fireEvent(event);
           }
         });
-    staticWrapper
-        .getChildren()
-        .setAll(
-            scroll,
-            createZoomInButton(),
-            createZoomOutButton(),
-            createFloorSwitcher(),
-            createRefreshButton());
-    staticWrapper.getChildren().addAll(createFilterCheckBoxes());
+    staticWrapper.getChildren().setAll(scroll, createMainController(staticWrapper));
     // setting size of scroll pane and setting the bar values
     scroll.setPrefSize(width, height);
     scroll.setHvalue(scroll.getHmin() + (scroll.getHmax() - scroll.getHmin()) / 2);
@@ -509,7 +655,6 @@ public class Map {
         event -> {
           node.setCursor(Cursor.DEFAULT);
         });
-
     // Prompt the user that the node can be dragged
     node.addEventHandler(
         MouseEvent.MOUSE_PRESSED,
@@ -779,6 +924,15 @@ public class Map {
                 if (event.getButton() == MouseButton.SECONDARY) {
                   lastPressedLocation = location;
                   PaneMenu.show(event.getScreenX(), event.getScreenY());
+                  Timer timer = new Timer();
+                  timer.schedule(
+                      new TimerTask() {
+                        @Override
+                        public void run() {
+                          PaneMenu.hide();
+                        }
+                      },
+                      2000);
                 } else if (PathFindingLocations.size() < 2) {
                   newDot.getIcon().setFill(Color.BLUE);
                   PathFindingLocations.add(newDot);
