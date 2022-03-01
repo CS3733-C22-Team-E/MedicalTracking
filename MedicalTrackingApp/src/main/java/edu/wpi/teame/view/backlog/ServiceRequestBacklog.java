@@ -289,6 +289,8 @@ public class ServiceRequestBacklog {
     }
     LinkedList<ServiceRequest> filteredList = new LinkedList<ServiceRequest>();
     for (ServiceRequest sr : preFilterList) {
+      System.out.println(sr.getDBType() + " " + sr.getId());
+      System.out.println(filterMap.get(sr.getAssignee().getName()));
       if (filterMap.get(sr.getAssignee().getName())) {
         filteredList.add(sr);
       }

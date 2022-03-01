@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
@@ -13,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class ServiceRequest implements ISQLSerializable {
   protected DataBaseObjectType dbType;
@@ -91,6 +95,10 @@ public class ServiceRequest implements ISQLSerializable {
     this.id = lineData.getColumnInt("id");
     this.dbType = type;
   }
+
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public ServiceRequest() {}
 
   @Override
   public String toString() {
@@ -177,6 +185,23 @@ public class ServiceRequest implements ISQLSerializable {
         + "requestDate = '"
         + dateToSQLString(requestDate)
         + "'";
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    String closeDateString = closeDate == null ? "NULL" : " '" + dateToSQLString(closeDate) + "'";
+
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("locationID", location.getId()));
+    updates.add(Updates.set("assigneeID", assignee.getId()));
+    updates.add(Updates.set("openDate", dateToSQLString(openDate)));
+    updates.add(Updates.set("closeDate", closeDateString));
+    updates.add(Updates.set("status", status.ordinal()));
+    updates.add(Updates.set("title", title));
+    updates.add(Updates.set("additionalInfo", additionalInfo));
+    updates.add(Updates.set("priority", priority));
+    updates.add(Updates.set("requestDate", dateToSQLString(requestDate)));
+    return updates;
   }
 
   @Override
@@ -311,5 +336,13 @@ public class ServiceRequest implements ISQLSerializable {
 
   public boolean getIsDeleted() {
     return isDeleted;
+  }
+
+  public void setDbType(DataBaseObjectType dbType) {
+    this.dbType = dbType;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 }
