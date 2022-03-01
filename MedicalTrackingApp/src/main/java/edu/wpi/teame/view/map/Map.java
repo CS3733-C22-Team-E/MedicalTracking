@@ -31,6 +31,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -64,6 +65,7 @@ public class Map implements IStyleable {
   private final HashMap<EquipmentType, Image> TypeGraphics = new HashMap<>();
   private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor =
       new HashMap<>();
+  private HashMap<String, Location> LocationNodeNames = new HashMap<>();
   //  private final HashMap<FloorType, HashSet<Radial>>
   private final ContextMenu EquipmentClicked = new ContextMenu();
   private final StackPane layout = new StackPane();
@@ -74,6 +76,7 @@ public class Map implements IStyleable {
   private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Location lastPressedLocation;
+  private MapEquipmentIcon lastPressedEquipment;
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
@@ -81,6 +84,7 @@ public class Map implements IStyleable {
   private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
   RadialMenu controller = null;
   ArrayList<RadialCheckMenuItem> menuItemsToBeStyled = new ArrayList<>();
+  private boolean NodeVisibility = true;
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -158,7 +162,7 @@ public class Map implements IStyleable {
     return retval;
   }
 
-  public void showEditLastPressedDialog() {
+  public void showEditLastPressedDialog() throws SQLException {
     Dialog<Pair<Double, Double>> dialog = new Dialog<>();
     dialog.setTitle("Move Equipment");
     dialog.setHeaderText("Choose the X and Y Position");
@@ -172,37 +176,28 @@ public class Map implements IStyleable {
     grid.setVgap(10);
     grid.setPadding(new Insets(20, 150, 10, 10));
 
-    TextField XPosition = new TextField();
-    XPosition.setPromptText("X Position");
-    TextField YPosition = new TextField();
-    YPosition.setPromptText("Y Position");
-
-    grid.add(new Label("X Position:"), 0, 0);
-    grid.add(XPosition, 1, 0);
-    grid.add(new Label("Y Position:"), 0, 1);
-    grid.add(YPosition, 1, 1);
-
+    //    TextField XPosition = new TextField();
+    //    XPosition.setPromptText("X Position");
+    //    TextField YPosition = new TextField();
+    //    YPosition.setPromptText("Y Position");
+    AutoCompleteTextField Location = new AutoCompleteTextField();
+    Location.setPromptText("Location");
+    List<Location> entries =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    Location.getEntries()
+        .addAll(
+            entries.stream()
+                .map(edu.wpi.teame.model.Location::getLongName)
+                .collect(Collectors.toSet()));
+    //    grid.add(new Label("X Position:"), 0, 0);
+    //    grid.add(XPosition, 1, 0);
+    //    grid.add(new Label("Y Position:"), 0, 1);
+    //    grid.add(YPosition, 1, 1);
+    grid.add(new Label("Location"), 0, 0);
+    grid.add(Location, 1, 0);
     // Enable/Disable login button depending on whether a username was entered.
     Node MoveButton = dialog.getDialogPane().lookupButton(Move);
-    MoveButton.setDisable(true);
-
-    // Do some validation (using the Java 8 lambda syntax).
-    XPosition.textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(
-                  newValue.trim().isEmpty()
-                      || YPosition.getText().isBlank()
-                      || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-            });
-    YPosition.textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(
-                  newValue.trim().isEmpty()
-                      || XPosition.getText().isBlank()
-                      || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-            });
+    MoveButton.setDisable(false);
 
     dialog.getDialogPane().setContent(grid);
 
@@ -210,12 +205,44 @@ public class Map implements IStyleable {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            double xCo = Double.parseDouble(XPosition.getText());
-            double yCo = Double.parseDouble(YPosition.getText());
-            double x = xCo - MAPWIDTH / 2;
-            double y = yCo - MAPHEIGHT / 2;
-            lastPressed.setTranslateX(x);
-            lastPressed.setTranslateY(y);
+            //            double xCo = Double.parseDouble(XPosition.getText());
+            //            double yCo = Double.parseDouble(YPosition.getText());
+            //            double x = xCo - MAPWIDTH / 2;
+            //            double y = yCo - MAPHEIGHT / 2;
+            //            lastPressed.setTranslateX(x);
+            //            lastPressed.setTranslateY(y);
+            try {
+              mapIconsByFloor
+                  .get(lastPressedEquipment.getEquipment().getLocation().getFloor())
+                  .remove(lastPressedEquipment);
+              //              List<Location> locations =
+              //                  (List<Location>)
+              //
+              // DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+              //
+              //              AtomicReference<edu.wpi.teame.model.Location> location = null;
+              //              locations.forEach(
+              //                  loc -> {
+              //                    if (Objects.equals(loc.getLongName(), Location.getText())) {
+              //                      location.set(loc);
+              //                    }
+              //                  });
+              edu.wpi.teame.model.Location location = LocationNodeNames.get(Location.getText());
+              lastPressedEquipment.getEquipment().setLocation(location);
+              DBManager.getInstance()
+                  .getManager(DataBaseObjectType.Equipment)
+                  .update(lastPressedEquipment.getEquipment());
+              mapIconsByFloor.get(location.getFloor()).add(lastPressedEquipment);
+              lastPressedEquipment
+                  .getButton()
+                  .setTranslateX(location.getX() - Images.get(location.getFloor()).getWidth() / 2);
+              lastPressedEquipment
+                  .getButton()
+                  .setTranslateY(location.getY() - Images.get(location.getFloor()).getHeight() / 2);
+              updateLayoutChildren();
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
           return null;
         });
@@ -232,6 +259,7 @@ public class Map implements IStyleable {
       layout.getChildren().add(icon.getButton());
     }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      dot.getIcon().setVisible(NodeVisibility);
       layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
@@ -390,6 +418,7 @@ public class Map implements IStyleable {
               dot.getIcon().setVisible(!dot.getIcon().isVisible());
             }
           }
+          NodeVisibility = !NodeVisibility;
         });
     FilterCheckBoxes.addMenuItem(Locations);
     for (FloorType currFloor : FloorType.values()) {
@@ -582,19 +611,23 @@ public class Map implements IStyleable {
     System.out.println("Icons Graphics Load");
     // Creating OnClickPane Menu
     // Creating Equipment Icon Pressed
-    //    EquipmentClicked.getStyleClass().add("combo-box");
-    //    MenuItem deleteMenuItem = new MenuItem("Delete");
-    //    deleteMenuItem.setOnAction(
-    //        event -> {
-    //          deleteMapIcon(lastPressed);
-    //          updateLayoutChildren();
-    //        });
-    //    MenuItem addMenuItem = new MenuItem("Edit");
-    //    addMenuItem.setOnAction(
-    //        event -> {
-    //          showEditLastPressedDialog();
-    //        });
-    //    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
+    EquipmentClicked.getStyleClass().add("combo-box");
+    MenuItem deleteMenuItem = new MenuItem("Delete");
+    deleteMenuItem.setOnAction(
+        event -> {
+          deleteMapIcon(lastPressed);
+          updateLayoutChildren();
+        });
+    MenuItem addMenuItem = new MenuItem("Edit");
+    addMenuItem.setOnAction(
+        event -> {
+          try {
+            showEditLastPressedDialog();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        });
+    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
     updateLayoutChildren();
     layout.setScaleX(.5);
     layout.setScaleY(.5);
@@ -631,6 +664,7 @@ public class Map implements IStyleable {
     Icon.setTranslateY(equipment.getLocation().getY() - MAPHEIGHT / 2); // ^^ with y
     // Set Context Menu
     Icon.setContextMenu(EquipmentClicked);
+    MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
     // Set Context Menu to Show
     Icon.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
@@ -641,10 +675,16 @@ public class Map implements IStyleable {
             Icon.getContextMenu().show(Icon, event.getScreenX(), event.getScreenY());
           }
         });
+    Icon.setOnMouseEntered(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            lastPressedEquipment = newMapIcon;
+          }
+        });
     Tooltip tooltip =
         new Tooltip(equipment.getName() + " Status: " + (equipment.isClean() ? "Clean" : "Dirty"));
     Tooltip.install(Icon, tooltip);
-    MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
 
     draggable(newMapIcon);
     mapIconsByFloor.get(equipment.getLocation().getFloor()).add(newMapIcon);
@@ -913,6 +953,7 @@ public class Map implements IStyleable {
   }
 
   private void locationToMapElement(Location location) {
+    LocationNodeNames.put(location.getLongName(), location);
     double mapWidthTest = Images.get(location.getFloor()).getWidth();
     double mapHeightTest = Images.get(location.getFloor()).getHeight();
     double x = location.getX() - mapWidthTest / 2;
