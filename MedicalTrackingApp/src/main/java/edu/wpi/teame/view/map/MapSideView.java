@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -25,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class MapSideView {
+
   private final StackPane layout = new StackPane();
   private Image backgroundImage;
   private double MAPHEIGHT = 1343;
@@ -93,6 +95,21 @@ public class MapSideView {
     Rectangle Floor3 = this.createRectangle(125.0D, 1025.0D, 413.0D, 52.0D);
     Rectangle Floor1 = this.createRectangle(125.0D, 1125.0D, 413.0D, 52.0D);
     Rectangle LL1 = this.createRectangle(121.0D, 1175.0D, 415.0D, 52.0D);
+
+    //    ObservableList<PieChart.Data> pieChartData =
+    //        FXCollections.observableArrayList(
+    //            new PieChart.Data("X-Ray", 1),
+    //            new PieChart.Data("Recliners", 20),
+    //            new PieChart.Data("Patient Beds", 20),
+    //            new PieChart.Data("Clean Infusion Pumps", 20),
+    //            new PieChart.Data("Dirty Infusion Pumps", 20));
+    //    final PieChart chart = new PieChart(pieChartData);
+    //    chart.setTitle("Equipment Availability");
+
+    //    chart.setTranslateX(-700);
+    //    chart.setTranslateY(-300);
+    //    //    chart.setPrefSize(200, 200);
+    //    //    chart.setMaxSize(chart.getPrefWidth(), chart.getPrefHeight());
 
     LL1.setOnMouseEntered(
         new EventHandler<MouseEvent>() {
@@ -218,6 +235,7 @@ public class MapSideView {
     holder.setMouseTransparent(true);
     holder.getStyleClass().add("combo-box");
     staticWrapper.getChildren().add(holder);
+    //    staticWrapper.getChildren().add(chart);
     Grid.setColumnSpan(AllEquipmentView, 3);
     return staticWrapper;
   }

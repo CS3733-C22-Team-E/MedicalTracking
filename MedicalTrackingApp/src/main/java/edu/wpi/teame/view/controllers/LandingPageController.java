@@ -9,7 +9,6 @@ import edu.wpi.teame.model.enums.FloorType;
 import edu.wpi.teame.model.enums.SortOrder;
 import edu.wpi.teame.view.backlog.ServiceRequestBacklog;
 import edu.wpi.teame.view.map.Map;
-import edu.wpi.teame.view.map.MapSideView;
 import edu.wpi.teame.view.style.IStyleable;
 import edu.wpi.teame.view.style.StyleManager;
 import edu.wpi.teame.view.style.StyledTab;
@@ -72,7 +71,7 @@ public class LandingPageController implements Initializable, IStyleable {
     StyledTab directoryTab =
         new StyledTab(
             "Service Request Directory",
-            SortOrder.ByName,
+            SortOrder.Seventh,
             "view/ServiceRequestDirectoryPage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/SRDirectory.png").toString()));
     directoryTab.setOnSelectionChanged(
@@ -90,7 +89,7 @@ public class LandingPageController implements Initializable, IStyleable {
     mapTabPage =
         new StyledTab(
             "Hospital Map",
-            SortOrder.ByName,
+            SortOrder.Fifth,
             mapView.getMapScene(tabContentHeight, tabContentWidth),
             new Image(App.class.getResource("images/Icons/pageIcons/MapView.png").toString()));
     mapTabPage.setOnSelectionChanged(
@@ -107,15 +106,14 @@ public class LandingPageController implements Initializable, IStyleable {
     TabHoverAnimation.install(mapTabPage);
     tabs.add(mapTabPage);
 
-    MapSideView mapSideView = new MapSideView(this, mapView);
-    StyledTab mapSideViewTab =
+    StyledTab sideViewMap =
         new StyledTab(
-            "Hospital Map Side-View",
-            SortOrder.ByName,
-            mapSideView.getMapScene(),
+            "Side View Map",
+            SortOrder.Sixth,
+            "view/SideViewMap.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/SideView.png").toString()));
-    TabHoverAnimation.install(mapSideViewTab);
-    tabs.add(mapSideViewTab);
+    TabHoverAnimation.install(sideViewMap);
+    tabs.add(sideViewMap);
 
     ServiceRequestBacklog backlogView =
         new ServiceRequestBacklog(
@@ -124,7 +122,7 @@ public class LandingPageController implements Initializable, IStyleable {
     backlogTab =
         new StyledTab(
             "Service Request Backlog",
-            SortOrder.ByName,
+            SortOrder.Eighth,
             backlogView.getBacklogScene(),
             new Image(App.class.getResource("images/Icons/pageIcons/SRBacklog.png").toString()));
     backlogTab.setOnSelectionChanged(
@@ -144,7 +142,7 @@ public class LandingPageController implements Initializable, IStyleable {
     adminDBPage =
         new StyledTab(
             "DB Management",
-            SortOrder.ByName,
+            SortOrder.Fourth,
             "view/tabs/DBManagementPage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/AdminDBIcon.png").toString()));
     TabHoverAnimation.install(adminDBPage);
@@ -153,7 +151,7 @@ public class LandingPageController implements Initializable, IStyleable {
     StyledTab covidTab =
         new StyledTab(
             "Covid-19 Info",
-            SortOrder.ByName,
+            SortOrder.Second,
             "view/tabs/CovidInfoPage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/CovidInfo.png").toString()));
     TabHoverAnimation.install(covidTab);
@@ -162,7 +160,7 @@ public class LandingPageController implements Initializable, IStyleable {
     StyledTab settingsTab =
         new StyledTab(
             "Settings",
-            SortOrder.ByName,
+            SortOrder.Eleventh,
             "view/tabs/SettingsPage.fxml",
             new Image(App.class.getResource("images/Icons/pageIcons/Settings.png").toString()));
     TabHoverAnimation.install(settingsTab);
@@ -171,7 +169,7 @@ public class LandingPageController implements Initializable, IStyleable {
     credentialManagementPage =
         new StyledTab(
             "Credential Manager",
-            SortOrder.ByName,
+            SortOrder.Third,
             "view/tabs/CredentialManagementPage.fxml",
             new Image(
                 App.class
