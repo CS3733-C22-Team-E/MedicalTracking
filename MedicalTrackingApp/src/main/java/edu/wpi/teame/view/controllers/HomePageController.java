@@ -85,6 +85,6 @@ public class HomePageController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(logOutButton);
     StyleManager.getInstance().getCurrentStyle().setTitleStyle(titleText);
 
-    welcomeLabel.setTextFill(StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+    welcomeLabel.setTextFill(StyleManager.getInstance().getCurrentStyle().getHighlightColor());
   }
 }

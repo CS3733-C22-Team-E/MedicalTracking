@@ -1182,13 +1182,13 @@ public class Map implements IStyleable {
   public void updateStyle() {
     if (controller != null) {
       controller.setBackgroundMouseOnFill(
-          StyleManager.getInstance().getCurrentStyle().getForegroundColor());
+          StyleManager.getInstance().getCurrentStyle().getHighlightColor());
     }
     menuItemsToBeStyled.forEach(
         menu -> {
           menu.selectedMouseOnColor =
-              StyleManager.getInstance().getCurrentStyle().getForegroundColor();
-          menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getForegroundColor();
+              StyleManager.getInstance().getCurrentStyle().getHighlightColor();
+          menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getHighlightColor();
           menu.redraw();
         });
   }
