@@ -1,5 +1,6 @@
 package edu.wpi.teame.model;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
@@ -7,6 +8,9 @@ import edu.wpi.teame.model.enums.DepartmentType;
 import edu.wpi.teame.model.enums.EmployeeType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.bson.conversions.Bson;
 
 public class Employee implements ISQLSerializable {
   private DepartmentType department;
@@ -36,6 +40,10 @@ public class Employee implements ISQLSerializable {
     this.type = EmployeeType.values()[(lineData.getColumnInt("type"))];
     this.name = lineData.getColumnString("name");
   }
+
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it won't instantiate any variables
+  public Employee() {}
 
   @Override
   public String toString() {
@@ -99,6 +107,15 @@ public class Employee implements ISQLSerializable {
   // GETTERS & SETTERS
   public int getId() {
     return id;
+  }
+
+  @Override
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = new ArrayList<>();
+    updates.add(Updates.set("department", department.ordinal()));
+    updates.add(Updates.set("name", name));
+    updates.add(Updates.set("type", type.ordinal()));
+    return updates;
   }
 
   public void setId(int id) {

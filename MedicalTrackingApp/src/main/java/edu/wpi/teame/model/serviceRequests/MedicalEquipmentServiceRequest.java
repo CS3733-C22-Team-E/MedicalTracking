@@ -1,5 +1,6 @@
 package edu.wpi.teame.model.serviceRequests;
 
+import com.mongodb.client.model.Updates;
 import edu.wpi.teame.db.CSVLineData;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.*;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   private Equipment equipment;
@@ -57,6 +59,12 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
     this.equipment = (Equipment) lineData.getDBObject(DataBaseObjectType.Equipment, "equipmentID");
   }
 
+  // in order for a Codec registry to work properly, this constructor needs to exist
+  // for now, it only sets dbType
+  public MedicalEquipmentServiceRequest() {
+    dbType = DataBaseObjectType.MedicalEquipmentSR;
+  }
+
   @Override
   public String getSQLUpdateString() {
     return getRawUpdateString() + ", equipmentID = " + equipment.getId() + " WHERE id = " + id;
@@ -65,6 +73,13 @@ public final class MedicalEquipmentServiceRequest extends ServiceRequest {
   @Override
   public String getSQLInsertString() {
     return super.getSQLInsertString() + ", " + equipment.getId();
+  }
+
+  public List<Bson> getMongoUpdates() {
+    List<Bson> updates = super.getMongoUpdates();
+    updates.add(Updates.set("equipmentID", equipment.getId()));
+
+    return updates;
   }
 
   @Override

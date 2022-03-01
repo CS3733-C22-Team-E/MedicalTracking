@@ -11,6 +11,7 @@ public class ColorScheme {
   private final Color color1, color2;
 
   public ColorScheme(String schemeName, Color color1, Color color2) {
+
     this.mainCSS =
         new File(
             App.class
@@ -23,6 +24,7 @@ public class ColorScheme {
                 .getClassLoader()
                 .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Login.css")
                 .toString());
+
     this.color1 = color1;
     this.color2 = color2;
   }

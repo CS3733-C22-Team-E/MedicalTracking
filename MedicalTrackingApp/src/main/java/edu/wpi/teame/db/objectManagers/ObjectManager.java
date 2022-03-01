@@ -1,5 +1,10 @@
 package edu.wpi.teame.db.objectManagers;
 
+import static com.mongodb.client.model.Filters.eq;
+
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Updates;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvValidationException;
@@ -9,6 +14,7 @@ import edu.wpi.teame.db.CSVManager;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.model.*;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
 import java.io.FileWriter;
@@ -21,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import org.bson.conversions.Bson;
 
 public abstract class ObjectManager<T extends ISQLSerializable> implements IManager<T> {
   protected DataBaseObjectType objectType;
@@ -36,8 +43,33 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getAll() throws SQLException {
+    // System.out.println(DBManager.getInstance().getCurrentType());
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+      loadedObjects = getAll(getClassFromDBType());
+      return loadedObjects;
+    }
+
     if (shouldReload()) {
       loadedObjects = getBy(" WHERE isDeleted = 0");
+    }
+    return loadedObjects;
+  }
+
+  public List<T> getAll(Class<T> cls) throws SQLException {
+    System.out.println("MogoGetall");
+    if (shouldReload()) {
+      MongoCursor<T> cursor =
+          DBManager.getInstance()
+              .getMongoDatabase()
+              .getCollection(objectType.toTableName(), cls)
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .find(eq("isDeleted", 0))
+              .iterator();
+
+      loadedObjects = new ArrayList<>();
+      while (cursor.hasNext()) {
+        loadedObjects.add(cursor.next());
+      }
     }
     return loadedObjects;
   }
@@ -50,7 +82,30 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public List<T> getDeleted() throws SQLException {
+
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+
+      return getDeleted(getClassFromDBType());
+    }
+
     return getBy(" WHERE isDeleted = 1");
+  }
+
+  public List<T> getDeleted(Class<T> cls) throws SQLException {
+    System.out.println("Mogo getdeleted");
+
+    List<T> result = new LinkedList<>();
+    FindIterable<T> objects =
+        DBManager.getInstance()
+            .getMongoDatabase()
+            .getCollection(objectType.toTableName(), cls)
+            .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+            .find(eq("isDeleted", 1));
+
+    for (T object : objects) {
+      result.add(object);
+    }
+    return result;
   }
 
   @Override
@@ -77,61 +132,108 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   @Override
   public T insert(T newObject) throws SQLException {
-    StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
-    insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());
-    insertQuery.append(" VALUES(");
-    insertQuery.append(newObject.getSQLInsertString()).append(")");
-    // System.out.println(insertQuery);
-    PreparedStatement insertStatement =
-        DBManager.getInstance()
-            .getConnection()
-            .prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
-    int rowsAffected = insertStatement.executeUpdate();
-    ResultSet resultSet = insertStatement.getGeneratedKeys();
+    long id;
+    if (DBManager.getInstance().getCurrentType() != DBType.MongoDB) {
+      StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
+      insertQuery.append(objectType.toTableName()).append(newObject.getTableColumns());
+      insertQuery.append(" VALUES(");
+      insertQuery.append(newObject.getSQLInsertString()).append(")");
+      System.out.println(insertQuery);
+      PreparedStatement insertStatement =
+          DBManager.getInstance()
+              .getConnection()
+              .prepareStatement(insertQuery.toString(), Statement.RETURN_GENERATED_KEYS);
+      int rowsAffected = insertStatement.executeUpdate();
+      ResultSet resultSet = insertStatement.getGeneratedKeys();
 
-    resultSet.next();
-    long id = resultSet.getLong(1);
-    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+      resultSet.next();
+      id = resultSet.getLong(1);
+      lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    } else {
+      System.out.println("Mogo insert");
+
+      DBManager.getInstance()
+          .getMongoDatabase()
+          .getCollection(objectType.toTableName(), getClassFromDBType())
+          .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+          .insertOne(newObject);
+      // todo make sure
+      return get(newObject.getId());
+    }
+
     return get((int) id);
   }
 
   @Override
   public void update(T updatedObject) throws SQLException {
-    StringBuilder updateQuery = new StringBuilder("UPDATE ");
-    updateQuery.append(objectType.toTableName()).append(" SET ");
-    updateQuery.append(updatedObject.getSQLUpdateString());
-    DBManager.getInstance().getConnection().createStatement().executeUpdate(updateQuery.toString());
-    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    if (DBManager.getInstance().getCurrentType() != DBType.MongoDB) {
+      StringBuilder updateQuery = new StringBuilder("UPDATE ");
+      updateQuery.append(objectType.toTableName()).append(" SET ");
+      updateQuery.append(updatedObject.getSQLUpdateString());
+      DBManager.getInstance()
+          .getConnection()
+          .createStatement()
+          .executeUpdate(updateQuery.toString());
+      lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    } else {
+      System.out.println("Mogo update");
+      Bson updates = Updates.combine(updatedObject.getMongoUpdates());
+
+      DBManager.getInstance()
+          .getMongoDatabase()
+          .getCollection(objectType.toTableName(), getClassFromDBType())
+          .updateOne(eq("_id", updatedObject.getId()), updates);
+    }
   }
 
   @Override
   public void remove(int id) throws SQLException {
-    StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
-    markIsDeleted
-        .append(objectType.toTableName())
-        .append(" SET isDeleted = 1")
-        .append(" WHERE id = ")
-        .append(id);
-    DBManager.getInstance()
-        .getConnection()
-        .createStatement()
-        .executeUpdate(markIsDeleted.toString());
-    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    if (DBManager.getInstance().getCurrentType() != DBType.MongoDB) {
+      StringBuilder markIsDeleted = new StringBuilder("UPDATE ");
+      markIsDeleted
+          .append(objectType.toTableName())
+          .append(" SET isDeleted = 1")
+          .append(" WHERE id = ")
+          .append(id);
+      DBManager.getInstance()
+          .getConnection()
+          .createStatement()
+          .executeUpdate(markIsDeleted.toString());
+      lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    } else {
+      System.out.println("Mogo remove");
+
+      DBManager.getInstance()
+          .getMongoDatabase()
+          .getCollection(objectType.toTableName(), getClassFromDBType())
+          .deleteOne(eq("_id", id));
+    }
   }
 
   @Override
   public void restore(int id) throws SQLException {
-    StringBuilder restoreQuery = new StringBuilder("UPDATE ");
-    restoreQuery
-        .append(objectType.toTableName())
-        .append(" SET isDeleted = 0")
-        .append(" WHERE id = ")
-        .append(id);
-    DBManager.getInstance()
-        .getConnection()
-        .createStatement()
-        .executeUpdate(restoreQuery.toString());
-    lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    if (DBManager.getInstance().getCurrentType() != DBType.MongoDB) {
+      StringBuilder restoreQuery = new StringBuilder("UPDATE ");
+      restoreQuery
+          .append(objectType.toTableName())
+          .append(" SET isDeleted = 0")
+          .append(" WHERE id = ")
+          .append(id);
+      DBManager.getInstance()
+          .getConnection()
+          .createStatement()
+          .executeUpdate(restoreQuery.toString());
+      lastLoaded = new Date(0); // Ensure the table is loaded next time we get
+    } else {
+      System.out.println("Mogo restore");
+
+      Bson updates = Updates.combine(Updates.set("isDeleted", 0));
+
+      DBManager.getInstance()
+          .getMongoDatabase()
+          .getCollection(objectType.toTableName(), getClassFromDBType())
+          .updateOne(eq("_id", id), updates);
+    }
   }
 
   @Override
@@ -192,8 +294,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
       case SecuritySR:
       case MentalHealthSR:
+        return (T) new MentalHealthServiceRequest(lineData);
       case PatientDischargeSR:
-        return (T) new ServiceRequest(lineData, objectType);
+        return (T) new PatientDischargeServiceRequest(lineData);
       case ExternalPatientSR:
         return (T) new PatientTransportationServiceRequest(lineData, false);
       case FoodDeliverySR:
@@ -226,7 +329,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     return null;
   }
 
-  private T getCastedType(ResultSet resultSet) throws SQLException {
+  public T getCastedType(ResultSet resultSet) throws SQLException {
     switch (objectType) {
       case AudioVisualSR:
       case ComputerSR:
@@ -236,6 +339,7 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
       case SanitationSR:
       case SecuritySR:
       case MentalHealthSR:
+        return (T) new MentalHealthServiceRequest(resultSet);
       case PatientDischargeSR:
         return (T) new ServiceRequest(resultSet, objectType);
       case ExternalPatientSR:
@@ -266,6 +370,52 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
         return (T) new Patient(resultSet);
       case Edge:
         return (T) new Edge(resultSet);
+    }
+    return null;
+  }
+
+  private Class<T> getClassFromDBType() {
+    switch (objectType) {
+      case AudioVisualSR:
+      case ComputerSR:
+      case FacilitiesMaintenanceSR:
+      case LaundrySR:
+      case SanitationSR:
+      case SecuritySR:
+      case PatientDischargeSR:
+        return (Class<T>) PatientDischargeServiceRequest.class;
+      case DeceasedBodySR:
+        return (Class<T>) DeceasedBodyRemovalServiceRequest.class;
+      case MentalHealthSR:
+        return (Class<T>) MentalHealthServiceRequest.class;
+      case ExternalPatientSR:
+        return (Class<T>) PatientTransportationServiceRequest.class;
+      case FoodDeliverySR:
+        return (Class<T>) FoodDeliveryServiceRequest.class;
+      case GiftAndFloralSR:
+        return (Class<T>) GiftAndFloralServiceRequest.class;
+      case InternalPatientTransferSR:
+        return (Class<T>) PatientTransportationServiceRequest.class;
+      case LanguageInterpreterSR:
+        return (Class<T>) LanguageInterpreterServiceRequest.class;
+      case MedicalEquipmentSR:
+        return (Class<T>) MedicalEquipmentServiceRequest.class;
+      case MedicineDeliverySR:
+        return (Class<T>) MedicineDeliveryServiceRequest.class;
+      case ReligiousSR:
+        return (Class<T>) ReligiousServiceRequest.class;
+      case Credential:
+        return (Class<T>) Credential.class;
+      case Location:
+        return (Class<T>) Location.class;
+      case Equipment:
+        return (Class<T>) Equipment.class;
+      case Employee:
+        return (Class<T>) Employee.class;
+      case Patient:
+        return (Class<T>) Patient.class;
+      case Edge:
+        return (Class<T>) Edge.class;
     }
     return null;
   }
