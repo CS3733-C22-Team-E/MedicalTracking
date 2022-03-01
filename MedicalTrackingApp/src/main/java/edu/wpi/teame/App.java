@@ -1,8 +1,7 @@
 package edu.wpi.teame;
 
-import edu.wpi.teame.view.style.StyleManager;
 import edu.wpi.teame.db.DBManager;
-import edu.wpi.teame.view.style.ColorScheme;
+import edu.wpi.teame.view.style.StyleManager;
 import java.awt.*;
 import java.io.IOException;
 import javafx.application.Application;

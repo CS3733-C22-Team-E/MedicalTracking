@@ -235,6 +235,10 @@ public class Credential implements ISQLSerializable {
     return id;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public AccessLevel getAccessLevel() {
     return accessLevel;
   }
@@ -261,6 +265,14 @@ public class Credential implements ISQLSerializable {
 
   public void setDeleted(boolean deleted) {
     isDeleted = deleted;
+  }
+
+  public byte[] getSalt() {
+    return salt;
+  }
+
+  public void setSalt(byte[] salt) {
+    this.salt = salt;
   }
 
   public String getImageURL() {
