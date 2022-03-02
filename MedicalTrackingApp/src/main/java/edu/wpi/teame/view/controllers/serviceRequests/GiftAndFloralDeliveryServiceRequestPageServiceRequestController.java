@@ -35,6 +35,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import org.apache.derby.database.Database;
 
 public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     extends ServiceRequestController {
@@ -244,41 +245,39 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
 
   public void openTeamCAPI() {
     GiftServiceRequest teamCAPI = new GiftServiceRequest();
-    //    Database.getInstance().initDatabase();
-    //
-    //    try {
-    //      List<Employee> employees =
-    //          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
-    //      for (Employee employee : employees) {
-    //        Database.getInstance()
-    //            .insertEmployee(
-    //                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
-    //                    Integer.toString(employee.getId()), employee.getName()));
-    //      }
-    //    } catch (SQLException e) {
-    //      e.printStackTrace();
-    //    }
-    //
-    //    try {
-    //      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
-    //          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
-    //      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest :
-    // giftAndFloralServiceRequests) {
-    //        Database.getInstance()
-    //            .insertGR(
-    //                new GiftRequest(
-    //                    new Gift(
-    //                        "DoesntMatter",
-    //                        giftAndFloralServiceRequest.getAdditionalInfo(),
-    //                        15.2f,
-    //                        false),
-    //                    giftAndFloralServiceRequest.getLocation().getLongName(),
-    //                    giftAndFloralServiceRequest.getPatient().getName()));
-    //      }
-    //    } catch (SQLException e) {
-    //      e.printStackTrace();
-    //    }
+    Database.getInstance().initDatabase();
 
+    try {
+      List<Employee> employees =
+          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+      for (Employee employee : employees) {
+        Database.getInstance()
+            .insertEmployee(
+                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
+                    Integer.toString(employee.getId()), employee.getName()));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
+          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
+      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest : giftAndFloralServiceRequests) {
+        Database.getInstance()
+            .insertGR(
+                new GiftRequest(
+                    new Gift(
+                        "DoesntMatter",
+                        giftAndFloralServiceRequest.getAdditionalInfo(),
+                        15.2f,
+                        false),
+                    giftAndFloralServiceRequest.getLocation().getLongName(),
+                    giftAndFloralServiceRequest.getPatient().getName()));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     teamCAPI.run(200, 200, 500, 500, "", "", "");
   }
 }

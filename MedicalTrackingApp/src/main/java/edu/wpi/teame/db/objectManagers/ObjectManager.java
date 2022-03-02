@@ -16,10 +16,7 @@ import edu.wpi.teame.model.*;
 import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.serviceRequests.*;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -152,7 +149,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .getCollection(objectType.toTableName(), getClassFromDBType())
           .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
           .insertOne(newObject);
-      // todo make sure
       return get(newObject.getId());
     }
 
@@ -250,11 +246,14 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
     String filePath =
-        App.class.getClassLoader().getResource("edu/wpi/teame/csv/" + outputFileName).getFile();
-    FileWriter outputFile = new FileWriter(filePath);
+        App.class
+            .getClassLoader()
+            .getResource("edu/wpi/teame/csv/" + outputFileName)
+            .toExternalForm();
+
     CSVWriter writer =
         new CSVWriter(
-            outputFile,
+            new FileWriter(filePath),
             ',',
             CSVWriter.NO_QUOTE_CHARACTER,
             CSVWriter.DEFAULT_ESCAPE_CHARACTER,
@@ -262,7 +261,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
     List<T> dbObjectList = forceGetAll();
     List<String[]> data = new ArrayList<String[]>();
-
     if (dbObjectList.isEmpty()) {
       return;
     }

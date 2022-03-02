@@ -363,7 +363,7 @@ public class LoginPageController implements Initializable, IStyleable {
     }
 
     // Set up face id
-    // webcam = Webcam.getDefault();
+    webcam = Webcam.getDefault();
     if (webcam != null) {
       Dimension[] supportedSizes = webcam.getViewSizes();
       webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
@@ -422,13 +422,10 @@ public class LoginPageController implements Initializable, IStyleable {
     BufferedImage image = webcam.getImage();
 
     // Save image to PNG file
-    File imageFile =
-        new File(
-            App.class
-                .getClassLoader()
-                .getResource("edu/wpi/teame/images/facial-recognition/userLogInImage.png")
-                .getFile());
+    String home = System.getProperty("user.home");
+    File imageFile = new File(home + "/Downloads/MedicalTracking/images/userLogInImage.png");
     ImageIO.write(image, "PNG", imageFile);
+
     cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
     webcam.close();
     return imageFile;
