@@ -267,6 +267,10 @@ public class Credential implements ISQLSerializable {
     isDeleted = deleted;
   }
 
+  public void setPasswordHashed(String password) {
+    this.password = password;
+  }
+
   public byte[] getSalt() {
     return salt;
   }

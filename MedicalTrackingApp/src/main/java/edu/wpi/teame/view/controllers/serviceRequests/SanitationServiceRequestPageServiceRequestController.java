@@ -1,11 +1,15 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import static com.mongodb.client.model.Sorts.descending;
+
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -13,6 +17,7 @@ import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.style.SRSentAnimation;
 import edu.wpi.teame.view.style.StyleManager;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -29,6 +34,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import teamA_API.exceptions.ServiceException;
 
 public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
@@ -142,7 +148,23 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
             new Date(new java.util.Date().getTime()),
             "",
             0);
-    DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
+
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+      ServiceRequest serviceRequest1 =
+          DBManager.getInstance()
+              .getMongoDatabase()
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .getCollection("SanitationSR", ServiceRequest.class)
+              .find()
+              .sort(descending("_id"))
+              .first();
+      int lastIntID = serviceRequest1 == null ? 1 : serviceRequest1.getId() + 1;
+      serviceRequest.setId(lastIntID);
+      DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
+
+    } else {
+      DBManager.getInstance().getManager(DataBaseObjectType.SanitationSR).insert(serviceRequest);
+    }
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
@@ -191,5 +213,36 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
+  }
+
+  public void openTeamAAPI() {
+    teamA_API.Main teamAAPI = new teamA_API.Main();
+    //    Adb.initialConnection();
+    //
+    //    List<Employee> employees = null;
+    //    try {
+    //      employees = DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+    //      for (Employee employee : employees) {
+    //        teamAAPI.addEmployee(
+    //            Integer.toString(employee.getId()),
+    //            employee.getType().toString(),
+    //            employee.getName(),
+    //            "",
+    //            "",
+    //            "",
+    //            "",
+    //            new java.util.Date());
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+
+    try {
+      teamAAPI.run(0, 0, 500, 500, App.class.getResource("css/mainStyle.css").toExternalForm(), "");
+    } catch (ServiceException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

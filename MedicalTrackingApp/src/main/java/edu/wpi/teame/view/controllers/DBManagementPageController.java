@@ -88,6 +88,8 @@ public class DBManagementPageController implements Initializable, IStyleable {
   @FXML
   public void restoreToDB() throws SQLException {
     int selectedIndex = resultView.getSelectionModel().getSelectedIndex();
+    System.out.println(selectedIndex);
+    System.out.println(resultView);
     ISQLSerializable dbObject = resultView.getItems().get(selectedIndex);
     DBManager.getInstance().getManager(currentType).restore(dbObject.getId());
 

@@ -1,5 +1,7 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import static com.mongodb.client.model.Sorts.descending;
+
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
@@ -8,6 +10,7 @@ import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -170,7 +173,23 @@ public class ReligiousServiceRequestPageServiceRequestController extends Service
             0,
             patient,
             religion.getText());
-    DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).insert(serviceRequest);
+
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+      ReligiousServiceRequest serviceRequest1 =
+          DBManager.getInstance()
+              .getMongoDatabase()
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .getCollection("ReligiousSR", ReligiousServiceRequest.class)
+              .find()
+              .sort(descending("_id"))
+              .first();
+      int lastIntID = serviceRequest1 == null ? 1 : serviceRequest1.getId() + 1;
+      serviceRequest.setId(lastIntID);
+      DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).insert(serviceRequest);
+
+    } else {
+      DBManager.getInstance().getManager(DataBaseObjectType.ReligiousSR).insert(serviceRequest);
+    }
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

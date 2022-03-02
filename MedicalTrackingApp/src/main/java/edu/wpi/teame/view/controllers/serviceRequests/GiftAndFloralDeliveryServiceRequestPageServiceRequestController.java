@@ -1,6 +1,9 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import static com.mongodb.client.model.Sorts.descending;
+
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.c22.teamC.GiftServiceRequest;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
@@ -8,6 +11,7 @@ import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -167,7 +171,23 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
             "",
             0,
             patient);
-    DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).insert(serviceRequest);
+
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+      GiftAndFloralServiceRequest serviceRequest1 =
+          DBManager.getInstance()
+              .getMongoDatabase()
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .getCollection("GiftAndFloralSR", GiftAndFloralServiceRequest.class)
+              .find()
+              .sort(descending("_id"))
+              .first();
+      int lastIntID = serviceRequest1 == null ? 1 : serviceRequest1.getId() + 1;
+      serviceRequest.setId(lastIntID);
+      DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).insert(serviceRequest);
+
+    } else {
+      DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).insert(serviceRequest);
+    }
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());
@@ -220,5 +240,45 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
+  }
+
+  public void openTeamCAPI() {
+    GiftServiceRequest teamCAPI = new GiftServiceRequest();
+    //    Database.getInstance().initDatabase();
+    //
+    //    try {
+    //      List<Employee> employees =
+    //          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+    //      for (Employee employee : employees) {
+    //        Database.getInstance()
+    //            .insertEmployee(
+    //                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
+    //                    Integer.toString(employee.getId()), employee.getName()));
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+    //
+    //    try {
+    //      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
+    //          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
+    //      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest :
+    // giftAndFloralServiceRequests) {
+    //        Database.getInstance()
+    //            .insertGR(
+    //                new GiftRequest(
+    //                    new Gift(
+    //                        "DoesntMatter",
+    //                        giftAndFloralServiceRequest.getAdditionalInfo(),
+    //                        15.2f,
+    //                        false),
+    //                    giftAndFloralServiceRequest.getLocation().getLongName(),
+    //                    giftAndFloralServiceRequest.getPatient().getName()));
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+
+    teamCAPI.run(200, 200, 500, 500, "", "", "");
   }
 }

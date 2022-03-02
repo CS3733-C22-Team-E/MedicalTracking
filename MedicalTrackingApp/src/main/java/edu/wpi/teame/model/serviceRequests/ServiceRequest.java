@@ -199,7 +199,7 @@ public class ServiceRequest implements ISQLSerializable {
     updates.add(Updates.set("status", status.ordinal()));
     updates.add(Updates.set("title", title));
     updates.add(Updates.set("additionalInfo", additionalInfo));
-    updates.add(Updates.set("priority", priority));
+    updates.add(Updates.set("priority", priority.ordinal()));
     updates.add(Updates.set("requestDate", dateToSQLString(requestDate)));
     return updates;
   }
