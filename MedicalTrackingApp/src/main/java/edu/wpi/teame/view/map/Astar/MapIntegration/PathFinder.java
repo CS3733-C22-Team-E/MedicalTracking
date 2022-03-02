@@ -73,7 +73,11 @@ public class PathFinder {
     for (FloorType currFloor : FloorType.values()) {
       if (currFloor == floor) {
         for (RouteVisual route : RoutesByFloor.get(floor)) {
-          DrawPane.getChildren().addAll(route.route);
+          for (VisualNode node : route.route) {
+            if (!DrawPane.getChildren().contains(node)) {
+              DrawPane.getChildren().add(node);
+            }
+          }
         }
       } else {
         for (RouteVisual route : RoutesByFloor.get(currFloor)) {
