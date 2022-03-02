@@ -246,7 +246,9 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   @Override
   public void writeToCSV(String outputFileName) throws IOException, SQLException {
     String home = System.getProperty("user.home");
-    String filePath = home + "/Downloads/MedicalTracking/" + outputFileName;
+    String filePath = home + "/Documents/MedicalTracking/" + outputFileName;
+    new File(home + "/Documents/MedicalTracking/switchFiles")
+        .mkdir(); // Make directories for the file
 
     CSVWriter writer =
         new CSVWriter(

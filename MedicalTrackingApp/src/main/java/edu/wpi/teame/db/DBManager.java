@@ -18,6 +18,7 @@ import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.mongoCodecs.*;
 import edu.wpi.teame.model.serviceRequests.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
@@ -55,7 +56,10 @@ public final class DBManager {
     return instance;
   }
 
-  private DBManager() {}
+  private DBManager() {
+    String home = System.getProperty("user.home");
+    new File(home + "/Documents/MedicalTracking/").mkdir();
+  }
 
   private void createDBTables() throws SQLException {
     // <editor-fold desc="Create Standard Types on DB">
@@ -457,7 +461,7 @@ public final class DBManager {
     if (type != DBType.MongoDB) {
       // Write to CSV
       if (currentType == DBType.Embedded || currentType == DBType.ClientServer) {
-        // DBManager.getInstance().writeDBToCSV(false);
+        DBManager.getInstance().writeDBToCSV(false);
       }
 
       // Switch Edge
@@ -527,6 +531,10 @@ public final class DBManager {
     if (isBackup) {
       subFolder = "backup/";
     }
+
+    // Make directories for the file
+    String home = System.getProperty("user.home");
+    new File(home + "/Documents/MedicalTracking/" + subFolder).mkdir();
 
     for (DataBaseObjectType type : DataBaseObjectType.values()) {
       getManager(type).writeToCSV(subFolder + type.toTableName() + ".csv");

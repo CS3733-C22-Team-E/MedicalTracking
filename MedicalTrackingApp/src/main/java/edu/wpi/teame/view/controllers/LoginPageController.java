@@ -423,7 +423,8 @@ public class LoginPageController implements Initializable, IStyleable {
 
     // Save image to PNG file
     String home = System.getProperty("user.home");
-    File imageFile = new File(home + "/Downloads/MedicalTracking/images/userLogInImage.png");
+    File imageFile = new File(home + "/Documents/MedicalTracking/images/userLogInImage.png");
+    imageFile.mkdirs();
     ImageIO.write(image, "PNG", imageFile);
 
     cameraImageView.setImage(new Image(imageFile.getAbsolutePath()));
