@@ -3,6 +3,9 @@ package edu.wpi.teame.view.controllers.serviceRequests;
 import static com.mongodb.client.model.Sorts.descending;
 
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.c22.teamC.Database;
+import edu.wpi.cs3733.c22.teamC.Entities.Gift;
+import edu.wpi.cs3733.c22.teamC.Entities.GiftRequest;
 import edu.wpi.cs3733.c22.teamC.GiftServiceRequest;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
@@ -244,41 +247,39 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
 
   public void openTeamCAPI() {
     GiftServiceRequest teamCAPI = new GiftServiceRequest();
-    //    Database.getInstance().initDatabase();
-    //
-    //    try {
-    //      List<Employee> employees =
-    //          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
-    //      for (Employee employee : employees) {
-    //        Database.getInstance()
-    //            .insertEmployee(
-    //                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
-    //                    Integer.toString(employee.getId()), employee.getName()));
-    //      }
-    //    } catch (SQLException e) {
-    //      e.printStackTrace();
-    //    }
-    //
-    //    try {
-    //      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
-    //          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
-    //      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest :
-    // giftAndFloralServiceRequests) {
-    //        Database.getInstance()
-    //            .insertGR(
-    //                new GiftRequest(
-    //                    new Gift(
-    //                        "DoesntMatter",
-    //                        giftAndFloralServiceRequest.getAdditionalInfo(),
-    //                        15.2f,
-    //                        false),
-    //                    giftAndFloralServiceRequest.getLocation().getLongName(),
-    //                    giftAndFloralServiceRequest.getPatient().getName()));
-    //      }
-    //    } catch (SQLException e) {
-    //      e.printStackTrace();
-    //    }
+    Database.getInstance().initDatabase();
 
+    try {
+      List<Employee> employees =
+          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+      for (Employee employee : employees) {
+        Database.getInstance()
+            .insertEmployee(
+                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
+                    Integer.toString(employee.getId()), employee.getName()));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
+          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
+      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest : giftAndFloralServiceRequests) {
+        Database.getInstance()
+            .insertGR(
+                new GiftRequest(
+                    new Gift(
+                        "DoesntMatter",
+                        giftAndFloralServiceRequest.getAdditionalInfo(),
+                        15.2f,
+                        false),
+                    giftAndFloralServiceRequest.getLocation().getLongName(),
+                    giftAndFloralServiceRequest.getPatient().getName()));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     teamCAPI.run(200, 200, 500, 500, "", "", "");
   }
 }

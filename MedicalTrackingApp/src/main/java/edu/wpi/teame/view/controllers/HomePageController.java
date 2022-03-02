@@ -122,6 +122,4 @@ public class HomePageController implements Initializable, IStyleable {
     credits.setActions(backButton);
     dialog.show();
   }
-
-
 }
