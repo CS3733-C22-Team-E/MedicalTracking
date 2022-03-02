@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.wpi.teame.view.ProgressBar;
+package edu.wpi.teame.view.style.ProgressBar;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
