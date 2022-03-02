@@ -236,4 +236,12 @@ public class ColorScheme {
   public Paint getParagraphColor() {
     return paragraph;
   }
+
+  public Paint getBackgroundColor() {
+    return background;
+  }
+
+  public Paint getMainColor() {
+    return main;
+  }
 }
