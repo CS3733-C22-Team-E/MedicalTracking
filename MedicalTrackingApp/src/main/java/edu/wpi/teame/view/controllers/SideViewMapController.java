@@ -6,6 +6,8 @@ import edu.wpi.teame.model.Equipment;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.EquipmentType;
 import edu.wpi.teame.model.enums.FloorType;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,9 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
-public class SideViewMapController implements Initializable {
-
+public class SideViewMapController implements Initializable, IStyleable {
+  @FXML public AnchorPane mainAnchorPane;
   @FXML public Button thirdFloor;
   @FXML public Button secondFloor;
   @FXML public Button firstFloor;
@@ -29,9 +32,12 @@ public class SideViewMapController implements Initializable {
   @FXML public Label reclinerLabel;
   @FXML public Label cleanPumpLabel;
   @FXML public Label dirtyPumpLabel;
+  @FXML public Label headerLabel;
 
   @Override
-  public void initialize(URL location, ResourceBundle resources) {}
+  public void initialize(URL location, ResourceBundle resources) {
+    StyleManager.getInstance().subscribe(this);
+  }
 
   @FXML
   private void makeThirdFloorPieVisible() {
@@ -366,5 +372,22 @@ public class SideViewMapController implements Initializable {
     reclinerLabel.setText("Recliners: " + reclinerCounter);
     cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
     dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, false);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(hospitalBedLabel);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(cleanPumpLabel);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(dirtyPumpLabel);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(reclinerLabel);
+    StyleManager.getInstance().getCurrentStyle().setTitleStyle(headerLabel);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(xRayLabel);
+
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(lowerLevel1);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(lowerLevel2);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(secondFloor);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(firstFloor);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(thirdFloor);
   }
 }
