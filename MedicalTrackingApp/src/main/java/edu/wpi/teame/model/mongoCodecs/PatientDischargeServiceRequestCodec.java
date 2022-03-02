@@ -66,7 +66,7 @@ public class PatientDischargeServiceRequestCodec implements Codec<PatientDischar
           date = sfd.parse(openDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(openDate);
           } catch (ParseException ex) {
@@ -83,7 +83,7 @@ public class PatientDischargeServiceRequestCodec implements Codec<PatientDischar
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(closeDate);
           } catch (ParseException ex) {
@@ -108,7 +108,7 @@ public class PatientDischargeServiceRequestCodec implements Codec<PatientDischar
           date = sfd.parse(requestDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(requestDate);
           } catch (ParseException ex) {

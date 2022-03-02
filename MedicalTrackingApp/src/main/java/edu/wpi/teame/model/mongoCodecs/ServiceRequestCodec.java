@@ -64,7 +64,7 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
           date = sfd.parse(openDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(openDate);
           } catch (ParseException ex) {
@@ -81,7 +81,7 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(closeDate);
           } catch (ParseException ex) {

@@ -55,7 +55,6 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   }
 
   public List<T> getAll(Class<T> cls) throws SQLException {
-    System.out.println("MogoGetall");
     if (shouldReload()) {
       FindIterable<T> all =
           DBManager.getInstance()

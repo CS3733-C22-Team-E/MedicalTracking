@@ -75,7 +75,7 @@ public class ReligiousServiceRequestCodec implements Codec<ReligiousServiceReque
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(closeDate);
           } catch (ParseException ex) {
@@ -100,7 +100,7 @@ public class ReligiousServiceRequestCodec implements Codec<ReligiousServiceReque
           date = sfd.parse(requestDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           try {
             date = sfdNew.parse(requestDate);
           } catch (ParseException ex) {
