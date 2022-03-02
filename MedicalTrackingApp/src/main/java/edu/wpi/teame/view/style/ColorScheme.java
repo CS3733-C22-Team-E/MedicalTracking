@@ -124,8 +124,7 @@ public class ColorScheme {
 
   public void setPaneStyle(Pane pane, boolean useStandardBackground) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    Color backgroundColor = useStandardBackground ? background : secondary;
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     newStyle.append("-fx-padding: 10px; ");
     pane.setStyle(newStyle.toString());
   }
@@ -172,7 +171,7 @@ public class ColorScheme {
 
   public void setTabPaneStyle(TabPane tabPane) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
     tabPane.setStyle(newStyle.toString());
     tabPane.setBackground(
         new Background(new BackgroundFill(main, CornerRadii.EMPTY, Insets.EMPTY)));

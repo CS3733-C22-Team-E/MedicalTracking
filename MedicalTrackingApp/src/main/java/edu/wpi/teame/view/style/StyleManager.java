@@ -77,7 +77,20 @@ public class StyleManager {
             stepBroSecondary,
             stepBroTertiary));
 
-    currentStyle = "Step-Bro";
+    Color ysBG = rgb(186, 232, 232);
+    Color ysHead = rgb(39, 35, 67);
+    Color ysP = rgb(45, 51, 74);
+    Color ysB = rgb(255, 216, 3);
+    Color ysBT = rgb(39, 35, 67);
+    Color ysSt = rgb(39, 35, 67);
+    Color ysM = rgb(255, 255, 254);
+    Color ysH = rgb(255, 216, 3);
+    Color ysS = rgb(227, 246, 245);
+    Color ysT = rgb(186, 232, 232);
+    colorSchemes.put(
+        "Yellow Snow", new ColorScheme(ysBG, ysHead, ysP, ysB, ysBT, ysSt, ysM, ysH, ysS, ysT));
+
+    currentStyle = "Yellow Snow";
   }
 
   public void selectTheme(String colorSchemeName) {
