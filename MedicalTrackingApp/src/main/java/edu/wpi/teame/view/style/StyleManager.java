@@ -90,6 +90,20 @@ public class StyleManager {
     colorSchemes.put(
         "Yellow Snow", new ColorScheme(ysBG, ysHead, ysP, ysB, ysBT, ysSt, ysM, ysH, ysS, ysT));
 
+    Color pigBG = rgb(85, 66, 61);
+    Color pigHead = rgb(255, 255, 254);
+    Color pigP = rgb(255, 243, 236);
+    Color pigB = rgb(255, 192, 173);
+    Color pigBT = rgb(39, 28, 25);
+    Color pigSt = rgb(20, 13, 11);
+    Color pigM = rgb(255, 243, 236);
+    Color pigG = rgb(231, 143, 179);
+    Color pigS = rgb(255, 192, 173);
+    Color pigT = rgb(150, 86, 161);
+    colorSchemes.put(
+        "Pig Pen",
+        new ColorScheme(pigBG, pigHead, pigP, pigB, pigBT, pigSt, pigM, pigG, pigS, pigT));
+
     currentStyle = "Step-Bro";
   }
 

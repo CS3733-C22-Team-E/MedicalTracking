@@ -131,7 +131,7 @@ public class ColorScheme {
 
   public void setListViewStyle(ListView listView) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
 
@@ -145,7 +145,7 @@ public class ColorScheme {
 
                 if (empty) {
                   listTabStyle.append("-fx-background-radius: 20px; -fx-background-color: ");
-                  listTabStyle.append(getColorAsStyleString(main));
+                  listTabStyle.append(getColorAsStyleString(secondary));
                   setStyle(listTabStyle.toString());
                   setText("");
                   return;
