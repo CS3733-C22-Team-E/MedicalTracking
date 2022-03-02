@@ -2,6 +2,8 @@ package edu.wpi.teame.view.style;
 
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -135,6 +137,19 @@ public class ColorScheme {
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
 
+    listView
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            new ChangeListener<String>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                listView.getCellFactory().call(observable.getValue());
+                listView.applyCss();
+              }
+            });
+
     listView.setCellFactory(
         lv ->
             new ListCell<ISQLSerializable>() {
@@ -144,21 +159,30 @@ public class ColorScheme {
                 StringBuilder listTabStyle = new StringBuilder();
 
                 if (empty) {
-                  listTabStyle.append("-fx-background-radius: 20px; -fx-background-color: ");
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
                   listTabStyle.append(getColorAsStyleString(secondary));
-                  setStyle(listTabStyle.toString());
-                  setText("");
+                  this.setStyle(listTabStyle.toString());
+                  this.getListView().applyCss();
+                  this.setText("");
                   return;
                 }
 
-                if (dbObject.getIsDeleted()) {
-                  listTabStyle.append("-fx-background-radius: 20px; -fx-background-color: ");
+                ISQLSerializable selectedItem = getListView().getSelectionModel().getSelectedItem();
+                if (selectedItem != null && selectedItem.getId() == dbObject.getId()) {
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
                   listTabStyle.append(getColorAsStyleString(tertiary));
+                } else if (dbObject.getIsDeleted()) {
+                  listTabStyle.append(
+                      "-fx-background-radius: 5px; -fx-background-color: rgb(200, 30, 30); ");
+                } else {
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
+                  listTabStyle.append(getColorAsStyleString(secondary));
                 }
 
-                listTabStyle.append("-fx-text-fill: ");
+                this.setStyle(listTabStyle.toString());
+                this.setText(dbObject.toString());
+                this.getListView().applyCss();
                 this.setTextFill(paragraph);
-                setText(dbObject.toString());
               }
             });
   }

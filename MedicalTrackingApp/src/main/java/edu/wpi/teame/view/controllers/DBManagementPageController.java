@@ -53,6 +53,7 @@ public class DBManagementPageController implements Initializable, IStyleable {
     // Empty the result view at start
     resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
     resultView.applyCss();
+    updateStyle();
 
     List<ISQLSerializable> itemsList = DBManager.getInstance().getManager(currentType).getDeleted();
     itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());
@@ -72,6 +73,7 @@ public class DBManagementPageController implements Initializable, IStyleable {
 
     resultView.setItems(FXCollections.observableArrayList(newItemsList));
     resultView.applyCss();
+    updateStyle();
   }
 
   @FXML
