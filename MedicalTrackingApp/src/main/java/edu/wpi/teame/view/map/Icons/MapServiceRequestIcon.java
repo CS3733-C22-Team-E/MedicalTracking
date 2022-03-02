@@ -5,7 +5,7 @@ import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
 import edu.wpi.teame.model.serviceRequests.ServiceRequest;
-import edu.wpi.teame.view.ProgressBar.FillProgressIndicator;
+import edu.wpi.teame.view.style.ProgressBar.FillProgressIndicator;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
