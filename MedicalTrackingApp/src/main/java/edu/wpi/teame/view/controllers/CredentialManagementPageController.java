@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
   public Scene addCredentialScene = null;
 
   @FXML JFXListView<ISQLSerializable> resultView;
+  @FXML AnchorPane mainAnchorPane;
   @FXML JFXButton restoreCredential;
   @FXML JFXButton removeCredential;
   @FXML JFXButton editCredential;
@@ -122,6 +124,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
 
   @Override
   public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(restoreCredential);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(removeCredential);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(editCredential);
