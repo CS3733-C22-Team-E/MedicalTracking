@@ -102,6 +102,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
     // Empty the result view at start
     resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
     resultView.applyCss();
+    updateStyle();
 
     List<ISQLSerializable> itemsList =
         DBManager.getInstance().getManager(DataBaseObjectType.Credential).getDeleted();
@@ -114,6 +115,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
 
     resultView.setItems(FXCollections.observableArrayList(itemsList));
     resultView.applyCss();
+    updateStyle();
   }
 
   @FXML
