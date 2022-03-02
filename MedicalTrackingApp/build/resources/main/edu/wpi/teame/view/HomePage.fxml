@@ -57,7 +57,7 @@
                   <Font size="18.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="creditsButton" onAction="#fxmlDialog" onMouseClicked="#fxmlDialog" onMousePressed="#creditsPage" prefHeight="43.0" prefWidth="81.0" text="Credits" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+            <JFXButton fx:id="creditsButton" onAction="#creditsPage" onMouseClicked="#creditsPage" onMousePressed="#creditsPage" prefHeight="43.0" prefWidth="81.0" text="Credits" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
                <font>
                   <Font size="18.0" />
                </font>

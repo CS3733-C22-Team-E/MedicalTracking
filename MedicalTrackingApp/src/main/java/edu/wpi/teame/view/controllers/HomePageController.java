@@ -121,33 +121,12 @@ public class HomePageController implements Initializable, IStyleable {
     dialog = new JFXDialog(stackPane, credits, JFXDialog.DialogTransition.CENTER);
 
     JFXButton backButton = new JFXButton("Back");
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(backButton);
+
     backButton.setOnAction(event -> dialog.close());
     credits.setActions(backButton);
     dialog.show();
   }
 
-  @FXML
-  public void fxmlDialog(ActionEvent event) throws IOException {
-    Stage stage = new Stage();
-    stage.initModality(Modality.APPLICATION_MODAL);
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AboutPage.fxml"));
-    Parent parent = fxmlLoader.load();
-    //    AboutPageController dialogController = fxmlLoader.<AboutPageController>getController();
 
-    GridPane layout = new GridPane();
-    TextField text1 = new TextField();
-    TextField text2 = new TextField();
-    layout.add(text1, 1, 1);
-    layout.add(text2, 1, 2);
-
-    //    layout.setPadding(new Insets(10, 10, 10, 10));
-    layout.setVgap(5);
-    layout.setHgap(5);
-
-    //    Scene scene = new Scene(parent, 300, 200);
-    Scene scene = new Scene(layout, 250, 150);
-    stage.setTitle("Dialog");
-    stage.setScene(scene);
-    stage.showAndWait();
-  }
 }
