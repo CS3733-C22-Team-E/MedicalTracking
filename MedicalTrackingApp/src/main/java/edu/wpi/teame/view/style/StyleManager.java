@@ -82,6 +82,20 @@ public class StyleManager {
             stepBroSecondary,
             stepBroTertiary));
 
+    colorSchemes.put(
+        "Not Spotify",
+        new ColorScheme(
+            stepBroBackground,
+            stepBroHeadline,
+            stepBroParagraph,
+            spotifyGreen,
+            stepBroButtonText,
+            spotifyGreen,
+            spotifyBlack,
+            spotifyGreen,
+            stepBroSecondary,
+            stepBroTertiary));
+
     Color ysBG = rgb(186, 232, 232);
     Color ysHead = rgb(39, 35, 67);
     Color ysP = rgb(45, 51, 74);
@@ -147,7 +161,7 @@ public class StyleManager {
             mapleSecondary,
             mapleTertiary));
 
-    currentStyle = "Step-Bro";
+    currentStyle = "Not Spotify";
   }
 
   public void selectTheme(String colorSchemeName) {
