@@ -31,7 +31,7 @@ public class CredentialCodec implements Codec<Credential> {
       } else if (fieldName.equals("username")) {
         credential.setUsername(reader.readString());
       } else if (fieldName.equals("password")) {
-        credential.setPassword(reader.readString());
+        credential.setPasswordHashed(reader.readString());
       } else if (fieldName.equals("accessLevel")) {
         credential.setAccessLevel(AccessLevel.values()[reader.readInt32()]);
       } else if (fieldName.equals("imageURL")) {

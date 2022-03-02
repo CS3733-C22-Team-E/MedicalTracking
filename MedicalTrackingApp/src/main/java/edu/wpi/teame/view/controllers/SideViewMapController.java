@@ -34,6 +34,8 @@ public class SideViewMapController implements Initializable, IStyleable {
   @FXML public Label dirtyPumpLabel;
   @FXML public Label headerLabel;
 
+  @FXML public Label floorTrackerLabel;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     StyleManager.getInstance().subscribe(this);
@@ -99,6 +101,7 @@ public class SideViewMapController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
+    floorTrackerLabel.setText("Floor 1 Selected");
     xRayLabel.setText("X-Rays: " + xrayCounter);
     hospitalBedLabel.setText("Patient Beds: " + bedCounter);
     reclinerLabel.setText("Recliners: " + reclinerCounter);
@@ -166,6 +169,7 @@ public class SideViewMapController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
+    floorTrackerLabel.setText("Floor 2 Selected");
     xRayLabel.setText("X-Rays: " + xrayCounter);
     hospitalBedLabel.setText("Patient Beds: " + bedCounter);
     reclinerLabel.setText("Recliners: " + reclinerCounter);
@@ -233,6 +237,7 @@ public class SideViewMapController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
+    floorTrackerLabel.setText("Floor 1 Selected");
     xRayLabel.setText("X-Rays: " + xrayCounter);
     hospitalBedLabel.setText("Patient Beds: " + bedCounter);
     reclinerLabel.setText("Recliners: " + reclinerCounter);
@@ -300,6 +305,7 @@ public class SideViewMapController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
+    floorTrackerLabel.setText("LL1 Selected");
     xRayLabel.setText("X-Rays: " + xrayCounter);
     hospitalBedLabel.setText("Patient Beds: " + bedCounter);
     reclinerLabel.setText("Recliners: " + reclinerCounter);
@@ -367,6 +373,7 @@ public class SideViewMapController implements Initializable, IStyleable {
       e.printStackTrace();
     }
 
+    floorTrackerLabel.setText("LL2 Selected");
     xRayLabel.setText("X-Rays: " + xrayCounter);
     hospitalBedLabel.setText("Patient Beds: " + bedCounter);
     reclinerLabel.setText("Recliners: " + reclinerCounter);
@@ -383,6 +390,7 @@ public class SideViewMapController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(reclinerLabel);
     StyleManager.getInstance().getCurrentStyle().setTitleStyle(headerLabel);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(xRayLabel);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(floorTrackerLabel);
 
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(lowerLevel1);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(lowerLevel2);

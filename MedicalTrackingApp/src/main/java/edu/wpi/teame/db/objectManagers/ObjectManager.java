@@ -3,7 +3,6 @@ package edu.wpi.teame.db.objectManagers;
 import static com.mongodb.client.model.Filters.eq;
 
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Updates;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -56,17 +55,20 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
 
   public List<T> getAll(Class<T> cls) throws SQLException {
     if (shouldReload()) {
-      MongoCursor<T> cursor =
+      FindIterable<T> all =
           DBManager.getInstance()
               .getMongoDatabase()
               .getCollection(objectType.toTableName(), cls)
               .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
-              .find(eq("isDeleted", 0))
-              .iterator();
+              .find(eq("isDeleted", 0));
 
       loadedObjects = new ArrayList<>();
-      while (cursor.hasNext()) {
-        loadedObjects.add(cursor.next());
+
+      for (T one : all) {
+        if (cls.cast(one) instanceof ServiceRequest) {
+          ((ServiceRequest) cls.cast(one)).setDbType(objectType);
+          loadedObjects.add(one);
+        } else loadedObjects.add(one);
       }
     }
     return loadedObjects;
@@ -193,10 +195,11 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
           .executeUpdate(markIsDeleted.toString());
       lastLoaded = new Date(0); // Ensure the table is loaded next time we get
     } else {
+      Bson updates = Updates.combine(Updates.set("isDeleted", 1));
       DBManager.getInstance()
           .getMongoDatabase()
           .getCollection(objectType.toTableName(), getClassFromDBType())
-          .deleteOne(eq("_id", id));
+          .updateOne(eq("_id", id), updates);
     }
   }
 
@@ -276,11 +279,13 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     switch (objectType) {
       case AudioVisualSR:
       case ComputerSR:
-      case DeceasedBodySR:
       case FacilitiesMaintenanceSR:
       case LaundrySR:
       case SanitationSR:
       case SecuritySR:
+        return (T) new ServiceRequest(lineData, objectType);
+      case DeceasedBodySR:
+        return (T) new DeceasedBodyRemovalServiceRequest(lineData);
       case MentalHealthSR:
         return (T) new MentalHealthServiceRequest(lineData);
       case PatientDischargeSR:
@@ -321,15 +326,17 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
     switch (objectType) {
       case AudioVisualSR:
       case ComputerSR:
-      case DeceasedBodySR:
       case FacilitiesMaintenanceSR:
       case LaundrySR:
       case SanitationSR:
       case SecuritySR:
+        return (T) new ServiceRequest(resultSet, objectType);
       case MentalHealthSR:
         return (T) new MentalHealthServiceRequest(resultSet);
+      case DeceasedBodySR:
+        return (T) new DeceasedBodyRemovalServiceRequest(resultSet);
       case PatientDischargeSR:
-        return (T) new ServiceRequest(resultSet, objectType);
+        return (T) new PatientDischargeServiceRequest(resultSet);
       case ExternalPatientSR:
         return (T) new PatientTransportationServiceRequest(resultSet, false);
       case FoodDeliverySR:
@@ -365,11 +372,17 @@ public abstract class ObjectManager<T extends ISQLSerializable> implements IMana
   private Class<T> getClassFromDBType() {
     switch (objectType) {
       case AudioVisualSR:
+        return (Class<T>) ServiceRequest.class;
       case ComputerSR:
+        return (Class<T>) ServiceRequest.class;
       case FacilitiesMaintenanceSR:
+        return (Class<T>) ServiceRequest.class;
       case LaundrySR:
+        return (Class<T>) ServiceRequest.class;
       case SanitationSR:
+        return (Class<T>) ServiceRequest.class;
       case SecuritySR:
+        return (Class<T>) ServiceRequest.class;
       case PatientDischargeSR:
         return (Class<T>) PatientDischargeServiceRequest.class;
       case DeceasedBodySR:

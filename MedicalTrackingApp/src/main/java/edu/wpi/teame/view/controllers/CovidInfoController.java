@@ -34,12 +34,6 @@ public class CovidInfoController implements Initializable, IStyleable {
   @FXML private Label label11;
   @FXML private Label label12;
   @FXML private Label label13;
-  @FXML private Label label14;
-  @FXML private Label label15;
-  @FXML private Label label16;
-  @FXML private Label label17;
-  @FXML private Label label18;
-  @FXML private Label label19;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -85,11 +79,5 @@ public class CovidInfoController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label11);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label12);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label13);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label14);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label15);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label16);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label17);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label18);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label19);
   }
 }

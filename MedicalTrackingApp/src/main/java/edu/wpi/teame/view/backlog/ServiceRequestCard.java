@@ -41,6 +41,7 @@ public class ServiceRequestCard {
   private boolean isDead = false;
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b) {
+    System.out.println(serviceRequest);
     sr = serviceRequest;
     backlog = b;
     color = getServiceRequestColor();
@@ -48,6 +49,7 @@ public class ServiceRequestCard {
   }
 
   public ServiceRequestCard(ServiceRequest serviceRequest, ServiceRequestBacklog b, boolean dead) {
+    System.out.println(serviceRequest);
     sr = serviceRequest;
     backlog = b;
     color = getServiceRequestColor();
@@ -258,6 +260,24 @@ public class ServiceRequestCard {
           "Get a religious official of religion \""
               + s.getReligion()
               + "\" to patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == DeceasedBodySR) {
+      DeceasedBodyRemovalServiceRequest s = (DeceasedBodyRemovalServiceRequest) sr;
+      d =
+          "Complete a deceased body removal service request for patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == MentalHealthSR) {
+      MentalHealthServiceRequest s = (MentalHealthServiceRequest) sr;
+      d =
+          "Complete a mental health service request for patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == PatientDischargeSR) {
+      PatientDischargeServiceRequest s = (PatientDischargeServiceRequest) sr;
+      d =
+          "Complete a patient discharge service request for patient \""
               + s.getPatient().getName()
               + "\" at the requested location.";
     }
