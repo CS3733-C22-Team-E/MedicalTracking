@@ -1,5 +1,7 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
+import static com.mongodb.client.model.Sorts.descending;
+
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
@@ -8,6 +10,7 @@ import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
 import edu.wpi.teame.model.Patient;
+import edu.wpi.teame.model.enums.DBType;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
@@ -174,7 +177,23 @@ public class FoodDeliveryServiceRequestPageServiceRequestController
             0,
             patient,
             food.getText());
-    DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).insert(serviceRequest);
+
+    if (DBManager.getInstance().getCurrentType() == DBType.MongoDB) {
+      FoodDeliveryServiceRequest serviceRequest1 =
+          DBManager.getInstance()
+              .getMongoDatabase()
+              .withCodecRegistry(DBManager.getInstance().getObjectCodecs())
+              .getCollection("FoodDeliverySR", FoodDeliveryServiceRequest.class)
+              .find()
+              .sort(descending("_id"))
+              .first();
+      int lastIntID = serviceRequest1 == null ? 1 : serviceRequest1.getId() + 1;
+      serviceRequest.setId(lastIntID);
+      DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).insert(serviceRequest);
+
+    } else {
+      DBManager.getInstance().getManager(DataBaseObjectType.FoodDeliverySR).insert(serviceRequest);
+    }
     SRSentAnimation a = new SRSentAnimation();
     a.getStackPane().setLayoutX(mainAnchorPane.getWidth() / 2 - 50);
     a.getStackPane().setLayoutY(submitButton.getLayoutY());

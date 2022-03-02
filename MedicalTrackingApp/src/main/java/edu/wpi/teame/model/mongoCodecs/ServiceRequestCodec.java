@@ -36,11 +36,12 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
         serviceRequest.setId(reader.readInt32());
       } else if (fieldName.equals("locationID")) {
         try {
-          serviceRequest.setLocation(
+          Location location =
               (Location)
                   DBManager.getInstance()
                       .getManager(DataBaseObjectType.Location)
-                      .get(reader.readInt32()));
+                      .get(reader.readInt32());
+          serviceRequest.setLocation(location);
         } catch (SQLException e) {
           e.printStackTrace();
           System.exit(2);
@@ -63,7 +64,13 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
           date = sfd.parse(openDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          date = new Date();
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          try {
+            date = sfdNew.parse(openDate);
+          } catch (ParseException ex) {
+            date = new Date();
+            ex.printStackTrace();
+          }
         }
 
         serviceRequest.setOpenDate(new java.sql.Date(date.getTime()));
@@ -74,7 +81,13 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
           date = sfd.parse(closeDate);
         } catch (ParseException e) {
           e.printStackTrace();
-          date = new Date();
+          SimpleDateFormat sfdNew = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          try {
+            date = sfdNew.parse(closeDate);
+          } catch (ParseException ex) {
+            ex.printStackTrace();
+            date = new Date();
+          }
         }
 
         serviceRequest.setCloseDate(new java.sql.Date(date.getTime()));
@@ -103,7 +116,6 @@ public class ServiceRequestCodec implements Codec<ServiceRequest> {
 
     // closes reader
     reader.readEndDocument();
-
     return serviceRequest;
   }
 
