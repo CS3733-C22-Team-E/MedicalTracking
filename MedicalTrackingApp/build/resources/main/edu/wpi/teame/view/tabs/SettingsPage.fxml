@@ -68,12 +68,12 @@
                   <Insets left="10.0" />
                </padding>
             </ComboBox>
-            <JFXButton fx:id="writeToCSVButton" alignment="CENTER" onAction="#writeToCSV" prefHeight="40.0" prefWidth="150.0" text="Write To CSV" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <JFXButton fx:id="writeToCSVButton" alignment="CENTER" onAction="#writeToCSV" prefHeight="40.0" prefWidth="150.0" text="Write To CSV" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="loadFromCSVButton" alignment="CENTER" onAction="#loadFromCSV" prefHeight="40.0" prefWidth="150.0" text="Load From CSV" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <JFXButton fx:id="loadFromCSVButton" alignment="CENTER" onAction="#loadFromCSV" prefHeight="40.0" prefWidth="150.0" text="Load From CSV" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

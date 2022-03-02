@@ -1,8 +1,11 @@
 package edu.wpi.teame.view.style;
 
+import edu.wpi.teame.App;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
 public class StyleManager {
@@ -10,6 +13,7 @@ public class StyleManager {
   private List<IStyleable> styleableObjects;
   private static StyleManager instance;
   private String currentStyle = null;
+  private Media themeSound = null;
 
   public static synchronized StyleManager getInstance() {
     if (instance == null) {
@@ -19,6 +23,7 @@ public class StyleManager {
   }
 
   private StyleManager() {
+    themeSound = new Media(App.class.getResource("audio/ThemeIntro.mp3").toString());
     styleableObjects = new ArrayList<>();
     colorSchemes = new HashMap<>();
   }
@@ -108,6 +113,11 @@ public class StyleManager {
   }
 
   public void selectTheme(String colorSchemeName) {
+    if (colorSchemeName.equals("Step-Bro")) {
+      MediaPlayer mediaPlayer = new MediaPlayer(themeSound);
+      mediaPlayer.setVolume(1);
+      mediaPlayer.play();
+    }
     currentStyle = colorSchemeName;
   }
 
