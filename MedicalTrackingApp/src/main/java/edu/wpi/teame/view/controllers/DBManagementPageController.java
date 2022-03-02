@@ -17,9 +17,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 
 public class DBManagementPageController implements Initializable, IStyleable {
   @FXML JFXListView<ISQLSerializable> resultView;
+  @FXML AnchorPane mainAnchorPane;
   @FXML JFXComboBox tableComboBox;
   @FXML TextField searchTextBox;
   @FXML JFXButton restoreButton;
@@ -51,6 +53,7 @@ public class DBManagementPageController implements Initializable, IStyleable {
     // Empty the result view at start
     resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
     resultView.applyCss();
+    updateStyle();
 
     List<ISQLSerializable> itemsList = DBManager.getInstance().getManager(currentType).getDeleted();
     itemsList.addAll(DBManager.getInstance().getManager(currentType).getAll());
@@ -70,6 +73,7 @@ public class DBManagementPageController implements Initializable, IStyleable {
 
     resultView.setItems(FXCollections.observableArrayList(newItemsList));
     resultView.applyCss();
+    updateStyle();
   }
 
   @FXML
@@ -104,6 +108,7 @@ public class DBManagementPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setTextFieldStyle(searchTextBox);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(tableComboBox);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(restoreButton);

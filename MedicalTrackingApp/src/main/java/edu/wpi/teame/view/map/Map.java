@@ -428,6 +428,8 @@ public class Map implements IStyleable {
       floorer.setFitHeight(35);
       RadialCheckMenuItem floor =
           new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      floor.setText(currFloor.toString());
+
       menuItemsToBeStyled.add(floor);
       floor.setText(currFloor.toString());
       if (currFloor == FloorType.ThirdFloor) {

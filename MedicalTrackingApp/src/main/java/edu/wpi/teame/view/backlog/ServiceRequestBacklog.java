@@ -38,10 +38,14 @@ public class ServiceRequestBacklog {
   private List<ServiceRequestCard> cardsDisplayed = new LinkedList<>();
   private List<ServiceRequest> deadServiceRequests = new LinkedList<>();
   private List<ServiceRequestCard> deadCards = new LinkedList<>();
+  private AnchorPane stylePane;
 
   public ServiceRequestBacklog(double width, double height) {
     SCENEWIDTH = width;
     SCENEHEIGHT = height;
+    stylePane = new AnchorPane();
+    stylePane.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
+    scrollWrapper.setMinSize(SCENEWIDTH, SCENEHEIGHT);
     scrollWrapper.setPrefSize(SCENEWIDTH, SCENEHEIGHT);
     CARDWIDTH = SCENEWIDTH - 20;
     StyleManager.getInstance().getCurrentStyle().setScrollPaneStyle(scrollWrapper);
@@ -90,6 +94,8 @@ public class ServiceRequestBacklog {
         DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).forceGetAll());
     serviceRequestsFromDB.addAll(
         DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).forceGetAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.MentalHealthSR).forceGetAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
@@ -135,6 +141,7 @@ public class ServiceRequestBacklog {
     requestHolder.add(getTitle(), 0, 0);
     requestHolder.add(getRefreshBar(), 0, 1);
     requestHolder.add(getFilterBar(), 0, 2);
+    requestHolder.add(getSpacerCard(), 0, 3 + cardsDisplayed.size());
     StyleManager.getInstance().getCurrentStyle().setPaneStyle(requestHolder, true);
     return requestHolder;
   }
@@ -302,6 +309,7 @@ public class ServiceRequestBacklog {
     for (Object DBObject : DBEmployeeList) {
       Employee e = (Employee) DBObject;
       JFXCheckBox eBox = new JFXCheckBox();
+      eBox.setCheckedColor(StyleManager.getInstance().getCurrentStyle().getHighlightColor());
       StyleManager.getInstance().getCurrentStyle().setCheckBoxStyle(eBox);
 
       String eBoxText = e.getName();
@@ -328,5 +336,17 @@ public class ServiceRequestBacklog {
       filterBar.getChildren().add(eBox);
     }
     return filterBar;
+  }
+
+  public HBox getSpacerCard() {
+    HBox spacer = new HBox();
+    spacer.setPrefSize(CARDWIDTH, SCENEHEIGHT);
+    spacer.setBackground(
+        new Background(
+            new BackgroundFill(
+                StyleManager.getInstance().getCurrentStyle().getMainColor(),
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+    return spacer;
   }
 }

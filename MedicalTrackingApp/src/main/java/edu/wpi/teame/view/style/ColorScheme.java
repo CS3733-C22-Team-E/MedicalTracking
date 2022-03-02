@@ -2,6 +2,9 @@ package edu.wpi.teame.view.style;
 
 import edu.wpi.teame.db.ISQLSerializable;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -123,17 +126,29 @@ public class ColorScheme {
 
   public void setPaneStyle(Pane pane, boolean useStandardBackground) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    Color backgroundColor = useStandardBackground ? background : secondary;
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
     newStyle.append("-fx-padding: 10px; ");
     pane.setStyle(newStyle.toString());
   }
 
   public void setListViewStyle(ListView listView) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
+
+    listView
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener(
+            new ChangeListener<String>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                listView.getCellFactory().call(observable.getValue());
+                listView.applyCss();
+              }
+            });
 
     listView.setCellFactory(
         lv ->
@@ -141,20 +156,33 @@ public class ColorScheme {
               @Override
               protected void updateItem(ISQLSerializable dbObject, boolean empty) {
                 super.updateItem(dbObject, empty);
+                StringBuilder listTabStyle = new StringBuilder();
+
                 if (empty) {
-                  setStyle(
-                      "-fx-background-radius: 20px; -fx-background-color: "
-                          + getColorAsStyleString(main));
-                  setText("");
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
+                  listTabStyle.append(getColorAsStyleString(secondary));
+                  this.setStyle(listTabStyle.toString());
+                  this.getListView().applyCss();
+                  this.setText("");
                   return;
                 }
 
-                if (dbObject.getIsDeleted()) {
-                  setStyle(
-                      "-fx-background-radius: 20px; -fx-background-color: "
-                          + getColorAsStyleString(tertiary));
+                ISQLSerializable selectedItem = getListView().getSelectionModel().getSelectedItem();
+                if (selectedItem != null && selectedItem.getId() == dbObject.getId()) {
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
+                  listTabStyle.append(getColorAsStyleString(tertiary));
+                } else if (dbObject.getIsDeleted()) {
+                  listTabStyle.append(
+                      "-fx-background-radius: 5px; -fx-background-color: rgb(200, 30, 30); ");
+                } else {
+                  listTabStyle.append("-fx-background-radius: 5px; -fx-background-color: ");
+                  listTabStyle.append(getColorAsStyleString(secondary));
                 }
-                setText(dbObject.toString());
+
+                this.setStyle(listTabStyle.toString());
+                this.setText(dbObject.toString());
+                this.getListView().applyCss();
+                this.setTextFill(paragraph);
               }
             });
   }
@@ -167,9 +195,10 @@ public class ColorScheme {
 
   public void setTabPaneStyle(TabPane tabPane) {
     StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
-    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
     tabPane.setStyle(newStyle.toString());
-
+    tabPane.setBackground(
+        new Background(new BackgroundFill(main, CornerRadii.EMPTY, Insets.EMPTY)));
     for (Tab tab : tabPane.getTabs()) {
       setTabStyle(tab);
     }
@@ -206,5 +235,13 @@ public class ColorScheme {
 
   public Paint getParagraphColor() {
     return paragraph;
+  }
+
+  public Paint getBackgroundColor() {
+    return background;
+  }
+
+  public Paint getMainColor() {
+    return main;
   }
 }

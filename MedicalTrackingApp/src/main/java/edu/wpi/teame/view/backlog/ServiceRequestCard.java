@@ -262,6 +262,24 @@ public class ServiceRequestCard {
               + "\" to patient \""
               + s.getPatient().getName()
               + "\" at the requested location.";
+    } else if (sr.getDBType() == DeceasedBodySR) {
+      DeceasedBodyRemovalServiceRequest s = (DeceasedBodyRemovalServiceRequest) sr;
+      d =
+          "Complete a deceased body removal service request for patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == MentalHealthSR) {
+      MentalHealthServiceRequest s = (MentalHealthServiceRequest) sr;
+      d =
+          "Complete a mental health service request for patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
+    } else if (sr.getDBType() == PatientDischargeSR) {
+      PatientDischargeServiceRequest s = (PatientDischargeServiceRequest) sr;
+      d =
+          "Complete a patient discharge service request for patient \""
+              + s.getPatient().getName()
+              + "\" at the requested location.";
     }
 
     if (!sr.getAdditionalInfo().equals("")) {

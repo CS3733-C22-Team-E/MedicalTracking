@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
   public Scene addCredentialScene = null;
 
   @FXML JFXListView<ISQLSerializable> resultView;
+  @FXML AnchorPane mainAnchorPane;
   @FXML JFXButton restoreCredential;
   @FXML JFXButton removeCredential;
   @FXML JFXButton editCredential;
@@ -100,6 +102,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
     // Empty the result view at start
     resultView.setItems(FXCollections.observableArrayList(new ArrayList<>()));
     resultView.applyCss();
+    updateStyle();
 
     List<ISQLSerializable> itemsList =
         DBManager.getInstance().getManager(DataBaseObjectType.Credential).getDeleted();
@@ -112,6 +115,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
 
     resultView.setItems(FXCollections.observableArrayList(itemsList));
     resultView.applyCss();
+    updateStyle();
   }
 
   @FXML
@@ -122,6 +126,7 @@ public class CredentialManagementPageController implements Initializable, IStyle
 
   @Override
   public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(restoreCredential);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(removeCredential);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(editCredential);

@@ -12,10 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 
 public class CovidInfoController implements Initializable, IStyleable {
   @FXML private Button infoButton;
   @FXML private Label headerLabel;
+  @FXML AnchorPane mainAnchorPane;
   @FXML private Label header1;
   @FXML private Label header2;
   @FXML private Label header3;
@@ -32,12 +34,6 @@ public class CovidInfoController implements Initializable, IStyleable {
   @FXML private Label label11;
   @FXML private Label label12;
   @FXML private Label label13;
-  @FXML private Label label14;
-  @FXML private Label label15;
-  @FXML private Label label16;
-  @FXML private Label label17;
-  @FXML private Label label18;
-  @FXML private Label label19;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -64,6 +60,7 @@ public class CovidInfoController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
     StyleManager.getInstance().getCurrentStyle().setTitleStyle(headerLabel);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(infoButton);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(header1);
@@ -82,11 +79,5 @@ public class CovidInfoController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label11);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label12);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label13);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label14);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label15);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label16);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label17);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label18);
-    StyleManager.getInstance().getCurrentStyle().setLabelStyle(label19);
   }
 }
