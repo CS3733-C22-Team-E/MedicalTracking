@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class SideViewMapController implements Initializable {
 
@@ -23,10 +24,11 @@ public class SideViewMapController implements Initializable {
   @FXML public Button lowerLevel1;
   @FXML public Button lowerLevel2;
 
-  //  @FXML public PieChart pieChart;
-  @FXML public BarChart<?, ?> barChart;
-  @FXML public CategoryAxis x;
-  @FXML public NumberAxis y;
+  @FXML public Label xRayLabel;
+  @FXML public Label hospitalBedLabel;
+  @FXML public Label reclinerLabel;
+  @FXML public Label cleanPumpLabel;
+  @FXML public Label dirtyPumpLabel;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {}
@@ -91,25 +93,11 @@ public class SideViewMapController implements Initializable {
       e.printStackTrace();
     }
 
-    //    ObservableList<PieChart.Data> pieChartData =
-    //        FXCollections.observableArrayList(
-    //            new PieChart.Data("X-Ray", xrayCounter),
-    //            new PieChart.Data("Patient Beds", bedCounter),
-    //            new PieChart.Data("Recliners", reclinerCounter),
-    //            new PieChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter),
-    //            new PieChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    //    pieChart.setData(pieChartData);
-
-    barChart.setVisible(true);
-
-    XYChart.Series set1 = new XYChart.Series<>();
-
-    set1.getData().add(new XYChart.Data("X-Ray", xrayCounter));
-    set1.getData().add(new XYChart.Data("Patient Beds", bedCounter));
-    set1.getData().add(new XYChart.Data("Recliners", reclinerCounter));
-    set1.getData().add(new XYChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter));
-    set1.getData().add(new XYChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    barChart.getData().addAll(set1);
+    xRayLabel.setText("X-Rays: " + xrayCounter);
+    hospitalBedLabel.setText("Patient Beds: " + bedCounter);
+    reclinerLabel.setText("Recliners: " + reclinerCounter);
+    cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
+    dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
   }
 
   @FXML
@@ -172,14 +160,11 @@ public class SideViewMapController implements Initializable {
       e.printStackTrace();
     }
 
-    //    ObservableList<PieChart.Data> pieChartData =
-    //        FXCollections.observableArrayList(
-    //            new PieChart.Data("X-Ray", xrayCounter),
-    //            new PieChart.Data("Patient Beds", bedCounter),
-    //            new PieChart.Data("Recliners", reclinerCounter),
-    //            new PieChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter),
-    //            new PieChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    //    pieChart.setData(pieChartData);
+    xRayLabel.setText("X-Rays: " + xrayCounter);
+    hospitalBedLabel.setText("Patient Beds: " + bedCounter);
+    reclinerLabel.setText("Recliners: " + reclinerCounter);
+    cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
+    dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
   }
 
   @FXML
@@ -242,14 +227,11 @@ public class SideViewMapController implements Initializable {
       e.printStackTrace();
     }
 
-    //    ObservableList<PieChart.Data> pieChartData =
-    //        FXCollections.observableArrayList(
-    //            new PieChart.Data("X-Ray", xrayCounter),
-    //            new PieChart.Data("Patient Beds", bedCounter),
-    //            new PieChart.Data("Recliners", reclinerCounter),
-    //            new PieChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter),
-    //            new PieChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    //    pieChart.setData(pieChartData);
+    xRayLabel.setText("X-Rays: " + xrayCounter);
+    hospitalBedLabel.setText("Patient Beds: " + bedCounter);
+    reclinerLabel.setText("Recliners: " + reclinerCounter);
+    cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
+    dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
   }
 
   @FXML
@@ -312,14 +294,11 @@ public class SideViewMapController implements Initializable {
       e.printStackTrace();
     }
 
-    //    ObservableList<PieChart.Data> pieChartData =
-    //        FXCollections.observableArrayList(
-    //            new PieChart.Data("X-Ray", xrayCounter),
-    //            new PieChart.Data("Patient Beds", bedCounter),
-    //            new PieChart.Data("Recliners", reclinerCounter),
-    //            new PieChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter),
-    //            new PieChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    //    pieChart.setData(pieChartData);
+    xRayLabel.setText("X-Rays: " + xrayCounter);
+    hospitalBedLabel.setText("Patient Beds: " + bedCounter);
+    reclinerLabel.setText("Recliners: " + reclinerCounter);
+    cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
+    dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
   }
 
   @FXML
@@ -382,13 +361,10 @@ public class SideViewMapController implements Initializable {
       e.printStackTrace();
     }
 
-    //    ObservableList<PieChart.Data> pieChartData =
-    //        FXCollections.observableArrayList(
-    //            new PieChart.Data("X-Ray", xrayCounter),
-    //            new PieChart.Data("Patient Beds", bedCounter),
-    //            new PieChart.Data("Recliners", reclinerCounter),
-    //            new PieChart.Data("Dirty Infusion Pumps", dirtyPumpsCounter),
-    //            new PieChart.Data("Clean Infusion Pumps", cleanPumpsCounter));
-    //    pieChart.setData(pieChartData);
+    xRayLabel.setText("X-Rays: " + xrayCounter);
+    hospitalBedLabel.setText("Patient Beds: " + bedCounter);
+    reclinerLabel.setText("Recliners: " + reclinerCounter);
+    cleanPumpLabel.setText("Clean Pumps: " + cleanPumpsCounter);
+    dirtyPumpLabel.setText("Dirty Pumps: " + dirtyPumpsCounter);
   }
 }
