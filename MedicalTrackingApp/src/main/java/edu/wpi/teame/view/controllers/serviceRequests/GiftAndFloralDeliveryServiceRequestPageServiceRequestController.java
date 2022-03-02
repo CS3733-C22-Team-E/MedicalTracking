@@ -1,6 +1,7 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.cs3733.c22.teamC.GiftServiceRequest;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
@@ -220,5 +221,45 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
+  }
+
+  public void openTeamCAPI() {
+    GiftServiceRequest teamCAPI = new GiftServiceRequest();
+    //    Database.getInstance().initDatabase();
+    //
+    //    try {
+    //      List<Employee> employees =
+    //          DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+    //      for (Employee employee : employees) {
+    //        Database.getInstance()
+    //            .insertEmployee(
+    //                new edu.wpi.cs3733.c22.teamC.Entities.Employee(
+    //                    Integer.toString(employee.getId()), employee.getName()));
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+    //
+    //    try {
+    //      List<GiftAndFloralServiceRequest> giftAndFloralServiceRequests =
+    //          DBManager.getInstance().getManager(DataBaseObjectType.GiftAndFloralSR).getAll();
+    //      for (GiftAndFloralServiceRequest giftAndFloralServiceRequest :
+    // giftAndFloralServiceRequests) {
+    //        Database.getInstance()
+    //            .insertGR(
+    //                new GiftRequest(
+    //                    new Gift(
+    //                        "DoesntMatter",
+    //                        giftAndFloralServiceRequest.getAdditionalInfo(),
+    //                        15.2f,
+    //                        false),
+    //                    giftAndFloralServiceRequest.getLocation().getLongName(),
+    //                    giftAndFloralServiceRequest.getPatient().getName()));
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+
+    teamCAPI.run(200, 200, 500, 500, "", "", "");
   }
 }

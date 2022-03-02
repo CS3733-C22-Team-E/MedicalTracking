@@ -1,6 +1,7 @@
 package edu.wpi.teame.view.controllers.serviceRequests;
 
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.teame.App;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
@@ -13,6 +14,7 @@ import edu.wpi.teame.model.serviceRequests.ServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.style.SRSentAnimation;
 import edu.wpi.teame.view.style.StyleManager;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -29,6 +31,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import teamA_API.exceptions.ServiceException;
 
 public class SanitationServiceRequestPageServiceRequestController extends ServiceRequestController {
   @FXML private AnchorPane mainAnchorPane;
@@ -191,5 +194,36 @@ public class SanitationServiceRequestPageServiceRequestController extends Servic
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
+  }
+
+  public void openTeamAAPI() {
+    teamA_API.Main teamAAPI = new teamA_API.Main();
+    //    Adb.initialConnection();
+    //
+    //    List<Employee> employees = null;
+    //    try {
+    //      employees = DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+    //      for (Employee employee : employees) {
+    //        teamAAPI.addEmployee(
+    //            Integer.toString(employee.getId()),
+    //            employee.getType().toString(),
+    //            employee.getName(),
+    //            "",
+    //            "",
+    //            "",
+    //            "",
+    //            new java.util.Date());
+    //      }
+    //    } catch (SQLException e) {
+    //      e.printStackTrace();
+    //    }
+
+    try {
+      teamAAPI.run(0, 0, 500, 500, App.class.getResource("css/mainStyle.css").toExternalForm(), "");
+    } catch (ServiceException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
