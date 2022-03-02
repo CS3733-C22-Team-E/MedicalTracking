@@ -94,6 +94,8 @@ public class ServiceRequestBacklog {
         DBManager.getInstance().getManager(DataBaseObjectType.DeceasedBodySR).forceGetAll());
     serviceRequestsFromDB.addAll(
         DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR).forceGetAll());
+    serviceRequestsFromDB.addAll(
+        DBManager.getInstance().getManager(DataBaseObjectType.MentalHealthSR).forceGetAll());
   }
 
   public Parent getBacklogScene() throws SQLException {
