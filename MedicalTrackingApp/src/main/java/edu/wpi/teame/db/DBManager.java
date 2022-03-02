@@ -457,7 +457,7 @@ public final class DBManager {
     if (type != DBType.MongoDB) {
       // Write to CSV
       if (currentType == DBType.Embedded || currentType == DBType.ClientServer) {
-        DBManager.getInstance().writeDBToCSV(false);
+        // DBManager.getInstance().writeDBToCSV(false);
       }
 
       // Switch Edge

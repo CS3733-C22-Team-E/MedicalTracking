@@ -280,7 +280,6 @@ public class GiftAndFloralDeliveryServiceRequestPageServiceRequestController
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
     teamCAPI.run(200, 200, 500, 500, "", "", "");
   }
 }
