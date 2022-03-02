@@ -32,14 +32,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.FillRule;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 
 public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
@@ -271,6 +268,14 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
   }
 
   public void setText(final String text) {
+    Label toBeAdded = new Label(text);
+    toBeAdded.translateYProperty().bind(graphic.translateYProperty());
+    toBeAdded.translateXProperty().bind(graphic.translateXProperty());
+    toBeAdded.setVisible(true);
+    this.getChildren().add(toBeAdded);
+    toBeAdded.toFront();
+    graphic.setVisible(false);
+    toBeAdded.setTextFill(Color.WHITESMOKE);
     this.text = text;
     this.redraw();
   }
