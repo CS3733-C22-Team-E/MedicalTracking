@@ -363,7 +363,7 @@ public class LoginPageController implements Initializable, IStyleable {
     }
 
     // Set up face id
-    webcam = Webcam.getDefault();
+    // webcam = Webcam.getDefault();
     if (webcam != null) {
       Dimension[] supportedSizes = webcam.getViewSizes();
       webcam.setViewSize(supportedSizes[supportedSizes.length - 1]);
