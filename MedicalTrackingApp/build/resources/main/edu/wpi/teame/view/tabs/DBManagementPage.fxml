@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.Label?>
-<AnchorPane  stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.DBManagementPageController">
+<AnchorPane fx:id="mainAnchorPane" stylesheets="@../../css/mainStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.teame.view.controllers.DBManagementPageController">
 <children>
       <GridPane alignment="CENTER" layoutY="7.0" prefHeight="580.0" prefWidth="800.0"  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>

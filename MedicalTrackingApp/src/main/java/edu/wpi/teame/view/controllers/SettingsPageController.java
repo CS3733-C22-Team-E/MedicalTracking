@@ -123,12 +123,12 @@ public class SettingsPageController implements Initializable, IStyleable {
 
   @Override
   public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(wholePane, true);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(dbSwitchComboBox);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(loadFromCSVButton);
     StyleManager.getInstance().getCurrentStyle().setButtonStyle(writeToCSVButton);
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(colorComboBox);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label1);
-    StyleManager.getInstance().getCurrentStyle().setPaneStyle(wholePane, true);
   }
 }
