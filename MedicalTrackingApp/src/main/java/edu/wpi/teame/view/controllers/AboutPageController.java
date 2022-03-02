@@ -153,8 +153,9 @@ public class AboutPageController implements Initializable, IStyleable {
     Text text =
         new Text(
             "Amitai is majoring in Computer Science.\n"
-                + "He monkeys monkily and on the weekends,\n"
-                + "loves to monkey.");
+                + "Southern California, born and raised.\n"
+                + "In my room on my computer how I spend\n"
+                + "most of my days XD");
     text.setFont(Font.font("System", FontWeight.BOLD, 25));
     info.setBody(text);
 
@@ -184,7 +185,8 @@ public class AboutPageController implements Initializable, IStyleable {
         new Text(
             "Joe is majoring in Computer Science.\n"
                 + "He 3D prints album covers and codes in\n"
-                + "his roller skates.");
+                + "his roller skates. Please don't tell\n"
+                + "him that he looks like Gru :(");
     text.setFont(Font.font("System", FontWeight.BOLD, 25));
     info.setBody(text);
 
@@ -212,10 +214,9 @@ public class AboutPageController implements Initializable, IStyleable {
 
     Text text =
         new Text(
-            "Maanav is majoring in Robotics Engineering.\n"
-                + "He rides a motorcycle so stay off the roads :/\n"
-                + "He gave his friend/lover/cousin Krish a great\n"
-                + "nickname!");
+            "Maanav (at age 4) is majoring in Robotics\n"
+                + "Engineering. He rides a motorcycle so\n"
+                + "stay off the roads :/");
     text.setFont(Font.font("System", FontWeight.BOLD, 25));
     info.setBody(text);
 
@@ -269,7 +270,9 @@ public class AboutPageController implements Initializable, IStyleable {
 
     Text text =
         new Text(
-            "Haohao is majoring in Robotics Engineering.\n" + "She loves to sleep in Unity Hall.");
+            "Haohao is majoring in Robotics Engineering.\n"
+                + "She loves to sleep in Unity Hall.\n"
+                + "(Send her a pillow)");
     text.setFont(Font.font("System", FontWeight.BOLD, 25));
     info.setBody(text);
 
