@@ -137,18 +137,24 @@ public class ColorScheme {
     newStyle.append("-fx-background-radius: 20px; ");
     listView.setStyle(newStyle.toString());
 
-    listView
-        .getSelectionModel()
-        .selectedItemProperty()
-        .addListener(
-            new ChangeListener<String>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                listView.getCellFactory().call(observable.getValue());
-                listView.applyCss();
-              }
-            });
+    try {
+      listView
+          .getSelectionModel()
+          .selectedItemProperty()
+          .addListener(
+              new ChangeListener<String>() {
+                @Override
+                public void changed(
+                    ObservableValue<? extends String> observable,
+                    String oldValue,
+                    String newValue) {
+                  listView.getCellFactory().call(observable.getValue());
+                  listView.applyCss();
+                }
+              });
+    } catch (Exception ex) {
+
+    }
 
     listView.setCellFactory(
         lv ->
