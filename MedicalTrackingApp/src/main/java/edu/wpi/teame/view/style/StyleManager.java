@@ -102,12 +102,50 @@ public class StyleManager {
     Color pigBT = rgb(39, 28, 25);
     Color pigSt = rgb(20, 13, 11);
     Color pigM = rgb(255, 243, 236);
-    Color pigG = rgb(231, 143, 179);
+    Color pigH = rgb(231, 143, 179);
     Color pigS = rgb(255, 192, 173);
     Color pigT = rgb(150, 86, 161);
     colorSchemes.put(
         "Pig Pen",
-        new ColorScheme(pigBG, pigHead, pigP, pigB, pigBT, pigSt, pigM, pigG, pigS, pigT));
+        new ColorScheme(pigBG, pigHead, pigP, pigB, pigBT, pigSt, pigM, pigH, pigS, pigT));
+
+    Color iceBG = rgb(255, 255, 254);
+    Color iceHead = rgb(24, 24, 24);
+    Color iceP = rgb(46, 46, 46);
+    Color iceB = rgb(79, 196, 207);
+    Color iceBT = rgb(24, 24, 24);
+    Color iceSt = rgb(24, 24, 24);
+    Color iceM = rgb(242, 238, 245);
+    Color iceH = rgb(79, 196, 207);
+    Color iceS = rgb(153, 79, 243);
+    Color iceT = rgb(251, 221, 116);
+    colorSchemes.put(
+        "Frozone",
+        new ColorScheme(iceBG, iceHead, iceP, iceB, iceBT, iceSt, iceM, iceH, iceS, iceT));
+
+    Color mapleBG = rgb(0, 70, 67);
+    Color mapleHead = rgb(255, 255, 254);
+    Color mapleParagraph = rgb(255, 255, 254);
+    Color mapleButton = rgb(242, 95, 76);
+    Color mapleButtonText = rgb(255, 255, 254);
+    Color mapleStroke = rgb(0, 0, 0);
+    Color mapleMain = rgb(44, 182, 125);
+    Color mapleHighlight = rgb(242, 95, 76);
+    Color mapleSecondary = rgb(249, 188, 96);
+    Color mapleTertiary = rgb(225, 97, 98);
+    colorSchemes.put(
+        "Maple Treeway",
+        new ColorScheme(
+            mapleBG,
+            mapleHead,
+            mapleParagraph,
+            mapleButton,
+            mapleButtonText,
+            mapleStroke,
+            mapleMain,
+            mapleHighlight,
+            mapleSecondary,
+            mapleTertiary));
 
     currentStyle = "Step-Bro";
   }

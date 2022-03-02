@@ -1186,7 +1186,8 @@ public class Map implements IStyleable {
     }
     menuItemsToBeStyled.forEach(
         menu -> {
-          menu.selectedMouseOnColor = StyleManager.getInstance().getCurrentStyle().getHighlightColor();
+          menu.selectedMouseOnColor =
+              StyleManager.getInstance().getCurrentStyle().getHighlightColor();
           menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getHighlightColor();
           menu.redraw();
         });
