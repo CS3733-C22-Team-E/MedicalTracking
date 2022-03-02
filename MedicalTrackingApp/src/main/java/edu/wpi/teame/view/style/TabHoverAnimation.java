@@ -1,6 +1,5 @@
 package edu.wpi.teame.view.style;
 
-import edu.wpi.teame.view.StyledTab;
 import javafx.animation.ScaleTransition;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;

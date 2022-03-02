@@ -4,14 +4,17 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.teame.db.DBManager;
 import edu.wpi.teame.db.objectManagers.EmployeeManager;
 import edu.wpi.teame.db.objectManagers.LocationManager;
+import edu.wpi.teame.db.objectManagers.PatientManager;
 import edu.wpi.teame.model.Employee;
 import edu.wpi.teame.model.Location;
+import edu.wpi.teame.model.Patient;
 import edu.wpi.teame.model.enums.DataBaseObjectType;
 import edu.wpi.teame.model.enums.ServiceRequestPriority;
 import edu.wpi.teame.model.enums.ServiceRequestStatus;
-import edu.wpi.teame.model.serviceRequests.ServiceRequest;
+import edu.wpi.teame.model.serviceRequests.PatientDischargeServiceRequest;
 import edu.wpi.teame.view.controllers.AutoCompleteTextField;
 import edu.wpi.teame.view.style.SRSentAnimation;
+import edu.wpi.teame.view.style.StyleManager;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -23,12 +26,15 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class PatientDischargeServiceRequestPageServiceRequestController
     extends ServiceRequestController {
+  @FXML private GridPane gridPane;
   @FXML private AnchorPane mainAnchorPane;
   @FXML private DatePicker requestDate;
   @FXML private AutoCompleteTextField locationText;
@@ -39,6 +45,15 @@ public class PatientDischargeServiceRequestPageServiceRequestController
   @FXML private TextArea additionalInfo;
   @FXML private Button clearButton;
   @FXML private Button submitButton;
+  @FXML private Label title;
+  @FXML private Label locationT;
+  @FXML private Label assigneeT;
+  @FXML private Label priorityT;
+  @FXML private Label statusT;
+  @FXML private Label patientNameT;
+  @FXML private Label additionalInfoT;
+  @FXML private Label requestDateT;
+
   private boolean hasRun = false;
 
   @Override
@@ -64,6 +79,13 @@ public class PatientDischargeServiceRequestPageServiceRequestController
           validateSubmitButton();
         });
 
+    patientName
+        .onActionProperty()
+        .addListener(
+            listener -> {
+              validateSubmitButton();
+            });
+
     priority
         .valueProperty()
         .addListener(
@@ -77,6 +99,8 @@ public class PatientDischargeServiceRequestPageServiceRequestController
             listener -> {
               validateSubmitButton();
             });
+
+    StyleManager.getInstance().subscribe(this);
   }
 
   @FXML
@@ -91,6 +115,14 @@ public class PatientDischargeServiceRequestPageServiceRequestController
         DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
     List<Employee> employees =
         DBManager.getInstance().getManager(DataBaseObjectType.Employee).getAll();
+
+    List<Patient> patients =
+        DBManager.getInstance().getManager(DataBaseObjectType.Patient).getAll();
+    List<String> patientNames = new LinkedList<>();
+    for (Patient p : patients) {
+      patientNames.add(p.getName());
+    }
+    patientName.getEntries().addAll(patientNames);
 
     List<String> locationNames = new LinkedList<String>();
     for (Location loc : locations) {
@@ -114,10 +146,12 @@ public class PatientDischargeServiceRequestPageServiceRequestController
     Location location =
         ((LocationManager) DBManager.getInstance().getManager(DataBaseObjectType.Location))
             .getByName(locationText.getText());
+    Patient patient =
+        ((PatientManager) DBManager.getInstance().getManager(DataBaseObjectType.Patient))
+            .getByName(patientName.getText());
 
-    ServiceRequest serviceRequest =
-        new ServiceRequest(
-            DataBaseObjectType.PatientDischargeSR,
+    PatientDischargeServiceRequest serviceRequest =
+        new PatientDischargeServiceRequest(
             ServiceRequestPriority.valueOf(priority.getValue().toString()),
             ServiceRequestStatus.valueOf(status.getValue().toString()),
             additionalInfo.getText(),
@@ -129,7 +163,9 @@ public class PatientDischargeServiceRequestPageServiceRequestController
             new Date(0),
             new Date(new java.util.Date().getTime()),
             "",
-            0);
+            0,
+            patient);
+    System.out.println(DBManager.getInstance().getManager(DataBaseObjectType.PatientDischargeSR));
     DBManager.getInstance()
         .getManager(DataBaseObjectType.PatientDischargeSR)
         .insert(serviceRequest);
@@ -147,7 +183,8 @@ public class PatientDischargeServiceRequestPageServiceRequestController
             || locationText.getEntries() == null
             || assignee.getEntries() == null
             || priority.getValue() == null
-            || status.getValue() == null);
+            || status.getValue() == null
+            || patientName.getText().isEmpty());
   }
 
   public void clearText() {
@@ -158,5 +195,31 @@ public class PatientDischargeServiceRequestPageServiceRequestController
     requestDate.getEditor().clear();
     priority.valueProperty().setValue(null);
     status.valueProperty().setValue(null);
+    patientName.setText("");
+  }
+
+  @Override
+  public void updateStyle() {
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(mainAnchorPane, true);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(gridPane, true);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(additionalInfoT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(requestDateT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(patientNameT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(locationT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(assigneeT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(priorityT);
+    StyleManager.getInstance().getCurrentStyle().setLabelStyle(statusT);
+
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(locationText);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(patientName);
+    StyleManager.getInstance().getCurrentStyle().setAutoCompleteTextBoxStyle(assignee);
+    StyleManager.getInstance().getCurrentStyle().setDatePickerStyle(requestDate);
+
+    StyleManager.getInstance().getCurrentStyle().setTextAreaStyle(additionalInfo);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(submitButton);
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(clearButton);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(priority);
+    StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(status);
+    StyleManager.getInstance().getCurrentStyle().setHeaderStyle(title);
   }
 }

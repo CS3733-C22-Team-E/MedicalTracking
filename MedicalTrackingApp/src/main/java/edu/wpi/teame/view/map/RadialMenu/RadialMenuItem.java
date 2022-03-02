@@ -45,7 +45,7 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
   protected DoubleProperty startAngle = new SimpleDoubleProperty();
 
-  protected double menuSize;
+  public double menuSize;
 
   protected DoubleProperty innerRadius = new SimpleDoubleProperty();
 
@@ -169,7 +169,7 @@ public class RadialMenuItem extends Group implements ChangeListener<Object> {
 
     this.menuSize = menuSize;
     this.graphic = graphic;
-    if (this.graphic != null) this.getChildren().add(this.graphic);
+    if (this.graphic != null) this.getChildren().addAll(this.graphic);
     this.redraw();
   }
 

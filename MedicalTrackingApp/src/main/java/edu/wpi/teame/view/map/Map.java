@@ -25,10 +25,13 @@ import edu.wpi.teame.view.map.RadialMenu.RadialCheckMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialContainerMenuItem;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenu;
 import edu.wpi.teame.view.map.RadialMenu.RadialMenuItem;
+import edu.wpi.teame.view.style.IStyleable;
+import edu.wpi.teame.view.style.StyleManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -51,7 +54,7 @@ import javafx.stage.Screen;
 import javafx.util.Pair;
 import jfxtras.scene.menu.CirclePopupMenu;
 
-public class Map {
+public class Map implements IStyleable {
   private final HashMap<FloorType, Image> Images = new HashMap<>();
   private final int WIDTH = 0;
   private final int HEIGHT = 0;
@@ -62,6 +65,7 @@ public class Map {
   private final HashMap<EquipmentType, Image> TypeGraphics = new HashMap<>();
   private final HashMap<FloorType, ArrayList<MapServiceRequestIcon>> ActiveSRByFloor =
       new HashMap<>();
+  private HashMap<String, Location> LocationNodeNames = new HashMap<>();
   //  private final HashMap<FloorType, HashSet<Radial>>
   private final ContextMenu EquipmentClicked = new ContextMenu();
   private final StackPane layout = new StackPane();
@@ -72,11 +76,15 @@ public class Map {
   private boolean showLocationNodes = false;
   private JFXButton lastPressed;
   private Location lastPressedLocation;
+  private MapEquipmentIcon lastPressedEquipment;
   private Location location;
   private FloorType currFloor;
   private ArrayList<ServiceRequest> oldSR = new ArrayList<ServiceRequest>();
   private PathFinder Navigation = null;
   private ArrayList<MapLocationDot> PathFindingLocations = new ArrayList<>();
+  RadialMenu controller = null;
+  ArrayList<RadialCheckMenuItem> menuItemsToBeStyled = new ArrayList<>();
+  private boolean NodeVisibility = true;
 
   public Map(FloorType floor, LandingPageController app) throws SQLException {
     appController = app;
@@ -154,10 +162,10 @@ public class Map {
     return retval;
   }
 
-  public void showEditLastPressedDialog() {
+  public void showEditLastPressedDialog() throws SQLException {
     Dialog<Pair<Double, Double>> dialog = new Dialog<>();
     dialog.setTitle("Move Equipment");
-    dialog.setHeaderText("Choose the X and Y Position");
+    dialog.setHeaderText("Type New Location's Long Name");
     // Set the button types.
     ButtonType Move = new ButtonType("Move", ButtonBar.ButtonData.OK_DONE);
     dialog.getDialogPane().getButtonTypes().addAll(Move, ButtonType.CANCEL);
@@ -168,37 +176,28 @@ public class Map {
     grid.setVgap(10);
     grid.setPadding(new Insets(20, 150, 10, 10));
 
-    TextField XPosition = new TextField();
-    XPosition.setPromptText("X Position");
-    TextField YPosition = new TextField();
-    YPosition.setPromptText("Y Position");
-
-    grid.add(new Label("X Position:"), 0, 0);
-    grid.add(XPosition, 1, 0);
-    grid.add(new Label("Y Position:"), 0, 1);
-    grid.add(YPosition, 1, 1);
-
+    //    TextField XPosition = new TextField();
+    //    XPosition.setPromptText("X Position");
+    //    TextField YPosition = new TextField();
+    //    YPosition.setPromptText("Y Position");
+    AutoCompleteTextField Location = new AutoCompleteTextField();
+    Location.setPromptText("New Location");
+    List<Location> entries =
+        DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+    Location.getEntries()
+        .addAll(
+            entries.stream()
+                .map(edu.wpi.teame.model.Location::getLongName)
+                .collect(Collectors.toSet()));
+    //    grid.add(new Label("X Position:"), 0, 0);
+    //    grid.add(XPosition, 1, 0);
+    //    grid.add(new Label("Y Position:"), 0, 1);
+    //    grid.add(YPosition, 1, 1);
+    grid.add(new Label("Location"), 0, 0);
+    grid.add(Location, 1, 0);
     // Enable/Disable login button depending on whether a username was entered.
     Node MoveButton = dialog.getDialogPane().lookupButton(Move);
-    MoveButton.setDisable(true);
-
-    // Do some validation (using the Java 8 lambda syntax).
-    XPosition.textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(
-                  newValue.trim().isEmpty()
-                      || YPosition.getText().isBlank()
-                      || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-            });
-    YPosition.textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              MoveButton.setDisable(
-                  newValue.trim().isEmpty()
-                      || XPosition.getText().isBlank()
-                      || !coordinateChecker(XPosition.getText(), YPosition.getText()));
-            });
+    MoveButton.setDisable(false);
 
     dialog.getDialogPane().setContent(grid);
 
@@ -206,12 +205,44 @@ public class Map {
     dialog.setResultConverter(
         dialogButton -> {
           if (dialogButton == Move) {
-            double xCo = Double.parseDouble(XPosition.getText());
-            double yCo = Double.parseDouble(YPosition.getText());
-            double x = xCo - MAPWIDTH / 2;
-            double y = yCo - MAPHEIGHT / 2;
-            lastPressed.setTranslateX(x);
-            lastPressed.setTranslateY(y);
+            //            double xCo = Double.parseDouble(XPosition.getText());
+            //            double yCo = Double.parseDouble(YPosition.getText());
+            //            double x = xCo - MAPWIDTH / 2;
+            //            double y = yCo - MAPHEIGHT / 2;
+            //            lastPressed.setTranslateX(x);
+            //            lastPressed.setTranslateY(y);
+            try {
+              mapIconsByFloor
+                  .get(lastPressedEquipment.getEquipment().getLocation().getFloor())
+                  .remove(lastPressedEquipment);
+              //              List<Location> locations =
+              //                  (List<Location>)
+              //
+              // DBManager.getInstance().getManager(DataBaseObjectType.Location).getAll();
+              //
+              //              AtomicReference<edu.wpi.teame.model.Location> location = null;
+              //              locations.forEach(
+              //                  loc -> {
+              //                    if (Objects.equals(loc.getLongName(), Location.getText())) {
+              //                      location.set(loc);
+              //                    }
+              //                  });
+              edu.wpi.teame.model.Location location = LocationNodeNames.get(Location.getText());
+              lastPressedEquipment.getEquipment().setLocation(location);
+              DBManager.getInstance()
+                  .getManager(DataBaseObjectType.Equipment)
+                  .update(lastPressedEquipment.getEquipment());
+              mapIconsByFloor.get(location.getFloor()).add(lastPressedEquipment);
+              lastPressedEquipment
+                  .getButton()
+                  .setTranslateX(location.getX() - Images.get(location.getFloor()).getWidth() / 2);
+              lastPressedEquipment
+                  .getButton()
+                  .setTranslateY(location.getY() - Images.get(location.getFloor()).getHeight() / 2);
+              updateLayoutChildren();
+            } catch (SQLException e) {
+              e.printStackTrace();
+            }
           }
           return null;
         });
@@ -228,6 +259,7 @@ public class Map {
       layout.getChildren().add(icon.getButton());
     }
     for (MapLocationDot dot : locationsByFloor.get(currFloor)) {
+      dot.getIcon().setVisible(NodeVisibility);
       layout.getChildren().add(dot.getIcon());
     }
     for (MapServiceRequestIcon icon : ActiveSRByFloor.get(currFloor)) {
@@ -314,7 +346,7 @@ public class Map {
     Material.setFitWidth(30);
     RadialMenuItem ZoomIn =
         new RadialMenuItem(
-            45,
+            72,
             ZoomIN,
             new EventHandler<ActionEvent>() {
               @Override
@@ -325,7 +357,7 @@ public class Map {
     ZoomIn.ZoomButton = true;
     RadialMenuItem ZoomOut =
         new RadialMenuItem(
-            45,
+            72,
             ZoomOUT,
             new EventHandler<ActionEvent>() {
               @Override
@@ -336,7 +368,7 @@ public class Map {
     ZoomOut.ZoomButton = true;
     RadialMenuItem Refresh =
         new RadialMenuItem(
-            45,
+            72,
             REFRESH,
             new EventHandler<ActionEvent>() {
               @Override
@@ -348,12 +380,12 @@ public class Map {
                 }
               }
             });
-    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(45, FILTER);
+    RadialContainerMenuItem FilterCheckBoxes = new RadialContainerMenuItem(72, FILTER);
     ImageView Floor =
         new ImageView(new Image(App.class.getResource("images/Icons/FloorSwitch.png").toString()));
     Floor.setFitHeight(30);
     Floor.setFitWidth(30);
-    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(35, "Switch Floor", Floor);
+    RadialContainerMenuItem FloorSwitch = new RadialContainerMenuItem(72, "Switch Floor", Floor);
     for (EquipmentType currEquipment : EquipmentType.values()) {
       ImageView CurrImageView = new ImageView(TypeGraphics.get(currEquipment));
       CurrImageView.setFitWidth(25);
@@ -361,6 +393,8 @@ public class Map {
       RadialCheckMenuItem tobeadded =
           new RadialCheckMenuItem(
               45, CurrImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+      menuItemsToBeStyled.add(tobeadded);
+
       tobeadded.setOnMouseClicked(
           event -> {
             filter(currEquipment);
@@ -375,6 +409,7 @@ public class Map {
     RadialCheckMenuItem Locations =
         new RadialCheckMenuItem(
             45, LocationImageView, true, Color.color(0.11764705882, 0.8431372549, 0.37647058823));
+    menuItemsToBeStyled.add(Locations);
     Locations.setOnMouseClicked(
         event -> {
           Locations.setSelected(!Locations.isSelected());
@@ -383,6 +418,7 @@ public class Map {
               dot.getIcon().setVisible(!dot.getIcon().isVisible());
             }
           }
+          NodeVisibility = !NodeVisibility;
         });
     FilterCheckBoxes.addMenuItem(Locations);
     for (FloorType currFloor : FloorType.values()) {
@@ -392,6 +428,8 @@ public class Map {
       floorer.setFitHeight(35);
       RadialCheckMenuItem floor =
           new RadialCheckMenuItem(35, floorer, false, Color.color(.117, .844, .38));
+      menuItemsToBeStyled.add(floor);
+      floor.setText(currFloor.toString());
       if (currFloor == FloorType.ThirdFloor) {
         floor.setSelected(true);
       } else {
@@ -432,9 +470,9 @@ public class Map {
     MainController.addMenuItem(Refresh);
     MainController.addMenuItem(FilterCheckBoxes);
     MainController.addMenuItem(FloorSwitch);
+    controller = MainController;
     return MainController;
   }
-
   // Show all of the Equipment types passed in
   private void filter(EquipmentType e) {
     for (MapEquipmentIcon mapIcon : mapIconsByFloor.get(currFloor)) {
@@ -556,6 +594,8 @@ public class Map {
   }
 
   public Parent getMapScene(double height, double width) throws SQLException {
+    StyleManager.getInstance().subscribe(this);
+
     // Load Icon Graphics
     for (EquipmentType currEquip : EquipmentType.values()) {
       TypeGraphics.put(
@@ -571,19 +611,23 @@ public class Map {
     System.out.println("Icons Graphics Load");
     // Creating OnClickPane Menu
     // Creating Equipment Icon Pressed
-    //    EquipmentClicked.getStyleClass().add("combo-box");
-    //    MenuItem deleteMenuItem = new MenuItem("Delete");
-    //    deleteMenuItem.setOnAction(
-    //        event -> {
-    //          deleteMapIcon(lastPressed);
-    //          updateLayoutChildren();
-    //        });
-    //    MenuItem addMenuItem = new MenuItem("Edit");
-    //    addMenuItem.setOnAction(
-    //        event -> {
-    //          showEditLastPressedDialog();
-    //        });
-    //    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
+    EquipmentClicked.getStyleClass().add("combo-box");
+    MenuItem deleteMenuItem = new MenuItem("Delete");
+    deleteMenuItem.setOnAction(
+        event -> {
+          deleteMapIcon(lastPressed);
+          updateLayoutChildren();
+        });
+    MenuItem addMenuItem = new MenuItem("Edit");
+    addMenuItem.setOnAction(
+        event -> {
+          try {
+            showEditLastPressedDialog();
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        });
+    EquipmentClicked.getItems().addAll(deleteMenuItem, addMenuItem);
     updateLayoutChildren();
     layout.setScaleX(.5);
     layout.setScaleY(.5);
@@ -620,6 +664,7 @@ public class Map {
     Icon.setTranslateY(equipment.getLocation().getY() - MAPHEIGHT / 2); // ^^ with y
     // Set Context Menu
     Icon.setContextMenu(EquipmentClicked);
+    MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
     // Set Context Menu to Show
     Icon.setOnMouseClicked(
         new EventHandler<MouseEvent>() {
@@ -630,9 +675,16 @@ public class Map {
             Icon.getContextMenu().show(Icon, event.getScreenX(), event.getScreenY());
           }
         });
-    Tooltip tooltip = new Tooltip(equipment.getName());
+    Icon.setOnMouseEntered(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            lastPressedEquipment = newMapIcon;
+          }
+        });
+    Tooltip tooltip =
+        new Tooltip(equipment.getName() + " Status: " + (equipment.isClean() ? "Clean" : "Dirty"));
     Tooltip.install(Icon, tooltip);
-    MapEquipmentIcon newMapIcon = new MapEquipmentIcon(Icon, equipment);
 
     draggable(newMapIcon);
     mapIconsByFloor.get(equipment.getLocation().getFloor()).add(newMapIcon);
@@ -901,6 +953,7 @@ public class Map {
   }
 
   private void locationToMapElement(Location location) {
+    LocationNodeNames.put(location.getLongName(), location);
     double mapWidthTest = Images.get(location.getFloor()).getWidth();
     double mapHeightTest = Images.get(location.getFloor()).getHeight();
     double x = location.getX() - mapWidthTest / 2;
@@ -1123,6 +1176,21 @@ public class Map {
           .setTranslateY(
               icon.getEquipment().getLocation().getY() - backgroundImage.getHeight() / 2);
     }
+  }
+
+  @Override
+  public void updateStyle() {
+    if (controller != null) {
+      controller.setBackgroundMouseOnFill(
+          StyleManager.getInstance().getCurrentStyle().getHighlightColor());
+    }
+    menuItemsToBeStyled.forEach(
+        menu -> {
+          menu.selectedMouseOnColor =
+              StyleManager.getInstance().getCurrentStyle().getHighlightColor();
+          menu.selectedColor = StyleManager.getInstance().getCurrentStyle().getHighlightColor();
+          menu.redraw();
+        });
   }
 
   private static class Position {

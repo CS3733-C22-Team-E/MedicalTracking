@@ -27,9 +27,9 @@ public class RadialCheckMenuItem extends RadialMenuItem {
 
   protected boolean selected = false;
 
-  protected Paint selectedColor;
+  public Paint selectedColor;
 
-  protected Paint selectedMouseOnColor;
+  public Paint selectedMouseOnColor;
 
   public RadialCheckMenuItem(final double menuSize, final Node graphic) {
     super(menuSize, graphic);
@@ -61,7 +61,7 @@ public class RadialCheckMenuItem extends RadialMenuItem {
   }
 
   @Override
-  protected void redraw() {
+  public void redraw() {
     super.redraw();
 
     Paint color = null;

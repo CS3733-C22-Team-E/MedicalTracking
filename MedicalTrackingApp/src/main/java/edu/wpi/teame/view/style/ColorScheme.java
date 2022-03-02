@@ -1,96 +1,210 @@
 package edu.wpi.teame.view.style;
 
-import edu.wpi.teame.App;
-import java.io.*;
-import java.util.HashMap;
+import edu.wpi.teame.db.ISQLSerializable;
+import edu.wpi.teame.view.controllers.AutoCompleteTextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Line;
 
 public class ColorScheme {
-  private final File mainCSS;
-  private final File loginCSS;
-  private final Color color1, color2;
+  public final int DefaultFontSize = 16;
+  public final int HeaderFontSize = 28;
+  public final int TitleFontSize = 72;
 
-  public ColorScheme(String schemeName, Color color1, Color color2) {
+  private final Color background;
+  private final Color headline;
+  private final Color paragraph;
+  private final Color buttonFill;
+  private final Color buttonText;
+  private final Color stroke;
+  private final Color main;
+  private final Color highlight;
+  private final Color secondary;
+  private final Color tertiary;
 
-    this.mainCSS =
-        new File(
-            App.class
-                .getClassLoader()
-                .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Main.css")
-                .toString());
-    this.loginCSS =
-        new File(
-            App.class
-                .getClassLoader()
-                .getResource("edu/wpi/teame/css/schemes/" + schemeName + "Login.css")
-                .toString());
-
-    this.color1 = color1;
-    this.color2 = color2;
+  public ColorScheme(
+      Color background,
+      Color headline,
+      Color paragraph,
+      Color buttonFill,
+      Color buttonText,
+      Color stroke,
+      Color main,
+      Color highlight,
+      Color secondary,
+      Color tertiary) {
+    this.background = background;
+    this.headline = headline;
+    this.paragraph = paragraph;
+    this.buttonFill = buttonFill;
+    this.buttonText = buttonText;
+    this.stroke = stroke;
+    this.main = main;
+    this.highlight = highlight;
+    this.secondary = secondary;
+    this.tertiary = tertiary;
   }
 
-  public Color getColor1() {
-    return this.color1;
+  public void setAutoCompleteTextBoxStyle(AutoCompleteTextField autoCompleteTextBox) {
+    setTextFieldStyle(autoCompleteTextBox);
   }
 
-  public Color getColor2() {
-    return this.color2;
+  public void setButtonStyle(Button button) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(buttonFill));
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(buttonText));
+    button.setStyle(newStyle.toString());
   }
 
-  public HashMap<String, Double> getColor1RGB() {
-    HashMap<String, Double> rgb = new HashMap<>();
-    rgb.put("r", color1.getRed());
-    rgb.put("g", color1.getGreen());
-    rgb.put("b", color1.getBlue());
-    return rgb;
+  public void setCheckBoxStyle(CheckBox checkBox) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(paragraph));
+    newStyle.append("-fx-font-size: 12px; ");
+    checkBox.setStyle(newStyle.toString());
   }
 
-  public HashMap<String, Double> getColor2RGB() {
-    HashMap<String, Double> rgb = new HashMap<>();
-    rgb.put("r", color2.getRed());
-    rgb.put("g", color2.getGreen());
-    rgb.put("b", color2.getBlue());
-    return rgb;
+  public void setComboBoxStyle(ComboBox comboBox) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
+    newStyle.append("-fx-background-radius: 20px; ");
+    comboBox.setStyle(newStyle.toString());
   }
 
-  public HashMap<String, Integer> getColor1RGBIntegers() {
-    HashMap<String, Integer> rgb = new HashMap<>();
-    rgb.put("r", (int) (color1.getRed() * 255));
-    rgb.put("g", (int) (color1.getGreen() * 255));
-    rgb.put("b", (int) (color1.getBlue() * 255));
-    return rgb;
+  public void setDatePickerStyle(DatePicker datePicker) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
+    datePicker.setStyle(newStyle.toString());
   }
 
-  public HashMap<String, Integer> getColor2RGBIntegers() {
-    HashMap<String, Integer> rgb = new HashMap<>();
-    rgb.put("r", (int) (color2.getRed() * 255));
-    rgb.put("g", (int) (color2.getGreen() * 255));
-    rgb.put("b", (int) (color2.getBlue() * 255));
-    return rgb;
+  public void setTitleStyle(Label titleLabel) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-font-size: ").append(TitleFontSize).append("px; ");
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(headline));
+    titleLabel.setStyle(newStyle.toString());
   }
 
-  public void replaceCSS() throws IOException {
-    // TODO figure out why this method is busted. I'll have to talk with Amitai, probably.
-    //    {
-    //      FileInputStream in = new FileInputStream(this.mainCSS);
-    //      FileOutputStream out = new
-    // FileOutputStream(App.class.getResource("css/mainStyle.css").toString());
-    //      try {
-    //        int n;
-    //        while ((n = in.read()) != -1) {
-    //          out.write(n);
-    //        }
-    //      } catch (IOException e) {
-    //        e.printStackTrace();
-    //      } finally {
-    //        if (in != null) {
-    //          in.close();
-    //        }
-    //        if (out != null) {
-    //          out.close();
-    //        }
-    //      }
-    //      System.out.println("File Overwritten");
-    //    }
+  public void setHeaderStyle(Label headerLabel) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(headline));
+    newStyle.append("-fx-font-size: ").append(HeaderFontSize).append("px; ");
+    newStyle.append("-fx-margin-bottom: 20px; ");
+    headerLabel.setStyle(newStyle.toString());
+  }
+
+  public void setLabelStyle(Label label) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-text-fill: ").append(getColorAsStyleString(paragraph));
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
+    label.setStyle(newStyle.toString());
+  }
+
+  public void setLineStyle(Line line) {
+    line.setStroke(highlight);
+  }
+
+  public void setTextFieldStyle(TextField textField) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
+    newStyle.append("-fx-font-size: ").append(DefaultFontSize).append("px; ");
+    textField.setStyle(newStyle.toString());
+  }
+
+  public void setTextAreaStyle(TextArea textArea) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(secondary));
+    textArea.setStyle(newStyle.toString());
+  }
+
+  // <editor-fold desc="JavaFX Panes">
+
+  public void setPaneStyle(Pane pane, boolean useStandardBackground) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    Color backgroundColor = useStandardBackground ? background : secondary;
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(backgroundColor));
+    newStyle.append("-fx-padding: 10px; ");
+    pane.setStyle(newStyle.toString());
+  }
+
+  public void setListViewStyle(ListView listView) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(main));
+    newStyle.append("-fx-background-radius: 20px; ");
+    listView.setStyle(newStyle.toString());
+
+    listView.setCellFactory(
+        lv ->
+            new ListCell<ISQLSerializable>() {
+              @Override
+              protected void updateItem(ISQLSerializable dbObject, boolean empty) {
+                super.updateItem(dbObject, empty);
+                if (empty) {
+                  setStyle(
+                      "-fx-background-radius: 20px; -fx-background-color: "
+                          + getColorAsStyleString(main));
+                  setText("");
+                  return;
+                }
+
+                if (dbObject.getIsDeleted()) {
+                  setStyle(
+                      "-fx-background-radius: 20px; -fx-background-color: "
+                          + getColorAsStyleString(tertiary));
+                }
+                setText(dbObject.toString());
+              }
+            });
+  }
+
+  public void setScrollPaneStyle(ScrollPane scrollPane) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    scrollPane.setStyle(newStyle.toString());
+  }
+
+  public void setTabPaneStyle(TabPane tabPane) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(background));
+    tabPane.setStyle(newStyle.toString());
+
+    for (Tab tab : tabPane.getTabs()) {
+      setTabStyle(tab);
+    }
+  }
+
+  public void setTabStyle(Tab tab) {
+    StringBuilder newStyle = new StringBuilder(getDefaultStyleParams());
+    newStyle.append("-fx-background-color: ").append(getColorAsStyleString(highlight));
+    newStyle.append("-fx-background-radius: 10px; ").append("-fx-font-size: 16px; ");
+    tab.setStyle(newStyle.toString());
+  }
+
+  // </editor-fold>
+
+  private String getDefaultStyleParams() {
+    StringBuilder defaultStyle = new StringBuilder();
+    defaultStyle.append("-fx-font-weight: bold; -fx-font-family: Roboto; ");
+    return defaultStyle.toString();
+  }
+
+  private String getColorAsStyleString(Color color) {
+    return "rgb("
+        + color.getRed() * 255
+        + ", "
+        + color.getGreen() * 255
+        + ", "
+        + color.getBlue() * 255
+        + "); ";
+  }
+
+  public Paint getHighlightColor() {
+    return highlight;
+  }
+
+  public Paint getParagraphColor() {
+    return paragraph;
   }
 }

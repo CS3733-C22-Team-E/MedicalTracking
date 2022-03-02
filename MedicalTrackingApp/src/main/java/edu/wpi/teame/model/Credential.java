@@ -18,6 +18,7 @@ public class Credential implements ISQLSerializable {
   private MessageDigest messageDigest;
   private boolean isDeleted = false;
   private AccessLevel accessLevel;
+
   private String username;
   private String password;
   private String imageURL;
@@ -25,22 +26,28 @@ public class Credential implements ISQLSerializable {
   private int id;
 
   public Credential(
-      int id, String salt, String username, String password, AccessLevel accessLevel) {
+      int id,
+      String salt,
+      String username,
+      String password,
+      String imageURL,
+      AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.username = username;
     this.salt = stringToBytes(salt);
     this.accessLevel = accessLevel;
     this.password = hashPassword(password, this.salt);
   }
 
-  public Credential(int id, String username, String password, AccessLevel accessLevel) {
+  public Credential(
+      int id, String username, String password, String imageURL, AccessLevel accessLevel) {
     createHasher();
     this.id = id;
-    this.imageURL = "";
     this.isDeleted = false;
+    this.imageURL = imageURL;
     this.salt = createSalt();
     this.username = username;
     this.accessLevel = accessLevel;
@@ -88,17 +95,17 @@ public class Credential implements ISQLSerializable {
   @Override
   public String getSQLUpdateString() {
     return new StringBuilder()
-        .append("salt = ")
+        .append("salt = '")
         .append(bytesToString(salt))
-        .append("username = ")
+        .append("', username = '")
         .append(username)
-        .append("password = ")
+        .append("', password = '")
         .append(password)
-        .append("accessLevel = ")
+        .append("', accessLevel = ")
         .append(accessLevel.ordinal())
-        .append("imageURL = ")
+        .append(", imageURL = '")
         .append(imageURL)
-        .append(" WHERE id = ")
+        .append("' WHERE id = ")
         .append(id)
         .toString();
   }
@@ -228,28 +235,12 @@ public class Credential implements ISQLSerializable {
     return id;
   }
 
+  public void setId(int id) {
+    this.id = id;
+  }
+
   public AccessLevel getAccessLevel() {
     return accessLevel;
-  }
-
-  public String getImageURL() {
-    return imageURL;
-  }
-
-  public MessageDigest getMessageDigest() {
-    return messageDigest;
-  }
-
-  public void setMessageDigest(MessageDigest messageDigest) {
-    this.messageDigest = messageDigest;
-  }
-
-  public boolean isDeleted() {
-    return isDeleted;
-  }
-
-  public void setDeleted(boolean deleted) {
-    isDeleted = deleted;
   }
 
   public void setAccessLevel(AccessLevel accessLevel) {
@@ -269,11 +260,11 @@ public class Credential implements ISQLSerializable {
   }
 
   public void setPassword(String password) {
-    this.password = password;
+    this.password = hashPassword(password, this.salt);
   }
 
-  public void setImageURL(String imageURL) {
-    this.imageURL = imageURL;
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
   }
 
   public void setPasswordHashed(String password) {
@@ -288,7 +279,15 @@ public class Credential implements ISQLSerializable {
     this.salt = salt;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public String getImageURL() {
+    if (imageURL == null) {
+      return "";
+    }
+
+    return imageURL;
+  }
+
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 }
