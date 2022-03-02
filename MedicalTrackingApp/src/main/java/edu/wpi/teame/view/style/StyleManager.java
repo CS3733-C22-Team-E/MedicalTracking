@@ -90,7 +90,7 @@ public class StyleManager {
     colorSchemes.put(
         "Yellow Snow", new ColorScheme(ysBG, ysHead, ysP, ysB, ysBT, ysSt, ysM, ysH, ysS, ysT));
 
-    currentStyle = "Yellow Snow";
+    currentStyle = "Step-Bro";
   }
 
   public void selectTheme(String colorSchemeName) {
