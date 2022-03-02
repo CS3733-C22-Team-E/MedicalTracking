@@ -18,24 +18,19 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class HomePageController implements Initializable, IStyleable {
@@ -121,33 +116,10 @@ public class HomePageController implements Initializable, IStyleable {
     dialog = new JFXDialog(stackPane, credits, JFXDialog.DialogTransition.CENTER);
 
     JFXButton backButton = new JFXButton("Back");
+    StyleManager.getInstance().getCurrentStyle().setButtonStyle(backButton);
+
     backButton.setOnAction(event -> dialog.close());
     credits.setActions(backButton);
     dialog.show();
-  }
-
-  @FXML
-  public void fxmlDialog(ActionEvent event) throws IOException {
-    Stage stage = new Stage();
-    stage.initModality(Modality.APPLICATION_MODAL);
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AboutPage.fxml"));
-    Parent parent = fxmlLoader.load();
-    //    AboutPageController dialogController = fxmlLoader.<AboutPageController>getController();
-
-    GridPane layout = new GridPane();
-    TextField text1 = new TextField();
-    TextField text2 = new TextField();
-    layout.add(text1, 1, 1);
-    layout.add(text2, 1, 2);
-
-    //    layout.setPadding(new Insets(10, 10, 10, 10));
-    layout.setVgap(5);
-    layout.setHgap(5);
-
-    //    Scene scene = new Scene(parent, 300, 200);
-    Scene scene = new Scene(layout, 250, 150);
-    stage.setTitle("Dialog");
-    stage.setScene(scene);
-    stage.showAndWait();
   }
 }
