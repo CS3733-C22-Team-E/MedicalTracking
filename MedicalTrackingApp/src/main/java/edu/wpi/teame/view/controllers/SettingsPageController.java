@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import lombok.SneakyThrows;
 
 public class SettingsPageController implements Initializable, IStyleable {
@@ -32,6 +33,7 @@ public class SettingsPageController implements Initializable, IStyleable {
   @FXML public ComboBox colorComboBox;
   @FXML public Label headerLabel;
   @FXML public Label label1;
+  @FXML public AnchorPane wholePane;
 
   private InputStream settingsPath = App.class.getResourceAsStream("settings.properties");
   private boolean dialogConfirmed = false;
@@ -127,5 +129,6 @@ public class SettingsPageController implements Initializable, IStyleable {
     StyleManager.getInstance().getCurrentStyle().setComboBoxStyle(colorComboBox);
     StyleManager.getInstance().getCurrentStyle().setHeaderStyle(headerLabel);
     StyleManager.getInstance().getCurrentStyle().setLabelStyle(label1);
+    StyleManager.getInstance().getCurrentStyle().setPaneStyle(wholePane, true);
   }
 }
